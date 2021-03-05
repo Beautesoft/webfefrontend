@@ -1,0 +1,55 @@
+.treatment-done-new {
+  background-color: #ffffff;
+  .header{
+    .select-year{
+      .name{
+        width: 120px;
+      }
+      .input-group{
+        width: 100px;
+      }
+    }
+  }
+  .cart-border{
+    border:1px solid black;
+  }
+  .form-check{
+    margin-top: -15px;
+  }
+  .item-list{
+    .table{
+      max-height: 500px;
+      overflow-y: auto;
+      .reversal {
+        color: black;
+        border: 1px solid;
+        margin: 5px;
+        padding: 0px 5px;
+        background: #ffffff;
+        font-weight: 700;
+      }
+    }
+  }
+}
+.transaction-done-reversal {
+  .treatment-done {
+    .adjustment {
+      .select{
+        .select-form-control {
+          height: 100%;
+        }
+        .select-icon {
+          top: 11px;
+        }
+      }
+    }
+  }
+}
+.treatment-done{
+  .emp-image{
+    .emp{
+      width: 100px;
+      text-align: center;
+    }
+  }
+}

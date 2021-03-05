@@ -1,0 +1,140 @@
+@import "assets/scss/abstracts/abstracts-dir.scss";
+
+.treatment-account {
+  .print {
+    button {
+      width: 224px;
+      background: $green;
+      color: $white;
+      &:hover {
+        border: 1px solid  $green;
+        background: $white;
+        color: $green;
+      }
+    }
+  }
+  .action-bar{
+    justify-content: center;
+    .print{
+      button {
+        width: 224px;
+        border: 1px solid  $green;
+        background: $white;
+        color: $green;
+        &:hover {
+          // border: 1px solid  $green;
+          background: $green;
+          color: $white;
+        }
+      }
+    }
+    .action{
+      button{
+        width: 224px;
+        background: $white;
+        color: $primary-color;
+        border: 1px solid  $primary-color;
+        &:hover {
+          border: 1px solid  $primary-color;
+          background: $primary-color;
+          color: $white;
+        }
+      }
+    }
+    .cancel {
+      button{
+        width: 224px;
+        background: $white;
+        color: $primary-color;
+        border: 1px solid  $primary-color;
+        &:hover {
+          border: 1px solid  $primary-color;
+          background: $primary-color;
+          color: $white;
+        }
+      }
+    }
+  }
+  .custom-border {
+    border-top: 1px solid #8080802e;
+  }
+  .update {
+    button {
+      width: 224px;
+    }
+  }
+  .undo {
+    button {
+      width: 224px;
+      border-radius: 0px;
+    }
+  }
+  .adjustment{
+    input{
+      margin-top: -10px;
+    }
+    .input-group {
+      input {
+        width: 187px;
+        height: 30px;
+        margin-top: 0px;
+        background: #F9F9F9;
+      }
+    }
+  }
+  .reason {
+    .input-group {
+      input {
+        width: 187px;
+        height: 30px;
+        background: #F9F9F9;
+      }
+    }
+  }
+  .remark {
+    .input-group {
+      textarea {
+        width: 393px;
+        min-height: 56px;
+        background: #F9F9F9;
+      }
+    }
+  }
+  .header {
+    background: #ffb26b;
+    color: $white;
+    padding: 10px 0px;
+  }
+  .treatment-table {
+    border-bottom: 1px solid #8080802e;
+  }
+}
+
+.update-reverse{
+  .print{
+    button {
+      width: 224px;
+      
+      background: $green;
+      color: $white;
+      &:hover {
+        border: 1px solid  $green;
+        background: $white;
+        color: $green;
+      }
+    }
+  }
+  .cancel {
+    button{
+      width: 224px;
+      background: $white;
+      color: $primary-color;
+      border: 1px solid  $primary-color;
+      &:hover {
+        border: 1px solid  $primary-color;
+        background: $primary-color;
+        color: $white;
+      }
+    }
+  }
+}

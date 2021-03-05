@@ -1,0 +1,183 @@
+.dx-scheduler-date-table-other-month.dx-scheduler-date-table-cell {
+  opacity: 1;
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.dx-template-wrapper,
+.dx-scheduler-date-table-cell {
+  position: relative;
+}
+
+.dx-scheduler-date-table-cell .dx-template-wrapper {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.avatar {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  height: 70px;
+  width: 70px;
+  padding: 5px;
+  margin-left: 10px;
+  border-radius: 100%;
+}
+
+.name {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  left: 0;
+  justify-content: center;
+  align-self: center;
+}
+
+.name h2 {
+  color: #fff;
+  text-align: left;
+  padding: 0 0 5px 175px;
+  margin: 0;
+}
+
+.info {
+  width: auto;
+  text-align: left;
+  height: 100%;
+  font-size: 11pt;
+  font-weight: normal;
+  padding: 25px 20px;
+  color: #707070;
+}
+
+.dx-color-scheme-contrast .info {
+  color: #fff;
+}
+
+.day-cell {
+  height: 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.employee-1 {
+  background-color: rgba(86, 202, 133, 0.1);
+}
+
+.employee-2 {
+  background-color: rgba(255, 151, 71, 0.1);
+}
+
+.employee-weekend-1 {
+  background-color: rgba(86, 202, 133, 0.2);
+}
+
+.employee-weekend-2 {
+  background-color: rgba(255, 151, 71, 0.2);
+}
+
+.training-background-0 {
+  background-color: #fff;
+}
+
+.training-background-1 {
+  background-color: #fff;
+}
+
+.training-background-2 {
+  background-color: #fff;
+}
+
+.dx-theme-material .name h2 {
+  font-size: 28px;
+}
+
+table-row:first-child .dx-scheduler-date-table-cell,
+.dx-scheduler-work-space-week
+  .dx-scheduler-date-table
+  .dx-scheduler-date-table-cell,
+.dx-scheduler-work-space-work-week
+  .dx-scheduler-date-table-row:first-child
+  .dx-scheduler-date-table-cell {
+  border-top: none;
+  width: 150px !important ;
+}
+
+.dx-button-content {
+  height: 100%;
+  max-height: 100%;
+  line-height: 1;
+  padding: 7px 18px 8px;
+  background-color: #fff;
+  font-weight: 600;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.dx-button-staff-content {
+  height: 100%;
+  max-height: 100%;
+  line-height: 1;
+  padding: 2px 18px 7px;
+  background-color: #fff;
+  font-weight: 600;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.tooltip-img {
+  position: relative;
+  display: inline-block;
+  color: #fff;
+  line-height: 10px;
+  padding: 0px;
+}
+
+.tooltiptext-img {
+  visibility: hidden;
+  width: fit-content;
+  background-color: #fff;
+  color: #686565;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  border: 1px solid #b2b2b2;
+  font-size: 12px;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 999;
+}
+
+.tooltip-img:hover .tooltiptext-img {
+  visibility: visible;
+  position: fixed;
+}
+
+.dx-scheduler-appointment-content {
+  padding: 0px solid !important;
+}
+
+.dx-scheduler-appointment {
+  border: 1px solid transparent !important;
+}
+
+.dx-scheduler-appointment {
+  position: absolute;
+  color: #fff;
+  left: 0;
+  min-width: 4px;
+  min-height: 4px;
+  background-color: transparent !important;
+}
+
+.app-detail {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  color: #000000;
+}
+
+.display-box {
+  height: inherit;
+}

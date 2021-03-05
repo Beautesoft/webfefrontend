@@ -1,0 +1,32 @@
+@import "../abstracts/abstracts-dir.scss";
+#main-content {
+  .nav-head{
+    position: sticky;
+    background: $white;
+    z-index: 10;
+    top: 0;
+    height: 98px;
+    .bg-site-primary{
+      padding-left: 52px;
+    }
+  }
+  .content-wrapper {
+    // height: calc(100vh - 90px);
+    display: flex;
+    .scrollbar-container {
+      width: 100%;
+      // height: calc(100vh - 90px);
+    }
+    .scrollbar-container::-webkit-scrollbar {
+      display: none !important;
+    }
+    .content {
+      padding: 25px 35px;
+      // padding-left: 100px;
+      width: 100%;
+      overflow-y: scroll;
+      height: calc(100vh - 98px);
+      background-color: #ecececb8;
+    }
+  }
+}
