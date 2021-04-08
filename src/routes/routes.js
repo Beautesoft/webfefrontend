@@ -161,6 +161,36 @@ const routers = [
         exact: true,
       },
       {
+        component: 'ListStaffPlus',
+        path: '/staffplus',
+        auth: false,
+        exact: true,
+      },
+      {
+        component: 'AddStaffPlus',
+        path: '/staffplus/add',
+        auth: false,
+        exact: true,
+      },
+      {
+        component: 'StaffSchedule',
+        path: '/staffplus/schedule',
+        auth: false,
+        exact: true,
+      },
+      {
+        component: 'AddStaffPlus',
+        path: '/staffplus/:id/editStaff',
+        auth: false,
+        exact: true,
+      },
+      {
+        component: 'EmployeeInfo',
+        path: '/staffplus/:id/empInfo',
+        auth: false,
+        exact: true,
+      },
+      {
         component: 'ListCustomer',
         path: '/customer',
         auth: false,

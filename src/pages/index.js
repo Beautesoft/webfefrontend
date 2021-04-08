@@ -17,6 +17,7 @@ export { Catalog } from './Catalog';
 export { AddCustomer, ListCustomer, CustomerDetails, AccountDetails, TreatmentDetails, TreatmentCourseDetails, HoldSections } from './Customer';
 export { Payment } from './Payment';
 export { ListStaff, AddStaff, StaffDetails, StaffAvailability } from './Staff';
+export { AddStaffPlus,ListStaffPlus, EmployeeInfo, StaffSchedule} from './StaffPlus';
 
 
 

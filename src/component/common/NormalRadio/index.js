@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, Label, Input } from 'reactstrap';
+import { FormGroup, Label, Input } from "reactstrap";
 
 export class NormalRadio extends Component {
   render() {
@@ -9,10 +9,11 @@ export class NormalRadio extends Component {
       onChange,
       value = "",
       name,
+      selected,
       disabled = false,
       type = "text",
       iconname = "",
-      onClick
+      onClick,
     } = this.props;
 
     return (
@@ -22,10 +23,19 @@ export class NormalRadio extends Component {
         ) : (
             ""
           )} */}
-        <FormGroup className={className} check={value}>
-          <Label check={value}>
-            <Input type="radio" name={name} />{' '}
-           {label}
+        <FormGroup className={className} check={selected}>
+          <Label check={selected}>
+            <Input
+              checked={selected}
+              onChange={(e) => {
+                let data = e.target.value;
+                onChange(data);
+              }}
+              value={value}
+              type="radio"
+              name={name}
+            />{" "}
+            {label}
           </Label>
         </FormGroup>
       </>
