@@ -64,7 +64,7 @@
   --tw-bg-opacity: 1;
   background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
   --tw-border-opacity: 1;
-  border-color: orange;
+  border-color: $primary-color;
   --tw-text-opacity: 1;
   color: rgba(31, 41, 55, var(--tw-text-opacity));
 }
@@ -90,7 +90,7 @@
   --tw-bg-opacity: 1;
   background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
   --tw-border-opacity: 1;
-  border-color: orange;
+  border-color: $primary-color;
   --tw-text-opacity: 1;
   color: rgba(31, 41, 55, var(--tw-text-opacity));
 }
@@ -100,7 +100,7 @@
 }
 .hover\:border-pink-500:hover {
   --tw-border-opacity: 1;
-  border-color: orange;
+  border-color: $primary-color;
 }
 .table {
   display: table;

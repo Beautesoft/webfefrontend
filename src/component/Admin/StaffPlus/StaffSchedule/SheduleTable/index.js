@@ -48,7 +48,7 @@ export class ScheduleTable extends Component {
     return (
       <>
         <table className="table">
-          <tr className="bg-warning">
+          <tr className="table-header-color">
             <th>Dow</th>
             <th>M</th>
             <th>T</th>
@@ -59,7 +59,7 @@ export class ScheduleTable extends Component {
             <th className="text-danger">S</th>
           </tr>
           <tr>
-            <td class="bg-warning">WS</td>
+            <td class="table-header-color">WS</td>
             <td onClick={() => handleOpenMenu("ws0")} className={ws[0]}>
               <div id="ws0" class="dropdown-content">
                 {getWsOptions(0)}
@@ -97,7 +97,7 @@ export class ScheduleTable extends Component {
             </td>
           </tr>
           <tr>
-            <td class="bg-warning">ALT WS</td>
+            <td class="table-header-color">ALT WS</td>
             <td onClick={() => handleOpenMenu("altws0")} className={altws[0]}>
               <div id="altws0" class="dropdown-content">
                 {getAltWsOptions(0)}

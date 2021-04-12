@@ -24,7 +24,9 @@ export class BigCalander extends Component {
         if (anchor) {
           anchor.onclick = () => {
             if (this.props.disabled ?? false) return;
-            document.getElementById(staff.name + index).classList.toggle("show");
+            document
+              .getElementById(staff.name + index)
+              .classList.toggle("show");
           };
         }
       }
@@ -48,7 +50,9 @@ export class BigCalander extends Component {
         if (anchor) {
           anchor.onclick = () => {
             if (this.props.disabled ?? false) return;
-            document.getElementById(staff.name + index).classList.toggle("show");
+            document
+              .getElementById(staff.name + index)
+              .classList.toggle("show");
           };
         }
       }
@@ -75,16 +79,16 @@ export class BigCalander extends Component {
       data[staffIndex].data =
         data[staffIndex].data.substr(0, index) +
         value +
-        data[staffIndex].data.substr(index+1, data[staffIndex].data.length);
+        data[staffIndex].data.substr(index + 1, data[staffIndex].data.length);
       onChange(data);
     };
 
     const days = [];
     const headers = [];
-    
+
     for (let index = 1; index <= lastDayDate; index++) {
       headers.push(<th>{index}</th>);
-      days.push(index-1);
+      days.push(index - 1);
     }
     const rows = [];
     for (let staffIndex = 0; staffIndex < data.length; staffIndex++) {
@@ -92,7 +96,7 @@ export class BigCalander extends Component {
       console.log(data);
       rows.push(
         <tr>
-          <th className="bg-warning">{staff.name}</th>
+          <th className="table-header-color">{staff.name}</th>
           {days.map((day) => (
             <td className={staff.data[day]}>
               <div id={staff.name + day} class="dropdown-content">
@@ -112,13 +116,15 @@ export class BigCalander extends Component {
       );
     }
     return (
-      <table className="table">
-        <tr className="bg-warning">
-          <th>Staff</th>
-          {headers}
-        </tr>
-        {rows}
-      </table>
+      <div class="table-container">
+        <table className="table">
+          <tr className="table-header-color">
+            <th>Staff</th>
+            {headers}
+          </tr>
+          {rows}
+        </table>
+      </div>
     );
   }
 }

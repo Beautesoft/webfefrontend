@@ -100,7 +100,7 @@ export class CalenderTable extends Component {
     };
     return (
       <table className="table">
-        <tr className="bg-warning">
+        <tr className="table-header-color">
           <th>Mon</th>
           <th>Tue</th>
           <th>Wed</th>

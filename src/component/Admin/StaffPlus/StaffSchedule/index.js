@@ -27,6 +27,9 @@ class StaffScheduleClass extends React.Component {
         { name: "apple", data: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
         { name: "orange", data: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
         { name: "mango", data: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+        { name: "mango", data: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+        { name: "mango", data: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+        { name: "mango", data: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
       ],
     },
   };
