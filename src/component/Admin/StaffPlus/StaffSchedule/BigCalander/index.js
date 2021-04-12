@@ -116,7 +116,7 @@ export class BigCalander extends Component {
       );
     }
     return (
-      <div class="table-container">
+      <div class="table-responsive">
         <table className="table">
           <tr className="table-header-color">
             <th>Staff</th>
