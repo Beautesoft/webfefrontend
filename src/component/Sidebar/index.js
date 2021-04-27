@@ -31,6 +31,11 @@ export class SidebarClass extends Component {
         role: ["MANAGER", "ADMINISTRATOR", "THERAPIST"],
       },
       {
+        to: "/admin/customerplus",
+        label: "Customer+",
+        role: ["MANAGER", "ADMINISTRATOR", "THERAPIST"],
+      },
+      {
         to: "/admin/appointment",
         label: "Appointments",
         role: ["MANAGER", "ADMINISTRATOR", "THERAPIST"],
@@ -59,7 +64,8 @@ export class SidebarClass extends Component {
         to: "/admin/staff",
         label: "Staff",
         role: ["MANAGER", "THERAPIST"],
-      },{
+      },
+      {
         to: "/admin/staffplus",
         label: "Staff+",
         role: ["MANAGER", "THERAPIST"],
@@ -93,7 +99,7 @@ export class SidebarClass extends Component {
   }
 
   getToken = async () => {
-    await this.props.getTokenDetails().then(res => {
+    await this.props.getTokenDetails().then((res) => {
       console.log(res, "sidebare");
     });
     // console.log(this.props, "sidebare");
@@ -146,11 +152,11 @@ export class SidebarClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   tokenDetail: state.authStore.tokenDetails,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getTokenDetails,

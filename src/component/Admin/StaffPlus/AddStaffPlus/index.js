@@ -602,8 +602,6 @@ export class AddStaffClass extends Component {
                 </div>
               </div>
             </div>
-
-            <div className="border-bottom-line"></div>
             <div className="pt-5 d-flex justify-content-center">
               <div className="col-2">
                 <Link to="/admin/staffplus">

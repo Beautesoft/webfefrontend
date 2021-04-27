@@ -1,0 +1,34 @@
+@import "assets/scss/abstracts/abstracts-dir.scss";
+.treatment-account {
+  .print {
+    button {
+      padding: 0;
+      width: 224px;
+      background: $green;
+      color: $white;
+      &:hover {
+        border: 1px solid  $green;
+        background: $white;
+        color: $green;
+      }
+    }
+  }
+  .back {
+    width: 224px;
+    padding: 0;
+  }
+  #small-down-arrow{
+    top: 17px;
+  }
+}
+.credit-note-update{
+  .input-group{
+    input{
+      border: none;
+      background: #e4e4e4cf;
+    }
+  }
+}
+.justify-center {
+  justify-content: center;
+}

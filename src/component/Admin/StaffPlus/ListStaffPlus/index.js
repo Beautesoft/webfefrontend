@@ -7,6 +7,7 @@ import { getStaffPlus, deleteStaff } from "redux/actions/staff";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import _ from "lodash";
+import { Link } from "react-router-dom";
 import { Navigation } from "react-minimal-side-navigation";
 
 export class ListStaffPlusClass extends React.Component {
@@ -218,207 +219,220 @@ export class ListStaffPlusClass extends React.Component {
       jobOption,
     } = this.state;
     return (
-      <div className="row">
-        <div className="col-2.5 mb-4">
-          <div className="col-md-4">
-            <h4>Filters</h4>
-          </div>
-          <Navigation
-            activeItemId="/"
-            onSelect={({ itemId }) => this.handleFilterChange(itemId)}
-            items={[
-              {
-                title: "Show All",
-                itemId: "/",
-              },
-              {
-                title: "Show Active",
-                itemId: "/active",
-              },
-              {
-                title: "Show Inctive",
-                itemId: "/inactive",
-              },
-              {
-                title: "By Emp Level",
-                itemId: "/emplvl",
-                subNav: levelList,
-              },
-              {
-                title: "With Security Account",
-                itemId: "/withSecurityAccount",
-              },
-              {
-                title: "Without Security Account",
-                itemId: "/withoutSecurityAccount",
-              },
-              {
-                title: "By Site List",
-                itemId: "/sitelist",
-                subNav: locationOption,
-              },
-              {
-                title: "By Operation",
-                itemId: "/operation",
-                subNav: jobOption,
-              },
-            ]}
-          />
-        </div>
-        <div className="container staffList-container">
-          <div className="row align-items-center">
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-sm-12 col-lg-3 mb-4">
             <div className="col-md-4">
-              <h3>List of Staffs</h3>
+              <h4>Filters</h4>
             </div>
-            <div className="col-md-8">
-              <div className="d-flex justify-content-between">
-                <div className="input-container">
-                  <InputSearch
-                    className=""
-                    placeholder="Search Staff"
-                    onChange={this.handleChange}
-                  />
-                </div>
-                <div className="w-100 col-3 p-0">
-                  <NormalButton
-                    mainbg={true}
-                    className="col-12 fs-15 float-right"
-                    label="Add Staff"
-                    onClick={() => this.props.history.push("/admin/staffplus/add")}
-                  />
+            <Navigation
+              activeItemId="/"
+              onSelect={({ itemId }) => this.handleFilterChange(itemId)}
+              items={[
+                {
+                  title: "Show All",
+                  itemId: "/",
+                },
+                {
+                  title: "Show Active",
+                  itemId: "/active",
+                },
+                {
+                  title: "Show Inctive",
+                  itemId: "/inactive",
+                },
+                {
+                  title: "By Emp Level",
+                  itemId: "/emplvl",
+                  subNav: levelList,
+                },
+                {
+                  title: "With Security Account",
+                  itemId: "/withSecurityAccount",
+                },
+                {
+                  title: "Without Security Account",
+                  itemId: "/withoutSecurityAccount",
+                },
+                {
+                  title: "By Site List",
+                  itemId: "/sitelist",
+                  subNav: locationOption,
+                },
+                {
+                  title: "By Operation",
+                  itemId: "/operation",
+                  subNav: jobOption,
+                },
+              ]}
+            />
+          </div>
+          <div className="staffList-container col-xl">
+            <div className="row align-items-center">
+              <div className="col-md-4">
+                <h3>List of Staffs</h3>
+              </div>
+              <div className="col-md-8">
+                <div className="d-flex justify-content-between">
+                  <div className="input-container">
+                    <InputSearch
+                      className=""
+                      placeholder="Search Staff"
+                      onChange={this.handleChange}
+                    />
+                  </div><div className="w-100 col-3 ml-1 p-0">
+                    <Link to="/admin/staffplus/schedule">
+                      <NormalButton
+                        mainbg={true}
+                        className="col-12 fs-15 float-right"
+                        label="Schedule"
+                      />
+                    </Link>
+                  </div>
+                  <div className="w-100 col-4 ml-1 p-0">
+                    <NormalButton
+                      mainbg={true}
+                      className="col-12 fs-15 float-right"
+                      label="Add Staff"
+                      onClick={() =>
+                        this.props.history.push("/admin/staffplus/add")
+                      }
+                    />
+                  </div>
+                  
                 </div>
               </div>
             </div>
-          </div>
-          <div className="tab-table-content">
-            <div className="py-4">
-              <div className="table-container">
-                <TableWrapper
-                  headerDetails={headerDetails}
-                  queryHandler={this.handlePagination}
-                  pageMeta={pageMeta}
-                >
-                  {filteredStaffList.length > 0
-                    ? filteredStaffList.map(
-                        (
-                          {
-                            id,
-                            emp_name,
-                            emp_phone1,
-                            emp_code,
-                            services,
-                            site_code,
-                            defaultsitecode,
-                            status,
-                          },
-                          index
-                        ) => {
-                          return (
-                            <tr key={index}>
-                              <td className="position-relative status-type">
-                                <span
-                                  className={`${
-                                    status === "available"
-                                      ? "available"
-                                      : "not-available"
-                                  }`}
-                                ></span>
-                                <div className="d-flex align-items-center justify-content-center">
-                                  {emp_name}
-                                </div>
-                              </td>
-                              <td>
-                                <div className="d-flex align-items-center justify-content-center">
-                                  {emp_phone1}
-                                </div>
-                              </td>
-                              <td>
-                                <div className="d-flex align-items-center justify-content-center">
-                                  {emp_code}
-                                </div>
-                              </td>
-                              {/* <td><div className="d-flex align-items-center justify-content-center"></div></td> */}
-                              <td>
-                                <div className="d-flex align-items-center justify-content-center">
-                                  {services ? services[0] : ""}
-                                </div>
-                              </td>
-                              <td>
-                                <div className="d-flex align-items-center justify-content-center">
-                                  {defaultsitecode}
-                                </div>
-                              </td>
-                              <td>
-                                <div className="d-flex align-items-center justify-content-center">
-                                  {site_code}
-                                </div>
-                              </td>
-                              <td
-                                className="position-relative"
-                                ref={(node) => {
-                                  this.node = node;
-                                }}
-                                onClick={() => this.handleClick(index)}
-                              >
-                                {currentIndex === index ? (
-                                  <>
-                                    <div className="d-flex align-items-center justify-content-center horizontal-more-active">
-                                      <i className="icon-more"></i>
-                                    </div>
-                                    <div className="option card">
-                                      <div
-                                        className="d-flex align-items-center fs-14 pt-3"
-                                        onClick={() =>
-                                          this.props.history.push(
-                                            `/admin/staff/${id}/staffDetails`
-                                          )
-                                        }
-                                      >
-                                        <span className="icon-eye-grey px-3"></span>{" "}
-                                        View{" "}
-                                      </div>
-                                      <div
-                                        className="d-flex align-items-center fs-14"
-                                        onClick={() =>
-                                          this.props.history.push(
-                                            `/admin/staffPlus/${id}/editStaff`
-                                          )
-                                        }
-                                      >
-                                        <span className="icon-edit px-3"></span>{" "}
-                                        Edit{" "}
-                                      </div>
-                                      <div
-                                        className="d-flex align-items-center fs-14 pb-3"
-                                        onClick={() =>
-                                          this.handleDeleteStaff(id)
-                                        }
-                                      >
-                                        <span className="icon-delete px-3"></span>{" "}
-                                        Delete{" "}
-                                      </div>
-                                    </div>
-                                  </>
-                                ) : (
-                                  <div className="d-flex align-items-center justify-content-center horizontal-more">
-                                    <i className="icon-more text-grey"></i>
+            <div className="tab-table-content">
+              <div className="py-4">
+                <div className="table-container">
+                  <TableWrapper
+                    headerDetails={headerDetails}
+                    queryHandler={this.handlePagination}
+                    pageMeta={pageMeta}
+                  >
+                    {filteredStaffList.length > 0
+                      ? filteredStaffList.map(
+                          (
+                            {
+                              id,
+                              emp_name,
+                              emp_phone1,
+                              emp_code,
+                              services,
+                              site_code,
+                              defaultsitecode,
+                              status,
+                            },
+                            index
+                          ) => {
+                            return (
+                              <tr key={index}>
+                                <td className="position-relative status-type">
+                                  <span
+                                    className={`${
+                                      status === "available"
+                                        ? "available"
+                                        : "not-available"
+                                    }`}
+                                  ></span>
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    {emp_name}
                                   </div>
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        }
-                      )
-                    : ""}
-                </TableWrapper>
-                <div className="palette">
-                  <div className="color-detail">
-                    <div className="color"></div>
-                    <div className="detail">Available today</div>
-                  </div>
-                  <div className="color-detail">
-                    <div className="color not-available"></div>
-                    <div className="detail">Not Available today</div>
+                                </td>
+                                <td>
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    {emp_phone1}
+                                  </div>
+                                </td>
+                                <td>
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    {emp_code}
+                                  </div>
+                                </td>
+                                {/* <td><div className="d-flex align-items-center justify-content-center"></div></td> */}
+                                <td>
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    {services ? services[0] : ""}
+                                  </div>
+                                </td>
+                                <td>
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    {defaultsitecode}
+                                  </div>
+                                </td>
+                                <td>
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    {site_code}
+                                  </div>
+                                </td>
+                                <td
+                                  className="position-relative"
+                                  ref={(node) => {
+                                    this.node = node;
+                                  }}
+                                  onClick={() => this.handleClick(index)}
+                                >
+                                  {currentIndex === index ? (
+                                    <>
+                                      <div className="d-flex align-items-center justify-content-center horizontal-more-active">
+                                        <i className="icon-more"></i>
+                                      </div>
+                                      <div className="option card">
+                                        <div
+                                          className="d-flex align-items-center fs-14 pt-3"
+                                          onClick={() =>
+                                            this.props.history.push(
+                                              `/admin/staff/${id}/staffDetails`
+                                            )
+                                          }
+                                        >
+                                          <span className="icon-eye-grey px-3"></span>{" "}
+                                          View{" "}
+                                        </div>
+                                        <div
+                                          className="d-flex align-items-center fs-14"
+                                          onClick={() =>
+                                            this.props.history.push(
+                                              `/admin/staffPlus/${id}/editStaff`
+                                            )
+                                          }
+                                        >
+                                          <span className="icon-edit px-3"></span>{" "}
+                                          Edit{" "}
+                                        </div>
+                                        <div
+                                          className="d-flex align-items-center fs-14 pb-3"
+                                          onClick={() =>
+                                            this.handleDeleteStaff(id)
+                                          }
+                                        >
+                                          <span className="icon-delete px-3"></span>{" "}
+                                          Delete{" "}
+                                        </div>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <div className="d-flex align-items-center justify-content-center horizontal-more">
+                                      <i className="icon-more text-grey"></i>
+                                    </div>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          }
+                        )
+                      : ""}
+                  </TableWrapper>
+                  <div className="palette">
+                    <div className="color-detail">
+                      <div className="color"></div>
+                      <div className="detail">Available today</div>
+                    </div>
+                    <div className="color-detail">
+                      <div className="color not-available"></div>
+                      <div className="detail">Not Available today</div>
+                    </div>
                   </div>
                 </div>
               </div>
