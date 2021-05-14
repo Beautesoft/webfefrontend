@@ -42,7 +42,7 @@ export class NavbarClass extends Component {
               
             <ul className="navbar-nav w-100">
             <li className="nav-item d-flex align-items-right ml-auto position-relative">
-            {tokenDetails.branch}
+            {tokenDetails.branch}{" User : " + tokenDetails.username}
             </li>
               <li className="nav-item d-flex align-items-center position-relative">
                 <div className="bell-icon">

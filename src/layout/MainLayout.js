@@ -8,13 +8,13 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 export class MainLayout extends Component {
   state = {
     profilemenu: false,
-    menuOpenClass: false
+    menuOpenClass: false,
   };
 
   handleProfileMenu = (event, active) => {
     event.stopPropagation();
     this.setState({
-      profilemenu: active
+      profilemenu: active,
     });
   };
 
@@ -22,7 +22,7 @@ export class MainLayout extends Component {
     let { menuOpenClass } = this.state;
 
     this.setState({
-      menuOpenClass: !menuOpenClass
+      menuOpenClass: !menuOpenClass,
     });
   };
 
@@ -34,15 +34,15 @@ export class MainLayout extends Component {
     return (
       <div id="main-content" onClick={e => this.handleProfileMenu(e, false)}>
         <div className="nav-head">
-        <Navbar
-          changeProfileState={(e, param) => this.handleProfileMenu(e, param)}
-          active={this.state.profilemenu}
-        />
-        <Sidebar
+          <Navbar
+            changeProfileState={(e, param) => this.handleProfileMenu(e, param)}
+            active={this.state.profilemenu}
+          />
+          <Sidebar
             menuOpen={menuOpenClass}
             handleSidenav={this.handleSidenav}
           />
-          </div>
+        </div>
         <div className="content-wrapper">
           <PerfectScrollbar>
             <div className="content">{children}</div>

@@ -115,11 +115,7 @@ export class SidebarClass extends Component {
     // console.log(this.props, "sidebare");
     return (
       <>
-        <div
-          className={`container left-menu bg-site-primary  ${
-            menuOpen ? "open" : ""
-          }`}
-        >
+        <div className={`left-menu bg-site-primary  ${menuOpen ? "open" : ""}`}>
           <PerfectScrollbar>
             <ul>
               {navLinks.map(({ to, label, role }, index) =>
