@@ -321,7 +321,7 @@ export const staff = {
     baseURL: 'token',
   },
   getStaffPlus: {
-    url: 'staffplus/',
+    url: 'staffPlus/',
     method: 'get',
     id: null,
     get api() {

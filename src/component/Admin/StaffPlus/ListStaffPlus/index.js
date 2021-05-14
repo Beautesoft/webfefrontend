@@ -22,7 +22,7 @@ export class ListStaffPlusClass extends React.Component {
       { label: "" },
     ],
     staffList: [],
-    filteredStaffList: [],
+    filter: "",
     locationOption: [],
     levelList: [],
     jobOption: [],
@@ -30,6 +30,7 @@ export class ListStaffPlusClass extends React.Component {
     filerOption: "/",
     active: false,
     currentIndex: -1,
+    is_loading: false,
   };
 
   componentDidMount() {
@@ -79,54 +80,40 @@ export class ListStaffPlusClass extends React.Component {
 
   handleFilterChange = (filterOption = "") => {
     var splitted = filterOption.split("/");
-    var filteredStaffList = this.state.staffList;
+    var filter = this.state.filter;
     console.log(filterOption);
     if (splitted.length == 2) {
       switch (splitted[1]) {
         case "withSecurityAccount":
-          filteredStaffList = this.state.staffList.filter(
-            (item) => item.is_login
-          );
+          filter = "is_login=True";
           break;
         case "withoutSecurityAccount":
-          filteredStaffList = this.state.staffList.filter(
-            (item) => !item.is_login
-          );
+          filter = "is_login=False";
           break;
         case "active":
-          filteredStaffList = this.state.staffList.filter(
-            (item) => item.is_active
-          );
+          filter = "emp_isactive=True";
           break;
         case "inactive":
-          filteredStaffList = this.state.staffList.filter(
-            (item) => !item.is_active
-          );
+          filter = "emp_isactive=False";
           break;
       }
     } else if (splitted.length == 3) {
       switch (splitted[1]) {
         case "emp_lvl":
-          filteredStaffList = this.state.staffList.filter(
-            (item) => item.LEVEL_ItmIDid == splitted[2]
-          );
+          filter = `LEVEL_ItmIDid=${splitted[2]}`;
           break;
         case "sitelist":
-          filteredStaffList = this.state.staffList.filter(
-            (item) => item.Site_Codeid == splitted[2]
-          );
+          filter = `Site_Codeid=${splitted[2]}`;
           break;
         case "operation":
-          filteredStaffList = this.state.staffList.filter(
-            (item) => item.EMP_TYPEid == splitted[2]
-          );
+          filter = `EMP_TYPEid=${splitted[2]}`;
           break;
       }
     }
-    this.setState({
-      filterOption,
-      filteredStaffList,
-    });
+    if (this.state.filter != filter) {
+      this.state.filter = filter;
+      this.queryHandler({});
+    }
   };
 
   // while clicking popup close at outside click
@@ -141,20 +128,30 @@ export class ListStaffPlusClass extends React.Component {
 
   // api call for staff
   queryHandler = (data) => {
+    this.setState({ is_loading: true });
     let { page = 1, limit = 10, search = "" } = data;
-    this.props.getStaffPlus(`?page=${page}&limit=${limit}`).then((res) => {
-      // this.props.getStaffPlus(`?page=${page}&limit=${limit}&search=${search}`).then((res) => {
-      console.log(res, "dsfdfaafg", res.data.dataList);
-      let { staffList, pageMeta, filteredStaffList } = this.state;
-      staffList = res.data.dataList;
-      filteredStaffList = res.data.dataList;
-      pageMeta = res.data.meta.pagination;
-      this.setState({
-        staffList,
-        pageMeta,
-        filteredStaffList,
+    this.props
+      .getStaffPlus(
+        `?page=${page}&limit=${limit}${
+          this.state.filter == "" ? "" : `&${this.state.filter}`
+        }${
+          search == "" ? "" : `&search=${search}`
+        }`
+      )
+      .then((res) => {
+        // this.props.getStaffPlus(`?page=${page}&limit=${limit}&search=${search}`).then((res) => {
+        console.log(res, "dsfdfaafg", res.data.dataList);
+        let { staffList, pageMeta, filteredStaffList } = this.state;
+        staffList = res.data.dataList;
+        filteredStaffList = res.data.dataList;
+        pageMeta = res.data.meta.pagination;
+        this.setState({
+          staffList,
+          pageMeta,
+          filteredStaffList,
+          is_loading: false,
+        });
       });
-    });
   };
 
   // pagination
@@ -211,12 +208,13 @@ export class ListStaffPlusClass extends React.Component {
   render() {
     let {
       headerDetails,
-      filteredStaffList,
       pageMeta,
       currentIndex,
       locationOption,
       levelList,
       jobOption,
+      staffList,
+      is_loading,
     } = this.state;
     return (
       <div className="container-fluid">
@@ -307,7 +305,7 @@ export class ListStaffPlusClass extends React.Component {
                     <InputSearch
                       className=""
                       placeholder="Search Staff"
-                      onChange={this.handleChange}
+                      onEnter={this.handlesearch}
                     />
                   </div>
                   <div className="w-100 col-4 ml-1 p-0">
@@ -331,118 +329,131 @@ export class ListStaffPlusClass extends React.Component {
                     queryHandler={this.handlePagination}
                     pageMeta={pageMeta}
                   >
-                    {filteredStaffList.length > 0
-                      ? filteredStaffList.map(
-                          (
-                            {
-                              id,
-                              emp_name,
-                              emp_phone1,
-                              emp_code,
-                              services,
-                              site_code,
-                              defaultsitecode,
-                              status,
-                            },
-                            index
-                          ) => {
-                            return (
-                              <tr key={index}>
-                                <td className="position-relative status-type">
-                                  <span
-                                    className={`${
-                                      status === "available"
-                                        ? "available"
-                                        : "not-available"
-                                    }`}
-                                  ></span>
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    {emp_name}
-                                  </div>
-                                </td>
-                                <td>
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    {emp_phone1}
-                                  </div>
-                                </td>
-                                <td>
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    {emp_code}
-                                  </div>
-                                </td>
-                                {/* <td><div className="d-flex align-items-center justify-content-center"></div></td> */}
-                                <td>
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    {services ? services[0] : ""}
-                                  </div>
-                                </td>
-                                <td>
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    {defaultsitecode}
-                                  </div>
-                                </td>
-                                <td>
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    {site_code}
-                                  </div>
-                                </td>
-                                <td
-                                  className="position-relative"
-                                  ref={(node) => {
-                                    this.node = node;
-                                  }}
-                                  onClick={() => this.handleClick(index)}
-                                >
-                                  {currentIndex === index ? (
-                                    <>
-                                      <div className="d-flex align-items-center justify-content-center horizontal-more-active">
-                                        <i className="icon-more"></i>
-                                      </div>
-                                      <div className="option card">
-                                        <div
-                                          className="d-flex align-items-center fs-14 pt-3"
-                                          onClick={() =>
-                                            this.props.history.push(
-                                              `/admin/staff/${id}/staffDetails`
-                                            )
-                                          }
-                                        >
-                                          <span className="icon-eye-grey px-3"></span>{" "}
-                                          View{" "}
-                                        </div>
-                                        <div
-                                          className="d-flex align-items-center fs-14"
-                                          onClick={() =>
-                                            this.props.history.push(
-                                              `/admin/staffPlus/${id}/editStaff`
-                                            )
-                                          }
-                                        >
-                                          <span className="icon-edit px-3"></span>{" "}
-                                          Edit{" "}
-                                        </div>
-                                        <div
-                                          className="d-flex align-items-center fs-14 pb-3"
-                                          onClick={() =>
-                                            this.handleDeleteStaff(id)
-                                          }
-                                        >
-                                          <span className="icon-delete px-3"></span>{" "}
-                                          Delete{" "}
-                                        </div>
-                                      </div>
-                                    </>
-                                  ) : (
-                                    <div className="d-flex align-items-center justify-content-center horizontal-more">
-                                      <i className="icon-more text-grey"></i>
+                    {" "}
+                    {is_loading ? (
+                      <tr>
+                        <td colSpan="7">
+                          <div class="d-flex mt-5 align-items-center justify-content-center">
+                            <div class="spinner-border" role="status">
+                              <span class="sr-only">Loading...</span>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    ) : staffList.length > 0 ? (
+                      staffList.map(
+                        (
+                          {
+                            id,
+                            emp_name,
+                            emp_phone1,
+                            emp_code,
+                            services,
+                            site_code,
+                            defaultsitecode,
+                            status,
+                          },
+                          index
+                        ) => {
+                          return (
+                            <tr key={index}>
+                              <td className="position-relative status-type">
+                                <span
+                                  className={`${
+                                    status === "available"
+                                      ? "available"
+                                      : "not-available"
+                                  }`}
+                                ></span>
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {emp_name}
+                                </div>
+                              </td>
+                              <td>
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {emp_phone1}
+                                </div>
+                              </td>
+                              <td>
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {emp_code}
+                                </div>
+                              </td>
+                              {/* <td><div className="d-flex align-items-center justify-content-center"></div></td> */}
+                              <td>
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {services ? services[0] : ""}
+                                </div>
+                              </td>
+                              <td>
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {defaultsitecode}
+                                </div>
+                              </td>
+                              <td>
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {site_code}
+                                </div>
+                              </td>
+                              <td
+                                className="position-relative"
+                                ref={(node) => {
+                                  this.node = node;
+                                }}
+                                onClick={() => this.handleClick(index)}
+                              >
+                                {currentIndex === index ? (
+                                  <>
+                                    <div className="d-flex align-items-center justify-content-center horizontal-more-active">
+                                      <i className="icon-more"></i>
                                     </div>
-                                  )}
-                                </td>
-                              </tr>
-                            );
-                          }
-                        )
-                      : ""}
+                                    <div className="option card">
+                                      <div
+                                        className="d-flex align-items-center fs-14 pt-3"
+                                        onClick={() =>
+                                          this.props.history.push(
+                                            `/admin/staff/${id}/staffDetails`
+                                          )
+                                        }
+                                      >
+                                        <span className="icon-eye-grey px-3"></span>{" "}
+                                        View{" "}
+                                      </div>
+                                      <div
+                                        className="d-flex align-items-center fs-14"
+                                        onClick={() =>
+                                          this.props.history.push(
+                                            `/admin/staffPlus/${id}/editStaff`
+                                          )
+                                        }
+                                      >
+                                        <span className="icon-edit px-3"></span>{" "}
+                                        Edit{" "}
+                                      </div>
+                                      <div
+                                        className="d-flex align-items-center fs-14 pb-3"
+                                        onClick={() =>
+                                          this.handleDeleteStaff(id)
+                                        }
+                                      >
+                                        <span className="icon-delete px-3"></span>{" "}
+                                        Delete{" "}
+                                      </div>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <div className="d-flex align-items-center justify-content-center horizontal-more">
+                                    <i className="icon-more text-grey"></i>
+                                  </div>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        }
+                      )
+                    ) : (
+                      ""
+                    )}
                   </TableWrapper>
                   <div className="palette">
                     <div className="color-detail">
