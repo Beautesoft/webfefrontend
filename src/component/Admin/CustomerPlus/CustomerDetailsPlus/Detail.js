@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./style.scss";
-import { Appointments, TreatmentHistory, PurchaseHistory, PersonalDetails, Favourites } from './Details'
+import { Appointments, TreatmentHistory, PurchaseHistory, PersonalDetails, Favourites, MGMDetails, Dianosis } from './Details'
 import classnames from 'classnames';
 import {
     Nav,
@@ -77,6 +77,23 @@ export class Details extends Component {
                                         </NavLink>
                             </NavItem>
 
+                            <NavItem>
+                                <NavLink
+                                    className={classnames({ active: this.state.activeTab === '6' })}
+                                    onClick={() => { this.toggle('6'); }}
+                                >
+                                    MGM Details
+                                        </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink
+                                    className={classnames({ active: this.state.activeTab === '7' })}
+                                    onClick={() => { this.toggle('7'); }}
+                                >
+                                    Diagnosis
+                                        </NavLink>
+                            </NavItem>
+
                         </Nav>
                     </div>
                     <TabContent activeTab={this.state.activeTab}>
@@ -105,6 +122,16 @@ export class Details extends Component {
                         <TabPane tabId="5">
                             {this.state.activeTab === "5" ?
                                 <Favourites />
+                                : ""}
+                        </TabPane>
+                        <TabPane tabId="6">
+                            {this.state.activeTab === "6" ?
+                                <MGMDetails />
+                                : ""}
+                        </TabPane>
+                        <TabPane tabId="7">
+                            {this.state.activeTab === "7" ?
+                                <Dianosis />
                                 : ""}
                         </TabPane>
                     </TabContent>

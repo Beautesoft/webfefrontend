@@ -320,6 +320,18 @@ export const staff = {
     },
     baseURL: 'token',
   },
+  getStaffPlus: {
+    url: 'staffplus/',
+    method: 'get',
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: 'token',
+  },
   getStaffAvailability: {
     url: 'shiftdatewise/',
     method: 'get',

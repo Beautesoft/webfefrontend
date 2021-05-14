@@ -220,6 +220,35 @@ export class ListStaffPlusClass extends React.Component {
     } = this.state;
     return (
       <div className="container-fluid">
+        <div className="row mb-4">
+          <div className="col-md-4 col-lg-2 mb-2">
+            <Link to="/admin/staffplus/schedule">
+              <NormalButton
+                normal={true}
+                className="col-12 fs-15 float-right"
+                label="Schedule"
+              />
+            </Link>
+          </div>
+          <div className="col-md-4 col-lg-2 mb-2">
+            <Link to="/admin/staffplus/authorization">
+              <NormalButton
+                normal={true}
+                className="col-12 fs-15 float-right"
+                label="Authorization"
+              />
+            </Link>
+          </div>
+          <div className="col-md-4 col-lg-2 mb-2">
+            <Link to="/admin/staffplus/skills">
+              <NormalButton
+                normal={true}
+                className="col-12 fs-15 float-right"
+                label="Skill Listing"
+              />
+            </Link>
+          </div>
+        </div>
         <div className="row">
           <div className="col-sm-12 col-lg-3 mb-4">
             <div className="col-md-4">
@@ -274,20 +303,12 @@ export class ListStaffPlusClass extends React.Component {
               </div>
               <div className="col-md-8">
                 <div className="d-flex justify-content-between">
-                  <div className="input-container">
+                  <div className="w-100 col-8">
                     <InputSearch
                       className=""
                       placeholder="Search Staff"
                       onChange={this.handleChange}
                     />
-                  </div><div className="w-100 col-3 ml-1 p-0">
-                    <Link to="/admin/staffplus/schedule">
-                      <NormalButton
-                        mainbg={true}
-                        className="col-12 fs-15 float-right"
-                        label="Schedule"
-                      />
-                    </Link>
                   </div>
                   <div className="w-100 col-4 ml-1 p-0">
                     <NormalButton
@@ -299,7 +320,6 @@ export class ListStaffPlusClass extends React.Component {
                       }
                     />
                   </div>
-                  
                 </div>
               </div>
             </div>

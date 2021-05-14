@@ -1,81 +1,82 @@
-@import 'assets/scss/abstracts/abstracts-dir.scss';
+@import "assets/scss/abstracts/abstracts-dir.scss";
 
-  .make-payment {
-    .btn {
-      max-width: 198px;
-      height: 50px;
-      margin: auto;
+.make-payment {
+  .btn {
+    max-width: 198px;
+    height: 50px;
+    margin: auto;
+  }
+}
+.make-payment-section {
+  background: $white;
+  padding: 15px;
+  min-height: 489px;
+  h4 {
+    font-family: Muli-SemiBold;
+    font-size: fontSize(20px);
+  }
+  .payment,
+  .subtotal {
+    border: 1px solid #ffb26b;
+  }
+  .payment {
+    height: 358px;
+    overflow-y: auto;
+    .credit-card {
+      width: 560px;
+      z-index: 9;
+      position: relative;
     }
   }
-  .make-payment-section {
-    background: $white;
-    padding: 15px;
-    min-height: 489px;
-    h4 {
-      font-family: Muli-SemiBold;
-      font-size: fontSize(20px);
-    }
-    .payment, .subtotal{
-      border: 1px solid #ffb26b;
-    }
-    .payment{
-      height: 358px;
-      overflow-y: auto;
-      .credit-card{
-        width: 560px;
-        z-index: 9;
-        position: relative;
-      }
-    }
-  }
-  .radio-item {
-    display: inline-block;
-    position: relative;
-    padding: 0 6px;
-    margin: 10px 0 0;
-  }
-  
-  .radio-item input[type='radio'] {
-    display: none;
-  }
-  
-  .radio-item label {
-    color: #666;
-    font-weight: normal;
-  }
-  
-  .radio-item label:before {
-    content: " ";
-    display: inline-block;
-    position: relative;
-    top: 5px;
-    margin: 0 5px 0 0;
-    width: 20px;
-    height: 20px;
-    border-radius: 11px;
-    border: 2px solid #ffa500;
-    background-color: transparent;
-  }
-  
-  .radio-item input[type=radio]:checked + label:after {
-    border-radius: 11px;
-    width: 12px;
-    height: 12px;
-    position: absolute;
-    top: 9px;
-    left: 10px;
-    content: " ";
-    display: block;
-    background: #ffa500;
-  }
+}
+.radio-item {
+  display: inline-block;
+  position: relative;
+  padding: 0 6px;
+  margin: 10px 0 0;
+}
 
-  .input-group {
-    .select .select-icon {
-      top: 16px;
-    }
+.radio-item input[type="radio"] {
+  display: none;
+}
+
+.radio-item label {
+  color: #666;
+  font-weight: normal;
+}
+
+.radio-item label:before {
+  content: " ";
+  display: inline-block;
+  position: relative;
+  top: 5px;
+  margin: 0 5px 0 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 11px;
+  border: 2px solid #ffa500;
+  background-color: transparent;
+}
+
+.radio-item input[type="radio"]:checked + label:after {
+  border-radius: 11px;
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  top: 9px;
+  left: 10px;
+  content: " ";
+  display: block;
+  background: #ffa500;
+}
+
+.input-group {
+  .select .select-icon {
+    top: 16px;
   }
-  
-.transaction-discount-update{
+}
+
+.transaction-discount-update {
   .title {
     font-weight: 700;
   }
@@ -97,52 +98,52 @@
   }
 }
 
-.treatment-done{
-  .staff-listing{
-    .staff-list{
+.treatment-done {
+  .staff-listing {
+    .staff-list {
       // width: 62px;
       // height: 62px;
-      img{
+      img {
         width: 62px;
         height: 62px;
       }
     }
   }
-  .discount{
-    textarea{
+  .discount {
+    textarea {
       width: 100%;
-      background: #F9F9F9;
+      background: #f9f9f9;
       border: none;
     }
-    .apply{
+    .apply {
       justify-content: center;
-      .confirm{
+      .confirm {
         width: 100px;
         height: 30px;
         padding: 0px;
-        background: #09D71E;
-        color: #F9F9F9;
-        &:hover{
-          border: 1px solid #09D71E;
-          background: #F9F9F9;
-          color: #09D71E;
+        background: #09d71e;
+        color: #f9f9f9;
+        &:hover {
+          border: 1px solid #09d71e;
+          background: #f9f9f9;
+          color: #09d71e;
         }
       }
-      .reset{
+      .reset {
         width: 100px;
         height: 30px;
         padding: 0px;
         background: #ffa500;
-        color: #F9F9F9;
-        &:hover{
+        color: #f9f9f9;
+        &:hover {
           border: 1px solid #ffa500;
-          background: #F9F9F9;
+          background: #f9f9f9;
           color: #ffa500;
         }
       }
     }
   }
-  .input-group{
+  .input-group {
     .special {
       background: #fbfe8f;
     }
@@ -154,7 +155,7 @@
 
 .customer-select {
   .modal-body {
-    .confirm{
+    .confirm {
       width: 100px;
       height: 30px;
       padding: 0px;
@@ -164,11 +165,20 @@
 
 .retail-price-modal {
   .modal-body {
-    .addtocart{
-      button{
+    .addtocart {
+      button {
         height: 30px;
         padding: 0px;
       }
     }
   }
+}
+
+.borderless td, .borderless th {
+  border: none;
+}
+
+.accordion-menu:hover {
+  background-color: #ccc;
+  cursor:pointer
 }

@@ -84,6 +84,27 @@ export const getStaff = (id) => (dispatch, getState, { api, Toast }) => {
   });
 };
 
+// get staffplus  action
+export const getStaffPlus = (id) => (dispatch, getState, { api, Toast }) => {
+  return new Promise((resolve, reject) => {
+    staff.getStaffPlus.addQuery = { key: 'id', payload: id };
+    api({ ...staff.getStaffPlus })
+      .then((response) => {
+        resolve(response)
+        let { message, status, data } =  response
+        if(status===200){
+          dispatch({ type: StaffActionType.getStaffDetail, payload: data });
+          // Toast({ type: 'success', message })
+        } else {
+          reject(Toast({ type: 'error', message }));
+        }
+      })
+      .catch(({ message }) => {
+        reject(Toast({ type: 'error', message }));
+      });
+  });
+};
+
 // get staff availability action
 export const getStaffAvailability = (id) => (dispatch, getState, { api, Toast }) => {
   return new Promise((resolve, reject) => {

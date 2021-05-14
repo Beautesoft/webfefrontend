@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
 import { getCommonApi, updateForm, commonDeleteApi, commonPatchApi } from "redux/actions/common"
 import SimpleReactValidator from 'simple-react-validator';
-import { Treatment, Payment, EditCart, TreatmentDone } from './cart/index';
+import { Treatment, Payment, EditCart, TreatmentDone , ProductDetailsPopup , ItemStatusPopup , StaffSelectionPopup } from './cart/index';
 import closeIcon from 'assets/images/close.png';
 import add from 'assets/images/add.png';
 import minus from 'assets/images/minus.png';
@@ -456,7 +456,7 @@ export class CartNewClass extends Component {
                 <NormalModal className={"payment-modal"} style={{ minWidth: "1000px" }} modal={isOpenPayment} handleModal={this.handleDialog}>
                     <img onClick={this.handleDialog} className="close cursor-pointer" src={closeIcon} alt="" />
                     {console.log("sfgdfjhfghjfjgkjk", cartData)}
-                    <Payment id={basicApptDetail.custId} cartId={cartList.length > 0 ? cartList[0].cart_id : ""} handleModal={this.handleDialog}></Payment>
+                    <ItemStatusPopup id={basicApptDetail.custId} cartId={cartList.length > 0 ? cartList[0].cart_id : ""} handleModal={this.handleDialog}></ItemStatusPopup>
                 </NormalModal>
 
                 <NormalModal className={"edit-cart-modal"} style={{ minWidth: "1000px" }} modal={isOpenEditcart} handleModal={this.handleDialog}>

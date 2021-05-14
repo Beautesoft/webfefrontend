@@ -8,6 +8,8 @@ import { updateForm } from "redux/actions/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import _ from "lodash";
+import { Navigation } from "react-minimal-side-navigation";
+import { Settings } from "./settings";
 
 export class ListCustomerPlusClass extends React.Component {
   state = {
@@ -22,6 +24,7 @@ export class ListCustomerPlusClass extends React.Component {
       { label: "" },
     ],
     customerList: [],
+    currentMenu: "/",
     meta: {},
     active: false,
     currentIndex: -1,
@@ -108,214 +111,257 @@ export class ListCustomerPlusClass extends React.Component {
     this.props.history.push(`/admin/appointment`);
   };
 
+  handleMenuSelection = (itemId) => {
+    this.setState({ currentMenu: itemId });
+  };
+
   render() {
     let {
       headerDetails,
       customerList,
       meta,
       currentIndex,
+      currentMenu,
       active,
     } = this.state;
     return (
-      <>
-        <div className="customer-list container-fluid">
-          <div className="row align-items-center">
-            <div className="col-md-4">
-              <h3 className="head-label">Customer Plus</h3>
-            </div>
-            <div className="col-md-8">
-              <div className="d-flex">
-                <div className="w-100 mr-5">
-                  <InputSearch
-                    className=""
-                    placeholder="Search Customer"
-                    onChange={this.handlesearch}
-                  />
-                </div>
-                <div className="w-100 col-6 p-0">
-                  <NormalButton
-                    mainbg={true}
-                    className="col-12 fs-15 float-right"
-                    label="Add Customer"
-                    onClick={() =>
-                      this.props.history.push("/admin/customerplus/add")
-                    }
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="tab-table-content">
-            <div className="py-4">
-              <div className="table-container">
-                <TableWrapper
-                  headerDetails={headerDetails}
-                  queryHandler={this.handlePagination}
-                  pageMeta={meta}
-                  showFilterColumn={true}
-                  parentHeaderChange={(value) =>
-                    this.setState(() => (headerDetails = value))
-                  }
-                >
-                  {customerList
-                    ? customerList.map((item, index) => {
-                        let {
-                          id,
-                          cust_code,
-                          cust_refer,
-                          cust_name,
-                          cust_phone2,
-                          cust_dob,
-                        } = item;
-                        console.log(headerDetails[0]);
-                        return (
-                          <tr key={index}>
-                            <td
-                              className={
-                                headerDetails[0].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_code}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[1].enabled ?? true? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_refer}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[2].enabled ?? true? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {""}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[3].enabled ?? true? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_name}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[4].enabled ?? true? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_phone2}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[5].enabled ?? true? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_dob}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[6].enabled ?? true? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {"123"}
-                              </div>
-                            </td>
-                            <td
-                              className="position-relative"
-                              ref={(node) => {
-                                this.node = node;
-                              }}
-                              onClick={() => this.handleClick(index)}
-                            >
-                              {currentIndex === index ? (
-                                <>
-                                  <div className="d-flex align-items-center justify-content-center horizontal-more-active">
-                                    <i className="icon-more"></i>
-                                  </div>
-                                  <div className="option card">
-                                    <div
-                                      className="d-flex align-items-center fs-16 pt-3"
-                                      onClick={() =>
-                                        this.props.history.push(
-                                          `/admin/customerplus/${id}/details`
-                                        )
-                                      }
-                                    >
-                                      <span className="icon-eye-grey px-3"></span>{" "}
-                                      View{" "}
-                                    </div>
-                                    <div className="d-flex align-items-center fs-16">
-                                      <span className="icon-schedule px-3"></span>{" "}
-                                      Reschedule Appointment{" "}
-                                    </div>
-                                    <div
-                                      className="d-flex align-items-center fs-16"
-                                      onClick={() => this.bookAppointment(item)}
-                                    >
-                                      <span className="px-2">
-                                        <svg
-                                          width="31"
-                                          height="30"
-                                          viewBox="0 0 31 30"
-                                          fill="none"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                          <rect
-                                            width="31"
-                                            height="30"
-                                            fill="#F9F9F9"
-                                          />
-                                          <path
-                                            d="M15 8V22"
-                                            stroke="#848484"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                          />
-                                          <path
-                                            d="M8 15H22"
-                                            stroke="#848484"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                          />
-                                        </svg>
-                                      </span>
-                                      Book Appointment
-                                    </div>
-                                    <div className="d-flex align-items-center fs-16 pb-3">
-                                      <span className="icon-cancel-schedule px-3"></span>{" "}
-                                      Cancel Appointment{" "}
-                                    </div>
-                                  </div>
-                                </>
-                              ) : (
-                                <div className="d-flex align-items-center justify-content-center horizontal-more">
-                                  <i className="icon-more"></i>
-                                </div>
-                              )}
-                            </td>
-                          </tr>
-                        );
-                      })
-                    : ""}
-                </TableWrapper>
-              </div>
-            </div>
-          </div>
+      <div className="customer-list container-fluid">
+        <div className="col-md-12 mb-4">
+          <h3 className="head-label">Customer Plus</h3>
         </div>
-      </>
+        <div className="row">
+          <div className="col-md-12 col-lg-2 mb-4">
+            <Navigation
+              activeItemId={currentMenu}
+              onSelect={({ itemId }) => this.handleMenuSelection(itemId)}
+              items={[
+                {
+                  title: "List",
+                  itemId: "/",
+                },
+                {
+                  title: "Settings",
+                  itemId: "/settings",
+                },
+              ]}
+            />
+          </div>
+          {currentMenu == "/" ? (
+            <div className="col">
+              <div className="row align-items-center">
+                <div className="col">
+                  <div className="d-flex">
+                    <div className="w-100 mr-5">
+                      <InputSearch
+                        className=""
+                        placeholder="Search Customer"
+                        onChange={this.handlesearch}
+                      />
+                    </div>
+                    <div className="w-100 col-6 p-0">
+                      <NormalButton
+                        mainbg={true}
+                        className="col-12 fs-15 float-right"
+                        label="Add Customer"
+                        onClick={() =>
+                          this.props.history.push("/admin/customerplus/add")
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="tab-table-content">
+                <div className="py-4">
+                  <div className="table-container">
+                    <TableWrapper
+                      headerDetails={headerDetails}
+                      queryHandler={this.handlePagination}
+                      pageMeta={meta}
+                      showFilterColumn={true}
+                      parentHeaderChange={(value) =>
+                        this.setState(() => (headerDetails = value))
+                      }
+                    >
+                      {customerList
+                        ? customerList.map((item, index) => {
+                            let {
+                              id,
+                              cust_code,
+                              cust_refer,
+                              cust_name,
+                              cust_phone2,
+                              cust_dob,
+                            } = item;
+                            console.log(headerDetails[0]);
+                            return (
+                              <tr key={index}>
+                                <td
+                                  className={
+                                    headerDetails[0].enabled ?? true
+                                      ? ""
+                                      : "d-none"
+                                  }
+                                >
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    {cust_code}
+                                  </div>
+                                </td>
+                                <td
+                                  className={
+                                    headerDetails[1].enabled ?? true
+                                      ? ""
+                                      : "d-none"
+                                  }
+                                >
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    {cust_refer}
+                                  </div>
+                                </td>
+                                <td
+                                  className={
+                                    headerDetails[2].enabled ?? true
+                                      ? ""
+                                      : "d-none"
+                                  }
+                                >
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    {""}
+                                  </div>
+                                </td>
+                                <td
+                                  className={
+                                    headerDetails[3].enabled ?? true
+                                      ? ""
+                                      : "d-none"
+                                  }
+                                >
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    {cust_name}
+                                  </div>
+                                </td>
+                                <td
+                                  className={
+                                    headerDetails[4].enabled ?? true
+                                      ? ""
+                                      : "d-none"
+                                  }
+                                >
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    {cust_phone2}
+                                  </div>
+                                </td>
+                                <td
+                                  className={
+                                    headerDetails[5].enabled ?? true
+                                      ? ""
+                                      : "d-none"
+                                  }
+                                >
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    {cust_dob}
+                                  </div>
+                                </td>
+                                <td
+                                  className={
+                                    headerDetails[6].enabled ?? true
+                                      ? ""
+                                      : "d-none"
+                                  }
+                                >
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    {"123"}
+                                  </div>
+                                </td>
+                                <td
+                                  className="position-relative"
+                                  ref={(node) => {
+                                    this.node = node;
+                                  }}
+                                  onClick={() => this.handleClick(index)}
+                                >
+                                  {currentIndex === index ? (
+                                    <>
+                                      <div className="d-flex align-items-center justify-content-center horizontal-more-active">
+                                        <i className="icon-more"></i>
+                                      </div>
+                                      <div className="option card">
+                                        <div
+                                          className="d-flex align-items-center fs-16 pt-3"
+                                          onClick={() =>
+                                            this.props.history.push(
+                                              `/admin/customerplus/${id}/details`
+                                            )
+                                          }
+                                        >
+                                          <span className="icon-eye-grey px-3"></span>{" "}
+                                          View{" "}
+                                        </div>
+                                        <div className="d-flex align-items-center fs-16">
+                                          <span className="icon-schedule px-3"></span>{" "}
+                                          Reschedule Appointment{" "}
+                                        </div>
+                                        <div
+                                          className="d-flex align-items-center fs-16"
+                                          onClick={() =>
+                                            this.bookAppointment(item)
+                                          }
+                                        >
+                                          <span className="px-2">
+                                            <svg
+                                              width="31"
+                                              height="30"
+                                              viewBox="0 0 31 30"
+                                              fill="none"
+                                              xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                              <rect
+                                                width="31"
+                                                height="30"
+                                                fill="#F9F9F9"
+                                              />
+                                              <path
+                                                d="M15 8V22"
+                                                stroke="#848484"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                              />
+                                              <path
+                                                d="M8 15H22"
+                                                stroke="#848484"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                              />
+                                            </svg>
+                                          </span>
+                                          Book Appointment
+                                        </div>
+                                        <div className="d-flex align-items-center fs-16 pb-3">
+                                          <span className="icon-cancel-schedule px-3"></span>{" "}
+                                          Cancel Appointment{" "}
+                                        </div>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <div className="d-flex align-items-center justify-content-center horizontal-more">
+                                      <i className="icon-more"></i>
+                                    </div>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })
+                        : ""}
+                    </TableWrapper>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <Settings />
+          )}
+        </div>
+      </div>
     );
   }
 }

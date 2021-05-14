@@ -1,4 +1,9 @@
-export { Treatment } from './treatments';
-export { Payment } from './payment';
-export { EditCart } from './editCart';
-export { TreatmentDone } from './treatmentDone';
+export { Treatment } from "./treatments";
+export { Payment } from "./payment";
+export { EditCart } from "./editCart";
+export { TreatmentDone } from "./treatmentDone";
+export { CoursePopup } from "./CoursePopup";
+export { ItemDiscountPopup } from "./ItemDiscountPopup";
+export { ProductDetailsPopup } from "./productDetailsPopup";
+export { ItemStatusPopup } from "./itemStatusPopup"
+export { StaffSelectionPopup } from "./staffSelectionPopup"

@@ -166,7 +166,7 @@ export class TableWrapper extends Component {
             overFlow ? "table-responsive" : ""
           } ${className}`}
         >
-          <table className="table table-striped rounded">
+          <table className={"table table-striped rounded " + className}>
             <thead>
               <tr>
                 {headerDetails.map(

@@ -83,7 +83,7 @@ export class CustomerDetailsPlusClass extends Component {
         let { id, cust_name } = customerDetail;
         let { isOpenTreatmentDone, formFields, isActiveTab } = this.state;
         return (
-            <div className="view-detail container">
+            <div className="view-detail container-fluid">
                 <div className="row pb-md-4">
                     <div className="col-md-6 head-label-nav">
                         <p className="category" onClick={() => history.push('/admin/customerplus')}>Customer Plus</p>
