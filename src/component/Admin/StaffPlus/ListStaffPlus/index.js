@@ -189,7 +189,7 @@ export class ListStaffPlusClass extends React.Component {
 
   // delete api call for staff
   handleDeleteStaff = (id) => {
-    this.props.deleteStaff(`${id}/`).then((res) => {});
+    this.props.deleteStaff(`${id}/`).then((res) => this.queryHandler({}));
   };
 
   render() {
