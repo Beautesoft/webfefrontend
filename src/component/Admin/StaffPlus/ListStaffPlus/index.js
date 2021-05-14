@@ -3,7 +3,7 @@ import { NormalButton } from "component/common";
 import { InputSearch, TableWrapper } from "component/common";
 import "./style.scss";
 import { getJobtitle, getCommonApi } from "redux/actions/common";
-import { getStaffPlus, deleteStaff } from "redux/actions/staff";
+import { getStaffPlus, deleteStaffPlus } from "redux/actions/staffPlus";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import _ from "lodash";
@@ -134,9 +134,7 @@ export class ListStaffPlusClass extends React.Component {
       .getStaffPlus(
         `?page=${page}&limit=${limit}${
           this.state.filter == "" ? "" : `&${this.state.filter}`
-        }${
-          search == "" ? "" : `&search=${search}`
-        }`
+        }${search == "" ? "" : `&search=${search}`}`
       )
       .then((res) => {
         // this.props.getStaffPlus(`?page=${page}&limit=${limit}&search=${search}`).then((res) => {
@@ -187,17 +185,6 @@ export class ListStaffPlusClass extends React.Component {
     await this.setState({
       jobOption,
     });
-  };
-
-  // skills api call
-  getSkills = (services) => {
-    console.log(skills, "sdfoiuyujf");
-    let skills = [];
-    for (let key of services) {
-      skills.push(key.Course);
-    }
-    console.log(skills, "sdfoiuyujf");
-    return String(skills);
   };
 
   // delete api call for staff
@@ -483,7 +470,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getStaffPlus,
-      deleteStaff,
+      deleteStaff: deleteStaffPlus,
       getJobtitle,
       getCommonApi,
     },

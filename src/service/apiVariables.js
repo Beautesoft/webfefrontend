@@ -278,6 +278,62 @@ export const saloon = {
 };
 
 
+export const staffPlus = {
+  addStaff: {
+    api: 'staffPlus/',
+    method: 'post',
+    baseURL: 'normal',
+  },
+  updateStaff: {
+    url: 'staffPlus/',
+    method: 'put',
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: 'token',
+  },
+  deleteStaff: {
+    url: 'staffPlus/',
+    method: 'delete',
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: 'token',
+  },
+  getStaff: {
+    url: 'staffPlus/',
+    method: 'get',
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: 'token',
+  },
+  getStaffPlus: {
+    url: 'staffPlus/',
+    method: 'get',
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: 'token',
+  },
+};
+
 export const staff = {
   addStaff: {
     api: 'staffs/',
