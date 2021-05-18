@@ -27,10 +27,10 @@ export class NormalInput extends Component {
           name={name}
           type={type}
           disabled={disabled}
-          value={value}
+          value={value == null ? "" : value}
           min={0}
           placeholder={placeholder}
-          autocomplete="off"
+          autoComplete="off"
           onFocus={onFocus}
           onClick={onClick ? onClick:()=>{}}
           onChange={e => {

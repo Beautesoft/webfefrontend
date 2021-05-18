@@ -1,21 +1,21 @@
-import { generateQuery } from './helperFunctions';
-import { getStaffBranchwise } from 'redux/actions/staff';
+import { generateQuery } from "./helperFunctions";
+import { getStaffBranchwise } from "redux/actions/staff";
 
 export const authApi = {
   login: {
-    api: 'login',
-    method: 'post',
-    baseURL: 'normal',
+    api: "login",
+    method: "post",
+    baseURL: "normal",
   },
   logout: {
-    api: 'logout',
-    method: 'post',
-    baseURL: 'token',
+    api: "logout",
+    method: "post",
+    baseURL: "token",
   },
   getSaloon: {
-    api: 'branchlogin/',
-    method: 'get',
-    baseURL: 'nomal',
+    api: "branchlogin/",
+    method: "get",
+    baseURL: "nomal",
   },
   // login: {
   //   api: 'user/login',
@@ -23,38 +23,38 @@ export const authApi = {
   //   baseURL: 'normal',
   // },
   forgotPassword: {
-    api: 'otp/',
-    method: 'post',
-    baseURL: 'normal',
+    api: "otp/",
+    method: "post",
+    baseURL: "normal",
   },
   verifyOtp: {
-    url: 'otpvalidate/',
+    url: "otpvalidate/",
     id: "",
-    method: 'post',
+    method: "post",
     get api() {
       return this.url + this.id;
     },
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'normal',
+    baseURL: "normal",
   },
   resetPassword: {
-    url: 'passwordreset/',
-    method: 'post',
-    id:"",
+    url: "passwordreset/",
+    method: "post",
+    id: "",
     get api() {
       return this.url + this.id;
     },
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'normal',
+    baseURL: "normal",
   },
   getTokenDetails: {
-    api: 'userlist',
-    method: 'get',
-    baseURL: 'token',
+    api: "userlist",
+    method: "get",
+    baseURL: "token",
   },
   // changePassword: {
   //   url: 'user/reset_password',
@@ -74,18 +74,18 @@ export const authApi = {
 
 export const appointment = {
   addAppointment: {
-    api: 'appointment/',
-    method: 'post',
-    baseURL: 'token',
+    api: "appointment/",
+    method: "post",
+    baseURL: "token",
   },
   addTreatment: {
-    api: 'treatmentdetails/',
-    method: 'post',
-    baseURL: 'token',
+    api: "treatmentdetails/",
+    method: "post",
+    baseURL: "token",
   },
   addBooking: {
-    url: 'treatment/',
-    method: 'patch',
+    url: "treatment/",
+    method: "patch",
     id: null,
     get api() {
       return this.url + this.id;
@@ -93,11 +93,11 @@ export const appointment = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   updateTreatment: {
-    url: 'itemcart/',
-    method: 'put',
+    url: "itemcart/",
+    method: "put",
     id: null,
     get api() {
       return this.url + this.id;
@@ -105,11 +105,11 @@ export const appointment = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   holdTreatment: {
-    url: 'itemcart/',
-    method: 'patch',
+    url: "itemcart/",
+    method: "patch",
     id: null,
     get api() {
       return this.url + this.id;
@@ -117,12 +117,12 @@ export const appointment = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
 
   deleteTreatment: {
-    url: 'itemcart/',
-    method: 'delete',
+    url: "itemcart/",
+    method: "delete",
     id: null,
     get api() {
       return this.url + this.id;
@@ -130,12 +130,12 @@ export const appointment = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
 
   getTreatment: {
-    url: 'itemdept/',
-    method: 'get',
+    url: "itemdept/",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -143,11 +143,11 @@ export const appointment = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getTreatmentDetailList: {
-    url: 'stocklist/',
-    method: 'get',
+    url: "stocklist/",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -155,11 +155,11 @@ export const appointment = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getTreatmentDetail: {
-    url: 'treatmentstock/',
-    method: 'get',
+    url: "treatmentstock/",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -167,11 +167,11 @@ export const appointment = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getOutletDetail: {
-    url: 'treatmentdetails/',
-    method: 'get',
+    url: "treatmentdetails/",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -179,12 +179,12 @@ export const appointment = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
 
   getCartList: {
-    url: 'itemcart/',
-    method: 'get',
+    url: "itemcart/",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -192,12 +192,12 @@ export const appointment = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
 
   updateAppointment: {
-    url: 'appointment/',
-    method: 'put',
+    url: "appointment/",
+    method: "put",
     id: null,
     get api() {
       return this.url + this.id;
@@ -205,11 +205,11 @@ export const appointment = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   deleteAppointment: {
-    url: 'appointment/',
-    method: 'delete',
+    url: "appointment/",
+    method: "delete",
     id: null,
     get api() {
       return this.url + this.id;
@@ -217,11 +217,11 @@ export const appointment = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getAppointment: {
-    url: 'appointment/',
-    method: 'get',
+    url: "appointment/",
+    method: "get",
     id: "",
     get api() {
       return this.url + this.id;
@@ -229,19 +229,19 @@ export const appointment = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
-  }
+    baseURL: "token",
+  },
 };
 
 export const saloon = {
   addSaloon: {
-    api: 'salon/',
-    method: 'post',
-    baseURL: 'token',
+    api: "salon/",
+    method: "post",
+    baseURL: "token",
   },
   updateSaloon: {
-    url: 'salon/',
-    method: 'put',
+    url: "salon/",
+    method: "put",
     id: null,
     get api() {
       return this.url + this.id;
@@ -249,11 +249,11 @@ export const saloon = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   deleteSaloon: {
-    url: 'salon/',
-    method: 'delete',
+    url: "salon/",
+    method: "delete",
     id: null,
     get api() {
       return this.url + this.id;
@@ -261,11 +261,11 @@ export const saloon = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getSaloon: {
-    url: 'salon/',
-    method: 'get',
+    url: "salon/",
+    method: "get",
     id: "",
     get api() {
       return this.url + this.id;
@@ -273,20 +273,19 @@ export const saloon = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
-  }
+    baseURL: "token",
+  },
 };
-
 
 export const staffPlus = {
   addStaff: {
-    api: 'staffPlus/',
-    method: 'post',
-    baseURL: 'normal',
+    api: "staffPlus/",
+    method: "post",
+    baseURL: "normal",
   },
   updateStaff: {
-    url: 'staffPlus/',
-    method: 'put',
+    url: "staffPlus/",
+    method: "put",
     id: null,
     get api() {
       return this.url + this.id;
@@ -294,11 +293,11 @@ export const staffPlus = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   deleteStaff: {
-    url: 'staffPlus/',
-    method: 'delete',
+    url: "staffPlus/",
+    method: "delete",
     id: null,
     get api() {
       return this.url + this.id;
@@ -306,11 +305,35 @@ export const staffPlus = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
+  },
+  getWorkSchedule: {
+    url: "/WorkSchedule/",
+    method: "get",
+    id: null,
+    get api() {
+      return "staffPlus/" + this.id + this.url;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  updateWorkSchedule: {
+    url: "/WorkSchedule/",
+    method: "put",
+    id: null,
+    get api() {
+      return "staffPlus/" + this.id + this.url;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
   },
   getStaff: {
-    url: 'staffPlus/',
-    method: 'get',
+    url: "staffPlus/",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -318,11 +341,11 @@ export const staffPlus = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getStaffPlus: {
-    url: 'staffPlus/',
-    method: 'get',
+    url: "staffPlus/",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -330,19 +353,19 @@ export const staffPlus = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
 };
 
 export const staff = {
   addStaff: {
-    api: 'staffs/',
-    method: 'post',
-    baseURL: 'normal',
+    api: "staffs/",
+    method: "post",
+    baseURL: "normal",
   },
   updateStaff: {
-    url: 'staffs/',
-    method: 'put',
+    url: "staffs/",
+    method: "put",
     id: null,
     get api() {
       return this.url + this.id;
@@ -350,11 +373,11 @@ export const staff = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   deleteStaff: {
-    url: 'staffs/',
-    method: 'delete',
+    url: "staffs/",
+    method: "delete",
     id: null,
     get api() {
       return this.url + this.id;
@@ -362,11 +385,11 @@ export const staff = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getStaff: {
-    url: 'staffs/',
-    method: 'get',
+    url: "staffs/",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -374,11 +397,11 @@ export const staff = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getStaffPlus: {
-    url: 'staffPlus/',
-    method: 'get',
+    url: "staffPlus/",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -386,11 +409,11 @@ export const staff = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getStaffAvailability: {
-    url: 'shiftdatewise/',
-    method: 'get',
+    url: "shiftdatewise/",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -398,11 +421,11 @@ export const staff = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getStaffBranchwise: {
-    url: 'employeebranchwise/',
-    method: 'get',
+    url: "employeebranchwise/",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -410,20 +433,19 @@ export const staff = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
 };
 
-
 export const customer = {
   addCustomer: {
-    api: 'customer/',
-    method: 'post',
-    baseURL: 'token',
+    api: "customer/",
+    method: "post",
+    baseURL: "token",
   },
   updateCustomer: {
-    url: 'customer/',
-    method: 'put',
+    url: "customer/",
+    method: "put",
     id: null,
     get api() {
       return this.url + this.id;
@@ -431,11 +453,11 @@ export const customer = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getCustomer: {
-    url: 'customer/',
-    method: 'get',
+    url: "customer/",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -443,25 +465,24 @@ export const customer = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   addHoldItem: {
-    api: 'holditem/issued/',
-    method: 'post',
-    baseURL: 'token',
+    api: "holditem/issued/",
+    method: "post",
+    baseURL: "token",
   },
-}
-
+};
 
 export const services = {
   addServices: {
-    api: 'services/',
-    method: 'post',
-    baseURL: 'token',
+    api: "services/",
+    method: "post",
+    baseURL: "token",
   },
   updateServices: {
-    url: 'services/',
-    method: 'put',
+    url: "services/",
+    method: "put",
     id: null,
     get api() {
       return this.url + this.id;
@@ -469,11 +490,11 @@ export const services = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   deleteServices: {
-    url: 'services/',
-    method: 'delete',
+    url: "services/",
+    method: "delete",
     id: null,
     get api() {
       return this.url + this.id;
@@ -481,11 +502,11 @@ export const services = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getServices: {
-    url: 'services/',
-    method: 'get',
+    url: "services/",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -493,11 +514,11 @@ export const services = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getComboServices: {
-    url: 'comboservices/',
-    method: 'get',
+    url: "comboservices/",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -505,14 +526,14 @@ export const services = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
-  }
-}
+    baseURL: "token",
+  },
+};
 
 export const payment = {
   addPayment: {
-    url: 'postaud/',
-    method: 'post',
+    url: "postaud/",
+    method: "post",
     id: null,
     get api() {
       return this.url + this.id;
@@ -520,11 +541,11 @@ export const payment = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   updatePayment: {
-    url: 'postaud/',
-    method: 'put',
+    url: "postaud/",
+    method: "put",
     id: null,
     get api() {
       return this.url + this.id;
@@ -532,11 +553,11 @@ export const payment = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   deletePayment: {
-    url: 'postaud/',
-    method: 'delete',
+    url: "postaud/",
+    method: "delete",
     id: null,
     get api() {
       return this.url + this.id;
@@ -544,11 +565,11 @@ export const payment = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getPayment: {
-    url: 'postaud/',
-    method: 'get',
+    url: "postaud/",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -556,29 +577,27 @@ export const payment = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
-  }
-}
-
+    baseURL: "token",
+  },
+};
 
 export const Products = {
   addProduct: {
-    api: 'add_product',
-    method: 'post',
-    baseURL: 'normal',
+    api: "add_product",
+    method: "post",
+    baseURL: "normal",
   },
-}
-
+};
 
 export const common = {
   addBranch: {
-    api: 'branch/',
-    method: 'post',
-    baseURL: 'normal',
+    api: "branch/",
+    method: "post",
+    baseURL: "normal",
   },
   updateBranch: {
-    url: 'branch/',
-    method: 'put',
+    url: "branch/",
+    method: "put",
     id: null,
     get api() {
       return this.url + this.id;
@@ -586,11 +605,11 @@ export const common = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   commonPatch: {
-    url: '',
-    method: 'patch',
+    url: "",
+    method: "patch",
     id: null,
     get api() {
       return this.url + this.id;
@@ -598,11 +617,11 @@ export const common = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getCommon: {
-    url: '',
-    method: 'get',
+    url: "",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -610,11 +629,11 @@ export const common = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   addCommon: {
-    url: '',
-    method: 'post',
+    url: "",
+    method: "post",
     id: null,
     get api() {
       return this.url + this.id;
@@ -622,11 +641,11 @@ export const common = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   updateCommon: {
-    url: '',
-    method: 'put',
+    url: "",
+    method: "put",
     id: null,
     get api() {
       return this.url + this.id;
@@ -634,11 +653,11 @@ export const common = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   deleteCommon: {
-    url: '',
-    method: 'delete',
+    url: "",
+    method: "delete",
     id: null,
     get api() {
       return this.url + this.id;
@@ -646,11 +665,11 @@ export const common = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getBranch: {
-    url: 'branch/',
-    method: 'get',
+    url: "branch/",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -658,16 +677,16 @@ export const common = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getJobtitle: {
-    api: 'jobtitle/',
-    method: 'get',
-    baseURL: 'token',
+    api: "jobtitle/",
+    method: "get",
+    baseURL: "token",
   },
   getShift: {
-    url: 'shiftlist',
-    method: 'get',
+    url: "shiftlist",
+    method: "get",
     id: null,
     get api() {
       return this.url + this.id;
@@ -675,21 +694,21 @@ export const common = {
     set addQuery({ key, payload }) {
       this[key] = payload;
     },
-    baseURL: 'token',
+    baseURL: "token",
   },
   getCategory: {
-    api: 'category/',
-    method: 'get',
-    baseURL: 'token',
+    api: "category/",
+    method: "get",
+    baseURL: "token",
   },
   getSkills: {
-    api: 'skills',
-    method: 'get',
-    baseURL: 'token',
+    api: "skills",
+    method: "get",
+    baseURL: "token",
   },
   getCustomer: {
-    api: 'customers/all/',
-    method: 'get',
-    baseURL: 'token',
-  }
-}
+    api: "customers/all/",
+    method: "get",
+    baseURL: "token",
+  },
+};

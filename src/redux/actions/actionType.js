@@ -28,6 +28,11 @@ export const StaffActionType = {
   getStaffDetail: 'GET_STAFF_DETAIL',
 };
 
+export const StaffPlusActionType = {
+  getStaffPlusDetail: 'GET_STAFF_PLUS_DETAIL',
+  getStaffPlusWorkSchedule: 'GET_STAFF_PLUS_WORK_SCHEDULE',
+};
+
 export const SaloonActionType = {
   getSaloonDetail: 'GET_SALOON_DETAIL',
 };

@@ -3,35 +3,87 @@ import "./style.scss";
 
 export class ScheduleTable extends Component {
   render() {
-    let { onChange, data = "1110111", disabled = false} = this.props;
+    let {
+      onChange,
+      data = {
+        monday: null,
+        tuesday: null,
+        wednesday: null,
+        thursday: null,
+        friday: null,
+        saturday: null,
+        sunday: null,
+      },
+      disabled = false,
+    } = this.props;
 
-    const handleOnClick = (index) => {
-      if(disabled) return;
-      data[index] == "1" ? data = data.substr(0,index) + "0" + data.substr(index+1,data.length) : data = data.substr(0,index) + "1" + data.substr(index+1,data.length)
+    const handleOnClick = (name) => {
+      if (disabled) return;
+      data[name] =
+        data[name] == null ? "YES" : data[name] == "YES" ? "NO" : "YES";
       onChange(data);
     };
 
     return (
       <>
         <table className="table">
-          <tr>
-            <th>Mon</th>
-            <th>Tue</th>
-            <th>Wed</th>
-            <th>Thu</th>
-            <th>Fri</th>
-            <th>Sat</th>
-            <th>Sun</th>
-          </tr>
-          <tr>
-            <td onClick={()=>handleOnClick(0)} className={data[0] == "1" ? "on" : "off"}>{data[0] == "1" ? "NS" : "OFF"}</td>
-            <td onClick={()=>handleOnClick(1)} className={data[1] == "1" ? "on" : "off"}>{data[1] == "1" ? "NS" : "OFF"}</td>
-            <td onClick={()=>handleOnClick(2)} className={data[2] == "1" ? "on" : "off"}>{data[2] == "1" ? "NS" : "OFF"}</td>
-            <td onClick={()=>handleOnClick(3)} className={data[3] == "1" ? "on" : "off"}>{data[3] == "1" ? "NS" : "OFF"}</td>
-            <td onClick={()=>handleOnClick(4)} className={data[4] == "1" ? "on" : "off"}>{data[4] == "1" ? "NS" : "OFF"}</td>
-            <td onClick={()=>handleOnClick(5)} className={data[5] == "1" ? "on" : "off"}>{data[5] == "1" ? "NS" : "OFF"}</td>
-            <td onClick={()=>handleOnClick(6)} className={data[6] == "1" ? "on" : "off"}>{data[6] == "1" ? "NS" : "OFF"}</td>
-          </tr>
+          <thead>
+            <tr>
+              <th>Mon</th>
+              <th>Tue</th>
+              <th>Wed</th>
+              <th>Thu</th>
+              <th>Fri</th>
+              <th>Sat</th>
+              <th>Sun</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td
+                onClick={() => handleOnClick("monday")}
+                className={data.monday == "YES" ? "on" : "off"}
+              >
+                {data.monday == "YES" ? "NS" : "OFF"}
+              </td>
+              <td
+                onClick={() => handleOnClick("tuesday")}
+                className={data.tuesday == "YES" ? "on" : "off"}
+              >
+                {data.tuesday == "YES" ? "NS" : "OFF"}
+              </td>
+              <td
+                onClick={() => handleOnClick("wednesday")}
+                className={data.wednesday == "YES" ? "on" : "off"}
+              >
+                {data.wednesday == "YES" ? "NS" : "OFF"}
+              </td>
+              <td
+                onClick={() => handleOnClick("thursday")}
+                className={data.thursday == "YES" ? "on" : "off"}
+              >
+                {data.thursday == "YES" ? "NS" : "OFF"}
+              </td>
+              <td
+                onClick={() => handleOnClick("friday")}
+                className={data.friday == "YES" ? "on" : "off"}
+              >
+                {data.friday == "YES" ? "NS" : "OFF"}
+              </td>
+              <td
+                onClick={() => handleOnClick("saturday")}
+                className={data.saturday == "YES" ? "on" : "off"}
+              >
+                {data.saturday == "YES" ? "NS" : "OFF"}
+              </td>
+              <td
+                onClick={() => handleOnClick("sunday")}
+                className={data.sunday == "YES" ? "on" : "off"}
+              >
+                {data.sunday == "YES" ? "NS" : "OFF"}
+              </td>
+            </tr>
+          </tbody>
         </table>
       </>
     );
