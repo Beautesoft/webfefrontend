@@ -236,7 +236,6 @@ export class AddStaffClass extends Component {
         formData.append("LEVEL_ItmIDid", formFields.LEVEL_ItmIDid);
         formData.append("show_in_sales", formFields.show_in_sales);
         formData.append("show_in_appt", formFields.show_in_appt);
-        formData.append("emp_isactive", formFields.emp_isactive);
         formData.append("show_in_trmt", formFields.show_in_trmt);
         const scheduleData = new FormData();
         scheduleData.append("monday", formFields.work_schedule.monday);
@@ -264,11 +263,11 @@ export class AddStaffClass extends Component {
           console.log(res);
           if (res.status === 201) {
             var res2 = await this.props.updateWorkSchedule(
-              this.props.match.params.id,
+              res.data.id,
               scheduleData
             );
             if (res2.status === 200)
-              this.props.history.push(`/admin/staffPlus`);
+              this.props.history.push(`/admin/staffPlus/${res.data.id}/editStaff`);
           }
         }
       } else {
