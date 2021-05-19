@@ -6,67 +6,44 @@ import {
   NormalInput,
   NormalSelect,
   NormalButton,
-  NormalTextarea
+  NormalTextarea,
 } from "component/common";
-import { displayImg, dateFormat } from "service/helperFunctions";
-import { DragFileUpload } from "../../../common";
-import { createStaff, getStaff, updateStaff } from "redux/actions/staff";
-import {
-  getBranch,
-  getJobtitle,
-  getShift,
-  getSkills,
-  getCommonApi,
-} from "redux/actions/common";
+import { updateEmpInfo, getStaffPlus } from "redux/actions/staffPlus";
+import { getCommonApi } from "redux/actions/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { FormGroup, Label, Input } from "reactstrap";
 
 export class EmployeeInfoClass extends Component {
   state = {
     formFields: {
+      display_name: "",
       emp_name: "",
       emp_phone1: "",
-      emp_joindate: "",
-      defaultSiteCodeid: "",
-      skills_list: "",
       emp_address: "",
       Emp_sexesid: "",
-      shift: [],
-      emp_dob: "",
-      EMP_TYPEid: "",
-      emp_pic: "",
-      is_login: false,
-      pw_password: "",
-      LEVEL_ItmIDid: "",
-      emp_email: "",
-      NRIC: "",
-      username: "",
-      race: "",
-      nationality: "",
-      country: "",
-      maritial_status: "",
-      religion: "",
-      emer_person: "",
-      emer_phone: "",
-      remarks: "",
+      emp_nric: "",
+      emp_race: "",
+      Emp_nationalityid: "",
+      emp_country: "",
+      Emp_maritalid: "",
+      Emp_religionid: "",
+      emp_emer: "",
+      emp_emerno: "",
+      emp_remarks: "",
     },
-    imageArray: [],
-    jobOption: [],
-    shiftOptions: [],
-    locationOption: [],
     sexOption: [
       { value: 1, label: "Male" },
       { value: 2, label: "Female" },
     ],
-    skillsOptions: [],
-    selectedSkills: [],
-    levelList: [],
     raceList: [],
     nationalityList: [],
-    maritialStatusList: [],
+    maritialStatusList: [
+      { value: 1, label: "Single" },
+      { value: 2, label: "Married" },
+    ],
     religionList: [],
     countryList: [],
+    is_loading: false,
   };
 
   componentWillMount() {
@@ -95,124 +72,66 @@ export class EmployeeInfoClass extends Component {
       autoForceUpdate: this,
     });
 
-    // branch option api
-    this.props.getCommonApi("branchlist/").then((res) => {
-      let { locationOption } = this.state;
-      for (let key of res.data) {
-        locationOption.push({ value: key.id, label: key.itemsite_desc });
-      }
-      this.setState({ locationOption });
-    });
-
-    // level option api
-    this.props.getCommonApi("securities/").then((res) => {
-      let { levelList } = this.state;
-      for (let key of res.data) {
-        levelList.push({ value: key.id, label: key.level_name });
-      }
-      this.setState({ levelList });
-    });
-
-    // jobtitle option api
-    this.props.getJobtitle().then(() => {
-      this.getDatafromStore("jobtitle");
-    });
-
-    // get api for staff while
-    if (this.props.match.params.id) {
-      this.getStaffDetail();
-    }
-
-    // skills option api
-    this.props.getSkills().then(() => {
-      this.getDatafromStore("skills");
-    });
+    this.getDetails();
   }
 
-  // get api for staff
-  getStaffDetail = async () => {
-    let { selectedSkills, formFields } = this.state;
-    await this.props.getStaff(`${this.props.match.params.id}/`).then((res) => {
-      this.setDataFromStore();
-    });
+  // get data from apis
+  getDetails = async () => {
+    this.setState({ is_loading: true });
     await this.props
-      .getShift(`?employee=${this.props.match.params.id}`)
-      .then(() => {
-        this.getDatafromStore("shift");
-        let { skillsList } = this.props;
-        // for (let key of skillsList) {
-        //     for (let value of formFields.skills_list) {
-        //         if (key.id === value) {
-        //             selectedSkills.push({ value: key.value, label: key.label })
-        //         }
-        //     }
-        // }
-        this.getDefaultSkills();
+      .getStaffPlus(`${this.props.match.params.id}/`)
+      .then((res) => {
+        this.setDataFromStore();
       });
-    this.setState({ selectedSkills });
-  };
-
-  getDefaultSkills = () => {
-    let { selectedSkills, formFields, skillsOptions } = this.state;
-    selectedSkills = [];
-    for (let value of formFields.skills_list) {
-      console.log(selectedSkills, "dfssfgsdfgsdfg", value, skillsOptions);
-      for (let key of skillsOptions) {
-        if (key.value === value) {
-          console.log(selectedSkills, "dfssfgsdfgsdfg =========", key, value);
-          selectedSkills.push({ value: key.value, label: key.label });
-        }
+    await this.props.getCommonApi("meta/religion/").then((res) => {
+      let { religionList } = this.state;
+      for (let key of res.religions) {
+        religionList.push({ value: key.itm_id, label: key.itm_name });
       }
-    }
-    this.setState({ selectedSkills });
-  };
-
-  // set dropdown data from response
-  getDatafromStore = async (type) => {
-    let { branchList, jobtitleList, shiftList, skillsList } = this.props;
-    let { jobOption, shiftOptions, locationOption, skillsOptions } = this.state;
-    if (type === "jobtitle") {
-      for (let key of jobtitleList) {
-        jobOption.push({ label: key.level_desc, value: key.id });
-      }
-    } else if (type === "branch") {
-      for (let key of branchList) {
-        locationOption.push({ label: key.itemsite_desc, value: key.id });
-      }
-    } else if (type === "shift") {
-      for (let key of shiftList) {
-        shiftOptions.push({ label: key.shift_name, value: key.id });
-      }
-    } else if (type === "skills") {
-      for (let key of skillsList) {
-        skillsOptions.push({ value: key.id, label: key.item_desc });
-      }
-    }
-    await this.setState({
-      locationOption,
-      jobOption,
-      shiftOptions,
-      skillsOptions,
+      this.setState({ religionList });
     });
-    this.getDefaultSkills();
+    await this.props.getCommonApi("meta/nationality/").then((res) => {
+      let { nationalityList } = this.state;
+      for (let key of res.nationalities) {
+        nationalityList.push({ value: key.itm_id, label: key.itm_name });
+      }
+      this.setState({ nationalityList });
+    });
+    await this.props.getCommonApi("meta/race/").then((res) => {
+      let { raceList } = this.state;
+      for (let key of res.races) {
+        raceList.push({ value: key.itm_id, label: key.itm_name });
+      }
+      this.setState({ raceList });
+    });
+    await this.props.getCommonApi("meta/country/").then((res) => {
+      let { countryList } = this.state;
+      for (let key of res.countries) {
+        countryList.push({ value: key.itm_id, label: key.itm_desc });
+      }
+      this.setState({ countryList });
+    });
+    this.setState({ is_loading: false });
   };
 
   // set data to formfield from response while edit
   setDataFromStore = () => {
-    let { staffDetail } = this.props;
+    let { staffPlusDetail } = this.props;
     let { formFields } = this.state;
-    // console.log("ufjdfjssd staff", staffDetail, formFields)
-    formFields["emp_name"] = staffDetail.emp_name;
-    formFields["emp_phone1"] = staffDetail.emp_phone1;
-    formFields["emp_joindate"] = new Date(staffDetail.emp_joindate);
-    formFields["defaultSiteCodeid"] = staffDetail.defaultSiteCodeid;
-    formFields["skills_list"] = staffDetail.skills;
-    formFields["emp_address"] = staffDetail.emp_address;
-    formFields["Emp_sexesid"] = staffDetail.Emp_sexesid;
-    formFields["shift"] = staffDetail.shift;
-    formFields["emp_dob"] = new Date(staffDetail.emp_dob);
-    formFields["EMP_TYPEid"] = staffDetail.EMP_TYPEid;
-    formFields["emp_pic"] = staffDetail.emp_pic;
+    formFields["emp_name"] = staffPlusDetail.emp_name;
+    formFields["display_name"] = staffPlusDetail.display_name;
+    formFields["emp_nric"] = staffPlusDetail.emp_nric;
+    formFields["emp_phone1"] = staffPlusDetail.emp_phone1;
+    formFields["emp_address"] = staffPlusDetail.emp_address;
+    formFields["Emp_sexesid"] = staffPlusDetail.Emp_sexesid;
+    formFields["emp_race"] = staffPlusDetail.emp_race;
+    formFields["Emp_maritalid"] = staffPlusDetail.Emp_maritalid;
+    formFields["Emp_nationalityid"] = staffPlusDetail.Emp_nationalityid;
+    formFields["Emp_religionid"] = staffPlusDetail.Emp_religionid;
+    formFields["emp_country"] = staffPlusDetail.emp_country;
+    formFields["emp_emer"] = staffPlusDetail.emp_emer;
+    formFields["emp_emerno"] = staffPlusDetail.emp_emerno;
+    formFields["emp_remarks"] = staffPlusDetail.emp_remarks;
     this.setState({ formFields });
   };
 
@@ -227,11 +146,8 @@ export class EmployeeInfoClass extends Component {
   };
 
   handleDatePick = async (name, value) => {
-    console.log(name, value, "sdfgdfhfshg", dateFormat(new Date()));
-    // dateFormat(new Date())
     let { formFields } = this.state;
     formFields[name] = value;
-    // formFields[name] = value;
     await this.setState({
       formFields,
     });
@@ -245,84 +161,39 @@ export class EmployeeInfoClass extends Component {
     });
   };
 
-  // upload imag to formfield
-  handleImageUpload = (file) => {
-    let { formFields } = this.state;
-    formFields["emp_pic"] = file;
-    this.setState({
-      formFields,
-    });
-  };
-
-  // remove image to formfield
-  removepostImage = (e, name) => {
-    let { staffImage } = this.state.formFields;
-    let index = staffImage.indexOf(name);
-    if (index === 0) {
-      staffImage.shift();
-    } else {
-      staffImage.pop();
-    }
-    this.setState({
-      staffImage,
-    });
-  };
-
   // submit to create/update staff
-  handleSubmit = () => {
+  handleSubmit = async () => {
     if (this.validator.allValid()) {
-      let { formFields } = this.state;
-      const formData = new FormData();
-      formData.append("emp_name", formFields.emp_name);
-      formData.append("emp_phone1", formFields.emp_phone1);
-      formData.append("emp_joindate", dateFormat(formFields.emp_joindate));
-      // if (formFields.defaultSiteCodeid === "") {
-      formData.append("defaultSiteCodeid", formFields.defaultSiteCodeid);
-      // }
-      formData.append("skills_list", formFields.skills_list);
-      formData.append("emp_address", formFields.emp_address);
-      formData.append("Emp_sexesid", formFields.Emp_sexesid);
-      // formData.append('shift', formFields.shift)
-      formData.append("emp_dob", dateFormat(formFields.emp_dob));
-      formData.append("EMP_TYPEid", formFields.EMP_TYPEid);
-      formData.append("is_login", formFields.is_login);
-      formData.append("pw_password", formFields.pw_password);
-      formData.append("LEVEL_ItmIDid", formFields.LEVEL_ItmIDid);
-      formData.append("emp_pic", formFields.emp_pic);
-      formData.append("emp_email", formFields.emp_email);
-      if (this.props.match.params.id) {
-        this.props
-          .updateStaff(`${this.props.match.params.id}/`, formData)
+      try {
+        this.setState({ is_loading: true });
+        let { formFields } = this.state;
+        const formData = new FormData();
+        formData.append("emp_phone1", formFields.emp_phone1);
+        formData.append("emp_address", formFields.emp_address);
+        formData.append("Emp_sexesid", formFields.Emp_sexesid);
+        formData.append("emp_race", formFields.emp_race);
+        formData.append("Emp_maritalid", formFields.Emp_maritalid);
+        formData.append("Emp_nationalityid", formFields.Emp_nationalityid);
+        formData.append("Emp_religionid", formFields.Emp_religionid);
+        formData.append("emp_country", formFields.emp_country);
+        formData.append("emp_emer", formFields.emp_emer);
+        formData.append("emp_emerno", formFields.emp_emerno);
+        formData.append("emp_remarks", formFields.emp_remarks);
+        await this.props
+          .updateEmpInfo(this.props.match.params.id, formData)
           .then((res) => {
             console.log(res);
             if (res.status === 200) {
-              this.props.history.push(
-                `/admin/staff/${res.data.id}/staffDetails`
-              );
+              window.location.reload();
             }
           });
-      } else {
-        this.props.createStaff(formData).then((res) => {
-          console.log(res);
-          if (res.status === 201) {
-            this.props.history.push(`/admin/staff`);
-          }
-        });
+      } catch (e) {
+        console.log(e);
       }
+      this.setState({ is_loading: true });
     } else {
       this.validator.showMessages();
     }
-  };
-
-  handleMultiSelect = (data) => {
-    let { formFields } = this.state;
-    let list = [];
-    for (let key of data) {
-      list.push(key.value);
-    }
-    formFields["skills_list"] = list;
-    this.setState({ formFields });
-    console.log(formFields, "oyokkjk");
   };
 
   handleChangeBox = (event) => {
@@ -338,318 +209,309 @@ export class EmployeeInfoClass extends Component {
   render() {
     let {
       formFields,
-      jobOption,
-      shiftOptions,
-      locationOption,
       sexOption,
-      skillsOptions,
-      selectedSkills,
-      levelList,
       raceList,
       nationalityList,
       maritialStatusList,
       religionList,
       countryList,
+      is_loading,
     } = this.state;
 
     let {
       emp_name,
-      NRIC,
-      username,
+      emp_nric,
+      display_name,
       emp_phone1,
       emp_address,
       Emp_sexesid,
-      race,
-      nationality,
-      country,
-      maritial_status,
-      religion,
-      emer_person,
-      emer_phone,
-      remarks,
+      emp_race,
+      Emp_nationalityid,
+      emp_country,
+      Emp_maritalid,
+      Emp_religionid,
+      emp_emer,
+      emp_emerno,
+      emp_remarks,
     } = formFields;
     return (
       <div className="px-5 container create-staff">
-        {/* <p className="list-heading pb-4"> {id ? "Edit" : "Add"} Staff</p> */}
         <div className="head-label-nav">
           <p className="category">StaffPlus </p>
           <i className="icon-right mx-md-3"></i>
-          <p className="sub-category">
-            {this.props.match.params.id ? "Edit" : "New"} Employee Information
-          </p>
+          <p className="sub-category">Edit Employee Information</p>
         </div>
-        <div className="staff-detail">
-          <div className="form-group mb-4 pb-2">
-            <div className="row">
-              <div className="col-md-4">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Name
-                </label>
-              </div>
-              <div className="col-md-4">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  :
-                </label>
-              </div>
-              <div className="col-md-4">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  {emp_name}
-                </label>
-              </div>
-              <div className="col-md-4">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  NRIC / WP
-                </label>
-              </div>
-              <div className="col-md-4">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  :
-                </label>
-              </div>
-              <div className="col-md-4">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  {NRIC}
-                </label>
-              </div>
-              <div className="col-md-4">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Username
-                </label>
-              </div>
-              <div className="col-md-4">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  :
-                </label>
-              </div>
-              <div className="col-md-4">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  {username}
-                </label>
-              </div>
+        {is_loading ? (
+          <div class="d-flex mt-5 align-items-center justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
             </div>
           </div>
-          <div className="form-group mb-4 pb-2">
-            <div className="row">
-              <div className="col-6">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Phone
-                </label>
-                <div className="input-group">
-                  <NormalInput
-                    placeholder="Enter here"
-                    value={emp_phone1}
-                    name="emp_phone1"
-                    onChange={this.handleChange}
-                  />
+        ) : (
+          <div className="staff-detail">
+            <div className="form-group mb-4 pb-2">
+              <div className="row">
+                <div className="col-md-4">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    Name
+                  </label>
                 </div>
-              </div>
-              <div className="col-6">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Address
-                </label>
-                <div className="input-group">
-                  <NormalInput
-                    placeholder="Enter here"
-                    value={emp_address}
-                    name="emp_phone1"
-                    onChange={this.handleChange}
-                  />
+                <div className="col-md-4">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    :
+                  </label>
+                </div>
+                <div className="col-md-4">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    {emp_name}
+                  </label>
+                </div>
+                <div className="col-md-4">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    NRIC / WP
+                  </label>
+                </div>
+                <div className="col-md-4">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    :
+                  </label>
+                </div>
+                <div className="col-md-4">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    {emp_nric}
+                  </label>
+                </div>
+                <div className="col-md-4">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    Username
+                  </label>
+                </div>
+                <div className="col-md-4">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    :
+                  </label>
+                </div>
+                <div className="col-md-4">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    {display_name}
+                  </label>
                 </div>
               </div>
             </div>
-          </div>
+            <div className="form-group mb-4 pb-2">
+              <div className="row">
+                <div className="col-6">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    Phone
+                  </label>
+                  <div className="input-group">
+                    <NormalInput
+                      placeholder="Enter here"
+                      value={emp_phone1}
+                      name="emp_phone1"
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                </div>
+                <div className="col-6">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    Address
+                  </label>
+                  <div className="input-group">
+                    <NormalInput
+                      placeholder="Enter here"
+                      value={emp_address}
+                      name="emp_address"
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
 
-          <div className="form-group mb-4 pb-2">
-            <div className="row">
-              <div className="col-6">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Gender
-                </label>
-                <div className="input-group">
-                  <NormalSelect
-                    // placeholder="Enter here"
-                    options={sexOption}
-                    value={Emp_sexesid}
-                    name="Emp_sexesid"
-                    onChange={this.handleChange}
-                  />
+            <div className="form-group mb-4 pb-2">
+              <div className="row">
+                <div className="col-6">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    Gender
+                  </label>
+                  <div className="input-group">
+                    <NormalSelect
+                      // placeholder="Enter here"
+                      options={sexOption}
+                      value={Emp_sexesid}
+                      name="Emp_sexesid"
+                      onChange={this.handleChange}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="col-6">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Race
-                </label>
-                <div className="input-group">
-                  <NormalSelect
-                    // placeholder="Enter here"
-                    options={raceList}
-                    value={race}
-                    name="race"
-                    onChange={this.handleChange}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="form-group mb-4 pb-2">
-            <div className="row">
-              <div className="col-6">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Nationality
-                </label>
-                <div className="input-group">
-                  <NormalSelect
-                    // placeholder="Enter here"
-                    options={nationalityList}
-                    value={nationality}
-                    name="nationality"
-                    onChange={this.handleChange}
-                  />
-                </div>
-              </div>
-              <div className="col-6">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Marital Status
-                </label>
-                <div className="input-group">
-                  <NormalSelect
-                    // placeholder="Enter here"
-                    options={maritialStatusList}
-                    value={maritial_status}
-                    name="maritial_status"
-                    onChange={this.handleChange}
-                  />
+                <div className="col-6">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    Race
+                  </label>
+                  <div className="input-group">
+                    <NormalSelect
+                      // placeholder="Enter here"
+                      options={raceList}
+                      value={emp_race}
+                      name="emp_race"
+                      onChange={this.handleChange}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="form-group mb-4 pb-2">
-            <div className="row">
-              <div className="col-6">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Religion
-                </label>
-                <div className="input-group">
-                  <NormalSelect
-                    // placeholder="Enter here"
-                    options={religionList}
-                    value={religion}
-                    name="religion"
-                    onChange={this.handleChange}
-                  />
+            <div className="form-group mb-4 pb-2">
+              <div className="row">
+                <div className="col-6">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    Nationality
+                  </label>
+                  <div className="input-group">
+                    <NormalSelect
+                      // placeholder="Enter here"
+                      options={nationalityList}
+                      value={Emp_nationalityid}
+                      name="Emp_nationalityid"
+                      onChange={this.handleChange}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="col-6">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Country
-                </label>
-                <div className="input-group">
-                  <NormalSelect
-                    // placeholder="Enter here"
-                    options={countryList}
-                    value={country}
-                    name="country"
-                    onChange={this.handleChange}
-                  />
+                <div className="col-6">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    Marital Status
+                  </label>
+                  <div className="input-group">
+                    <NormalSelect
+                      // placeholder="Enter here"
+                      options={maritialStatusList}
+                      value={Emp_maritalid}
+                      name="Emp_maritalid"
+                      onChange={this.handleChange}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="form-group mb-4 pb-2">
-            <div className="row">
-              <div className="col-6">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Emergency Person
-                </label>
-                <div className="input-group">
-                  <NormalInput
-                    placeholder="Enter here"
-                    value={emer_person}
-                    name="emer_person"
-                    onChange={this.handleChange}
-                  />
+            <div className="form-group mb-4 pb-2">
+              <div className="row">
+                <div className="col-6">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    Religion
+                  </label>
+                  <div className="input-group">
+                    <NormalSelect
+                      // placeholder="Enter here"
+                      options={religionList}
+                      value={Emp_religionid}
+                      name="Emp_religionid"
+                      onChange={this.handleChange}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="col-6">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Emergency Phone
-                </label>
-                <div className="input-group">
-                  <NormalInput
-                    placeholder="Enter here"
-                    value={emer_phone}
-                    name="emer_phone"
-                    onChange={this.handleChange}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="form-group mb-4 pb-2">
-            <div className="row">
-              <div className="col-12">
-                <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Remarks
-                </label>
-                <div className="input-group">
-                  <NormalTextarea
-                    value={remarks}
-                    name="remarks"
-                    onChange={this.handleChange}
-                  />
+                <div className="col-6">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    Country
+                  </label>
+                  <div className="input-group">
+                    <NormalSelect
+                      // placeholder="Enter here"
+                      options={countryList}
+                      value={emp_country}
+                      name="emp_country"
+                      onChange={this.handleChange}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="border-bottom-line"></div>
-          <div className="pt-5 d-flex justify-content-center">
-            <div className="col-2">
-              <Link to="/admin/staffplus">
+            <div className="form-group mb-4 pb-2">
+              <div className="row">
+                <div className="col-6">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    Emergency Person
+                  </label>
+                  <div className="input-group">
+                    <NormalInput
+                      placeholder="Enter here"
+                      value={emp_emer}
+                      name="emp_emer"
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                </div>
+                <div className="col-6">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    Emergency Phone
+                  </label>
+                  <div className="input-group">
+                    <NormalInput
+                      placeholder="Enter here"
+                      value={emp_emerno}
+                      name="emp_emerno"
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="form-group mb-4 pb-2">
+              <div className="row">
+                <div className="col-12">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    Remarks
+                  </label>
+                  <div className="input-group">
+                    <NormalTextarea
+                      value={emp_remarks}
+                      name="emp_remarks"
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-bottom-line"></div>
+            <div className="pt-5 d-flex justify-content-center">
+              <div className="col-2">
+                <Link to="/admin/staffplus">
+                  <NormalButton
+                    label="Cancel"
+                    danger={true}
+                    className="mr-2 col-12"
+                  />
+                </Link>
+              </div>
+              <div className="col-2">
                 <NormalButton
-                  label="Cancel"
-                  danger={true}
+                  onClick={() => this.handleSubmit()}
+                  label="Save"
+                  success={true}
                   className="mr-2 col-12"
                 />
-              </Link>
-            </div>
-            <div className="col-2">
-              <NormalButton
-                onClick={() => this.handleSubmit()}
-                label="Save"
-                success={true}
-                className="mr-2 col-12"
-              />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  branchList: state.common.branchList,
-  jobtitleList: state.common.jobtitleList,
-  shiftList: state.common.shiftList,
-  skillsList: state.common.skillsList,
-  staffDetail: state.staff.staffDetail,
+  staffPlusDetail: state.staffPlus.staffPlusDetail,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      createStaff,
-      getBranch,
-      getJobtitle,
-      getShift,
-      getSkills,
-      getStaff,
-      updateStaff,
+      getStaffPlus,
+      updateEmpInfo,
       getCommonApi,
     },
     dispatch

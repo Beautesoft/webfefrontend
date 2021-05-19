@@ -283,6 +283,18 @@ export const staffPlus = {
     method: "post",
     baseURL: "normal",
   },
+  updateEmpInfo: {
+    url: "/EmpInfo/",
+    method: "put",
+    id: null,
+    get api() {
+      return "staffPlus/" + this.id + this.url;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
   updateStaff: {
     url: "staffPlus/",
     method: "put",
