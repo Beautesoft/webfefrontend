@@ -189,7 +189,7 @@ export class ListStaffPlusClass extends React.Component {
 
   // delete api call for staff
   handleDeleteStaff = (id) => {
-    this.props.deleteStaff(`${id}/`).then((res) => this.queryHandler({}));
+    this.props.deleteStaffPlus(`${id}/`).then((res) => this.queryHandler({}));
   };
 
   render() {
@@ -470,7 +470,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getStaffPlus,
-      deleteStaff: deleteStaffPlus,
+      deleteStaffPlus,
       getJobtitle,
       getCommonApi,
     },
