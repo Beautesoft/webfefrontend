@@ -399,7 +399,7 @@ export class ListStaffPlusClass extends React.Component {
                                         className="d-flex align-items-center fs-14 pt-3"
                                         onClick={() =>
                                           this.props.history.push(
-                                            `/admin/staff/${id}/staffDetails`
+                                            `/admin/staffPlus/${id}/staffDetails`
                                           )
                                         }
                                       >
