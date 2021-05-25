@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./style.scss";
 
 export class ScheduleTable extends Component {
   render() {
@@ -14,16 +13,21 @@ export class ScheduleTable extends Component {
         saturday: null,
         sunday: null,
       },
+      optionList = [],
       disabled = false,
     } = this.props;
 
     const handleOnClick = (name) => {
-      if (disabled) return;
-      data[name] =
-        data[name] == null ? "YES" : data[name] == "YES" ? "NO" : "YES";
-      onChange(data);
+      if (this.props.disabled ?? false) return;
+      document.getElementById(name).classList.toggle("show");
     };
 
+    const handOnOptionClick = (index, value) => {
+      if (disabled) return;
+      data[index] = value;
+      onChange(data);
+    };
+    console.log(optionList);
     return (
       <>
         <table className="table">
@@ -40,51 +44,66 @@ export class ScheduleTable extends Component {
           </thead>
           <tbody>
             <tr>
-              <td
-                onClick={() => handleOnClick("monday")}
-                className={data.monday == "YES" ? "on" : "off"}
-              >
-                {data.monday == "YES" ? "NS" : "OFF"}
-              </td>
-              <td
-                onClick={() => handleOnClick("tuesday")}
-                className={data.tuesday == "YES" ? "on" : "off"}
-              >
-                {data.tuesday == "YES" ? "NS" : "OFF"}
-              </td>
-              <td
-                onClick={() => handleOnClick("wednesday")}
-                className={data.wednesday == "YES" ? "on" : "off"}
-              >
-                {data.wednesday == "YES" ? "NS" : "OFF"}
-              </td>
-              <td
-                onClick={() => handleOnClick("thursday")}
-                className={data.thursday == "YES" ? "on" : "off"}
-              >
-                {data.thursday == "YES" ? "NS" : "OFF"}
-              </td>
-              <td
-                onClick={() => handleOnClick("friday")}
-                className={data.friday == "YES" ? "on" : "off"}
-              >
-                {data.friday == "YES" ? "NS" : "OFF"}
-              </td>
-              <td
-                onClick={() => handleOnClick("saturday")}
-                className={data.saturday == "YES" ? "on" : "off"}
-              >
-                {data.saturday == "YES" ? "NS" : "OFF"}
-              </td>
-              <td
-                onClick={() => handleOnClick("sunday")}
-                className={data.sunday == "YES" ? "on" : "off"}
-              >
-                {data.sunday == "YES" ? "NS" : "OFF"}
-              </td>
+              {Object.keys(data).map(function (keyName) {
+                return (
+                  <td
+                    onClick={() => handleOnClick(keyName)}
+                    style={{
+                      color:
+                        optionList.find((val) => val.value == data[keyName]) !=
+                        null
+                          ? "white"
+                          : "black",
+                      backgroundColor:
+                        optionList.find((val) => val.value == data[keyName]) !=
+                        null
+                          ? "#" +
+                            optionList.find((val) => val.value == data[keyName])
+                              .color
+                          : "white",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {optionList.find((val) => val.value == data[keyName])
+                      ?.shortDesc ?? "None"}
+                    <div id={keyName} class="dropdown-content">
+                      {optionList.map((val) => {
+                        return (
+                          <label
+                            onClick={() =>
+                              handOnOptionClick(keyName, val.value)
+                            }
+                          >
+                            {val.label}
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </td>
+                );
+              })}
             </tr>
           </tbody>
         </table>
+        <div className="row m-2">
+          {optionList.map((e) => {
+            return (
+              <div className="col-md-6 col-lg-4 col-sm-12">
+                <div className="row w-100">
+                  <div
+                    style={{
+                      width: "20px",
+                      height: "20px",
+                      marginRight: "5px",
+                      backgroundColor: `#${e.color}`,
+                    }}
+                  />
+                  {e.shortDesc}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </>
     );
   }

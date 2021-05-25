@@ -52,6 +52,7 @@ export class AddStaffClass extends Component {
       },
       defaultSiteCodeid: "",
     },
+    scheduleOptions: [],
     jobOption: [],
     locationOption: [],
     levelList: [],
@@ -100,6 +101,21 @@ export class AddStaffClass extends Component {
         levelList.push({ value: key.id, label: key.level_name });
       }
       this.setState({ levelList });
+    });
+
+    // schedule hours api
+    this.props.getCommonApi("WorkScheduleHours/").then((res) => {
+      let { scheduleOptions } = this.state;
+      for (let key of res.schedules) {
+        scheduleOptions.push({
+          id: key.id,
+          value: key.itm_code,
+          label: key.itm_desc,
+          color: key.itm_color,
+          shortDesc: key.shortDesc,
+        });
+      }
+      this.setState({ scheduleOptions });
     });
 
     // jobtitle option api
@@ -159,7 +175,13 @@ export class AddStaffClass extends Component {
     formFields["show_in_sales"] = staffPlusDetail.show_in_sales;
     formFields["show_in_appt"] = staffPlusDetail.show_in_appt;
     formFields["show_in_trmt"] = staffPlusDetail.show_in_trmt;
-    formFields["work_schedule"] = staffPlusWorkScheduleDetails;
+    formFields.work_schedule.monday = staffPlusWorkScheduleDetails.monday;
+    formFields.work_schedule.tuesday = staffPlusWorkScheduleDetails.tuesday;
+    formFields.work_schedule.wednesday = staffPlusWorkScheduleDetails.wednesday;
+    formFields.work_schedule.thursday = staffPlusWorkScheduleDetails.thursday;
+    formFields.work_schedule.friday = staffPlusWorkScheduleDetails.friday;
+    formFields.work_schedule.saturday = staffPlusWorkScheduleDetails.saturday;
+    formFields.work_schedule.sunday = staffPlusWorkScheduleDetails.sunday;
     this.setState({ formFields });
   };
 
@@ -267,7 +289,9 @@ export class AddStaffClass extends Component {
               scheduleData
             );
             if (res2.status === 200)
-              this.props.history.push(`/admin/staffPlus/${res.data.id}/editStaff`);
+              this.props.history.push(
+                `/admin/staffPlus/${res.data.id}/editStaff`
+              );
           }
         }
       } else {
@@ -289,8 +313,14 @@ export class AddStaffClass extends Component {
   };
 
   render() {
-    let { formFields, jobOption, locationOption, is_loading, levelList } =
-      this.state;
+    let {
+      formFields,
+      jobOption,
+      locationOption,
+      is_loading,
+      levelList,
+      scheduleOptions,
+    } = this.state;
 
     let {
       emp_name,
@@ -595,6 +625,7 @@ export class AddStaffClass extends Component {
                     </label>
                     <ScheduleTable
                       data={work_schedule}
+                      optionList={scheduleOptions}
                       onChange={(data) => {
                         let { formFields } = this.state;
                         formFields["work_schedule"] = data;
@@ -607,7 +638,7 @@ export class AddStaffClass extends Component {
                 </div>
               </div>
               <div className="pt-5 d-flex justify-content-center">
-                <div className="col-2">
+                <div className="col-md-3 col-lg-2">
                   <Link to="/admin/staffplus">
                     <NormalButton
                       label="Cancel"
@@ -616,7 +647,7 @@ export class AddStaffClass extends Component {
                     />
                   </Link>
                 </div>
-                <div className="col-2">
+                <div className="col-md-3 col-lg-2">
                   <NormalButton
                     onClick={() => this.handleSubmit()}
                     label="Save"
