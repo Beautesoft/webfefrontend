@@ -167,6 +167,18 @@ const routers = [
         exact: true,
       },
       {
+        component: "StaffPlusDetails",
+        path: "/staffPlus/:id/staffDetails",
+        auth: false,
+        exact: true,
+      },
+      {
+        component: "StaffPlusAvailability",
+        path: "/staffPlus/availability",
+        auth: false,
+        exact: true,
+      },
+      {
         component: "StaffSkillList",
         path: "/staffplus/skills",
         auth: false,

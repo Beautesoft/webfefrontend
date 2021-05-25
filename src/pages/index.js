@@ -18,7 +18,7 @@ export { AddCustomer, ListCustomer, CustomerDetails, AccountDetails, TreatmentDe
 export { AddCustomerPlus, CustomerDetailsPlus, ListCustomerPlus, AccountDetailsPlus, TreatmentDetailsPlus, TreatmentCourseDetailsPlus, HoldSectionsPlus, LoyaltyPointsManagement, AddRedeemPolicy, AddRewardPolicy } from './CustomerPlus';
 export { Payment } from './Payment';
 export { ListStaff, AddStaff, StaffDetails, StaffAvailability } from './Staff';
-export { AddStaffPlus,ListStaffPlus, EmployeeInfo, StaffSchedule, SecurityAuthorization, StaffSkillList, AddStaffSkill} from './StaffPlus';
+export { AddStaffPlus,ListStaffPlus, EmployeeInfo, StaffSchedule, SecurityAuthorization, StaffSkillList, AddStaffSkill, StaffPlusDetails, StaffPlusAvailability } from './StaffPlus';
 
 
 
