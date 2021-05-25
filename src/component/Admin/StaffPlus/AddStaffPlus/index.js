@@ -151,7 +151,7 @@ export class AddStaffClass extends Component {
         locationOption.push({ label: key.itemsite_desc, value: key.id });
       }
     }
-    await this.setState({
+    this.setState({
       locationOption,
       jobOption,
     });
