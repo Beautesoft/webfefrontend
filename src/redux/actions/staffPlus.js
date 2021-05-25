@@ -143,6 +143,32 @@ export const getStaffPlus =
     });
   };
 
+// get staffplus schedule  action
+export const getStaffSchedule =
+  (id) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      staffPlus.getSchedule.addQuery = { key: "id", payload: id };
+      api({ ...staffPlus.getSchedule })
+        .then((response) => {
+          resolve(response);
+          let { message, status, data } = response;
+          if (status === 200) {
+            dispatch({
+              type: StaffPlusActionType.getStaffPlusSchedule,
+              payload: data,
+            });
+            // Toast({ type: 'success', message })
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
 // delete staff action
 export const deleteStaffPlus =
   (id, body) =>

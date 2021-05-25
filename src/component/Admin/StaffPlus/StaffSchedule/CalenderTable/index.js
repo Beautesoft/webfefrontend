@@ -101,11 +101,11 @@ export class CalenderTable extends Component {
     return (
       <table className="table">
         <tr className="table-header-color">
-          <th>Mon</th>
-          <th>Tue</th>
-          <th>Wed</th>
-          <th>Thu</th>
-          <th>Fri</th>
+          <th className="text-dark">Mon</th>
+          <th className="text-dark">Tue</th>
+          <th className="text-dark">Wed</th>
+          <th className="text-dark">Thu</th>
+          <th className="text-dark">Fri</th>
           <th className="text-danger">Sat</th>
           <th className="text-danger">Sun</th>
         </tr>

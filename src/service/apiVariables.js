@@ -343,6 +343,18 @@ export const staffPlus = {
     },
     baseURL: "token",
   },
+  getSchedule: {
+    url: "WorkScheduleMonth/",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
   getStaff: {
     url: "staffPlus/",
     method: "get",

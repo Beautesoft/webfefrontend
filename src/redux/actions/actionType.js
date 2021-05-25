@@ -31,6 +31,7 @@ export const StaffActionType = {
 export const StaffPlusActionType = {
   getStaffPlusDetail: 'GET_STAFF_PLUS_DETAIL',
   getStaffPlusWorkSchedule: 'GET_STAFF_PLUS_WORK_SCHEDULE',
+  getStaffPlusSchedule: 'GET_STAFF_PLUS_SCHEDULE',
 };
 
 export const SaloonActionType = {

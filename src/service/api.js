@@ -69,16 +69,16 @@ let getServiceUrl = baseURL => {
 
   switch (baseURL) {
       case "normal":
-      finalURL = 'http://103.253.15.184:8000/api/'; //live
-        // finalURL = "http://52.60.58.9:8000/api/";
+      // finalURL = 'http://103.253.15.184:8000/api/'; //live
+        finalURL = "http://127.0.0.1:8000/api/";
         break;
       case "token":
-        finalURL = 'http://103.253.15.184:8000/api/'; //live
-        // finalURL = "http://52.60.58.9:8000/api/";
+        // finalURL = 'http://103.253.15.184:8000/api/'; //live
+        finalURL = "http://127.0.0.1:8000/api/";
         break;
     default:
-      finalURL = 'http://103.253.15.184:8000/api/'; //live
-      // finalURL = "http://52.60.58.9:8000/api/";
+      // finalURL = 'http://103.253.15.184:8000/api/'; //live
+      finalURL = "http://127.0.0.1:8000/api/";
   }
 
   return finalURL;

@@ -87,7 +87,7 @@ export class BigCalander extends Component {
     const headers = [];
 
     for (let index = 1; index <= lastDayDate; index++) {
-      headers.push(<th>{index}</th>);
+      headers.push(<th className="text-dark">{index}</th>);
       days.push(index - 1);
     }
     const rows = [];
@@ -96,7 +96,7 @@ export class BigCalander extends Component {
       console.log(data);
       rows.push(
         <tr>
-          <th className="table-header-color">{staff.name}</th>
+          <th className="table-header-color text-dark">{staff.name}</th>
           {days.map((day) => (
             <td className={staff.data[day]}>
               <div id={staff.name + day} class="dropdown-content">
@@ -119,7 +119,7 @@ export class BigCalander extends Component {
       <div class="table-responsive">
         <table className="table">
           <tr className="table-header-color">
-            <th>Staff</th>
+            <th className="text-dark">Staff</th>
             {headers}
           </tr>
           {rows}
