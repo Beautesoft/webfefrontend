@@ -98,7 +98,7 @@ export class ScheduleTable extends Component {
                       backgroundColor: `#${e.color}`,
                     }}
                   />
-                  {e.shortDesc}
+                  {e.shortDesc} - {e.label}
                 </div>
               </div>
             );
