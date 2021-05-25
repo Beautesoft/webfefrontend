@@ -64,7 +64,7 @@ export class RewardPolicyTableClass extends React.Component {
                     label="Add Reward Policy"
                     onClick={() =>
                       this.props.history.push(
-                        "/admin/customerplus/lpmanagement/addreward"
+                        "lpmanagement/addreward"
                       )
                     }
                   />
@@ -177,7 +177,7 @@ export class RewardPolicyTableClass extends React.Component {
                                       className="d-flex align-items-center fs-16 pt-3"
                                       onClick={() =>
                                         this.props.history.push(
-                                          `/admin/customerplus/lpmanagement/${id}/editredeem`
+                                          `lpmanagement/${id}/editredeem`
                                         )
                                       }
                                     >
