@@ -379,6 +379,18 @@ export const staffPlus = {
     },
     baseURL: "token",
   },
+  getSkillList: {
+    url: "EmployeeSkills/",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
 };
 
 export const staff = {
@@ -494,6 +506,54 @@ export const customer = {
   addHoldItem: {
     api: "holditem/issued/",
     method: "post",
+    baseURL: "token",
+  },
+};
+
+export const customerPlus = {
+  addCustomerPlus: {
+    api: "CustomerPlus/",
+    method: "post",
+    baseURL: "token",
+  },
+  updateCustomerPlus: {
+    url: "CustomerPlus/",
+    method: "put",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  getCustomerPlus: {
+    url: "CustomerPlus/",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  getCustomerPlusSettings: {
+    url: "CustomerFormSettings/",
+    method: "get",
+    get api() {
+      return this.url;
+    },
+    baseURL: "token",
+  },
+  updateCustomerPlusSettings: {
+    url: "CustomerFormSettings/",
+    method: "put",
+    get api() {
+      return this.url;
+    },
     baseURL: "token",
   },
 };

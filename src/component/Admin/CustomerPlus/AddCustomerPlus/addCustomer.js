@@ -8,10 +8,6 @@ import {
   NormalButton,
   NormalDateTime,
 } from "component/common";
-import { Link } from "react-router-dom";
-import { dateFormat } from "service/helperFunctions";
-import { FormGroup, Label, Input } from "reactstrap";
-
 export class AddCustomerForm extends Component {
   state = {
     formFields: {},
@@ -37,23 +33,12 @@ export class AddCustomerForm extends Component {
   }
 
   handleSubmit = (event) => {
-    // console.log("====", event, "sdfasdfasdf")
-    // this.props.handleSubmit(event)
-    if (this.validator.allValid()) {
-      this.props.handleSubmit(event);
-    } else {
-      this.validator.showMessages();
-    }
+    if (!this.validator.allValid()) return this.validator.showMessages();
   };
 
   render() {
-    let {
-      formFields,
-      sexOption,
-      handleCancel,
-      handleDatePick,
-      salonList,
-    } = this.props;
+    let { formFields, sexOption, handleCancel, handleDatePick, salonList } =
+      this.props;
     let { namePrefix, selectedNamePrefix } = this.state;
     let {
       cust_name,
@@ -188,7 +173,7 @@ export class AddCustomerForm extends Component {
           </div>
           {this.validator.message("Email Address", cust_phone2, "required")}
         </div>
-        
+
         <div className="pt-5 d-flex justify-content-center">
           <div className="col-3">
             <NormalButton

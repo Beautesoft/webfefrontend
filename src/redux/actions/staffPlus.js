@@ -143,6 +143,32 @@ export const getStaffPlus =
     });
   };
 
+// get skilllist  action
+export const getSkillList =
+  (id) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      staffPlus.getSkillList.addQuery = { key: "id", payload: id };
+      api({ ...staffPlus.getSkillList })
+        .then((response) => {
+          resolve(response);
+          let { message, status, data } = response;
+          if (status === 200) {
+            dispatch({
+              type: StaffPlusActionType.getStaffPlusSkillList,
+              payload: data,
+            });
+            // Toast({ type: 'success', message })
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
 // get staffplus schedule  action
 export const getStaffSchedule =
   (id) =>

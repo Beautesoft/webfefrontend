@@ -3,7 +3,7 @@ import { NormalButton, NormalSelect } from "component/common";
 import { InputSearch, TableWrapper } from "component/common";
 import filter from "../../../../assets/images/filter.png";
 import "./style.scss";
-import { getCustomer } from "redux/actions/customer";
+import { getCustomerPlus } from "redux/actions/customerPlus";
 import { updateForm } from "redux/actions/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -28,6 +28,7 @@ export class ListCustomerPlusClass extends React.Component {
     meta: {},
     active: false,
     currentIndex: -1,
+    isLoading: true,
   };
   // handleClick = (key,active) => {
   //     let currentIndex;
@@ -46,7 +47,7 @@ export class ListCustomerPlusClass extends React.Component {
   // }
 
   componentDidMount = () => {
-    this.getCustomer({});
+    this.getCustomerPlus({});
   };
 
   handleClick = (key) => {
@@ -71,22 +72,23 @@ export class ListCustomerPlusClass extends React.Component {
     this.handleClick();
   };
 
-  getCustomer = (data) => {
+  getCustomerPlus = async (data) => {
+    this.setState({ isLoading: true });
     let { page = 1, limit = 10, search = "" } = data;
-    this.props
-      .getCustomer(`?page=${page}&limit=${limit}&search=${search}`)
-      .then((res) => {
-        console.log(res, "dsfdfaafg");
-        this.setState({
-          customerList: res.data.dataList,
-          meta: res.data.meta.pagination,
-        });
-      });
+    await this.props.getCustomerPlus(
+      `?page=${page}&limit=${limit}&search=${search}`
+    );
+    let {customerDetails} = this.props;
+    this.setState({
+      customerList: customerDetails.dataList,
+      meta: customerDetails.meta.pagination,
+      isLoading: false,
+    });
   };
 
   handlePagination = (page) => {
     console.log(page, "dsfsdfsdfsdf");
-    this.getCustomer(page);
+    this.getCustomerPlus(page);
   };
 
   handlesearch = (event) => {
@@ -97,7 +99,7 @@ export class ListCustomerPlusClass extends React.Component {
       this.debouncedFn = _.debounce(() => {
         let searchString = event.target.value;
         let data = { search: searchString };
-        this.getCustomer(data);
+        this.getCustomerPlus(data);
       }, 500);
     }
     this.debouncedFn();
@@ -122,7 +124,7 @@ export class ListCustomerPlusClass extends React.Component {
       meta,
       currentIndex,
       currentMenu,
-      active,
+      isLoading,
     } = this.state;
     return (
       <div className="customer-list container-fluid">
@@ -183,175 +185,198 @@ export class ListCustomerPlusClass extends React.Component {
                         this.setState(() => (headerDetails = value))
                       }
                     >
-                      {customerList
-                        ? customerList.map((item, index) => {
-                            let {
-                              id,
-                              cust_code,
-                              cust_refer,
-                              cust_name,
-                              cust_phone2,
-                              cust_dob,
-                            } = item;
-                            console.log(headerDetails[0]);
-                            return (
-                              <tr key={index}>
-                                <td
-                                  className={
-                                    headerDetails[0].enabled ?? true
-                                      ? ""
-                                      : "d-none"
-                                  }
-                                >
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    {cust_code}
-                                  </div>
-                                </td>
-                                <td
-                                  className={
-                                    headerDetails[1].enabled ?? true
-                                      ? ""
-                                      : "d-none"
-                                  }
-                                >
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    {cust_refer}
-                                  </div>
-                                </td>
-                                <td
-                                  className={
-                                    headerDetails[2].enabled ?? true
-                                      ? ""
-                                      : "d-none"
-                                  }
-                                >
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    {""}
-                                  </div>
-                                </td>
-                                <td
-                                  className={
-                                    headerDetails[3].enabled ?? true
-                                      ? ""
-                                      : "d-none"
-                                  }
-                                >
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    {cust_name}
-                                  </div>
-                                </td>
-                                <td
-                                  className={
-                                    headerDetails[4].enabled ?? true
-                                      ? ""
-                                      : "d-none"
-                                  }
-                                >
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    {cust_phone2}
-                                  </div>
-                                </td>
-                                <td
-                                  className={
-                                    headerDetails[5].enabled ?? true
-                                      ? ""
-                                      : "d-none"
-                                  }
-                                >
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    {cust_dob}
-                                  </div>
-                                </td>
-                                <td
-                                  className={
-                                    headerDetails[6].enabled ?? true
-                                      ? ""
-                                      : "d-none"
-                                  }
-                                >
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    {"123"}
-                                  </div>
-                                </td>
-                                <td
-                                  className="position-relative"
-                                  ref={(node) => {
-                                    this.node = node;
-                                  }}
-                                  onClick={() => this.handleClick(index)}
-                                >
-                                  {currentIndex === index ? (
-                                    <>
-                                      <div className="d-flex align-items-center justify-content-center horizontal-more-active">
-                                        <i className="icon-more"></i>
-                                      </div>
-                                      <div className="option card">
-                                        <div
-                                          className="d-flex align-items-center fs-16 pt-3"
-                                          onClick={() =>
-                                            this.props.history.push(
-                                              `/admin/customerplus/${id}/details`
-                                            )
-                                          }
-                                        >
-                                          <span className="icon-eye-grey px-3"></span>{" "}
-                                          View{" "}
-                                        </div>
-                                        <div className="d-flex align-items-center fs-16">
-                                          <span className="icon-schedule px-3"></span>{" "}
-                                          Reschedule Appointment{" "}
-                                        </div>
-                                        <div
-                                          className="d-flex align-items-center fs-16"
-                                          onClick={() =>
-                                            this.bookAppointment(item)
-                                          }
-                                        >
-                                          <span className="px-2">
-                                            <svg
-                                              width="31"
-                                              height="30"
-                                              viewBox="0 0 31 30"
-                                              fill="none"
-                                              xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                              <rect
-                                                width="31"
-                                                height="30"
-                                                fill="#F9F9F9"
-                                              />
-                                              <path
-                                                d="M15 8V22"
-                                                stroke="#848484"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                              />
-                                              <path
-                                                d="M8 15H22"
-                                                stroke="#848484"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                              />
-                                            </svg>
-                                          </span>
-                                          Book Appointment
-                                        </div>
-                                        <div className="d-flex align-items-center fs-16 pb-3">
-                                          <span className="icon-cancel-schedule px-3"></span>{" "}
-                                          Cancel Appointment{" "}
-                                        </div>
-                                      </div>
-                                    </>
-                                  ) : (
-                                    <div className="d-flex align-items-center justify-content-center horizontal-more">
+                      {isLoading ? (
+                        <tr>
+                          <td colSpan="7">
+                            <div class="d-flex mt-5 align-items-center justify-content-center">
+                              <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      ) : customerList ? (
+                        customerList.map((item, index) => {
+                          let {
+                            id,
+                            cust_code,
+                            cust_refer,
+                            cust_name,
+                            cust_phone2,
+                            cust_dob,
+                          } = item;
+                          console.log(headerDetails[0]);
+                          return (
+                            <tr key={index}>
+                              <td
+                                className={
+                                  headerDetails[0].enabled ?? true
+                                    ? ""
+                                    : "d-none"
+                                }
+                              >
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {cust_code}
+                                </div>
+                              </td>
+                              <td
+                                className={
+                                  headerDetails[1].enabled ?? true
+                                    ? ""
+                                    : "d-none"
+                                }
+                              >
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {cust_refer}
+                                </div>
+                              </td>
+                              <td
+                                className={
+                                  headerDetails[2].enabled ?? true
+                                    ? ""
+                                    : "d-none"
+                                }
+                              >
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {""}
+                                </div>
+                              </td>
+                              <td
+                                className={
+                                  headerDetails[3].enabled ?? true
+                                    ? ""
+                                    : "d-none"
+                                }
+                              >
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {cust_name}
+                                </div>
+                              </td>
+                              <td
+                                className={
+                                  headerDetails[4].enabled ?? true
+                                    ? ""
+                                    : "d-none"
+                                }
+                              >
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {cust_phone2}
+                                </div>
+                              </td>
+                              <td
+                                className={
+                                  headerDetails[5].enabled ?? true
+                                    ? ""
+                                    : "d-none"
+                                }
+                              >
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {cust_dob}
+                                </div>
+                              </td>
+                              <td
+                                className={
+                                  headerDetails[6].enabled ?? true
+                                    ? ""
+                                    : "d-none"
+                                }
+                              >
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {"123"}
+                                </div>
+                              </td>
+                              <td
+                                className="position-relative"
+                                ref={(node) => {
+                                  this.node = node;
+                                }}
+                                onClick={() => this.handleClick(index)}
+                              >
+                                {currentIndex === index ? (
+                                  <>
+                                    <div className="d-flex align-items-center justify-content-center horizontal-more-active">
                                       <i className="icon-more"></i>
                                     </div>
-                                  )}
-                                </td>
-                              </tr>
-                            );
-                          })
-                        : ""}
+                                    <div className="option card">
+                                      <div
+                                        className="d-flex align-items-center fs-16 pt-3"
+                                        onClick={() =>
+                                          this.props.history.push(
+                                            `/admin/customerplus/${id}/details`
+                                          )
+                                        }
+                                      >
+                                        <span className="icon-eye-grey px-3"></span>{" "}
+                                        View{" "}
+                                      </div>
+                                      <div
+                                        className="d-flex align-items-center fs-16 pt-3"
+                                        onClick={() =>
+                                          this.props.history.push(
+                                            `/admin/customerplus/${id}/lpmanagement`
+                                          )
+                                        }
+                                      >
+                                        <span className="icon-eye-grey px-3"></span>
+                                        Loyalty Points Management
+                                      </div>
+                                      <div className="d-flex align-items-center fs-16">
+                                        <span className="icon-schedule px-3"></span>{" "}
+                                        Reschedule Appointment{" "}
+                                      </div>
+                                      <div
+                                        className="d-flex align-items-center fs-16"
+                                        onClick={() =>
+                                          this.bookAppointment(item)
+                                        }
+                                      >
+                                        <span className="px-2">
+                                          <svg
+                                            width="31"
+                                            height="30"
+                                            viewBox="0 0 31 30"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                          >
+                                            <rect
+                                              width="31"
+                                              height="30"
+                                              fill="#F9F9F9"
+                                            />
+                                            <path
+                                              d="M15 8V22"
+                                              stroke="#848484"
+                                              stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                            />
+                                            <path
+                                              d="M8 15H22"
+                                              stroke="#848484"
+                                              stroke-linecap="round"
+                                              stroke-linejoin="round"
+                                            />
+                                          </svg>
+                                        </span>
+                                        Book Appointment
+                                      </div>
+                                      <div className="d-flex align-items-center fs-16 pb-3">
+                                        <span className="icon-cancel-schedule px-3"></span>{" "}
+                                        Cancel Appointment{" "}
+                                      </div>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <div className="d-flex align-items-center justify-content-center horizontal-more">
+                                    <i className="icon-more"></i>
+                                  </div>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        ""
+                      )}
                     </TableWrapper>
                   </div>
                 </div>
@@ -367,13 +392,13 @@ export class ListCustomerPlusClass extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  // filter: state.dashboard
+  customerDetails: state.customerPlus.customerPlusDetail,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      getCustomer,
+      getCustomerPlus,
       updateForm,
     },
     dispatch

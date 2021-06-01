@@ -32,6 +32,7 @@ export const StaffPlusActionType = {
   getStaffPlusDetail: 'GET_STAFF_PLUS_DETAIL',
   getStaffPlusWorkSchedule: 'GET_STAFF_PLUS_WORK_SCHEDULE',
   getStaffPlusSchedule: 'GET_STAFF_PLUS_SCHEDULE',
+  getStaffPlusSkillList: 'GET_STAFF_PLUS_SKILL_LIST'
 };
 
 export const SaloonActionType = {
@@ -48,4 +49,9 @@ export const PaymentActionType = {
 
 export const CustomerActionType = {
   getCustomerDetail: 'GET_CUSTOMER_DETAIL',
+};
+
+export const CustomerPlusActionType = {
+  getCustomerPlusDetail: 'GET_CUSTOMER_PLUS_DETAIL',
+  getCustomerPlusSettings : 'GET_CUSTOMER_PLUS_SETTINGS',
 };

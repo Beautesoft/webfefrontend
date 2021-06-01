@@ -8,6 +8,7 @@ import saloon from "./saloon";
 import services from "./services";
 import payment from "./payment";
 import customer from "./customer";
+import customerPlus from "./customerPlus";
 import appointment from "./appointment";
 
 export const reducers = combineReducers({
@@ -20,5 +21,6 @@ export const reducers = combineReducers({
   services,
   payment,
   customer,
+  customerPlus,
   appointment,
 });
