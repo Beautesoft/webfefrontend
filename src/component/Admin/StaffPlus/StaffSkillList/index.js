@@ -10,7 +10,6 @@ import { getSkillList } from "redux/actions/staffPlus";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import _ from "lodash";
-import { Link } from "react-router-dom";
 import "./styles.scss";
 
 export class StaffSkillListClass extends React.Component {
@@ -29,7 +28,7 @@ export class StaffSkillListClass extends React.Component {
     this.getDatafromStore();
   }
 
-  getDatafromStore = async (type) => {
+  getDatafromStore = async () => {
     await this.props.getJobtitle();
     var skillListRes = await this.props.getCommonApi("SkillsItemTypeList");
     let { jobtitleList } = this.props;
@@ -52,8 +51,14 @@ export class StaffSkillListClass extends React.Component {
   };
 
   loadData = async () => {
+    this.setState({isLoading : true})
     let { data, header, selectedJobOption, selectedSkillOption, skillList } =
       this.state;
+      if(selectedJobOption == "" || selectedJobOption == "" )
+      return
+    
+      this.props.getSkillList('')
+
   };
 
   // popup open/close

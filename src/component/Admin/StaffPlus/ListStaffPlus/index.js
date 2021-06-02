@@ -127,29 +127,23 @@ export class ListStaffPlusClass extends React.Component {
   };
 
   // api call for staff
-  queryHandler = (data) => {
+  queryHandler = async (data) => {
     this.setState({ is_loading: true });
     let { page = 1, limit = 10, search = "" } = data;
-    this.props
-      .getStaffPlus(
-        `?page=${page}&limit=${limit}${
-          this.state.filter == "" ? "" : `&${this.state.filter}`
-        }${search == "" ? "" : `&search=${search}`}`
-      )
-      .then((res) => {
-        // this.props.getStaffPlus(`?page=${page}&limit=${limit}&search=${search}`).then((res) => {
-        console.log(res, "dsfdfaafg", res.data.dataList);
-        let { staffList, pageMeta, filteredStaffList } = this.state;
-        staffList = res.data.dataList;
-        filteredStaffList = res.data.dataList;
-        pageMeta = res.data.meta.pagination;
-        this.setState({
-          staffList,
-          pageMeta,
-          filteredStaffList,
-          is_loading: false,
-        });
-      });
+    await this.props.getStaffPlus(
+      `?page=${page}&limit=${limit}${
+        this.state.filter == "" ? "" : `&${this.state.filter}`
+      }${search == "" ? "" : `&search=${search}`}`
+    );
+    let { staffDetails } = this.props;
+    let { staffList, pageMeta } = this.state;
+    staffList = staffDetails.dataList;
+    pageMeta = staffDetails.meta.pagination;
+    this.setState({
+      staffList,
+      pageMeta,
+      is_loading: false,
+    });
   };
 
   // pagination
@@ -239,47 +233,55 @@ export class ListStaffPlusClass extends React.Component {
             <div className="col-md-4">
               <h4>Filters</h4>
             </div>
-            <Navigation
-              activeItemId="/"
-              onSelect={({ itemId }) => this.handleFilterChange(itemId)}
-              items={[
-                {
-                  title: "Show All",
-                  itemId: "/",
-                },
-                {
-                  title: "Show Active",
-                  itemId: "/active",
-                },
-                {
-                  title: "Show Inctive",
-                  itemId: "/inactive",
-                },
-                {
-                  title: "By Emp Level",
-                  itemId: "/emplvl",
-                  subNav: levelList,
-                },
-                {
-                  title: "With Security Account",
-                  itemId: "/withSecurityAccount",
-                },
-                {
-                  title: "Without Security Account",
-                  itemId: "/withoutSecurityAccount",
-                },
-                {
-                  title: "By Site List",
-                  itemId: "/sitelist",
-                  subNav: locationOption,
-                },
-                {
-                  title: "By Operation",
-                  itemId: "/operation",
-                  subNav: jobOption,
-                },
-              ]}
-            />
+            {is_loading ? (
+              <div class="d-flex mt-5 align-items-center justify-content-center">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+            ) : (
+              <Navigation
+                activeItemId="/"
+                onSelect={({ itemId }) => this.handleFilterChange(itemId)}
+                items={[
+                  {
+                    title: "Show All",
+                    itemId: "/",
+                  },
+                  {
+                    title: "Show Active",
+                    itemId: "/active",
+                  },
+                  {
+                    title: "Show Inctive",
+                    itemId: "/inactive",
+                  },
+                  {
+                    title: "By Emp Level",
+                    itemId: "/emplvl",
+                    subNav: levelList,
+                  },
+                  {
+                    title: "With Security Account",
+                    itemId: "/withSecurityAccount",
+                  },
+                  {
+                    title: "Without Security Account",
+                    itemId: "/withoutSecurityAccount",
+                  },
+                  {
+                    title: "By Site List",
+                    itemId: "/sitelist",
+                    subNav: locationOption,
+                  },
+                  {
+                    title: "By Operation",
+                    itemId: "/operation",
+                    subNav: jobOption,
+                  },
+                ]}
+              />
+            )}
           </div>
           <div className="staffList-container col-xl">
             <div className="row align-items-center">
@@ -464,6 +466,7 @@ export class ListStaffPlusClass extends React.Component {
 
 const mapStateToProps = (state) => ({
   jobtitleList: state.common.jobtitleList,
+  staffDetails: state.staffPlus.staffPlusDetail,
 });
 
 const mapDispatchToProps = (dispatch) => {
