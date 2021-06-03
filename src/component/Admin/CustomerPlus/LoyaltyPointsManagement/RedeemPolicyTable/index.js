@@ -48,27 +48,11 @@ export class RedeemPolicyTableClass extends React.Component {
               <h3 className="head-label">Redeem Policy</h3>
             </div>
             <div className="col-md-8">
-              <div className="d-flex">
-                <div className="w-100 mr-5">
-                  <InputSearch
-                    className=""
-                    placeholder="Search Policy"
-                    onChange={this.handlesearch}
-                  />
-                </div>
-                <div className="w-100 col-6 p-0">
-                  <NormalButton
-                    mainbg={true}
-                    className="col-12 fs-15 float-right"
-                    label="Add Redeem Policy"
-                    onClick={() =>
-                      this.props.history.push(
-                        "lpmanagement/addredeem/"
-                      )
-                    }
-                  />
-                </div>
-              </div>
+              <InputSearch
+                className=""
+                placeholder="Search Policy"
+                onChange={this.handlesearch}
+              />
             </div>
           </div>
           <div className="tab-table-content">

@@ -57,8 +57,7 @@ export class ScheduleTable extends Component {
                       backgroundColor:
                         optionList.find((val) => val.value == data[keyName]) !=
                         null
-                          ? "#" +
-                            optionList.find((val) => val.value == data[keyName])
+                          ? optionList.find((val) => val.value == data[keyName])
                               .color
                           : "white",
                       cursor: "pointer",
@@ -95,7 +94,7 @@ export class ScheduleTable extends Component {
                       width: "20px",
                       height: "20px",
                       marginRight: "5px",
-                      backgroundColor: `#${e.color}`,
+                      backgroundColor: `${e.color}`,
                     }}
                   />
                   {e.shortDesc} - {e.label}

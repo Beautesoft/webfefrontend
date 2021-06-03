@@ -169,6 +169,59 @@ export const getSkillList =
     });
   };
 
+// update emp skilllist action
+export const updateEmpSkillList =
+  (id, body) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      staffPlus.updateEmpSkillList.addQuery = { key: "id", payload: id };
+      api({
+        ...staffPlus.updateEmpSkillList,
+        body,
+        header: { type: "Content-Type", value: "application/json" },
+      })
+        .then((response) => {
+          resolve(response);
+          let { message, status } = response;
+          if (status === 200) {
+            // dispatch({ type: ArticalsActionType.getArticalsDetails, payload: data });
+            Toast({ type: "success", message });
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
+// get emp skilllist  action
+export const getEmpSkillList =
+  (id) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      staffPlus.getEmpSkillList.addQuery = { key: "id", payload: id };
+      api({ ...staffPlus.getEmpSkillList })
+        .then((response) => {
+          resolve(response);
+          let { message, status, data } = response;
+          if (status === 200) {
+            dispatch({
+              type: StaffPlusActionType.getEmpEmpSkillList,
+              payload: data,
+            });
+            // Toast({ type: 'success', message })
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
 // get staffplus schedule  action
 export const getStaffSchedule =
   (id) =>
@@ -182,6 +235,32 @@ export const getStaffSchedule =
           if (status === 200) {
             dispatch({
               type: StaffPlusActionType.getStaffPlusSchedule,
+              payload: data,
+            });
+            // Toast({ type: 'success', message })
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
+// get staffplus schedule  action
+export const getAllEmpSchedule =
+  (id) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      staffPlus.getAllEmpSchedule.addQuery = { key: "id", payload: id };
+      api({ ...staffPlus.getAllEmpSchedule })
+        .then((response) => {
+          resolve(response);
+          let { message, status, data } = response;
+          if (status === 200) {
+            dispatch({
+              type: StaffPlusActionType.getStaffPlusAllEmpSchedule,
               payload: data,
             });
             // Toast({ type: 'success', message })

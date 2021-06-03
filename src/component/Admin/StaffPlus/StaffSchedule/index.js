@@ -4,8 +4,12 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Navigation } from "react-minimal-side-navigation";
 import { getJobtitle, getCommonApi } from "redux/actions/common";
-import { getStaffPlus, getStaffSchedule } from "redux/actions/staffPlus";
-import { NormalSelect, NormalInput } from "component/common";
+import {
+  getStaffPlus,
+  getStaffSchedule,
+  getAllEmpSchedule,
+} from "redux/actions/staffPlus";
+import { NormalSelect, NormalInput, Pagination } from "component/common";
 import { ScheduleTable } from "./SheduleTable";
 import { CalenderTable } from "./CalenderTable";
 import { BigCalander } from "./BigCalander";
@@ -13,7 +17,10 @@ import { BigCalander } from "./BigCalander";
 class StaffScheduleClass extends React.Component {
   state = {
     currentMenu: "/indi",
+    startMonth: new Date(),
+    endMonth: new Date(),
     selectedMonth: new Date(),
+    fullScheduleMonth: new Date(),
     formFields: {
       ws: [],
       altws: [],
@@ -28,11 +35,13 @@ class StaffScheduleClass extends React.Component {
         { name: "mango", data: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
       ],
     },
+    pageMeta: {},
     jobOption_selected: "",
     jobOption: [],
     staffList_selected: "",
     staffList: [],
     siteOptions: [],
+    selectedSiteOption: "",
     filteredSiteOptions: [],
     selected_site: "",
     isLoading: true,
@@ -44,7 +53,12 @@ class StaffScheduleClass extends React.Component {
     const month = ("0" + (date.getMonth() + 1)).slice(-2);
     const year = date.getFullYear();
 
-    this.setState({ selectedMonth: `${year}-${month}` });
+    this.setState({
+      selectedMonth: `${year}-${month}`,
+      startMonth: `${year}-${month}`,
+      endMonth: `${year}-${month}`,
+      fullScheduleMonth: `${year}-${month}`,
+    });
     this.getDatafromStore();
   }
 
@@ -142,7 +156,8 @@ class StaffScheduleClass extends React.Component {
 
   getScheduleData = async () => {
     let {
-      selectedMonth,
+      startMonth,
+      endMonth,
       jobOption_selected,
       selected_site,
       staffList_selected,
@@ -154,11 +169,25 @@ class StaffScheduleClass extends React.Component {
       jobOption_selected == ""
     )
       return;
+    let startDate = new Date(startMonth);
+    let d = startDate.getDate();
+    let day = d < 10 ? "0" + d : d;
+    let a = startDate.getMonth() + 1;
+    let month = a < 10 ? "0" + a : a;
+    let year = startDate.getFullYear();
+    startDate = `${year}-${month}-${1}`;
+
+    let endDate = new Date(endMonth);
+    endDate = new Date(endDate.getFullYear(), endDate.getMonth() + 1, 0);
+    d = endDate.getDate();
+    day = d < 10 ? "0" + d : d;
+    a = endDate.getMonth() + 1;
+    month = a < 10 ? "0" + a : a;
+    year = endDate.getFullYear();
+    endDate = `${year}-${month}-${day}`;
     this.setState({ isLoading: true });
     await this.props.getStaffSchedule(
-      `?emp_code=${staffList_selected}&site_code=${selected_site}&year=${
-        selectedMonth.split("-")[0]
-      }&month=${selectedMonth.split("-")[1]}`
+      `?emp_code=${staffList_selected}&site_code=${selected_site}&start=${startDate}&end=${endDate}`
     );
     let { weekSchedule, altWeekSchedule, monthlySchedule } =
       this.props.staffSchedule;
@@ -180,26 +209,68 @@ class StaffScheduleClass extends React.Component {
     this.setState({ formFields, isLoading: false });
   };
 
+  getFullScheduleData = async () => {
+    let { selected_site, fullScheduleMonth, formFields, pageMeta } = this.state;
+    formFields.staff_data = [];
+    if (selected_site == "") {
+      return this.setState({ formFields });
+    }
+    this.setState({ isLoading: true });
+    let date = new Date(fullScheduleMonth);
+    let a = date.getMonth() + 1;
+    let month = a < 10 ? "0" + a : a;
+    let year = date.getFullYear();
+    await this.props.getAllEmpSchedule(
+      `?siteCode=${selected_site}&year=${year}&month=${month}`
+    );
+    let { staffAllEmpSchedule } = this.props;
+    staffAllEmpSchedule.per_page = pageMeta;
+    for (let key of staffAllEmpSchedule.fullSchedule) {
+      formFields.staff_data.push({
+        name: key.emp_name,
+        schedule: key.schedules.map((e) => {
+          let date = new Date(e.date);
+          return { day: date.getDate(), value: e.itm_type };
+        }),
+      });
+    }
+    this.setState({ formFields, pageMeta });
+  };
+
   onJobChanged = (e) => {
     this.state.jobOption_selected = e.target.value;
+    this.setState({});
     this.updateStaffList();
   };
 
   onStaffChanged = (e) => {
     this.state.staffList_selected = e.target.value;
+    this.setState({});
     this.updateSiteList();
   };
 
   onSiteChange = (e) => {
     this.state.selected_site = e.target.value;
+    this.setState({});
     this.getScheduleData();
+  };
+
+  onSiteOptionChange = (e) => {
+    this.state.selectedSiteOption = e.target.value;
+    this.setState({});
+  };
+
+  onFullScheduleMonthChange = (e) => {
+    this.state.fullScheduleMonth = e.target.value;
+    this.setState({});
   };
 
   render() {
     let {
       currentMenu,
       formFields,
-      selectedMonth,
+      startMonth,
+      endMonth,
       jobOption,
       jobOption_selected,
       staffList_selected,
@@ -208,7 +279,10 @@ class StaffScheduleClass extends React.Component {
       isLoading,
       selected_site,
       siteOptions,
+      selectedSiteOption,
+      selectedMonth,
       scheduleOptions,
+      fullScheduleMonth,
     } = this.state;
 
     let { ws, altws, cal_data, status, staff_data } = formFields;
@@ -218,9 +292,14 @@ class StaffScheduleClass extends React.Component {
     };
 
     const handleMonthChange = (e) => {
-      this.state.selectedMonth = e.target.value;
+      this.state[e.target.name] = e.target.value;
+      if (e.target.name == "startMonth") {
+        this.state.endMonth = this.state.startMonth;
+        this.state.selectedMonth = this.state.startMonth;
+      } else if (e.target.name == "endMonth")
+        this.state.selectedMonth = this.state.startMonth;
       this.getScheduleData();
-      this.setState({ selectedMonth: e.target.value });
+      this.setState({});
     };
 
     return (
@@ -253,7 +332,7 @@ class StaffScheduleClass extends React.Component {
           ) : (
             <div className="col-xl">
               <div className="row align-items-center">
-                <div className="col-md-4 mb-4">
+                <div className="col-md-8 mb-4">
                   <h3>
                     {currentMenu == "/indi" ? "Individual" : "Full"} Staff
                     Schedule
@@ -341,14 +420,44 @@ class StaffScheduleClass extends React.Component {
 
                   <div className="form-group mb-4 pb-2">
                     <div className="row">
-                      <div className="col-4 mb-4">
+                      <div className="col-md-4 mb-4">
                         <label className="text-left text-black common-label-text fs-17 pb-3">
-                          Year and Month
+                          Start Year and Month
+                        </label>
+                        <div className="input-group">
+                          <NormalInput
+                            type="month"
+                            value={startMonth}
+                            name="startMonth"
+                            onChange={handleMonthChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-4 mb-4">
+                        <label className="text-left text-black common-label-text fs-17 pb-3">
+                          End Year and Month
+                        </label>
+                        <div className="input-group">
+                          <NormalInput
+                            type="month"
+                            value={endMonth}
+                            min={startMonth}
+                            name="endMonth"
+                            onChange={handleMonthChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6 mb-4">
+                        <label className="text-left text-black common-label-text fs-17 pb-3">
+                          Selected Year and Month
                         </label>
                         <div className="input-group">
                           <NormalInput
                             type="month"
                             value={selectedMonth}
+                            min={startMonth}
+                            max={endMonth}
+                            name="selectedMonth"
                             onChange={handleMonthChange}
                           />
                         </div>
@@ -375,12 +484,17 @@ class StaffScheduleClass extends React.Component {
                 <>
                   <div className="form-group mb-4 pb-2">
                     <div className="row">
-                      <div className="col-12">
+                      <div className="col-12 mb-4">
                         <label className="text-left text-black common-label-text fs-17 pb-3">
                           Site
                         </label>
                         <div className="input-group">
-                          <NormalSelect />
+                          <NormalSelect
+                            options={siteOptions}
+                            value={selectedSiteOption}
+                            name="selectedSiteOption"
+                            onChange={this.onSiteOptionChange}
+                          />
                         </div>
                       </div>
                     </div>
@@ -395,15 +509,15 @@ class StaffScheduleClass extends React.Component {
                         <div className="input-group">
                           <NormalInput
                             type="month"
-                            value={selectedMonth}
-                            onChange={handleMonthChange}
+                            value={fullScheduleMonth}
+                            onChange={this.onFullScheduleMonthChange}
                           />
                         </div>
                       </div>
                       <div className="col-12">
                         <div className="input-group">
                           <BigCalander
-                            date={selectedMonth}
+                            date={startMonth}
                             data={staff_data}
                             onChange={(data) => {
                               let { formFields } = this.state;
@@ -439,7 +553,7 @@ class StaffScheduleClass extends React.Component {
                             width: "20px",
                             height: "20px",
                             marginRight: "5px",
-                            backgroundColor: `#${e.color}`,
+                            backgroundColor: `${e.color}`,
                           }}
                         />
                         {e.shortDesc} - {e.label}
@@ -460,11 +574,18 @@ const mapStateToProps = (state) => ({
   jobtitleList: state.common.jobtitleList,
   staffPlusDetail: state.staffPlus.staffPlusDetail,
   staffSchedule: state.staffPlus.staffPlusSchedule,
+  staffAllEmpSchedule: state.staffPlus.staffPlusAllEmpSchedule,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
-    { getJobtitle, getStaffPlus, getCommonApi, getStaffSchedule },
+    {
+      getJobtitle,
+      getStaffPlus,
+      getCommonApi,
+      getStaffSchedule,
+      getAllEmpSchedule,
+    },
     dispatch
   );
 };

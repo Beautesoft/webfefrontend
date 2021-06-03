@@ -4,12 +4,11 @@ import { InputSearch, TableWrapper } from "component/common";
 import { connect } from "react-redux";
 import _ from "lodash";
 
-export class RewardPolicyTableClass extends React.Component {
+export class RedeemPolicyTableClass extends React.Component {
   state = {
     headerDetails: [
       { label: "Code", sortKey: "customerCode" },
-      { label: "Cust Type", sortKey: "customerType", enabled: true },
-      { label: "Reward Stock Type", sortKey: "rewardStockType", enabled: true },
+      { label: "Cust Class", sortKey: "customerClass", enabled: true },
       { label: "Currency Value", sortKey: "currencyValue", enabled: true },
       { label: "Point Value", sortKey: "pointsValue", enabled: true },
       { label: "Active", sortKey: "active", enabled: true },
@@ -46,14 +45,30 @@ export class RewardPolicyTableClass extends React.Component {
         <div className="customer-list container-fluid">
           <div className="row align-items-center">
             <div className="col-md-4">
-              <h3 className="head-label">Redward Policy</h3>
+              <h3 className="head-label">Redeem Policy</h3>
             </div>
             <div className="col-md-8">
-              <InputSearch
-                className=""
-                placeholder="Search Policy"
-                onChange={this.handlesearch}
-              />
+              <div className="d-flex">
+                <div className="w-100 mr-5">
+                  <InputSearch
+                    className=""
+                    placeholder="Search Policy"
+                    onChange={this.handlesearch}
+                  />
+                </div>
+                <div className="w-100 col-6 p-0">
+                  <NormalButton
+                    mainbg={true}
+                    className="col-12 fs-15 float-right"
+                    label="Add Redeem Policy"
+                    onClick={() =>
+                      this.props.history.push(
+                        "lpmanagement/addredeem/"
+                      )
+                    }
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <div className="tab-table-content">
@@ -190,4 +205,4 @@ export class RewardPolicyTableClass extends React.Component {
   }
 }
 
-export const RewardPolicyTable = connect()(RewardPolicyTableClass);
+export const RedeemPolicyTable = connect()(RedeemPolicyTableClass);

@@ -119,8 +119,7 @@ export class ScheduleTable extends Component {
                         optionList.find(
                           (val) => val.value == altws_data[keyName]
                         ) != null
-                          ? "#" +
-                            optionList.find(
+                          ? optionList.find(
                               (val) => val.value == altws_data[keyName]
                             ).color
                           : "white",

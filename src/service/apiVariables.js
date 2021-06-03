@@ -355,6 +355,18 @@ export const staffPlus = {
     },
     baseURL: "token",
   },
+  getAllEmpSchedule: {
+    url: "MonthlyAllSchedule/",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
   getStaff: {
     url: "staffPlus/",
     method: "get",
@@ -385,6 +397,30 @@ export const staffPlus = {
     id: null,
     get api() {
       return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  getEmpSkillList: {
+    url: "staffPlus/",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id + "/StaffSkills/";
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  updateEmpSkillList: {
+    url: "staffPlus/",
+    method: "put",
+    id: null,
+    get api() {
+      return this.url + this.id + "/StaffSkills/";
     },
     set addQuery({ key, payload }) {
       this[key] = payload;
@@ -543,8 +579,13 @@ export const customerPlus = {
   getCustomerPlusSettings: {
     url: "CustomerFormSettings/",
     method: "get",
+    id: null,
     get api() {
-      return this.url;
+      if (this.id == null) return this.url;
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
     },
     baseURL: "token",
   },

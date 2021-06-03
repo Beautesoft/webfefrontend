@@ -1,21 +1,23 @@
 import React from "react";
-import { NormalButton, NormalSelect } from "component/common";
+import { NormalButton, NormalInput } from "component/common";
 import { InputSearch, TableWrapper } from "component/common";
 import { connect } from "react-redux";
 import _ from "lodash";
 
-export class RewardPolicyTableClass extends React.Component {
+class ManualRewardClass extends React.Component {
   state = {
     headerDetails: [
-      { label: "Code", sortKey: "customerCode" },
-      { label: "Cust Type", sortKey: "customerType", enabled: true },
-      { label: "Reward Stock Type", sortKey: "rewardStockType", enabled: true },
-      { label: "Currency Value", sortKey: "currencyValue", enabled: true },
-      { label: "Point Value", sortKey: "pointsValue", enabled: true },
-      { label: "Active", sortKey: "active", enabled: true },
-      { label: "" },
+      { label: "S/N", sortKey: "SN" },
+      { label: "Date", sortKey: "date", enabled: true },
+      { label: "Reward", sortKey: "rewad", enabled: true },
+      { label: "Points", sortKey: "points", enabled: true },
+      { label: "New Balance", sortKey: "newBalance", enabled: true },
     ],
     dataList: [],
+    rewardList: [
+      { label: "Birthdays", points: 1500 },
+      { label: "Promo", points: 500 },
+    ],
     meta: {},
     currentIndex: -1,
   };
@@ -40,21 +42,24 @@ export class RewardPolicyTableClass extends React.Component {
   };
 
   render() {
-    let { headerDetails, dataList, meta, currentIndex } = this.state;
+    let { headerDetails, dataList, meta, rewardList } = this.state;
     return (
       <>
         <div className="customer-list container-fluid">
           <div className="row align-items-center">
             <div className="col-md-4">
-              <h3 className="head-label">Redward Policy</h3>
+              <h3 className="head-label">Manual Reward</h3>
             </div>
-            <div className="col-md-8">
-              <InputSearch
-                className=""
-                placeholder="Search Policy"
-                onChange={this.handlesearch}
-              />
-            </div>
+          </div>
+          <div className="card-columns mt-5">
+            {rewardList.map((e) => (
+              <div class="card text-center p-3">
+                <blockquote class="blockquote mb-0">
+                  <h6>{e.label}</h6>
+                  <footer class="blockquote-footer">{e.points}</footer>
+                </blockquote>
+              </div>
+            ))}
           </div>
           <div className="tab-table-content">
             <div className="py-4">
@@ -126,56 +131,6 @@ export class RewardPolicyTableClass extends React.Component {
                                 {cust_phone2}
                               </div>
                             </td>
-                            <td
-                              className={
-                                headerDetails[5].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_dob}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[6].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {"123"}
-                              </div>
-                            </td>
-                            <td
-                              className="position-relative"
-                              ref={(node) => {
-                                this.node = node;
-                              }}
-                              onClick={() => this.handleClick(index)}
-                            >
-                              {currentIndex === index ? (
-                                <>
-                                  <div className="d-flex align-items-center justify-content-center horizontal-more-active">
-                                    <i className="icon-more"></i>
-                                  </div>
-                                  <div className="option card">
-                                    <div
-                                      className="d-flex align-items-center fs-16 pt-3"
-                                      onClick={() =>
-                                        this.props.history.push(
-                                          `lpmanagement/${id}/editredeem`
-                                        )
-                                      }
-                                    >
-                                      <span className="icon-eye-grey px-3"></span>{" "}
-                                      Edit
-                                    </div>
-                                  </div>
-                                </>
-                              ) : (
-                                <div className="d-flex align-items-center justify-content-center horizontal-more">
-                                  <i className="icon-more"></i>
-                                </div>
-                              )}
-                            </td>
                           </tr>
                         );
                       })
@@ -190,4 +145,4 @@ export class RewardPolicyTableClass extends React.Component {
   }
 }
 
-export const RewardPolicyTable = connect()(RewardPolicyTableClass);
+export const ManualReward = connect()(ManualRewardClass);

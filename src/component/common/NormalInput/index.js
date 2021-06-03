@@ -12,6 +12,8 @@ export class NormalInput extends Component {
       type = "text",
       iconname = "",
       onClick,
+      min,
+      max,
       onFocus = ()=>{}
     } = this.props;
 
@@ -33,6 +35,8 @@ export class NormalInput extends Component {
           autoComplete="off"
           onFocus={onFocus}
           onClick={onClick ? onClick:()=>{}}
+          min = {min}
+          max = {max}
           onChange={e => {
             console.log(e)
             let body = {};

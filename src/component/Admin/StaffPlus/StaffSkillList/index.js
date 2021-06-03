@@ -48,45 +48,35 @@ export class StaffSkillListClass extends React.Component {
       selectedJobOption,
       selectedSkillOption,
     });
+
+    this.loadData();
   };
 
   loadData = async () => {
-    this.setState({isLoading : true})
-    let { data, header, selectedJobOption, selectedSkillOption, skillList } =
+    this.setState({ isLoading: true });
+    let { data, selectedJobOption, selectedSkillOption, skillList } =
       this.state;
-      if(selectedJobOption == "" || selectedJobOption == "" )
-      return
-    
-      this.props.getSkillList('')
-
-  };
-
-  // popup open/close
-  handleClick = (key) => {
-    if (!this.state.active) {
-      document.addEventListener("click", this.handleOutsideClick, false);
-    } else {
-      document.removeEventListener("click", this.handleOutsideClick, false);
+    if (selectedJobOption == "" || selectedSkillOption == "")
+      return this.setState({ data: [], skillListRes: [], isLoading: false });
+    let skillSetRes = await this.props.getCommonApi(
+      `SkillsView?item_type=${selectedSkillOption}`
+    );
+    await this.props.getSkillList(
+      `?emp_type=${selectedJobOption}&item_type=${selectedSkillOption}`
+    );
+    skillList = skillSetRes.data;
+    data = this.props.empSkillList.data;
+    let header = [{ label: "" }];
+    for (let key of this.props.empSkillList.data) {
+      header.push({ label: key.staffname });
     }
-
-    this.setState((prevState) => ({
-      active: !prevState.active,
-      currentIndex: key,
-    }));
-  };
-
-  // while clicking popup close at outside click
-  handleOutsideClick = (e) => {
-    if (this.node != null) {
-      if (this.node.contains(e.target)) {
-        return;
-      }
-    }
-    this.handleClick();
+    this.setState({ header, skillList, data, isLoading: false });
   };
 
   handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.state[e.target.name] = e.target.value;
+    this.setState();
+    this.loadData();
   };
 
   render() {
@@ -167,6 +157,10 @@ export class StaffSkillListClass extends React.Component {
                       <span class="sr-only">Loading...</span>
                     </div>
                   </div>
+                ) : data.length == 0 ? (
+                  <div class="d-flex mt-5 align-items-center justify-content-center">
+                    No Data
+                  </div>
                 ) : (
                   <div className="table-container">
                     <TableWrapper
@@ -174,14 +168,51 @@ export class StaffSkillListClass extends React.Component {
                       headerDetails={header}
                     >
                       {skillList
-                        ? skillList.map(({ id, label }, index) => {
+                        ? skillList.map(({ item_no, item_desc }) => {
                             return (
-                              <tr key={index}>
+                              <tr key={item_no}>
                                 <td>
                                   <div className="d-flex align-items-center justify-content-center">
-                                    {label}
+                                    {item_desc}
                                   </div>
                                 </td>
+                                {data.map((key) => {
+                                  return (
+                                    <td>
+                                      <div className="d-flex align-items-center justify-content-center">
+                                        {key.skills.filter(
+                                          (e) => e.item_no == item_no
+                                        ).length > 0 ? (
+                                          <div className="d-flex align-items-center justify-content-center">
+                                            <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              width="30"
+                                              height="30"
+                                              fill="currentColor"
+                                              class="bi bi-check"
+                                              viewBox="0 0 30 30"
+                                            >
+                                              <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                            </svg>
+                                          </div>
+                                        ) : (
+                                          <div className="d-flex align-items-center justify-content-center">
+                                            <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              width="30"
+                                              height="30"
+                                              fill="currentColor"
+                                              class="bi bi-x"
+                                              viewBox="0 0 30 30"
+                                            >
+                                              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                            </svg>
+                                          </div>
+                                        )}
+                                      </div>
+                                    </td>
+                                  );
+                                })}
                               </tr>
                             );
                           })
@@ -200,7 +231,7 @@ export class StaffSkillListClass extends React.Component {
 
 const mapStateToProps = (state) => ({
   jobtitleList: state.common.jobtitleList,
-  skillList: state.staffPlus.staffPlusSkillList,
+  empSkillList: state.staffPlus.staffPlusSkillList,
 });
 
 const mapDispatchToProps = (dispatch) => {

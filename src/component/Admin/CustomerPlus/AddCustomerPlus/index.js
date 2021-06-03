@@ -1,221 +1,319 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import "./style.scss";
-import { Link } from 'react-router-dom';
-import SimpleReactValidator from 'simple-react-validator';
-import { NormalInput, NormalSelect, NormalButton, NormalDate } from 'component/common';
-import { displayImg } from 'service/helperFunctions';
-import { DragFileUpload } from '../../../common';
-import { CreateCustomer, getCustomer, updateCustomer } from 'redux/actions/customer'
-import { connect } from 'react-redux';
+import { Link } from "react-router-dom";
+import SimpleReactValidator from "simple-react-validator";
+import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { AddCustomerForm } from './addCustomer';
-import { dateFormat } from 'service/helperFunctions';
-import { getLoginSaloon } from 'redux/actions/auth';
-import { updateForm } from 'redux/actions/common';
+import {
+  getCustomerPlusSettings,
+  updateCustomerPlus,
+  CreateCustomerPlus,
+  getCustomerPlus,
+} from "redux/actions/customerPlus";
+import {
+  NormalInput,
+  NormalDate,
+  NormalDateTime,
+  NormalSelect,
+  NormalMultiSelect,
+  NormalButton,
+} from "component/common";
 
 export class AddCustomerPlusClass extends Component {
-    state = {
-        formFields: {
-            cust_name: '',
-            cust_address: '',
-            cust_dob: "",
-            cust_phone2: '',
-            cust_email: '',
-            Cust_sexesid: '',
-            Site_Codeid: '',
-            custallowsendsms: false,
-            cust_maillist: false
-        },
-        sexOption: [
-            { value: 1, label: "Male" },
-            { value: 2, label: "Female" }
-        ],
-        salonList: []
-    };
+  state = {
+    formFields: {},
+    fields: [
+      {
+        id: 1,
+        field_name: "cust_dob",
+        display_field_name: "Customer DOB",
+        visible_in_registration: true,
+        visible_in_listing: true,
+        visible_in_profile: true,
+        mandatory: true,
+        data_type: "Dat",
+        selection: null,
+      },
+    ],
+    isLoading: true,
+  };
 
-    componentWillMount() {
-        if (this.props.match.params.id) {
-            this.getCustomer();
-        }
-        let { salonList } = this.state;
-        this.props.getLoginSaloon().then((res) => {
-            for (let key of res.data) {
-                salonList.push({ value: key.id, label: key.itemsite_desc })
-            }
-            this.setState({ salonList })
-        })
+  componentWillMount() {
+    this.validator = new SimpleReactValidator({
+      validators: {},
+      element: (message) => (
+        <span className="error-message text-danger validNo fs14">
+          {message}
+        </span>
+      ),
+      autoForceUpdate: this,
+    });
+    this.loadData();
+  }
+
+  loadData = async () => {
+    await this.props.getCustomerPlusSettings("details");
+    this.state.fields = this.props.customerPlusSettings.filter(
+      (e) => e.visible_in_registration
+    );
+    this.state.formFields = this.state.fields.reduce((map, obj) => {
+      map[obj.field_name] = "";
+      return map;
+    }, {});
+    if (this.props.match.params.id) {
+      await this.props.getCustomerPlus(this.props.match.params.id);
+      this.state.formFields = this.props.customerPlusDetail;
     }
+    this.setState({ isLoading: false });
+  };
 
-    getCustomer = () => {
-        this.props.getCustomer(this.props.match.params.id).then((res) => {
-            this.getDataFromStore();
-        })
-    }
-
-    getDataFromStore = () => {
-        let { formFields } = this.state;
-        let { customerDetail } = this.props
-        formFields['cust_name'] = customerDetail.cust_name;
-        formFields['cust_address'] = customerDetail.cust_address;
-        formFields['cust_dob'] = new Date(customerDetail.cust_dob);
-        formFields['cust_phone2'] = customerDetail.cust_phone2;
-        formFields['cust_email'] = customerDetail.cust_email;
-        formFields['Cust_sexesid'] = customerDetail.Cust_sexesid;
-        formFields['Site_Codeid'] = customerDetail.Site_Codeid;
-        formFields['custallowsendsms'] = customerDetail.custallowsendsms;
-        formFields['cust_maillist'] = customerDetail.cust_maillist;
-        this.setState({ formFields })
-        console.log(formFields, customerDetail, "sfsdfhsdfsdfg")
-    }
-
-    handleChange = ({ target: { value, name } }) => {
-        let formFields = Object.assign({}, this.state.formFields);
-
-        formFields[name] = value;
-
-
-        this.setState({
-            formFields,
+  handleSubmit = async (type) => {
+    if (!this.validator.allValid()) return this.validator.showMessages();
+    this.setState({ isLoading: true });
+    console.log(this.state.formFields);
+    try {
+      this.state.fields
+        .filter((e) => e.data_type == "date" || e.data_type == "datetime")
+        .forEach((e) => {
+          if (this.state.formFields[e.field_name]) {
+            let date = new Date(this.state.formFields[e.field_name]);
+            let d = date.getDate();
+            let day = d < 10 ? "0" + d : d;
+            let a = date.getMonth() + 1;
+            let month = a < 10 ? "0" + a : a;
+            let year = date.getFullYear();
+            this.state.formFields[e.field_name] = `${year}-${month}-${day}`;
+          }
         });
-    };
+      if (this.props.match.params.id) {
+        await this.props.updateCustomerPlus(
+          this.props.match.params.id + "/",
+          JSON.stringify(this.state.formFields)
+        );
+        if (type === "catalog") {
+          this.props.history.push(`/admin/cart`);
+        } else
+          this.props.history.push(
+            `/admin/customer/${this.props.match.params.id}/details`
+          );
+      } else {
+        await this.props.CreateCustomerPlus(
+          JSON.stringify(this.state.formFields)
+        );
+        if (type === "catalog") {
+          this.props.history.push(`/admin/cart`);
+        } else this.props.history.push(`/admin/customerPlus`);
+      }
+    } catch (e) {}
+    this.setState({ isLoading: false });
+  };
 
-    handleChangeBox = (event) => {
-        let formFields = Object.assign({}, this.state.formFields);
-
-        formFields[event.target.name] = event.target.checked;
-
-
-        this.setState({
-            formFields,
-        });
-    };
-
-
-    handleInput = ({ target: { name, value } }) => {
-
-        let formFields = Object.assign({}, this.state.formFields)
-        formFields[name] = (value === true ? 1 : value);
-        this.setState({
-            formFields
-        })
-
+  handleCancel = () => {
+    if (this.props.match.params.id) {
+      this.props.history.push(
+        `/admin/customerplus/${this.props.match.params.id}/details`
+      );
+    } else {
+      this.props.history.push(`/admin/customerplus`);
     }
+  };
 
-    handleSubmit = async (data) => {
-        let { formFields } = this.state;
-        let type = data;
-        console.log(type, "====", data, "sdfasdfasdf")
-       
-        let date = new Date(formFields.cust_dob)
-        let d = date.getDate();
-        let day = (d < 10 ? ("0" + d) : (d));
-        let a = date.getMonth() + 1;
-        let month = (a < 10 ? ("0" + a) : (a));
-        let year = date.getFullYear();
-        formFields["cust_dob"] =`${year}-${month}-${day}`;
+  handleChange = ({ target: { value, name } }) => {
+    let formFields = Object.assign({}, this.state.formFields);
 
-        if (this.props.match.params.id) {
-            await this.props.updateCustomer(`${this.props.match.params.id}/`, formFields).then((data) => {
-                if (data.status === 200) {
-                    this.resetData();
-                    if (this.props.match.params.id) {
-                        this.props.history.push(`/admin/customerplus/${this.props.match.params.id}/details`)
-                    }
-                }
-               
-            })
-            
-        } else {
-            await this.props.CreateCustomer(formFields).then(async (data) => {
-                if (data.status === 201) {
-                    this.resetData();
-                    if (this.props.match.params.id) {
-                        this.props.history.push(`/admin/cart/${this.props.match.params.id}/details`)
-                    } else {
-                        let formFields = {};
-                        formFields["custId"] = data.data.id;
-                        formFields["custName"] = data.data.cust_name;
-                        await this.props.updateForm('basicApptDetail', formFields)
-                        if (type === "catalog") {
-                            this.props.history.push(`/admin/cart`);
-                        } else if (data) {
-                            this.props.history.push(`/admin/customerplus`);
-                        } else {
-                            this.props.history.push(`/admin/cart`);
-                        }
-                    }
-                }
-            })
-            
-        }
-    };
+    formFields[name] = value;
 
-    handleCancel = () => {
-        if (this.props.match.params.id) {
-            this.props.history.push(`/admin/customerplus/${this.props.match.params.id}/details`)
-        } else {
-            this.props.history.push(`/admin/customerplus`);
-        }
-    }
+    this.setState({
+      formFields,
+    });
+  };
 
-    handleDatePick = async (name, value) => {
-        console.log(name, value, "sdfgdfhfshg", dateFormat(new Date()))
-        // dateFormat(new Date())
-        let { formFields } = this.state;
-        formFields[name] = value;
-        // formFields[name] = value;
-        await this.setState({
-            formFields,
-        });
-    };
+  handleMultiSelect = (field, e) => {
+    let formFields = Object.assign({}, this.state.formFields);
 
-    resetData = () => {
-        let { formFields } = this.state;
-        formFields['cust_name'] = "";
-        formFields['cust_address'] = "";
-        formFields['cust_dob'] = "";
-        formFields['cust_phone2'] = "";
-        formFields['cust_email'] = "";
-        formFields['Cust_sexesid'] = "";
-        formFields['Site_Codeid'] = "";
-        this.setState(formFields)
-    }
+    formFields[field] = e;
 
-    render() {
-        let { formFields, sexOption, salonList } = this.state;
-        let { cust_name } = formFields;
-        return (
-            <div className="create-customer-section container">
-                {/* <p className="list-heading pb-4"> {id ? "Edit" : "Add"} Customer</p> */}
-                <div className="create-customer">
-                    <div className="head-label-nav">
-                        <p className="category">Customer Plus</p>
-                        <i className="icon-right mx-md-3"></i>
-                        <p className="sub-category">{this.props.match.params.id ? "Edit" : "Add"} New Customer</p>
-                    </div>
-                    <div className="customer-detail">
-                        <AddCustomerForm formFields={formFields} salonList={salonList} handleDatePick={this.handleDatePick} sexOption={sexOption} handleChange={this.handleChange} handleSubmit={this.handleSubmit} handleCancel={this.handleCancel} handleChangeBox={this.handleChangeBox}></AddCustomerForm>
-                    </div>
+    this.setState({
+      formFields,
+    });
+  };
 
+  handleChangeBox = (event) => {
+    let formFields = Object.assign({}, this.state.formFields);
+
+    formFields[event.target.name] = event.target.checked;
+
+    this.setState({
+      formFields,
+    });
+  };
+
+  handleDatePick = async (name, value) => {
+    let { formFields } = this.state;
+    formFields[name] = value;
+    await this.setState({
+      formFields,
+    });
+  };
+
+  renderFields = () => {
+    return this.state.fields.map((e) => (
+      <div className="pb-md-4">
+        <label className="text-left text-black common-label-text fs-17 pb-2">
+          {e.display_field_name}
+        </label>
+        <div className="input-group py-3">
+          {e.data_type == "text" ? (
+            <NormalInput
+              placeholder="Enter here"
+              value={this.state.formFields[e.field_name]}
+              name={e.field_name}
+              onChange={this.handleChange}
+            />
+          ) : e.data_type == "date" ? (
+            <NormalDate
+              onChange={this.handleDatePick}
+              value={
+                this.state.formFields[e.field_name]
+                  ? new Date(this.state.formFields[e.field_name])
+                  : new Date()
+              }
+              name={e.field_name}
+              showYearDropdown={true}
+            />
+          ) : e.data_type == "datetime" ? (
+            <NormalDateTime
+              onChange={this.handleDatePick}
+              value={
+                this.state.formFields[e.field_name]
+                  ? new Date(this.state.formFields[e.field_name])
+                  : new Date()
+              }
+              name={e.field_name}
+              showYearDropdown={true}
+            />
+          ) : e.data_type == "selection" ? (
+            <NormalSelect
+              options={e.selection}
+              value={this.state.formFields[e.field_name]}
+              name={e.field_name}
+              onChange={this.handleChange}
+            />
+          ) : e.data_type == "multiSelect" ? (
+            <NormalMultiSelect
+              options={e.selection}
+              defaultValue={this.state.formFields[e.field_name]}
+              name={e.field_name}
+              handleMultiSelect={(e) => this.handleMultiSelect(e.field_name, e)}
+            />
+          ) : e.data_type == "boolean" ? (
+            <input
+              type="checkbox"
+              checked={this.state.formFields[e.field_name]}
+              name={e.field_name}
+              onClick={this.handleChangeBox}
+            />
+          ) : e.data_type == "number" ? (
+            <NormalInput
+              type="number"
+              placeholder="Enter here"
+              value={this.state.formFields[e.field_name]}
+              name={e.field_name}
+              onChange={this.handleChange}
+            />
+          ) : (
+            "NO FILED RENDER DATA FOUND"
+          )}
+        </div>
+        {e.mandatory
+          ? this.validator.message(
+              e.display_field_name,
+              e.field_name,
+              "required"
+            )
+          : null}
+      </div>
+    ));
+  };
+
+  render() {
+    let { isLoading } = this.state;
+    return (
+      <div className="create-customer-section container">
+        {/* <p className="list-heading pb-4"> {id ? "Edit" : "Add"} Customer</p> */}
+        <div className="create-customer">
+          <div className="head-label-nav">
+            <p className="category">Customer Plus</p>
+            <i className="icon-right mx-md-3"></i>
+            <p className="sub-category">
+              {this.props.match.params.id ? "Edit" : "Add"} New Customer
+            </p>
+          </div>
+          <div className="customer-detail">
+            {isLoading ? (
+              <div class="d-flex mt-5 align-items-center justify-content-center">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
                 </div>
-            </div>
-        )
-    }
+              </div>
+            ) : (
+              <>
+                <div className="form-group mb-4 pb-2">
+                  {this.renderFields()}
+                </div>
+                <div className="row d-flex justify-content-center">
+                  <div className="col-md-4 col-sm-12 mb-4">
+                    <NormalButton
+                      onClick={this.handleCancel}
+                      label="CANCEL"
+                      danger={true}
+                      className="mr-2 col-12"
+                    />
+                  </div>
+                  <div className="col-md-4 col-sm-12 mb-4">
+                    <NormalButton
+                      onClick={() => this.handleSubmit()}
+                      label="SAVE"
+                      success={true}
+                      className="mr-2 col-12"
+                    />
+                  </div>
+                  <div className="col-md-4 col-sm-12 mb-4">
+                    <NormalButton
+                      onClick={() => this.handleSubmit("catalog")}
+                      label="SAVE & CATALOG"
+                      success={true}
+                      className="mr-2 col-12"
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
-
 
 const mapStateToProps = (state) => ({
-    customerDetail: state.customer.customerDetail
-})
+  customerPlusDetail: state.customerPlus.customerPlusDetail,
+  customerPlusSettings: state.customerPlus.customerPlusSettings,
+});
 
-const mapDispatchToProps = dispatch => {
-    return bindActionCreators({
-        CreateCustomer,
-        getCustomer,
-        updateCustomer,
-        getLoginSaloon,
-        updateForm
-    }, dispatch)
-}
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      getCustomerPlusSettings,
+      updateCustomerPlus,
+      CreateCustomerPlus,
+      getCustomerPlus,
+    },
+    dispatch
+  );
+};
 
-export const AddCustomerPlus = connect(mapStateToProps, mapDispatchToProps)(AddCustomerPlusClass)
+export const AddCustomerPlus = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddCustomerPlusClass);

@@ -15,7 +15,7 @@ export class SettingsClass extends React.Component {
       { label: "Field Name", sortKey: "field" },
       { label: "Mandatory", sortKey: "mandatory" },
       { label: "Show in Register", sortKey: "register" },
-      { label: "Show in Edit", sortKey: "edit" },
+      { label: "Show in Profile", sortKey: "profile" },
       { label: "Show in Listing", sortKey: "listing" },
     ],
     isLoading: true,

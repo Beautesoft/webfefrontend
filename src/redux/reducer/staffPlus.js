@@ -4,7 +4,9 @@ const initialState = {
   staffPlusDetail: {},
   staffPlusWorkScheduleDetails: {},
   staffPlusSchedule: {},
+  staffPlusAllEmpSchedule: {},
   staffPlusSkillList : {},
+  staffPlustEmpSkillList : {},
 };
 
 export default (state = Object.assign({}, initialState), { type, payload }) => {
@@ -28,6 +30,16 @@ export default (state = Object.assign({}, initialState), { type, payload }) => {
       return {
         ...state,
         staffPlusSkillList: payload,
+      };
+      case StaffPlusActionType.getEmpEmpSkillList:
+      return {
+        ...state,
+        staffPlustEmpSkillList: payload,
+      };
+      case StaffPlusActionType.getStaffPlusAllEmpSchedule:
+      return {
+        ...state,
+        staffPlusAllEmpSchedule: payload,
       };
     default:
       return state;

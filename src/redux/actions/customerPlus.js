@@ -2,45 +2,57 @@ import { CustomerPlusActionType } from "redux/actions/actionType";
 import { customerPlus } from "../../service/apiVariables";
 
 // create customer action
-// export const CreateCustomer = body => (dispatch, getState, { api, Toast }) => {
-//   return new Promise((resolve, reject) => {
-//     api({ ...customer.addCustomer, body })
-//       .then((response) => {
-//         resolve(response)
-//         let { message, status } = response
-//         if (status === 200) {
-//           // dispatch({ type: ArticalsActionType.getArticalsDetails, payload: data });
-//           Toast({ type: 'success', message })
-//         } else {
-//           reject(Toast({ type: 'error', message }));
-//         }
-//       })
-//       .catch(({ message }) => {
-//         reject(Toast({ type: 'error', message }));
-//       });
-//   });
-// };
+export const CreateCustomerPlus =
+  (body) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      api({
+        ...customerPlus.addCustomerPlus,
+        body,
+        header: { type: "Content-Type", value: "application/json" },
+      })
+        .then((response) => {
+          resolve(response);
+          let { message, status } = response;
+          if (status === 200) {
+            // dispatch({ type: ArticalsActionType.getArticalsDetails, payload: data });
+            Toast({ type: "success", message });
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
 
 // update customer action
-// export const updateCustomer = (id, body) => (dispatch, getState, { api, Toast }) => {
-//   return new Promise((resolve, reject) => {
-//     customer.updateCustomer.addQuery = { key: 'id', payload: id };
-//     api({ ...customer.updateCustomer, body })
-//       .then((response) => {
-//         resolve(response)
-//         let { message, status } = response
-//         if (status === 200) {
-//           // dispatch({ type: ArticalsActionType.getArticalsDetails, payload: data });
-//           Toast({ type: 'success', message })
-//         } else {
-//           reject(Toast({ type: 'error', message }));
-//         }
-//       })
-//       .catch(({ message }) => {
-//         reject(Toast({ type: 'error', message }));
-//       });
-//   });
-// };
+export const updateCustomerPlus =
+  (id, body) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      customerPlus.updateCustomerPlus.addQuery = { key: "id", payload: id };
+      api({
+        ...customerPlus.updateCustomerPlus,
+        body,
+        header: { type: "Content-Type", value: "application/json" },
+      })
+        .then((response) => {
+          resolve(response);
+          let { message, status } = response;
+          if (status === 200) {
+            // dispatch({ type: ArticalsActionType.getArticalsDetails, payload: data });
+            Toast({ type: "success", message });
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
 
 // get customer action
 export const getCustomerPlus =
@@ -71,9 +83,15 @@ export const getCustomerPlus =
 
 // get customer settings action
 export const getCustomerPlusSettings =
-  () =>
+  (id) =>
   (dispatch, getState, { api, Toast }) => {
     return new Promise((resolve, reject) => {
+      if (id)
+        customerPlus.getCustomerPlusSettings.addQuery = {
+          key: "id",
+          payload: id,
+        };
+
       api({ ...customerPlus.getCustomerPlusSettings })
         .then((response) => {
           resolve(response);
