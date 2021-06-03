@@ -28,6 +28,7 @@ export class ListStaffPlusClass extends React.Component {
     jobOption: [],
     pageMeta: {},
     filerOption: "/",
+    selectedMenu: "/",
     active: false,
     currentIndex: -1,
     is_loading: false,
@@ -79,6 +80,7 @@ export class ListStaffPlusClass extends React.Component {
   };
 
   handleFilterChange = (filterOption = "") => {
+    this.state.selectedMenu = filterOption;
     var splitted = filterOption.split("/");
     var filter = this.state.filter;
     console.log(filterOption);
@@ -196,6 +198,7 @@ export class ListStaffPlusClass extends React.Component {
       jobOption,
       staffList,
       is_loading,
+      selectedMenu,
     } = this.state;
     return (
       <div className="container-fluid">
@@ -241,7 +244,7 @@ export class ListStaffPlusClass extends React.Component {
               </div>
             ) : (
               <Navigation
-                activeItemId="/"
+                activeItemId={selectedMenu}
                 onSelect={({ itemId }) => this.handleFilterChange(itemId)}
                 items={[
                   {
