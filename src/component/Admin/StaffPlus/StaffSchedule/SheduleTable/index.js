@@ -74,7 +74,7 @@ export class ScheduleTable extends Component {
                       backgroundColor:
                         optionList.find((val) => val.value == data[keyName]) !=
                         null
-                          ? "#" +
+                          ? 
                             optionList.find((val) => val.value == data[keyName])
                               .color
                           : "white",
