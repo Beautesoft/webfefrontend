@@ -5,27 +5,28 @@ Integrations Done
         - edit staff
         - inactivate staff
         - schedule individual : weekly
+        - skill listing
+        - add skills
     - CustomerPlus
         - listing
+        - add/edit customer
+        - profile Settings
+        - view customer
+
 
 UI Implemented (without api integrations)
     - StaffPlus
         - Authorization
-        - Skill listing
     - Customer+
-        - Add/Edit Customer
         - View
             - Dianosis
             - MGM on profile
-        - Settings 
         - Loyalty Point management 
             - Manual Reward/Redeem
             - Redeem/Reward policy
 
 Files Changed
-    package-lock.json
-    package.json
-    public/favicon.ico
+
     public/index.html
     public/manifest.json
     readme.txt
@@ -89,7 +90,6 @@ Files Changed
     src/component/Admin/Cart/cart/productDetailsPopup.js
     src/component/Admin/Cart/cart/staffSelectionPopup.js
     src/component/Admin/Cart/cart/style.scss
-    src/component/Admin/CustomerPlus/AddCustomerPlus/addCustomer.js
     src/component/Admin/CustomerPlus/AddCustomerPlus/index.js
     src/component/Admin/CustomerPlus/AddCustomerPlus/style.scss
     src/component/Admin/CustomerPlus/AddRedeemPolicy/index.js
@@ -142,6 +142,12 @@ Files Changed
     src/component/Admin/CustomerPlus/LoyaltyPointsManagement/RewardPolicyTable/index.js
     src/component/Admin/CustomerPlus/LoyaltyPointsManagement/index.js
     src/component/Admin/CustomerPlus/LoyaltyPointsManagement/style.scss
+    src/component/Admin/CustomerPlus/LoyaltyPointsSettings/ManualRedeem/index.js
+    src/component/Admin/CustomerPlus/LoyaltyPointsSettings/ManualReward/index.js
+    src/component/Admin/CustomerPlus/LoyaltyPointsSettings/RedeemPolicyTable/index.js
+    src/component/Admin/CustomerPlus/LoyaltyPointsSettings/RewardPolicyTable/index.js
+    src/component/Admin/CustomerPlus/LoyaltyPointsSettings/index.js
+    src/component/Admin/CustomerPlus/LoyaltyPointsSettings/style.scss
     src/component/Admin/StaffPlus/AddStaffPlus/ScheduleTable/index.js
     src/component/Admin/StaffPlus/AddStaffPlus/index.js
     src/component/Admin/StaffPlus/AddStaffPlus/style.scss
@@ -188,7 +194,9 @@ Files Changed
     src/pages/StaffPlus/index.js
     src/pages/index.js
     src/redux/actions/actionType.js
+    src/redux/actions/customerPlus.js
     src/redux/actions/staffPlus.js
+    src/redux/reducer/customerPlus.js
     src/redux/reducer/index.js
     src/redux/reducer/staffPlus.js
     src/routes/routes.js

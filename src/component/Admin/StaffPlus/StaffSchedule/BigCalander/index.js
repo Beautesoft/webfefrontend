@@ -19,13 +19,15 @@ export class BigCalander extends Component {
       staffIndex++
     ) {
       let staff = this.props.data[staffIndex];
-      for (let index = 0; index <= staff.data.length; index++) {
-        let anchor = document.getElementById(staff.name + index)?.parentElement;
+      for (let index = 0; index <= staff?.schedules?.length; index++) {
+        let anchor = document.getElementById(
+          staff.emp_code + index
+        )?.parentElement;
         if (anchor) {
           anchor.onclick = () => {
             if (this.props.disabled ?? false) return;
             document
-              .getElementById(staff.name + index)
+              .getElementById(staff.emp_code + index)
               .classList.toggle("show");
           };
         }
@@ -45,7 +47,7 @@ export class BigCalander extends Component {
       staffIndex++
     ) {
       let staff = this.props.data[staffIndex];
-      for (let index = 0; index <= staff.data.length; index++) {
+      for (let index = 0; index <= staff.schedules.length; index++) {
         let anchor = document.getElementById(staff.name + index)?.parentElement;
         if (anchor) {
           anchor.onclick = () => {
@@ -62,51 +64,66 @@ export class BigCalander extends Component {
     let {
       date = this.state.selectedMonth,
       data = [
-        { name: "apple", data: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
-        { name: "orange", data: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
-        { name: "mango", data: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+        {
+          emp_name: "TestTherapist",
+          emp_code: "EMP100001",
+          schedules: [
+            { id: 7971, date: "2021-06-01T00:00:00", itm_type: "100010" },
+            { id: 7971, date: "2021-06-02T00:00:00", itm_type: "100010" },
+          ],
+        },
       ],
+      options,
       onChange,
       disabled = false,
     } = this.props;
-
+    console.log(data);
     let d = new Date(date);
     let lastDayDate = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
 
     const handOnOptionClick = (staffIndex, index, value) => {
       if (disabled) return;
-
-      data[staffIndex].data =
-        data[staffIndex].data.substr(0, index) +
-        value +
-        data[staffIndex].data.substr(index + 1, data[staffIndex].data.length);
+      data[staffIndex].schedules[index].itm_type = value;
       onChange(data);
     };
 
-    const days = [];
     const headers = [];
 
     for (let index = 1; index <= lastDayDate; index++) {
       headers.push(<th className="text-dark">{index}</th>);
-      days.push(index - 1);
     }
     const rows = [];
     for (let staffIndex = 0; staffIndex < data.length; staffIndex++) {
       let staff = data[staffIndex];
-      console.log(data);
       rows.push(
         <tr>
-          <th className="table-header-color text-dark">{staff.name}</th>
-          {days.map((day) => (
-            <td className={staff.data[day]}>
-              <div id={staff.name + day} class="dropdown-content">
-                <label onClick={() => handOnOptionClick(staffIndex, day, "e")}>
+          <th className="table-header-color text-dark">{staff.emp_name}</th>
+          {staff.schedules.map((data, index) => (
+            <td
+              style={{
+                backgroundColor:
+                  options.find((val) => val.value == data.itm_type) != null
+                    ? options.find((val) => val.value == data.itm_type).color
+                    : "white",
+              }}
+            >
+              {options.find((val) => val.value == data.itm_type) != null
+                ? options.find((val) => val.value == data.itm_type).shortDesc
+                : "N/A"}
+              <div id={staff.emp_code + index} class="dropdown-content">
+                <label
+                  onClick={() => handOnOptionClick(staffIndex, index, "e")}
+                >
                   empty
                 </label>
-                <label onClick={() => handOnOptionClick(staffIndex, day, "o")}>
+                <label
+                  onClick={() => handOnOptionClick(staffIndex, index, "o")}
+                >
                   option 1
                 </label>
-                <label onClick={() => handOnOptionClick(staffIndex, day, "w")}>
+                <label
+                  onClick={() => handOnOptionClick(staffIndex, index, "w")}
+                >
                   option 2
                 </label>
               </div>
@@ -118,11 +135,13 @@ export class BigCalander extends Component {
     return (
       <div class="table-responsive">
         <table className="table">
-          <tr className="table-header-color">
-            <th className="text-dark">Staff</th>
-            {headers}
-          </tr>
-          {rows}
+          <thead>
+            <tr className="table-header-color">
+              <th className="text-dark">Staff</th>
+              {headers}
+            </tr>
+          </thead>
+          <tbody>{rows}</tbody>
         </table>
       </div>
     );

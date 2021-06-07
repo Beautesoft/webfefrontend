@@ -26,14 +26,7 @@ class StaffScheduleClass extends React.Component {
       altws: [],
       cal_data: [],
       status: "All",
-      staff_data: [
-        { name: "apple", data: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
-        { name: "orange", data: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
-        { name: "mango", data: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
-        { name: "mango", data: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
-        { name: "mango", data: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
-        { name: "mango", data: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
-      ],
+      staff_data: [],
     },
     pageMeta: {},
     jobOption_selected: "",
@@ -41,7 +34,6 @@ class StaffScheduleClass extends React.Component {
     staffList_selected: "",
     staffList: [],
     siteOptions: [],
-    selectedSiteOption: "",
     filteredSiteOptions: [],
     selected_site: "",
     isLoading: true,
@@ -209,7 +201,7 @@ class StaffScheduleClass extends React.Component {
     this.setState({ formFields, isLoading: false });
   };
 
-  getFullScheduleData = async () => {
+  getFullScheduleData = async (page = 1) => {
     let { selected_site, fullScheduleMonth, formFields, pageMeta } = this.state;
     formFields.staff_data = [];
     if (selected_site == "") {
@@ -217,24 +209,15 @@ class StaffScheduleClass extends React.Component {
     }
     this.setState({ isLoading: true });
     let date = new Date(fullScheduleMonth);
-    let a = date.getMonth() + 1;
-    let month = a < 10 ? "0" + a : a;
+    let month = date.getMonth() + 1;
     let year = date.getFullYear();
     await this.props.getAllEmpSchedule(
-      `?siteCode=${selected_site}&year=${year}&month=${month}`
+      `?site_id=${selected_site}&limit=10&year=${year}&month=${month}&page=${page}`
     );
     let { staffAllEmpSchedule } = this.props;
-    staffAllEmpSchedule.per_page = pageMeta;
-    for (let key of staffAllEmpSchedule.fullSchedule) {
-      formFields.staff_data.push({
-        name: key.emp_name,
-        schedule: key.schedules.map((e) => {
-          let date = new Date(e.date);
-          return { day: date.getDate(), value: e.itm_type };
-        }),
-      });
-    }
-    this.setState({ formFields, pageMeta });
+    pageMeta = staffAllEmpSchedule.pagination;
+    formFields.staff_data = staffAllEmpSchedule.fullSchedule;
+    this.setState({ formFields, pageMeta, isLoading: false });
   };
 
   onJobChanged = (e) => {
@@ -256,13 +239,15 @@ class StaffScheduleClass extends React.Component {
   };
 
   onSiteOptionChange = (e) => {
-    this.state.selectedSiteOption = e.target.value;
+    this.state.selected_site = e.target.value;
     this.setState({});
+    this.getFullScheduleData({});
   };
 
   onFullScheduleMonthChange = (e) => {
     this.state.fullScheduleMonth = e.target.value;
     this.setState({});
+    this.getFullScheduleData({});
   };
 
   render() {
@@ -279,10 +264,10 @@ class StaffScheduleClass extends React.Component {
       isLoading,
       selected_site,
       siteOptions,
-      selectedSiteOption,
       selectedMonth,
       scheduleOptions,
       fullScheduleMonth,
+      pageMeta,
     } = this.state;
 
     let { ws, altws, cal_data, status, staff_data } = formFields;
@@ -491,8 +476,8 @@ class StaffScheduleClass extends React.Component {
                         <div className="input-group">
                           <NormalSelect
                             options={siteOptions}
-                            value={selectedSiteOption}
-                            name="selectedSiteOption"
+                            value={selected_site}
+                            name="selected_site"
                             onChange={this.onSiteOptionChange}
                           />
                         </div>
@@ -519,6 +504,8 @@ class StaffScheduleClass extends React.Component {
                           <BigCalander
                             date={startMonth}
                             data={staff_data}
+                            options={scheduleOptions}
+                            disabled={true}
                             onChange={(data) => {
                               let { formFields } = this.state;
                               formFields["staff_data"] = data;
@@ -528,17 +515,13 @@ class StaffScheduleClass extends React.Component {
                             }}
                           />
                         </div>
+                        {pageMeta && (
+                          <Pagination
+                            handlePagination={this.getFullScheduleData}
+                            pageMeta={pageMeta}
+                          />
+                        )}
                       </div>
-                    </div>
-                  </div>
-                  <div className="palette">
-                    <div className="color-detail">
-                      <div className="color"></div>
-                      <div className="detail">Available</div>
-                    </div>
-                    <div className="color-detail">
-                      <div className="color not-available"></div>
-                      <div className="detail">Holiday</div>
                     </div>
                   </div>
                 </>
