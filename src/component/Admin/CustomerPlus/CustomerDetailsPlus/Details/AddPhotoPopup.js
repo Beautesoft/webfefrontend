@@ -108,7 +108,6 @@ export class AddPhotoPopupClass extends Component {
                   <div className="col-12">
                     <Webcam
                       audio={false}
-                      height={600}
                       ref={this.setRef}
                       screenshotFormat="image/jpeg"
                       width={"100%"}

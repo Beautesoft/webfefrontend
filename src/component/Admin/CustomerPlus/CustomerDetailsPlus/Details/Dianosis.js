@@ -93,8 +93,7 @@ export class DianosisClass extends React.Component {
       { label: "Treatment Done", sortKey: "treatments" },
       { label: "Sales", sortKey: "sales" },
     ],
-    visitList: [
-    ],
+    visitList: [],
     meta: {},
     active: false,
     currentIndex: -1,
@@ -145,7 +144,7 @@ export class DianosisClass extends React.Component {
       historyTableHeader,
       selectedRemark,
       visitList,
-      visitTableHeader
+      visitTableHeader,
     } = this.state;
     return (
       <>
@@ -177,21 +176,23 @@ export class DianosisClass extends React.Component {
             {currentMenu == "/" ? (
               <div className="col-md-12 col-lg-10">
                 <div className="col-md-12 mb-4">
-                  <div className="d-flex">
-                    <div className="w-100 mr-5">
+                  <div className="row">
+                    <div className="col-sm-12 col-md-6 mb-4 p-0">
                       <InputSearch
                         className=""
                         placeholder="Search Photo"
                         onChange={this.handlePhotosearch}
                       />
                     </div>
-                    <div className="w-100 col-6 p-0">
-                      <NormalButton
-                        mainbg={true}
-                        className="col-12 fs-15 float-right"
-                        label="Add Photo"
-                        onClick={() => this.setState({ isAddPhotoOpen: true })}
-                      />
+                    <div className="col-sm-12 col-md-6 p-0">
+                        <NormalButton
+                          mainbg={true}
+                          className="col-md-10 fs-15 float-right"
+                          label="Add Photo"
+                          onClick={() =>
+                            this.setState({ isAddPhotoOpen: true })
+                          }
+                        />
                     </div>
                   </div>
                 </div>
@@ -208,13 +209,8 @@ export class DianosisClass extends React.Component {
                     >
                       {photoList
                         ? photoList.map((item, index) => {
-                            let {
-                              isCompare,
-                              image,
-                              date,
-                              code,
-                              remarks,
-                            } = item;
+                            let { isCompare, image, date, code, remarks } =
+                              item;
                             console.log(photoTableHeader[0]);
                             return (
                               <tr key={index}>
@@ -318,8 +314,8 @@ export class DianosisClass extends React.Component {
             ) : currentMenu == "/history" ? (
               <div className="col-md-12 col-lg-10">
                 <div className="col-md-12 mb-4">
-                  <div className="d-flex">
-                    <div className="w-100 mr-5">
+                  <div className="row">
+                    <div className="col-12 p-0">
                       <InputSearch
                         className=""
                         placeholder="Search History"
@@ -430,8 +426,8 @@ export class DianosisClass extends React.Component {
             ) : (
               <div className="col-md-12 col-lg-10">
                 <div className="col-md-12 mb-4">
-                  <div className="d-flex">
-                    <div className="w-100 mr-5">
+                  <div className="row">
+                    <div className="col-12 p-0">
                       <InputSearch
                         className=""
                         placeholder="Search Visit"
@@ -543,7 +539,7 @@ export class DianosisClass extends React.Component {
           </div>
 
           <NormalModal
-            style={{ minWidth: "1000px" }}
+            style={{ minWidth: "80%" }}
             modal={isAddPhotoOpen}
             handleModal={() => this.setState({ isAddPhotoOpen: false })}
           >
@@ -559,7 +555,7 @@ export class DianosisClass extends React.Component {
             />
           </NormalModal>
           <NormalModal
-            style={{ minWidth: "1200px" }}
+            style={{ minWidth: "80%" }}
             modal={isCompareOpen}
             handleModal={() => this.setState({ isCompareOpen: false })}
           >
