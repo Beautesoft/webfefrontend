@@ -28,10 +28,10 @@ export class ComparePhotoPopupClass extends Component {
       <>
         <div className="container-fluid mb-4 mt-2 product-details">
           <div className="row">
-            <div className="col-10">
+            <div className="col-6">
               <h4>Compare Photo</h4>
             </div>
-            <div className="col-2">
+            <div className="col-6">
               <NormalButton
                 mainbg={true}
                 className="col-12 fs-15 "
@@ -43,9 +43,9 @@ export class ComparePhotoPopupClass extends Component {
           <div className="row pl-5 pr-5 mt-4">
             {dataList
               ? dataList.map((data) => (
-                  <div className="col-6 mb-4">
+                  <div className="col-md-6 mb-4">
                     <div className="col-12 mb-4">
-                      <img src={data.image} height={350} width={"100%"} />
+                      <img src={data.image} height="100%" width={"100%"} />
                     </div>
                     <div className="col-12">
                       <label className="text-left text-black common-label-text fs-17 pb-2">

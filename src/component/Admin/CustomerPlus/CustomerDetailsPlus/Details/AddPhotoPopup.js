@@ -87,11 +87,11 @@ export class AddPhotoPopupClass extends Component {
       <>
         <div className="container-fluid mb-4 mt-2 product-details">
           <div className="row">
-            <div className="col-10">
+            <div className="col-6">
               <h4>Add Photo</h4>
             </div>
             {image == null ? null : (
-              <div className="col-2">
+              <div className="col-6">
                 <NormalButton
                   mainbg={true}
                   className="col-12 fs-15 "
@@ -153,7 +153,7 @@ export class AddPhotoPopupClass extends Component {
               <div className="col-12 mb-4">
                 <CanvasDraw
                   imgSrc={this.state.image}
-                  canvasHeight={600}
+                  canvasHeight={"60vw"}
                   ref={(ref) => (this.canvasDraw = ref)}
                   canvasWidth={"100%"}
                   brushRadius={brushRadius}
