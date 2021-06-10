@@ -4,7 +4,7 @@ Integrations Done
         - add staff
         - edit staff
         - inactivate staff
-        - schedule individual : weekly
+        - schedule screens
         - skill listing
         - add skills
     - CustomerPlus
@@ -27,6 +27,9 @@ UI Implemented (without api integrations)
 
 Files Changed
 
+    package-lock.json
+    package.json
+    public/favicon.ico
     public/index.html
     public/manifest.json
     readme.txt
@@ -82,14 +85,144 @@ Files Changed
     src/assets/scss/pages/pages-dir.scss
     src/assets/scss/vendors/notification.scss
     src/assets/scss/vendors/vendors-dir.scss
+    src/component/Admin/Appointment/AppointmentDetail/index.js
+    src/component/Admin/Appointment/AppointmentDetail/style.scss
+    src/component/Admin/Appointment/CreateAppointment/AllAppointment.js
+    src/component/Admin/Appointment/CreateAppointment/AppointmentForm.js
+    src/component/Admin/Appointment/CreateAppointment/Availability.js
+    src/component/Admin/Appointment/CreateAppointment/BookAppointment/BookAppointment.js
+    src/component/Admin/Appointment/CreateAppointment/BookAppointment/treatmentsList.js
+    src/component/Admin/Appointment/CreateAppointment/Cart/index.js
+    src/component/Admin/Appointment/CreateAppointment/Cart/style.scss
+    src/component/Admin/Appointment/CreateAppointment/CartAppointment/CartAppointment.js
+    src/component/Admin/Appointment/CreateAppointment/CartAppointment/treatmentsList.js
+    src/component/Admin/Appointment/CreateAppointment/RoomList.js
+    src/component/Admin/Appointment/CreateAppointment/StaffList.js
+    src/component/Admin/Appointment/CreateAppointment/customerAppoitment.js
+    src/component/Admin/Appointment/CreateAppointment/index.js
+    src/component/Admin/Appointment/CreateAppointment/modal/TreatmentPackage.js
+    src/component/Admin/Appointment/CreateAppointment/selectTreatment.js
+    src/component/Admin/Appointment/CreateAppointment/style.scss
+    src/component/Admin/Appointment/CreateAppointment/treatments.js
+    src/component/Admin/Appointment/CreateAppointment/treatmentsConfirm.js
+    src/component/Admin/Appointment/CreateAppointment/treatmentsDetail.js
+    src/component/Admin/Appointment/ListAppointment/CommonScheduler/Calander.js
+    src/component/Admin/Appointment/ListAppointment/CommonScheduler/Event.js
+    src/component/Admin/Appointment/ListAppointment/CommonScheduler/Scheduler.js
+    src/component/Admin/Appointment/ListAppointment/CommonScheduler/Sidebar.js
+    src/component/Admin/Appointment/ListAppointment/CommonScheduler/index.js
+    src/component/Admin/Appointment/ListAppointment/CommonScheduler/style.scss
+    src/component/Admin/Appointment/ListAppointment/Scheduler/index.js
+    src/component/Admin/Appointment/ListAppointment/Scheduler/style.scss
+    src/component/Admin/Appointment/ListAppointment/index.js
+    src/component/Admin/Appointment/ListAppointment/style.scss
+    src/component/Admin/Billing/CustomerReceipt.js
+    src/component/Admin/Billing/Print.js
+    src/component/Admin/Billing/index.js
+    src/component/Admin/Billing/style.scss
+    src/component/Admin/Cart/BillOps/billOps.js
+    src/component/Admin/Cart/BillOps/reversal.js
+    src/component/Admin/Cart/BillOps/style.scss
+    src/component/Admin/Cart/BillOps/voidPaidTrans.js
     src/component/Admin/Cart/cart.js
     src/component/Admin/Cart/cart/CoursePopup.js
     src/component/Admin/Cart/cart/ItemDiscountPopup.js
+    src/component/Admin/Cart/cart/StaffList.js
+    src/component/Admin/Cart/cart/cartList.js
+    src/component/Admin/Cart/cart/discount.js
+    src/component/Admin/Cart/cart/editCart.js
+    src/component/Admin/Cart/cart/editDiscount.js
     src/component/Admin/Cart/cart/index.js
     src/component/Admin/Cart/cart/itemStatusPopup.js
+    src/component/Admin/Cart/cart/package.js
+    src/component/Admin/Cart/cart/payment.js
     src/component/Admin/Cart/cart/productDetailsPopup.js
     src/component/Admin/Cart/cart/staffSelectionPopup.js
     src/component/Admin/Cart/cart/style.scss
+    src/component/Admin/Cart/cart/treatmentDone.js
+    src/component/Admin/Cart/cart/treatments.js
+    src/component/Admin/Cart/carthome.js
+    src/component/Admin/Cart/index.js
+    src/component/Admin/Cart/style.scss
+    src/component/Admin/Cart/topup/prepaid.js
+    src/component/Admin/Cart/topup/product.js
+    src/component/Admin/Cart/topup/style.scss
+    src/component/Admin/Cart/topup/topup.js
+    src/component/Admin/Cart/topup/treatment.js
+    src/component/Admin/Cart/treatmentDone/ItemUsageUpdatePopup.js
+    src/component/Admin/Cart/treatmentDone/TreatmentHistoryCart.js
+    src/component/Admin/Cart/treatmentDone/TreatmentUsageDetail.js
+    src/component/Admin/Cart/treatmentDone/TreatmentUsagePopup.js
+    src/component/Admin/Cart/treatmentDone/reversal.js
+    src/component/Admin/Cart/treatmentDone/style.scss
+    src/component/Admin/Cart/treatmentDone/treatment.js
+    src/component/Admin/Cart/treatmentDone/treatmentDone.js
+    src/component/Admin/Catalog/all.js
+    src/component/Admin/Catalog/catalogCart.js
+    src/component/Admin/Catalog/course/category.js
+    src/component/Admin/Catalog/course/dept.js
+    src/component/Admin/Catalog/course/index.js
+    src/component/Admin/Catalog/course/items.js
+    src/component/Admin/Catalog/course/itemsDetail.js
+    src/component/Admin/Catalog/courses.js
+    src/component/Admin/Catalog/favorite.js
+    src/component/Admin/Catalog/index.js
+    src/component/Admin/Catalog/package.js
+    src/component/Admin/Catalog/prepaid.js
+    src/component/Admin/Catalog/retail.js
+    src/component/Admin/Catalog/retailProduct.js
+    src/component/Admin/Catalog/salonProduct.js
+    src/component/Admin/Catalog/services.js
+    src/component/Admin/Catalog/services/category.js
+    src/component/Admin/Catalog/services/dept.js
+    src/component/Admin/Catalog/services/index.js
+    src/component/Admin/Catalog/services/items.js
+    src/component/Admin/Catalog/services/itemsDetail.js
+    src/component/Admin/Catalog/style.scss
+    src/component/Admin/Catalog/voucher.js
+    src/component/Admin/Customer/AddCustomer/addCustomer.js
+    src/component/Admin/Customer/AddCustomer/index.js
+    src/component/Admin/Customer/AddCustomer/style.scss
+    src/component/Admin/Customer/CustomerDetails/Account.js
+    src/component/Admin/Customer/CustomerDetails/AccountDetail.js
+    src/component/Admin/Customer/CustomerDetails/Accounts/creditNote.js
+    src/component/Admin/Customer/CustomerDetails/Accounts/index.js
+    src/component/Admin/Customer/CustomerDetails/Accounts/modal/ServiceExchange.js
+    src/component/Admin/Customer/CustomerDetails/Accounts/prepaidAccount.js
+    src/component/Admin/Customer/CustomerDetails/Accounts/productAccount.js
+    src/component/Admin/Customer/CustomerDetails/Accounts/style.scss
+    src/component/Admin/Customer/CustomerDetails/Accounts/treatmentAccount.js
+    src/component/Admin/Customer/CustomerDetails/CustomerDetail.js
+    src/component/Admin/Customer/CustomerDetails/Detail.js
+    src/component/Admin/Customer/CustomerDetails/Details/Appointments.js
+    src/component/Admin/Customer/CustomerDetails/Details/Favourites.js
+    src/component/Admin/Customer/CustomerDetails/Details/PersonalDetails.js
+    src/component/Admin/Customer/CustomerDetails/Details/PurchaseHistory.js
+    src/component/Admin/Customer/CustomerDetails/Details/TreatmentHistory.js
+    src/component/Admin/Customer/CustomerDetails/Details/index.js
+    src/component/Admin/Customer/CustomerDetails/HoldSection.js
+    src/component/Admin/Customer/CustomerDetails/HoldSection/Hold.js
+    src/component/Admin/Customer/CustomerDetails/HoldSection/modal/issuedStaff.js
+    src/component/Admin/Customer/CustomerDetails/HoldSection/modal/style.scss
+    src/component/Admin/Customer/CustomerDetails/HoldSection/style.scss
+    src/component/Admin/Customer/CustomerDetails/HoldSections.js
+    src/component/Admin/Customer/CustomerDetails/Invoice/Invoice.js
+    src/component/Admin/Customer/CustomerDetails/Invoice/index.js
+    src/component/Admin/Customer/CustomerDetails/InvoiceHistory.js
+    src/component/Admin/Customer/CustomerDetails/InvoiceHistorys.js
+    src/component/Admin/Customer/CustomerDetails/TreatmentDetail.js
+    src/component/Admin/Customer/CustomerDetails/TreatmentHistory.js
+    src/component/Admin/Customer/CustomerDetails/TreatmentHistory/course.js
+    src/component/Admin/Customer/CustomerDetails/TreatmentHistory/diagnosis.js
+    src/component/Admin/Customer/CustomerDetails/TreatmentHistory/index.js
+    src/component/Admin/Customer/CustomerDetails/TreatmentHistory/style.scss
+    src/component/Admin/Customer/CustomerDetails/TreatmentHistory/treatmentCourse.js
+    src/component/Admin/Customer/CustomerDetails/TreatmentHistory/treatmentCourseDetails.js
+    src/component/Admin/Customer/CustomerDetails/TreatmentHistory/treatmentHistory.js
+    src/component/Admin/Customer/CustomerDetails/index.js
+    src/component/Admin/Customer/CustomerDetails/style.scss
+    src/component/Admin/Customer/ListCustomer/index.js
+    src/component/Admin/Customer/ListCustomer/style.scss
     src/component/Admin/CustomerPlus/AddCustomerPlus/index.js
     src/component/Admin/CustomerPlus/AddCustomerPlus/style.scss
     src/component/Admin/CustomerPlus/AddRedeemPolicy/index.js
@@ -148,6 +281,143 @@ Files Changed
     src/component/Admin/CustomerPlus/LoyaltyPointsSettings/RewardPolicyTable/index.js
     src/component/Admin/CustomerPlus/LoyaltyPointsSettings/index.js
     src/component/Admin/CustomerPlus/LoyaltyPointsSettings/style.scss
+    src/component/Admin/Dashboard/Statistic/AdminStats/AdminReport/CustomerByCountry/CountryChart.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/AdminReport/CustomerByCountry/index.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/AdminReport/CustomerByCountry/style.scss
+    src/component/Admin/Dashboard/Statistic/AdminStats/AdminReport/InvoicesStats/ProgressCircle.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/AdminReport/InvoicesStats/index.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/AdminReport/InvoicesStats/style.scss
+    src/component/Admin/Dashboard/Statistic/AdminStats/AdminReport/Logs/index.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/AdminReport/Logs/style.scss
+    src/component/Admin/Dashboard/Statistic/AdminStats/CustomerStats/BarChart.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/CustomerStats/index.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/CustomerStats/style.scss
+    src/component/Admin/Dashboard/Statistic/AdminStats/IncomeStats/index.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/IncomeStats/lineChart.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/IncomeStats/style.scss
+    src/component/Admin/Dashboard/Statistic/AdminStats/NewDashboard/NewQuickChart/Chart.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/NewDashboard/NewQuickChart/index.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/NewDashboard/NewQuickChart/style.scss
+    src/component/Admin/Dashboard/Statistic/AdminStats/NewDashboard/NewQuickStats/index.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/NewDashboard/NewQuickStats/style.scss
+    src/component/Admin/Dashboard/Statistic/AdminStats/NewDashboard/NewQuickTopSale/TopTenList.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/NewDashboard/NewQuickTopSale/index.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/NewDashboard/NewQuickTopSale/style.scss
+    src/component/Admin/Dashboard/Statistic/AdminStats/NewDashboard/NewStaffStats/index.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/NewDashboard/NewStaffStats/style.scss
+    src/component/Admin/Dashboard/Statistic/AdminStats/NewDashboard/index.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/SalesReport/SalesByCategory/index.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/SalesReport/SalesByProduct/index.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/SalesReport/SalesBySalon/index.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/SalesReport/index.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/SalesReport/style.scss
+    src/component/Admin/Dashboard/Statistic/AdminStats/StaffsAndServices/index.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/StaffsAndServices/lineChart.js
+    src/component/Admin/Dashboard/Statistic/AdminStats/StaffsAndServices/style.scss
+    src/component/Admin/Dashboard/Statistic/AdminStats/index.js
+    src/component/Admin/Dashboard/Statistic/QuickStats/index.js
+    src/component/Admin/Dashboard/Statistic/QuickStats/style.scss
+    src/component/Admin/Dashboard/Statistic/SalesStats/IncomeStats/index.js
+    src/component/Admin/Dashboard/Statistic/SalesStats/IncomeStats/lineChart.js
+    src/component/Admin/Dashboard/Statistic/SalesStats/IncomeStats/style.scss
+    src/component/Admin/Dashboard/Statistic/SalesStats/SalesReport/SalesByCategory/index.js
+    src/component/Admin/Dashboard/Statistic/SalesStats/SalesReport/SalesByProduct/index.js
+    src/component/Admin/Dashboard/Statistic/SalesStats/SalesReport/SalesBySalon/index.js
+    src/component/Admin/Dashboard/Statistic/SalesStats/SalesReport/index.js
+    src/component/Admin/Dashboard/Statistic/SalesStats/SalesReport/style.scss
+    src/component/Admin/Dashboard/Statistic/SalesStats/Statistics/Products.js
+    src/component/Admin/Dashboard/Statistic/SalesStats/Statistics/Services.js
+    src/component/Admin/Dashboard/Statistic/SalesStats/Statistics/index.js
+    src/component/Admin/Dashboard/Statistic/SalesStats/index.js
+    src/component/Admin/Dashboard/Statistic/SalesStats/style.scss
+    src/component/Admin/Dashboard/Statistic/index.js
+    src/component/Admin/Dashboard/index.js
+    src/component/Admin/Dashboard/style.scss
+    src/component/Admin/DayEndReport/Dayendreportpage/index.js
+    src/component/Admin/DayEndReport/index.js
+    src/component/Admin/DayEndReport/style.scss
+    src/component/Admin/Inventory/InventoryMainPage/InventoryList.js
+    src/component/Admin/Inventory/InventoryMainPage/Model/CreateNewInventory.js
+    src/component/Admin/Inventory/InventoryMainPage/Model/StockItemUsagePopup.js
+    src/component/Admin/Inventory/InventoryMainPage/Model/StockMemoStaffList.js
+    src/component/Admin/Inventory/InventoryMainPage/Model/index.js
+    src/component/Admin/Inventory/InventoryMainPage/index.js
+    src/component/Admin/Inventory/InventoryMainPage/style.scss
+    src/component/Admin/NewAppointment/CommonModal/Appointmentlog.js
+    src/component/Admin/NewAppointment/NewAppointmentDetail/index.js
+    src/component/Admin/NewAppointment/NewAppointmentDetail/style.scss
+    src/component/Admin/NewAppointment/NewCreateAppointment/AppointmentForm.js
+    src/component/Admin/NewAppointment/NewCreateAppointment/Availability.js
+    src/component/Admin/NewAppointment/NewCreateAppointment/NewSelectTreatment.js
+    src/component/Admin/NewAppointment/NewCreateAppointment/NewWalkinCustomer.js
+    src/component/Admin/NewAppointment/NewCreateAppointment/customerAppoitment.js
+    src/component/Admin/NewAppointment/NewCreateAppointment/index.js
+    src/component/Admin/NewAppointment/NewCreateAppointment/modal/TreatmentPackage.js
+    src/component/Admin/NewAppointment/NewCreateAppointment/modal/index.js
+    src/component/Admin/NewAppointment/NewCreateAppointment/style.scss
+    src/component/Admin/NewAppointment/NewListAppointment/CommonScheduler/Calander.js
+    src/component/Admin/NewAppointment/NewListAppointment/CommonScheduler/Event.js
+    src/component/Admin/NewAppointment/NewListAppointment/CommonScheduler/Scheduler.js
+    src/component/Admin/NewAppointment/NewListAppointment/CommonScheduler/Sidebar.js
+    src/component/Admin/NewAppointment/NewListAppointment/CommonScheduler/index.js
+    src/component/Admin/NewAppointment/NewListAppointment/CommonScheduler/style.scss
+    src/component/Admin/NewAppointment/NewListAppointment/Scheduler/index.js
+    src/component/Admin/NewAppointment/NewListAppointment/Scheduler/style.scss
+    src/component/Admin/NewAppointment/NewListAppointment/index.js
+    src/component/Admin/NewAppointment/NewListAppointment/modal/BlockPopup.js
+    src/component/Admin/NewAppointment/NewListAppointment/modal/PrintModal.js
+    src/component/Admin/NewAppointment/NewListAppointment/modal/StaffSorting.js
+    src/component/Admin/NewAppointment/NewListAppointment/modal/TreatmentHistory.js
+    src/component/Admin/NewAppointment/NewListAppointment/modal/UpcomingAppointment.js
+    src/component/Admin/NewAppointment/NewListAppointment/style.scss
+    src/component/Admin/Payment/index.js
+    src/component/Admin/Payment/makePayment.js
+    src/component/Admin/Payment/selectPayment.js
+    src/component/Admin/Payment/style.scss
+    src/component/Admin/Product/CreateProduct/index.js
+    src/component/Admin/Product/CreateProduct/style.scss
+    src/component/Admin/Product/ListProduct/TypeOfServices/AllProduct.js
+    src/component/Admin/Product/ListProduct/index.js
+    src/component/Admin/Product/ListProduct/style.scss
+    src/component/Admin/Product/ProductDetails/Details/details.js
+    src/component/Admin/Product/ProductDetails/index.js
+    src/component/Admin/Product/ProductDetails/style.scss
+    src/component/Admin/Review/index.js
+    src/component/Admin/Review/style.scss
+    src/component/Admin/Salons/CreateSalon/index.js
+    src/component/Admin/Salons/CreateSalon/style.scss
+    src/component/Admin/Salons/ListSalons/index.js
+    src/component/Admin/Salons/ListSalons/style.scss
+    src/component/Admin/Salons/SalonDetails/Details/customerList.js
+    src/component/Admin/Salons/SalonDetails/Details/details.js
+    src/component/Admin/Salons/SalonDetails/Details/index.js
+    src/component/Admin/Salons/SalonDetails/Details/productSaleHistory.js
+    src/component/Admin/Salons/SalonDetails/Details/staffList.js
+    src/component/Admin/Salons/SalonDetails/index.js
+    src/component/Admin/Salons/SalonDetails/style.scss
+    src/component/Admin/Services/CreateService/index.js
+    src/component/Admin/Services/CreateService/style.scss
+    src/component/Admin/Services/ListService/TypeOfServices/AllServices.js
+    src/component/Admin/Services/ListService/TypeOfServices/ComboServices.js
+    src/component/Admin/Services/ListService/TypeOfServices/index.js
+    src/component/Admin/Services/ListService/index.js
+    src/component/Admin/Services/ListService/style.scss
+    src/component/Admin/Services/ServiceDetails/Details/details.js
+    src/component/Admin/Services/ServiceDetails/index.js
+    src/component/Admin/Services/ServiceDetails/style.scss
+    src/component/Admin/Staff/AddStaff/index.js
+    src/component/Admin/Staff/AddStaff/style.scss
+    src/component/Admin/Staff/ListStaff/index.js
+    src/component/Admin/Staff/ListStaff/style.scss
+    src/component/Admin/Staff/StaffAvailability/index.js
+    src/component/Admin/Staff/StaffAvailability/style.scss
+    src/component/Admin/Staff/StaffDetails/Details/customerList.js
+    src/component/Admin/Staff/StaffDetails/Details/dashboard.js
+    src/component/Admin/Staff/StaffDetails/Details/details.js
+    src/component/Admin/Staff/StaffDetails/Details/index.js
+    src/component/Admin/Staff/StaffDetails/Details/performance.js
+    src/component/Admin/Staff/StaffDetails/index.js
+    src/component/Admin/Staff/StaffDetails/style.scss
     src/component/Admin/StaffPlus/AddStaffPlus/ScheduleTable/index.js
     src/component/Admin/StaffPlus/AddStaffPlus/index.js
     src/component/Admin/StaffPlus/AddStaffPlus/style.scss
@@ -180,6 +450,13 @@ Files Changed
     src/component/Admin/StaffPlus/StaffSchedule/style.scss
     src/component/Admin/StaffPlus/StaffSkillList/index.js
     src/component/Admin/StaffPlus/StaffSkillList/styles.scss
+    src/component/Admin/TransactionHistory/Print.js
+    src/component/Admin/TransactionHistory/TransactionReceipt.js
+    src/component/Admin/TransactionHistory/index.js
+    src/component/Admin/TransactionHistory/style.scss
+    src/component/Header/ProfileMenu/index.js
+    src/component/Header/ProfileMenu/style.scss
+    src/component/Header/index.js
     src/component/Header/navbar.js
     src/component/Sidebar/index.js
     src/component/common/InputSearch/index.js
@@ -190,8 +467,13 @@ Files Changed
     src/layout/AuthLayout.js
     src/layout/MainLayout.js
     src/layout/index.js
+    src/pages/Auth/Login.js
+    src/pages/Customer/index.js
     src/pages/CustomerPlus/index.js
+    src/pages/DayEndReport/index.js
+    src/pages/Inventory/index.js
     src/pages/StaffPlus/index.js
+    src/pages/TransactionHistory/index.js
     src/pages/index.js
     src/redux/actions/actionType.js
     src/redux/actions/customerPlus.js
@@ -200,5 +482,6 @@ Files Changed
     src/redux/reducer/index.js
     src/redux/reducer/staffPlus.js
     src/routes/routes.js
+    src/service/Helper.js
     src/service/api.js
     src/service/apiVariables.js
