@@ -29,22 +29,16 @@ export class ListCustomerPlusClass extends React.Component {
     active: false,
     currentIndex: -1,
     isLoading: true,
+    isMounted: true,
   };
-  // handleClick = (key,active) => {
-  //     let currentIndex;
-  //     if (this.state.active == true) {
-  //         this.setState({
-  //             active: false,
-  //             currentIndex: '-1'
-  //         })
-  //     }
-  //     else {
-  //         this.setState({
-  //             active: active,
-  //             currentIndex: key
-  //         })
-  //     }
-  // }
+
+  componentWillUnmount() {
+    this.state.isMounted = false;
+  }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
+  };
 
   componentDidMount = () => {
     this.getCustomerPlus({});
@@ -57,7 +51,7 @@ export class ListCustomerPlusClass extends React.Component {
       document.removeEventListener("click", this.handleOutsideClick, false);
     }
 
-    this.setState((prevState) => ({
+    this.updateState((prevState) => ({
       active: !prevState.active,
       currentIndex: key,
     }));
@@ -73,15 +67,15 @@ export class ListCustomerPlusClass extends React.Component {
   };
 
   getCustomerPlus = async (data) => {
-    this.setState({ isLoading: true });
+    this.updateState({ isLoading: true });
     let { page = 1, limit = 10, search = "" } = data;
     await this.props.getCustomerPlus(
       `?page=${page}&limit=${limit}&search=${search}`
     );
     let { customerDetails } = this.props;
-    this.setState({
+    this.updateState({
       customerList: customerDetails.dataList,
-      meta: customerDetails.meta.pagination,
+      meta: customerDetails.meta?.pagination,
       isLoading: false,
     });
   };
@@ -114,7 +108,7 @@ export class ListCustomerPlusClass extends React.Component {
   };
 
   handleMenuSelection = (itemId) => {
-    this.setState({ currentMenu: itemId });
+    this.updateState({ currentMenu: itemId });
   };
 
   render() {
@@ -182,7 +176,7 @@ export class ListCustomerPlusClass extends React.Component {
                       pageMeta={meta}
                       showFilterColumn={true}
                       parentHeaderChange={(value) =>
-                        this.setState(() => (headerDetails = value))
+                        this.updateState(() => (headerDetails = value))
                       }
                     >
                       {isLoading ? (

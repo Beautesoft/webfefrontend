@@ -26,7 +26,17 @@ class AddStaffSkillClass extends React.Component {
     skills: [],
     selectedSkills: [],
     isLoading: true,
+    isMounted: true,
   };
+
+  componentWillUnmount() {
+    this.state.isMounted = false;
+  }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
+  };
+
   componentDidMount() {
     this.getData();
   }
@@ -41,7 +51,7 @@ class AddStaffSkillClass extends React.Component {
     for (let key of jobtitleList) {
       jobOptions.push({ value: key.id, label: key.level_desc });
     }
-    this.setState({ jobOptions, skillCategories });
+    this.updateState({ jobOptions, skillCategories });
   };
   getStaff = async () => {
     let { selectedJobOption, staffOptions } = this.state;
@@ -50,13 +60,13 @@ class AddStaffSkillClass extends React.Component {
     for (let key of staffDetails.dataList) {
       staffOptions.push({ value: key.id, label: key.display_name });
     }
-    this.setState({ staffOptions });
+    this.updateState({ staffOptions });
   };
   getStaffDetails = async () => {
     await this.props.getEmpSkillList(this.state.selectedStaff);
     let { empSkillList } = this.props;
     let skills = empSkillList.skills;
-    this.setState({ skills, isLoading: false });
+    this.updateState({ skills, isLoading: false });
   };
   getSkills = async () => {
     let skillSetRes = await this.props.getCommonApi(
@@ -71,12 +81,12 @@ class AddStaffSkillClass extends React.Component {
         item_name: e.item_name,
       });
     }
-    this.setState({ skillList });
+    this.updateState({ skillList });
   };
   handleJobChange = (e) => {
     if (e.target.value == this.state.selectedJobOption) return;
     this.state.selectedJobOption = e.target.value;
-    this.setState({
+    this.updateState({
       isLoading: true,
       selectedStaff: "",
       staffOptions: [],
@@ -86,7 +96,7 @@ class AddStaffSkillClass extends React.Component {
   handleStaffChange = (e) => {
     if (e.target.value == this.state.selectedStaff) return;
     this.state.selectedStaff = e.target.value;
-    this.setState({
+    this.updateState({
       skills: [],
       isLoading: true,
     });
@@ -95,22 +105,22 @@ class AddStaffSkillClass extends React.Component {
   handleSkillCategoryChange = (e) => {
     if (e.target.value == this.state.selectedSkillCategory) return;
     this.state.selectedSkillCategory = e.target.value;
-    this.setState({});
+    this.updateState({});
     if (e.target.value != "") this.getSkills();
   };
   handleSubmit = async () => {
-    this.setState({ isLoading: true });
+    this.updateState({ isLoading: true });
     let data = {};
     data.skillsCodeList = this.state.skills.map((e) => e.item_code);
     await this.props.updateEmpSkillList(
       this.state.selectedStaff,
       JSON.stringify(data)
     );
-    this.setState({ isLoading: false });
+    this.updateState({ isLoading: false });
   };
   handleDeleteSkill = (id) => {
     this.state.skills = this.state.skills.filter((e) => e.item_code != id);
-    this.setState({});
+    this.updateState({});
   };
   handleAddSkills = () => {
     for (let e of this.state.selectedSkills) {
@@ -121,11 +131,11 @@ class AddStaffSkillClass extends React.Component {
         this.state.skills.push(e);
     }
     this.state.selectedSkills = [];
-    this.setState({});
+    this.updateState({});
   };
   handleMultiSelect = (e) => {
     this.state.selectedSkills = e;
-    this.setState({});
+    this.updateState({});
   };
   render() {
     let {

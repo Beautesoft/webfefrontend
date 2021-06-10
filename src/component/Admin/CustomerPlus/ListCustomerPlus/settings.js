@@ -19,6 +19,15 @@ export class SettingsClass extends React.Component {
       { label: "Show in Listing", sortKey: "listing" },
     ],
     isLoading: true,
+    isMounted: true,
+  };
+
+  componentWillUnmount() {
+    this.state.isMounted = false;
+  }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
   };
 
   componentDidMount() {
@@ -28,14 +37,14 @@ export class SettingsClass extends React.Component {
   handleSearch = (event) => {};
 
   loadData = async () => {
-    this.setState({ isLoading: true });
+    this.updateState({ isLoading: true });
     await this.props.getCustomerPlusSettings();
     let { dataList } = this.props;
-    this.setState({ dataList, isLoading: false });
+    this.updateState({ dataList, isLoading: false });
   };
 
   handleSubmit = async () => {
-    this.setState({ isLoading: true });
+    this.updateState({ isLoading: true });
     let { dataList } = this.state;
     if (dataList.length == 0) return;
     let reqData = { customerControlList: dataList };
@@ -76,7 +85,7 @@ export class SettingsClass extends React.Component {
                 headerDetails={tableHeader}
                 queryHandler={this.handlePagination}
                 parentHeaderChange={(value) =>
-                  this.setState(() => (tableHeader = value))
+                  this.updateState(() => (tableHeader = value))
                 }
               >
                 {isLoading ? (
@@ -121,7 +130,7 @@ export class SettingsClass extends React.Component {
                               checked={mandatory}
                               onClick={() => {
                                 dataList[index].mandatory = !mandatory;
-                                this.setState({ dataList });
+                                this.updateState({ dataList });
                               }}
                             />
                           </div>
@@ -138,7 +147,7 @@ export class SettingsClass extends React.Component {
                               onClick={() => {
                                 dataList[index].visible_in_registration =
                                   !visible_in_registration;
-                                this.setState({ dataList });
+                                this.updateState({ dataList });
                               }}
                             />
                           </div>
@@ -155,7 +164,7 @@ export class SettingsClass extends React.Component {
                               onClick={() => {
                                 dataList[index].visible_in_profile =
                                   !visible_in_profile;
-                                this.setState({ dataList });
+                                this.updateState({ dataList });
                               }}
                             />
                           </div>
@@ -172,7 +181,7 @@ export class SettingsClass extends React.Component {
                               onClick={() => {
                                 dataList[index].visible_in_listing =
                                   !visible_in_listing;
-                                this.setState({ dataList });
+                                this.updateState({ dataList });
                               }}
                             />
                           </div>

@@ -20,6 +20,15 @@ export class AddPhotoPopupClass extends Component {
       { label: "Green", value: "green" },
       { label: "Blue", value: "blue" },
     ],
+    isMounted: true,
+  };
+
+  componentWillUnmount() {
+    this.state.isMounted = false;
+  }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
   };
 
   componentWillMount() {
@@ -32,10 +41,10 @@ export class AddPhotoPopupClass extends Component {
     navigator.getMedia(
       { video: true },
       () => {
-        this.setState({ isCameraAvailable: true });
+        this.updateState({ isCameraAvailable: true });
       },
       () => {
-        this.setState({ isCameraAvailable: false });
+        this.updateState({ isCameraAvailable: false });
       }
     );
   }
@@ -44,7 +53,7 @@ export class AddPhotoPopupClass extends Component {
     let { image, remarks } = this.props;
     console.log(this.props);
     if (image && remarks) {
-      this.setState({ image, remarks });
+      this.updateState({ image, remarks });
     }
     document.getElementById("get_file").onclick = function () {
       document.getElementById("my_file").click();
@@ -57,11 +66,11 @@ export class AddPhotoPopupClass extends Component {
 
   capture = () => {
     const imageSrc = this.webcam.getScreenshot();
-    this.setState({ image: imageSrc });
+    this.updateState({ image: imageSrc });
   };
 
   handleChange = (e) => {
-    this.setState({
+    this.updateState({
       [e.target.name]: e.target.value,
     });
   };
@@ -140,7 +149,7 @@ export class AddPhotoPopupClass extends Component {
                     if (e.target.value || e.target.value != null) {
                       var reader = new FileReader();
                       reader.onload = (e) => {
-                        this.setState({ image: e.target.result });
+                        this.updateState({ image: e.target.result });
                       };
                       reader.readAsDataURL(e.target.files[0]);
                     }
@@ -171,7 +180,7 @@ export class AddPhotoPopupClass extends Component {
                   max="20"
                   value={brushRadius}
                   onChange={(e) =>
-                    this.setState({ brushRadius: e.target.value })
+                    this.updateState({ brushRadius: e.target.value })
                   }
                 />
               </div>
@@ -183,7 +192,7 @@ export class AddPhotoPopupClass extends Component {
                   options={brushColorOptions}
                   value={brushColor}
                   onChange={(e) =>
-                    this.setState({ brushColor: e.target.value })
+                    this.updateState({ brushColor: e.target.value })
                   }
                 />
               </div>

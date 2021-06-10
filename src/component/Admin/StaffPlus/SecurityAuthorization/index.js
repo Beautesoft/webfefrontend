@@ -158,7 +158,17 @@ export class SecurityAuthorizationClass extends Component {
       "Beauticion",
       "Therapist",
     ],
+    isMounted: true,
   };
+
+  componentWillUnmount() {
+    this.state.isMounted = false;
+  }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
+  };
+
   render() {
     let { groupData, groupColumns, individualData } = this.state;
     return (
@@ -175,7 +185,7 @@ export class SecurityAuthorizationClass extends Component {
                 data={groupData}
                 columns={groupColumns}
                 onChange={(data) =>
-                  this.setState(() => (this.state.groupData = data))
+                  this.updateState(() => (this.state.groupData = data))
                 }
               />
             </div>
@@ -217,11 +227,15 @@ export class SecurityAuthorizationClass extends Component {
                 FEData={individualData.FEData}
                 BEData={individualData.BEData}
                 onFEChange={(data) =>
-                  this.setState(() => (this.state.individualData.FEData = data))
+                  this.updateState(
+                    () => (this.state.individualData.FEData = data)
+                  )
                 }
                 onBEChange={(data) =>
-                    this.setState(() => (this.state.individualData.BEData = data))
-                  }
+                  this.updateState(
+                    () => (this.state.individualData.BEData = data)
+                  )
+                }
               />
             </div>
           </div>

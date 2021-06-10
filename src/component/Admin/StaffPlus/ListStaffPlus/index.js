@@ -32,6 +32,15 @@ export class ListStaffPlusClass extends React.Component {
     active: false,
     currentIndex: -1,
     is_loading: false,
+    isMounted: true,
+  };
+
+  componentWillUnmount() {
+    this.state.isMounted = false;
+  }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
   };
 
   componentDidMount() {
@@ -47,7 +56,7 @@ export class ListStaffPlusClass extends React.Component {
           itemId: "/sitelist/" + key.id,
         });
       }
-      this.setState({ locationOption });
+      this.updateState({ locationOption });
     });
 
     // level option api
@@ -56,7 +65,7 @@ export class ListStaffPlusClass extends React.Component {
       for (let key of res.data) {
         levelList.push({ itemId: "/emp_lvl/" + key.id, title: key.level_name });
       }
-      this.setState({ levelList });
+      this.updateState({ levelList });
     });
 
     // jobtitle option api
@@ -73,7 +82,7 @@ export class ListStaffPlusClass extends React.Component {
       document.removeEventListener("click", this.handleOutsideClick, false);
     }
 
-    this.setState((prevState) => ({
+    this.updateState((prevState) => ({
       active: !prevState.active,
       currentIndex: key,
     }));
@@ -130,7 +139,7 @@ export class ListStaffPlusClass extends React.Component {
 
   // api call for staff
   queryHandler = async (data) => {
-    this.setState({ is_loading: true });
+    this.updateState({ is_loading: true });
     let { page = 1, limit = 10, search = "" } = data;
     await this.props.getStaffPlus(
       `?page=${page}&limit=${limit}${
@@ -140,8 +149,8 @@ export class ListStaffPlusClass extends React.Component {
     let { staffDetails } = this.props;
     let { staffList, pageMeta } = this.state;
     staffList = staffDetails.dataList;
-    pageMeta = staffDetails.meta.pagination;
-    this.setState({
+    pageMeta = staffDetails.meta?.pagination;
+    this.updateState({
       staffList,
       pageMeta,
       is_loading: false,
@@ -178,7 +187,7 @@ export class ListStaffPlusClass extends React.Component {
         });
       }
     }
-    await this.setState({
+    await this.updateState({
       jobOption,
     });
   };
@@ -233,7 +242,7 @@ export class ListStaffPlusClass extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-12 col-lg-3 mb-4">
-            <div className="col-md-4">
+            <div className="col-md-4 p-0">
               <h4>Filters</h4>
             </div>
             {is_loading ? (

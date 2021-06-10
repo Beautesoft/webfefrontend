@@ -57,6 +57,15 @@ export class AddStaffClass extends Component {
     locationOption: [],
     levelList: [],
     is_loading: false,
+    isMounted: true,
+  };
+
+  componentWillUnmount() {
+    this.state.isMounted = false;
+  }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
   };
 
   componentWillMount() {
@@ -91,7 +100,7 @@ export class AddStaffClass extends Component {
       for (let key of res.data) {
         locationOption.push({ value: key.id, label: key.itemsite_desc });
       }
-      this.setState({ locationOption });
+      this.updateState({ locationOption });
     });
 
     // level option api
@@ -100,7 +109,7 @@ export class AddStaffClass extends Component {
       for (let key of res.data) {
         levelList.push({ value: key.id, label: key.level_name });
       }
-      this.setState({ levelList });
+      this.updateState({ levelList });
     });
 
     // schedule hours api
@@ -115,7 +124,7 @@ export class AddStaffClass extends Component {
           shortDesc: key.shortDesc,
         });
       }
-      this.setState({ scheduleOptions });
+      this.updateState({ scheduleOptions });
     });
 
     // jobtitle option api
@@ -131,11 +140,11 @@ export class AddStaffClass extends Component {
 
   // get api for staff
   getStaffDetail = async () => {
-    this.setState({ is_loading: true });
+    this.updateState({ is_loading: true });
     await this.props.getStaffPlus(`${this.props.match.params.id}/`);
     await this.props.getWorkSchedule(`${this.props.match.params.id}`);
     this.setDataFromStore();
-    this.setState({ is_loading: false });
+    this.updateState({ is_loading: false });
   };
 
   // set dropdown data from response
@@ -151,7 +160,7 @@ export class AddStaffClass extends Component {
         locationOption.push({ label: key.itemsite_desc, value: key.id });
       }
     }
-    this.setState({
+    this.updateState({
       locationOption,
       jobOption,
     });
@@ -182,7 +191,7 @@ export class AddStaffClass extends Component {
     formFields.work_schedule.friday = staffPlusWorkScheduleDetails.friday;
     formFields.work_schedule.saturday = staffPlusWorkScheduleDetails.saturday;
     formFields.work_schedule.sunday = staffPlusWorkScheduleDetails.sunday;
-    this.setState({ formFields });
+    this.updateState({ formFields });
   };
 
   handleChange = ({ target: { value, name } }) => {
@@ -190,7 +199,7 @@ export class AddStaffClass extends Component {
 
     formFields[name] = value;
 
-    this.setState({
+    this.updateState({
       formFields,
     });
   };
@@ -200,7 +209,7 @@ export class AddStaffClass extends Component {
     let { formFields } = this.state;
     formFields[name] = value;
     // formFields[name] = value;
-    await this.setState({
+    await this.updateState({
       formFields,
     });
   };
@@ -208,7 +217,7 @@ export class AddStaffClass extends Component {
   handleInput = ({ target: { name, value } }) => {
     let formFields = Object.assign({}, this.state.formFields);
     formFields[name] = value === true ? 1 : value;
-    this.setState({
+    this.updateState({
       formFields,
     });
   };
@@ -217,7 +226,7 @@ export class AddStaffClass extends Component {
   handleImageUpload = (file) => {
     let { formFields } = this.state;
     formFields["emp_pic"] = file;
-    this.setState({
+    this.updateState({
       formFields,
     });
   };
@@ -231,7 +240,7 @@ export class AddStaffClass extends Component {
     } else {
       staffImage.pop();
     }
-    this.setState({
+    this.updateState({
       staffImage,
     });
   };
@@ -240,7 +249,7 @@ export class AddStaffClass extends Component {
   handleSubmit = async () => {
     try {
       if (this.validator.allValid()) {
-        this.setState({ is_loading: true });
+        this.updateState({ is_loading: true });
         let { formFields } = this.state;
         const formData = new FormData();
         formData.append("emp_name", formFields.emp_name);
@@ -297,9 +306,9 @@ export class AddStaffClass extends Component {
       } else {
         this.validator.showMessages();
       }
-      this.setState({ is_loading: false });
+      this.updateState({ is_loading: false });
     } catch (e) {
-      this.setState({ is_loading: false });
+      this.updateState({ is_loading: false });
     }
   };
 
@@ -307,7 +316,7 @@ export class AddStaffClass extends Component {
     let formFields = Object.assign({}, this.state.formFields);
     formFields[event.target.name] = event.target.checked;
 
-    this.setState({
+    this.updateState({
       formFields,
     });
   };
@@ -629,7 +638,7 @@ export class AddStaffClass extends Component {
                       onChange={(data) => {
                         let { formFields } = this.state;
                         formFields["work_schedule"] = data;
-                        this.setState({
+                        this.updateState({
                           formFields,
                         });
                       }}

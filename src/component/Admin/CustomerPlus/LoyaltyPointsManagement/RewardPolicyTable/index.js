@@ -18,6 +18,15 @@ export class RewardPolicyTableClass extends React.Component {
     dataList: [],
     meta: {},
     currentIndex: -1,
+    isMounted: true,
+  };
+
+  componentWillUnmount() {
+    this.state.isMounted = false;
+  }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
   };
 
   handlePagination = (page) => {
@@ -65,7 +74,7 @@ export class RewardPolicyTableClass extends React.Component {
                   pageMeta={meta}
                   showFilterColumn={true}
                   parentHeaderChange={(value) =>
-                    this.setState(() => (headerDetails = value))
+                    this.updateState(() => (headerDetails = value))
                   }
                 >
                   {dataList

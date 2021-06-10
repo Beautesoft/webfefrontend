@@ -17,6 +17,15 @@ export class RedeemPolicyTableClass extends React.Component {
     dataList: [],
     meta: {},
     currentIndex: -1,
+    isMounted: true,
+  };
+
+  componentWillUnmount() {
+    this.state.isMounted = false;
+  }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
   };
 
   handlePagination = (page) => {
@@ -62,9 +71,7 @@ export class RedeemPolicyTableClass extends React.Component {
                     className="col-12 fs-15 float-right"
                     label="Add Redeem Policy"
                     onClick={() =>
-                      this.props.history.push(
-                        "lpmanagement/addredeem/"
-                      )
+                      this.props.history.push("lpmanagement/addredeem/")
                     }
                   />
                 </div>
@@ -80,7 +87,7 @@ export class RedeemPolicyTableClass extends React.Component {
                   pageMeta={meta}
                   showFilterColumn={true}
                   parentHeaderChange={(value) =>
-                    this.setState(() => (headerDetails = value))
+                    this.updateState(() => (headerDetails = value))
                   }
                 >
                   {dataList

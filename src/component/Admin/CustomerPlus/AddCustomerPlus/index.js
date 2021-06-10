@@ -36,6 +36,15 @@ export class AddCustomerPlusClass extends Component {
       },
     ],
     isLoading: true,
+    isMounted: true,
+  };
+
+  componentWillUnmount() {
+    this.state.isMounted = false;
+  }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
   };
 
   componentWillMount() {

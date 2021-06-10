@@ -22,6 +22,15 @@ export class StaffSkillListClass extends React.Component {
     skillSOptions: [],
     selectedSkillOption: "",
     isLoading: true,
+    isMounted: true,
+  };
+
+  componentWillUnmount() {
+    this.state.isMounted = false;
+  }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
   };
 
   componentWillMount() {
@@ -42,7 +51,7 @@ export class StaffSkillListClass extends React.Component {
     }
     selectedJobOption = jobOptions[0].value;
     selectedSkillOption = skillSOptions[0].value;
-    this.setState({
+    this.updateState({
       jobOptions,
       skillSOptions,
       selectedJobOption,
@@ -53,11 +62,11 @@ export class StaffSkillListClass extends React.Component {
   };
 
   loadData = async () => {
-    this.setState({ isLoading: true });
+    this.updateState({ isLoading: true });
     let { data, selectedJobOption, selectedSkillOption, skillList } =
       this.state;
     if (selectedJobOption == "" || selectedSkillOption == "")
-      return this.setState({ data: [], skillListRes: [], isLoading: false });
+      return this.updateState({ data: [], skillListRes: [], isLoading: false });
     let skillSetRes = await this.props.getCommonApi(
       `SkillsView?item_type=${selectedSkillOption}`
     );
@@ -70,12 +79,12 @@ export class StaffSkillListClass extends React.Component {
     for (let key of this.props.empSkillList.data) {
       header.push({ label: key.staffname });
     }
-    this.setState({ header, skillList, data, isLoading: false });
+    this.updateState({ header, skillList, data, isLoading: false });
   };
 
   handleChange = (e) => {
     this.state[e.target.name] = e.target.value;
-    this.setState();
+    this.updateState();
     this.loadData();
   };
 

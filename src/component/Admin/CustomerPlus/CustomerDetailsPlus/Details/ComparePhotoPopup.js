@@ -8,10 +8,19 @@ import Webcam from "react-webcam";
 export class ComparePhotoPopupClass extends Component {
   state = {
     remarks: "",
+    isMounted: true,
   };
+
+  componentWillUnmount() {
+    this.state.isMounted = false;
+  }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
+  };
+
   componentDidMount() {
-    if (this.props.remarks)
-      this.setState({ remarks: this.props.remarks });
+    if (this.props.remarks) this.setState({ remarks: this.props.remarks });
   }
   handleChange = (e) => {
     this.setState({

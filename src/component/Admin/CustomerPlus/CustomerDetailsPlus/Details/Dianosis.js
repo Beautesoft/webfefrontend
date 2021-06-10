@@ -103,6 +103,15 @@ export class DianosisClass extends React.Component {
     currentData: null,
     isAddPhotoOpen: false,
     isCompareOpen: false,
+    isMounted: true,
+  };
+
+  componentWillUnmount() {
+    this.state.isMounted = false;
+  }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
   };
 
   handleOutsideClick = (e) => {
@@ -185,14 +194,12 @@ export class DianosisClass extends React.Component {
                       />
                     </div>
                     <div className="col-sm-12 col-md-6 p-0">
-                        <NormalButton
-                          mainbg={true}
-                          className="col-md-10 fs-15 float-right"
-                          label="Add Photo"
-                          onClick={() =>
-                            this.setState({ isAddPhotoOpen: true })
-                          }
-                        />
+                      <NormalButton
+                        mainbg={true}
+                        className="col-md-10 fs-15 float-right"
+                        label="Add Photo"
+                        onClick={() => this.setState({ isAddPhotoOpen: true })}
+                      />
                     </div>
                   </div>
                 </div>

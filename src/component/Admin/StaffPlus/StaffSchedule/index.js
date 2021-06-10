@@ -48,6 +48,15 @@ class StaffScheduleClass extends React.Component {
     isLoading: true,
     isMounted: true,
     scheduleOptions: [],
+    isMounted: true,
+  };
+
+  componentWillUnmount() {
+    this.state.isMounted = false;
+  }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
   };
 
   componentWillUnmount() {
@@ -70,7 +79,7 @@ class StaffScheduleClass extends React.Component {
   }
 
   updateState = (data) => {
-    if (this.state.isMounted) this.setState(data);
+    if (this.state.isMounted) this.updateState(data);
   };
 
   getDatafromStore = async () => {

@@ -44,6 +44,15 @@ export class EmployeeInfoClass extends Component {
     religionList: [],
     countryList: [],
     is_loading: false,
+    isMounted: true,
+  };
+
+  componentWillUnmount() {
+    this.state.isMounted = false;
+  }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
   };
 
   componentWillMount() {
@@ -77,7 +86,7 @@ export class EmployeeInfoClass extends Component {
 
   // get data from apis
   getDetails = async () => {
-    this.setState({ is_loading: true });
+    this.updateState({ is_loading: true });
     await this.props
       .getStaffPlus(`${this.props.match.params.id}/`)
       .then((res) => {
@@ -88,30 +97,30 @@ export class EmployeeInfoClass extends Component {
       for (let key of res.religions) {
         religionList.push({ value: key.itm_id, label: key.itm_name });
       }
-      this.setState({ religionList });
+      this.updateState({ religionList });
     });
     await this.props.getCommonApi("meta/nationality/").then((res) => {
       let { nationalityList } = this.state;
       for (let key of res.nationalities) {
         nationalityList.push({ value: key.itm_id, label: key.itm_name });
       }
-      this.setState({ nationalityList });
+      this.updateState({ nationalityList });
     });
     await this.props.getCommonApi("meta/race/").then((res) => {
       let { raceList } = this.state;
       for (let key of res.races) {
         raceList.push({ value: key.itm_id, label: key.itm_name });
       }
-      this.setState({ raceList });
+      this.updateState({ raceList });
     });
     await this.props.getCommonApi("meta/country/").then((res) => {
       let { countryList } = this.state;
       for (let key of res.countries) {
         countryList.push({ value: key.itm_id, label: key.itm_desc });
       }
-      this.setState({ countryList });
+      this.updateState({ countryList });
     });
-    this.setState({ is_loading: false });
+    this.updateState({ is_loading: false });
   };
 
   // set data to formfield from response while edit
@@ -132,7 +141,7 @@ export class EmployeeInfoClass extends Component {
     formFields["emp_emer"] = staffPlusDetail.emp_emer;
     formFields["emp_emerno"] = staffPlusDetail.emp_emerno;
     formFields["emp_remarks"] = staffPlusDetail.emp_remarks;
-    this.setState({ formFields });
+    this.updateState({ formFields });
   };
 
   handleChange = ({ target: { value, name } }) => {
@@ -140,7 +149,7 @@ export class EmployeeInfoClass extends Component {
 
     formFields[name] = value;
 
-    this.setState({
+    this.updateState({
       formFields,
     });
   };
@@ -148,7 +157,7 @@ export class EmployeeInfoClass extends Component {
   handleDatePick = async (name, value) => {
     let { formFields } = this.state;
     formFields[name] = value;
-    await this.setState({
+    await this.updateState({
       formFields,
     });
   };
@@ -156,7 +165,7 @@ export class EmployeeInfoClass extends Component {
   handleInput = ({ target: { name, value } }) => {
     let formFields = Object.assign({}, this.state.formFields);
     formFields[name] = value === true ? 1 : value;
-    this.setState({
+    this.updateState({
       formFields,
     });
   };
@@ -165,7 +174,7 @@ export class EmployeeInfoClass extends Component {
   handleSubmit = async () => {
     if (this.validator.allValid()) {
       try {
-        this.setState({ is_loading: true });
+        this.updateState({ is_loading: true });
         let { formFields } = this.state;
         const formData = new FormData();
         formData.append("emp_phone1", formFields.emp_phone1);
@@ -190,7 +199,7 @@ export class EmployeeInfoClass extends Component {
       } catch (e) {
         console.log(e);
       }
-      this.setState({ is_loading: true });
+      this.updateState({ is_loading: true });
     } else {
       this.validator.showMessages();
     }
@@ -201,7 +210,7 @@ export class EmployeeInfoClass extends Component {
     console.log(formFields, "oyokkjk", event.target.name, event.target);
     formFields[event.target.name] = event.target.checked;
 
-    this.setState({
+    this.updateState({
       formFields,
     });
   };
