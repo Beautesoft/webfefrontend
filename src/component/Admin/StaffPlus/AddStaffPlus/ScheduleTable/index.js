@@ -69,6 +69,7 @@ export class ScheduleTable extends Component {
                       {optionList.map((val) => {
                         return (
                           <label
+                            style={{ cursor: "pointer" }}
                             onClick={() =>
                               handOnOptionClick(keyName, val.value)
                             }

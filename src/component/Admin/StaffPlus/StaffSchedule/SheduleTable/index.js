@@ -43,7 +43,7 @@ export class ScheduleTable extends Component {
       onAltChange(altws_data);
     };
     return (
-      <>
+      <div className="table-responsive">
         <table className="table">
           <thead>
             <tr className="table-header-color">
@@ -66,16 +66,10 @@ export class ScheduleTable extends Component {
                     key={"ws" + keyName}
                     onClick={() => handleOnClick("ws" + keyName)}
                     style={{
-                      color:
-                        optionList.find((val) => val.value == data[keyName]) !=
-                        null
-                          ? "white"
-                          : "black",
                       backgroundColor:
                         optionList.find((val) => val.value == data[keyName]) !=
                         null
-                          ? 
-                            optionList.find((val) => val.value == data[keyName])
+                          ? optionList.find((val) => val.value == data[keyName])
                               .color
                           : "white",
                       cursor: "pointer",
@@ -87,6 +81,7 @@ export class ScheduleTable extends Component {
                       {optionList.map((val) => {
                         return (
                           <label
+                            style={{ cursor: "pointer" }}
                             key={"ws" + val.id}
                             onClick={() =>
                               handOnOptionClick(keyName, val.value)
@@ -148,7 +143,7 @@ export class ScheduleTable extends Component {
             </tr>
           </tbody>
         </table>
-      </>
+      </div>
     );
   }
 }

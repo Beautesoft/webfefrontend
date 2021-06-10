@@ -355,6 +355,17 @@ export const staffPlus = {
     },
     baseURL: "token",
   },
+  updateSchedule: {
+    url: "WorkScheduleMonth/",
+    method: "post",
+    get api() {
+      return this.url;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
   getAllEmpSchedule: {
     url: "MonthlyAllSchedule/",
     method: "get",

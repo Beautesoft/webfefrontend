@@ -8,8 +8,14 @@ import {
   getStaffPlus,
   getStaffSchedule,
   getAllEmpSchedule,
+  updateStaffPlusSchedule,
 } from "redux/actions/staffPlus";
-import { NormalSelect, NormalInput, Pagination } from "component/common";
+import {
+  NormalSelect,
+  NormalInput,
+  Pagination,
+  NormalButton,
+} from "component/common";
 import { ScheduleTable } from "./SheduleTable";
 import { CalenderTable } from "./CalenderTable";
 import { BigCalander } from "./BigCalander";
@@ -23,7 +29,9 @@ class StaffScheduleClass extends React.Component {
     fullScheduleMonth: new Date(),
     formFields: {
       ws: [],
+      ws_id: "",
       altws: [],
+      altws_id: "",
       cal_data: [],
       status: "All",
       staff_data: [],
@@ -37,15 +45,21 @@ class StaffScheduleClass extends React.Component {
     filteredSiteOptions: [],
     selected_site: "",
     isLoading: true,
+    isMounted: true,
     scheduleOptions: [],
   };
 
+  componentWillUnmount() {
+    this.state.isMounted = false;
+  }
+
   componentWillMount() {
+    this.state.isMounted = true;
     const date = new Date();
     const month = ("0" + (date.getMonth() + 1)).slice(-2);
     const year = date.getFullYear();
 
-    this.setState({
+    this.updateState({
       selectedMonth: `${year}-${month}`,
       startMonth: `${year}-${month}`,
       endMonth: `${year}-${month}`,
@@ -53,6 +67,10 @@ class StaffScheduleClass extends React.Component {
     });
     this.getDatafromStore();
   }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
+  };
 
   getDatafromStore = async () => {
     await this.props.getJobtitle();
@@ -82,7 +100,7 @@ class StaffScheduleClass extends React.Component {
       });
     }
 
-    this.setState({
+    this.updateState({
       jobOption,
       jobOption_selected,
       siteOptions,
@@ -93,7 +111,7 @@ class StaffScheduleClass extends React.Component {
   };
 
   updateStaffList = async () => {
-    this.setState({ isLoading: true });
+    this.updateState({ isLoading: true });
     let { staffList, staffList_selected, formFields, selected_site } =
       this.state;
     formFields.ws = [];
@@ -119,7 +137,7 @@ class StaffScheduleClass extends React.Component {
         });
       });
     }
-    this.setState({
+    this.updateState({
       staffList,
       formFields,
       staffList_selected,
@@ -134,8 +152,10 @@ class StaffScheduleClass extends React.Component {
       staffList,
       filteredSiteOptions,
       siteOptions,
+      selected_site,
       formFields,
     } = this.state;
+    selected_site = "";
     formFields.ws = [];
     formFields.altws = [];
     formFields.cal_data = [];
@@ -143,7 +163,7 @@ class StaffScheduleClass extends React.Component {
     filteredSiteOptions = [];
     let selected = staffList.find((e) => e.value == staffList_selected);
     filteredSiteOptions = siteOptions.filter((e) => e.value == selected.sites);
-    this.setState({ filteredSiteOptions, formFields });
+    this.updateState({ filteredSiteOptions, formFields, selected_site });
   };
 
   getScheduleData = async () => {
@@ -177,12 +197,13 @@ class StaffScheduleClass extends React.Component {
     month = a < 10 ? "0" + a : a;
     year = endDate.getFullYear();
     endDate = `${year}-${month}-${day}`;
-    this.setState({ isLoading: true });
+    this.updateState({ isLoading: true });
     await this.props.getStaffSchedule(
       `?emp_code=${staffList_selected}&site_code=${selected_site}&start=${startDate}&end=${endDate}`
     );
     let { weekSchedule, altWeekSchedule, monthlySchedule } =
       this.props.staffSchedule;
+    formFields.ws_id = weekSchedule.id;
     formFields.ws.monday = weekSchedule.monday;
     formFields.ws.tuesday = weekSchedule.tuesday;
     formFields.ws.wednesday = weekSchedule.wednesday;
@@ -190,6 +211,7 @@ class StaffScheduleClass extends React.Component {
     formFields.ws.friday = weekSchedule.friday;
     formFields.ws.saturday = weekSchedule.saturday;
     formFields.ws.sunday = weekSchedule.sunday;
+    formFields.altws_id = altWeekSchedule.id;
     formFields.altws.monday = altWeekSchedule.monday;
     formFields.altws.tuesday = altWeekSchedule.tuesday;
     formFields.altws.wednesday = altWeekSchedule.wednesday;
@@ -198,16 +220,16 @@ class StaffScheduleClass extends React.Component {
     formFields.altws.saturday = altWeekSchedule.saturday;
     formFields.altws.sunday = altWeekSchedule.sunday;
     formFields.cal_data = monthlySchedule;
-    this.setState({ formFields, isLoading: false });
+    this.updateState({ formFields, isLoading: false });
   };
 
   getFullScheduleData = async (page = 1) => {
     let { selected_site, fullScheduleMonth, formFields, pageMeta } = this.state;
     formFields.staff_data = [];
     if (selected_site == "") {
-      return this.setState({ formFields });
+      return this.updateState({ formFields });
     }
-    this.setState({ isLoading: true });
+    this.updateState({ isLoading: true });
     let date = new Date(fullScheduleMonth);
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
@@ -217,37 +239,102 @@ class StaffScheduleClass extends React.Component {
     let { staffAllEmpSchedule } = this.props;
     pageMeta = staffAllEmpSchedule.pagination;
     formFields.staff_data = staffAllEmpSchedule.fullSchedule;
-    this.setState({ formFields, pageMeta, isLoading: false });
+    this.updateState({ formFields, pageMeta, isLoading: false });
   };
 
   onJobChanged = (e) => {
     this.state.jobOption_selected = e.target.value;
-    this.setState({});
+    this.updateState({});
     this.updateStaffList();
   };
 
   onStaffChanged = (e) => {
     this.state.staffList_selected = e.target.value;
-    this.setState({});
+    this.updateState({});
     this.updateSiteList();
   };
 
   onSiteChange = (e) => {
     this.state.selected_site = e.target.value;
-    this.setState({});
+    this.updateState({});
     this.getScheduleData();
   };
 
   onSiteOptionChange = (e) => {
     this.state.selected_site = e.target.value;
-    this.setState({});
+    this.updateState({});
     this.getFullScheduleData({});
   };
 
   onFullScheduleMonthChange = (e) => {
     this.state.fullScheduleMonth = e.target.value;
-    this.setState({});
+    this.updateState({});
     this.getFullScheduleData({});
+  };
+
+  onApplyToMonthlySchedule = () => {
+    let { ws, cal_data } = this.state.formFields;
+    for (let key of cal_data) {
+      var date = new Date(key.itm_date);
+      var day = date.getDay();
+      switch (day) {
+        case 0:
+          key.itm_type = ws.sunday;
+          break;
+        case 1:
+          key.itm_type = ws.monday;
+          break;
+        case 2:
+          key.itm_type = ws.tuesday;
+          break;
+        case 3:
+          key.itm_type = ws.wednesday;
+          break;
+        case 4:
+          key.itm_type = ws.thursday;
+          break;
+        case 5:
+          key.itm_type = ws.friday;
+          break;
+        case 6:
+          key.itm_type = ws.saturday;
+          break;
+        default:
+          break;
+      }
+    }
+    this.updateState({});
+  };
+
+  onSubmit = async () => {
+    let { formFields } = this.state;
+    if (formFields.cal_data.length == 0) return;
+    this.updateState({ isLoading: true });
+    var data = { monthlySchedule: {}, weekSchedule: {}, altWeekSchedule: {} };
+    data.monthlySchedule = formFields.cal_data;
+    data.weekSchedule.id = formFields.ws_id;
+    data.weekSchedule.monday = formFields.ws.monday;
+    data.weekSchedule.tuesday = formFields.ws.tuesday;
+    data.weekSchedule.wednesday = formFields.ws.wednesday;
+    data.weekSchedule.thursday = formFields.ws.thursday;
+    data.weekSchedule.friday = formFields.ws.friday;
+    data.weekSchedule.saturday = formFields.ws.saturday;
+    data.weekSchedule.sunday = formFields.ws.sunday;
+    data.altWeekSchedule.id = formFields.altws_id;
+    data.altWeekSchedule.monday = formFields.altws.monday;
+    data.altWeekSchedule.tuesday = formFields.altws.tuesday;
+    data.altWeekSchedule.wednesday = formFields.altws.wednesday;
+    data.altWeekSchedule.thursday = formFields.altws.thursday;
+    data.altWeekSchedule.friday = formFields.altws.friday;
+    data.altWeekSchedule.saturday = formFields.altws.saturday;
+    data.altWeekSchedule.sunday = formFields.altws.sunday;
+    try {
+      await this.props.updateStaffPlusSchedule(JSON.stringify(data));
+    } catch (error) {
+      console.log(error);
+      this.updateState({ isLoading: false });
+    }
+    this.updateState({ isLoading: false });
   };
 
   render() {
@@ -270,10 +357,10 @@ class StaffScheduleClass extends React.Component {
       pageMeta,
     } = this.state;
 
-    let { ws, altws, cal_data, status, staff_data } = formFields;
+    let { ws, altws, cal_data, staff_data } = formFields;
 
     const handleMenuSelection = (value) => {
-      this.setState({ currentMenu: value });
+      this.updateState({ currentMenu: value });
     };
 
     const handleMonthChange = (e) => {
@@ -283,8 +370,8 @@ class StaffScheduleClass extends React.Component {
         this.state.selectedMonth = this.state.startMonth;
       } else if (e.target.name == "endMonth")
         this.state.selectedMonth = this.state.startMonth;
-      this.getScheduleData();
-      this.setState({});
+      if (e.target.name != "selectedMonth") this.getScheduleData();
+      this.updateState({});
     };
 
     return (
@@ -315,7 +402,7 @@ class StaffScheduleClass extends React.Component {
               </div>
             </div>
           ) : (
-            <div className="col-xl">
+            <div className="col-lg-10 col-md-12">
               <div className="row align-items-center">
                 <div className="col-md-8 mb-4">
                   <h3>
@@ -387,14 +474,14 @@ class StaffScheduleClass extends React.Component {
                           onChange={(data) => {
                             let { formFields } = this.state;
                             formFields["ws"] = data;
-                            this.setState({
+                            this.updateState({
                               formFields,
                             });
                           }}
                           onAltChange={(data) => {
                             let { formFields } = this.state;
                             formFields["altws"] = data;
-                            this.setState({
+                            this.updateState({
                               formFields,
                             });
                           }}
@@ -402,6 +489,20 @@ class StaffScheduleClass extends React.Component {
                       </div>
                     </div>
                   </div>
+
+                  {cal_data.length == 0 ? null : (
+                    <div className="form-group mb-4 pb-2">
+                      <div className="row">
+                        <div className="col-md-6 col-sm-12">
+                          <NormalButton
+                            label="Apply to Monthly Schedule"
+                            mainbg={true}
+                            onClick={this.onApplyToMonthlySchedule}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   <div className="form-group mb-4 pb-2">
                     <div className="row">
@@ -452,10 +553,11 @@ class StaffScheduleClass extends React.Component {
                           <CalenderTable
                             data={cal_data}
                             date={selectedMonth}
+                            optionList={scheduleOptions}
                             onChange={(data) => {
                               let { formFields } = this.state;
                               formFields["cal_data"] = data;
-                              this.setState({
+                              this.updateState({
                                 formFields,
                               });
                             }}
@@ -464,6 +566,19 @@ class StaffScheduleClass extends React.Component {
                       </div>
                     </div>
                   </div>
+                  {cal_data.length == 0 ? null : (
+                    <div className="form-group mb-4 pb-2">
+                      <div className="d-flex justify-content-center">
+                        <div className="col-md-6 col-sm-12 p-0">
+                          <NormalButton
+                            label="Save"
+                            success={true}
+                            onClick={this.onSubmit}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </>
               ) : (
                 <>
@@ -509,7 +624,7 @@ class StaffScheduleClass extends React.Component {
                             onChange={(data) => {
                               let { formFields } = this.state;
                               formFields["staff_data"] = data;
-                              this.setState({
+                              this.updateState({
                                 formFields,
                               });
                             }}
@@ -568,6 +683,7 @@ const mapDispatchToProps = (dispatch) => {
       getCommonApi,
       getStaffSchedule,
       getAllEmpSchedule,
+      updateStaffPlusSchedule,
     },
     dispatch
   );
