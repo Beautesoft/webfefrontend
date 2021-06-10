@@ -44,6 +44,7 @@ class StaffScheduleClass extends React.Component {
     siteOptions: [],
     filteredSiteOptions: [],
     selected_site: "",
+    fullSchedule_selected_site: "",
     isLoading: true,
     isMounted: true,
     scheduleOptions: [],
@@ -159,7 +160,6 @@ class StaffScheduleClass extends React.Component {
     formFields.ws = [];
     formFields.altws = [];
     formFields.cal_data = [];
-    formFields.staff_data = [];
     filteredSiteOptions = [];
     let selected = staffList.find((e) => e.value == staffList_selected);
     filteredSiteOptions = siteOptions.filter((e) => e.value == selected.sites);
@@ -268,6 +268,12 @@ class StaffScheduleClass extends React.Component {
 
   onFullScheduleMonthChange = (e) => {
     this.state.fullScheduleMonth = e.target.value;
+    this.updateState({});
+    this.getFullScheduleData({});
+  };
+
+  onFullScheduleSiteChange = (e) => {
+    this.state.fullSchedule_selected_site = e.target.value;
     this.updateState({});
     this.getFullScheduleData({});
   };
@@ -621,13 +627,7 @@ class StaffScheduleClass extends React.Component {
                             data={staff_data}
                             options={scheduleOptions}
                             disabled={true}
-                            onChange={(data) => {
-                              let { formFields } = this.state;
-                              formFields["staff_data"] = data;
-                              this.updateState({
-                                formFields,
-                              });
-                            }}
+                            onChange={this.onFullScheduleSiteChange}
                           />
                         </div>
                         {pageMeta && (
