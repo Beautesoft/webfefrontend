@@ -27,7 +27,6 @@ export class ListStaffPlusClass extends React.Component {
     levelList: [],
     jobOption: [],
     pageMeta: {},
-    filerOption: "/",
     selectedMenu: "/",
     active: false,
     currentIndex: -1,
@@ -44,7 +43,13 @@ export class ListStaffPlusClass extends React.Component {
   };
 
   componentDidMount() {
-    this.queryHandler({});
+    const queryParams = new URLSearchParams(window.location.search);
+    const filter = queryParams.get("filter");
+    if (filter) {
+      this.state.selectedMenu = "/" + filter;
+      this.handleFilterChange(this.state.selectedMenu);
+      this.updateState({});
+    } else this.queryHandler({});
   }
 
   componentWillMount() {
@@ -121,7 +126,7 @@ export class ListStaffPlusClass extends React.Component {
           break;
       }
     }
-    if (this.state.filter != filter) {
+    if (this.state.filter != filter || filter == "") {
       this.state.filter = filter;
       this.queryHandler({});
     }

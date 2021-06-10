@@ -106,6 +106,14 @@ export class DianosisClass extends React.Component {
     isMounted: true,
   };
 
+  componentDidMount() {
+    const queryParams = new URLSearchParams(window.location.search);
+    const submenu = queryParams.get("submenu");
+    if (submenu)
+      if (submenu == "history" || submenu == "visits")
+        this.setState({ currentMenu: "/" + submenu });
+  }
+
   componentWillUnmount() {
     this.state.isMounted = false;
   }

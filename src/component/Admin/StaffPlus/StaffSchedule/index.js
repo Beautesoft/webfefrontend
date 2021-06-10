@@ -59,12 +59,12 @@ class StaffScheduleClass extends React.Component {
     if (this.state.isMounted) this.setState(data);
   };
 
-  componentWillUnmount() {
-    this.state.isMounted = false;
-  }
-
   componentWillMount() {
-    this.state.isMounted = true;
+    const queryParams = new URLSearchParams(window.location.search);
+    const menu = queryParams.get("menu");
+    if (menu)
+      if (menu == "full" || menu == "indi")
+        this.updateState({ currentMenu: "/" + menu });
     const date = new Date();
     const month = ("0" + (date.getMonth() + 1)).slice(-2);
     const year = date.getFullYear();
@@ -77,10 +77,6 @@ class StaffScheduleClass extends React.Component {
     });
     this.getDatafromStore();
   }
-
-  updateState = (data) => {
-    if (this.state.isMounted) this.updateState(data);
-  };
 
   getDatafromStore = async () => {
     await this.props.getJobtitle();

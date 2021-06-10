@@ -31,7 +31,6 @@ export class ListCustomerPlusClass extends React.Component {
     isLoading: true,
     isMounted: true,
   };
-
   componentWillUnmount() {
     this.state.isMounted = false;
   }
@@ -41,6 +40,10 @@ export class ListCustomerPlusClass extends React.Component {
   };
 
   componentDidMount = () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const menu = queryParams.get("menu");
+    if (menu)
+      if (menu == "settings") this.updateState({ currentMenu: "/" + menu });
     this.getCustomerPlus({});
   };
 
