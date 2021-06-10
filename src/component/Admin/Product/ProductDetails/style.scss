@@ -1,7 +1,7 @@
 @import "../../../../assets/scss/abstracts/abstracts-dir.scss";
 
 .view-detail {
-  font-family: Muli-Medium;
+  font-family: "Poppins";
   padding: 1.65rem;
   .inner-head {
     line-height: 27px;
@@ -14,22 +14,21 @@
     border: 1px solid #c8c8c8;
     border-radius: 4px;
     width: 100%;
-    .product-detail-heading{
-        font-family: Muli-SemiBold;
-        color: #0d0d0d;
-        opacity: 0.8;
+    .product-detail-heading {
+      font-family: "Poppins";
+      color: #0d0d0d;
+      opacity: 0.8;
     }
-    .product-detail-sub-text{
-        opacity: 0.8;
-        color: $gray-55;
+    .product-detail-sub-text {
+      opacity: 0.8;
+      color: $gray-55;
     }
-    .icon-change{
-        button{
+    .icon-change {
+      button {
+        font-family: "Poppins", sans-serif;
+      }
+    }
 
-            font-family:"Poppins", sans-serif; 
-        }
-    }
-   
     // .view-detail-navlink {
     //   .nav-tabs {
     //     border: 0;

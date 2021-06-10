@@ -10,6 +10,12 @@
   }
 }
 .create-appointment {
+  .date-picker .icon-calendar {
+    position: absolute;
+    right: 15px;
+    font-size: 25px;
+    top: 0px;
+  }
   .timeline-view::before {
     position: absolute;
     content: "";
@@ -41,15 +47,6 @@
     border: 2px solid $primary-color;
     border-top: none;
     z-index: 2;
-  }
-  .step-view.step-1::before {
-    // max-width: 23%;
-  }
-  .step-view.step-2::before {
-    max-width: 48%;
-  }
-  .step-view.step-3::before {
-    // max-width: 72%;
   }
 
   .timeline-view {
@@ -130,7 +127,9 @@
     padding: 20px;
     .select-list {
       .selected-header {
-        background-color: #fadce2;
+        background-color: $temptablehead-color;
+        border-radius: 4px;
+        padding: 5px;
       }
     }
     .treatment-label {
@@ -388,8 +387,6 @@
           input {
             width: unset;
           }
-          .time-form img {
-          }
         }
         .book-treatment {
           .selected {
@@ -496,7 +493,9 @@
     }
     .selected-header {
       .row {
-        background-color: #f7c4c491;
+        background-color: $temptablehead-color;
+        border-radius: 4px;
+        padding: 5px;
       }
     }
   }
@@ -557,30 +556,23 @@
   background-color: #f7c4c491;
 }
 
-@media only screen and (min-width: 1500px) {
-  .create-appointment {
-    .appointment-col {
-      .appointment {
-        // margin: 20px 100px 20px 70px;
-        // margin: 20px 173px 20px 114px;
-      }
-    }
-  }
-}
-
 .select-category {
   .modal-body {
     .search {
       width: 100%;
-      border: none;
+      border: 1px solid #ced4da;
       background: #f9f9f9;
       margin-top: 10px;
       height: 30px;
     }
     .table-header {
-      background-color: #f7c4c491;
+      background-color: $temptablehead-color;
+      border-radius: 4px;
+      padding: 5px;
     }
-    .table-body {
+    .response-table {
+      height: 45vh;
+      overflow-y: auto;
     }
   }
 }
@@ -594,12 +586,12 @@
       height: 40px;
     }
     .confirm {
-      background: $green;
-      border: 1px solid $green;
+      background: linear-gradient(91.15deg, #a0e5f7 0.45%, #ed91d4 100%);
+      border: 1px solid $theme-color;
       &:hover {
-        border: 1px solid $green;
+        border: 1px solid $primary-color;
         background: $white;
-        color: $green;
+        color: $primary-color;
       }
     }
   }
@@ -625,7 +617,7 @@
     img {
       max-width: 62px;
       max-height: 62px;
-      border: 1px solid;
+      border-radius: 50%;
     }
     .forward-button,
     .back-button {
@@ -661,34 +653,24 @@
   .discount-section {
     .apply {
       width: 180px;
-      background: $white;
-      border: 1px solid $green;
+      background: linear-gradient(91.15deg, #a0e5f7 0.45%, #ed91d4 100%);
+      border: 1px solid $theme-color;
       color: $green;
       &:hover {
-        border: 1px solid $green;
-        background: $green;
-        color: $white;
+        border: 1px solid $primary-color;
+        background: $white;
+        color: $primary-color;
       }
     }
     .confirm {
       width: 180px;
-      background: $green;
-      border: 1px solid $green;
+      background: linear-gradient(91.15deg, #a0e5f7 0.45%, #ed91d4 100%);
+      border: 1px solid $theme-color;
+      color: $primary-color;
       &:hover {
-        border: 1px solid $green;
+        border: 1px solid $primary-color;
         background: $white;
-        color: $green;
-      }
-    }
-  }
-}
-
-.select-category {
-  .modal-content {
-    .modal-body {
-      .response-table {
-        height: 45vh;
-        overflow-y: auto;
+        color: $primary-color;
       }
     }
   }
@@ -701,9 +683,39 @@
   font-size: 25px;
 }
 
-.date-picker .icon-calendar {
-  position: absolute;
-  right: 15px;
-  font-size: 25px;
-  top: 2px;
+.appointment-form {
+  .customerSearch-block {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
+    min-height: 200px;
+    max-height: 500px;
+    min-width: 800px;
+    max-width: 900px;
+    overflow-y: auto;
+    z-index: 999;
+    position: absolute;
+    padding: 6px;
+    background-color: white;
+    margin: 70px 25px 5px 10px !important;
+    box-shadow: 0px -1px 4px rgba(0, 0, 0, 0.13);
+    border-radius: 4px;
+    .search {
+      width: 100%;
+      border: 1px solid #ced4da;
+      background: #f9f9f9;
+      margin-top: 10px;
+      height: 30px;
+    }
+    .table-header {
+      background-color: $temptablehead-color;
+      border-radius: 4px;
+      padding: 5px;
+    }
+    .response-table {
+      height: 48vh;
+      overflow-y: auto;
+    }
+  }
 }

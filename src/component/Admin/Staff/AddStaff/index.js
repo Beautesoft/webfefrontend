@@ -438,7 +438,7 @@ export class AddStaffClass extends Component {
                                         name="emp_dob"
                                         className="dob-pick"
                                         showYearDropdown={true}
-                                        dateFormat="MM/dd/yyyy" />
+                                        dateFormat="dd/MM/yyyy" />
                                 </div>
                                 {this.validator.message('date of birth', emp_dob, 'required')}
                             </div>
@@ -463,7 +463,7 @@ export class AddStaffClass extends Component {
                                         name="emp_joindate"
                                         className="dob-pick"
                                         showYearDropdown={true}
-                                        dateFormat="MM/dd/yyyy" />
+                                        dateFormat="dd/MM/yyyy" />
 
                                 </div>
                                 {this.validator.message('Joined date', emp_joindate, 'required')}

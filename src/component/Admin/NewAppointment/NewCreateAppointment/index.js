@@ -15,66 +15,35 @@ import { history } from "helpers";
 export class CreateAppointmentClass extends Component {
   state = {
     list: [],
-    isOpenModal: true,
+    isOpenModal: false,
   };
 
-  componentDidMount = () => {
-    debugger;
-    this.props
-      .getCommonApi(
-        `staffsavailable/?Appt_date=${dateFormat(new Date(), "yyyy-mm-dd")}`
-      )
-      .then(key => {
-        let { status, data } = key;
-        if (status === 200) {
-          // for (let value of data) {
-          //     staffList.push({ value: value.id, label: value.emp_name })
-          // }
-          this.setState({ list: data });
-        }
-      });
-  };
-
-  handleCloseDialog = () => {
-    this.setState({
-      isOpenModal: false,
-    });
-    history.push(`/admin/newappointment`);
-  };
+  componentDidMount = () => {};
 
   render() {
-    let { list, isOpenModal } = this.state;
+    let { isOpenModal } = this.props;
     return (
       <>
         <NormalModal
           className="col-12 col-md-12 col-sm-12"
           style={{ minWidth: "1100px", height: "100%" }}
           modal={isOpenModal}
-          handleModal={this.handleCloseDialog}
+          handleModal={this.props.handleCloseDialog}
         >
           <img
-            onClick={this.handleCloseDialog}
+            onClick={this.props.handleCloseDialog}
             className="close"
             src={closeIcon}
             alt=""
           />
           <div className="row">
-            {/* {
-              <div className="col-md-2 pr-0 position-relative">
-                <div className="availability">
-                  <p className="heading">Staff Availability</p>
-                  {list.map((data, index) => (
-                    <>
-                      <Availability availability={data}></Availability>
-                    </>
-                  ))}
-                </div>
-              </div>
-            } */}
             <div className=" col-md-12 col-12 appointment-box appointment-col">
               <div className="appointment">
                 <div className="appointment-holder">
-                  <CustomerAppointment />
+                  <CustomerAppointment
+                    handleCloseDialog={this.props.handleCloseDialog}
+                    handleSaveorUpdate={this.props.handleSaveorUpdate}
+                  />
                 </div>
               </div>
             </div>

@@ -379,7 +379,7 @@ export class AppointmentFormClass extends Component {
                                 value={formFields.custName}
                                 name="customerName"
                                 onClick={() => this.setState({ isOpenModal: true })}
-                                // onChange={this.handleSearch}
+                                // onChange={this.handleSearch}                              
                                 className="search px-3 p-0"
                             />
                         </div>

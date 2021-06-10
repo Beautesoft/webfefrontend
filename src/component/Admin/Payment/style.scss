@@ -1,7 +1,7 @@
-@import 'assets/scss/abstracts/abstracts-dir.scss';
+@import "assets/scss/abstracts/abstracts-dir.scss";
 
 .payment-section {
-  font-family: Muli-Regular;
+  font-family: "Poppins";
   .top-nav {
     display: flex;
     justify-content: space-between;
@@ -128,11 +128,11 @@
   }
   .make-payment-section {
     background: $white;
-    padding: 15px;
+    padding: 5px;
     min-height: 489px;
     h4 {
-      font-family: Muli-SemiBold;
-      font-size: fontSize(20px);
+      font-family: "Poppins";
+      font-size: fontSize(16px);
     }
   }
   .radio-item {
@@ -141,16 +141,16 @@
     padding: 0 6px;
     margin: 10px 0 0;
   }
-  
-  .radio-item input[type='radio'] {
+
+  .radio-item input[type="radio"] {
     display: none;
   }
-  
+
   .radio-item label {
     color: #666;
     font-weight: normal;
   }
-  
+
   .radio-item label:before {
     content: " ";
     display: inline-block;
@@ -163,8 +163,8 @@
     border: 2px solid #ffa500;
     background-color: transparent;
   }
-  
-  .radio-item input[type=radio]:checked + label:after {
+
+  .radio-item input[type="radio"]:checked + label:after {
     border-radius: 11px;
     width: 12px;
     height: 12px;
@@ -181,5 +181,4 @@
       top: 16px;
     }
   }
-  
 }

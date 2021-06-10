@@ -92,7 +92,7 @@ export class ReversalClass extends Component {
   handleDialog = () => {};
 
   handleAddReversal = item => {
-    debugger;
+    //debugger;
     let { formFields } = this.state;
     if (this.validator.allValid()) {
       this.props
@@ -160,10 +160,10 @@ export class ReversalClass extends Component {
     return (
       <div className="row new-cart treatment-done">
         <div className="col-12">
-          <p className="fs-18 font-700 mb-3 title">Treatment Done</p>
+          <p className="fs-18 font-700 mb-3 title">Treatment Reversal</p>
         </div>
 
-        <div className="col-7 fs-14">
+        <div className="col-6 fs-14">
           <p className="fs-14">Reverse Treatment List</p>
           <p className="fs-14">
             Reverse No: <b>{headerDetails ? headerDetails.reverse_no : ""}</b>
@@ -198,14 +198,7 @@ export class ReversalClass extends Component {
               {headerDetails ? headerDetails.total_depobalance : ""}
             </div>
           </div>
-          <div className="row ">
-            <div className="col-8 text-right">
-              Total credit Note will received
-            </div>
-            <div className="col-3 text-center">
-              {headerDetails ? headerDetails.total_credit : ""}
-            </div>
-          </div>
+          
           <div className="row mb-3">
             <div className="col-8 text-right">Adjustment Value</div>
             <div className="col-3 text-center">{formFields.adj_value}</div>
@@ -225,12 +218,12 @@ export class ReversalClass extends Component {
             onClick={this.handleShowBalance}
           />
         </div>
-        <div className="col-5 fs-14">
+        <div className="col-6 fs-14">
           <p>Transaction Record</p>
           <div className="row">
             <div className="col-3">Treatment #</div>
             <div className="col-3">Balance/Deposit</div>
-            <div className="col-3">Total Reverse Price</div>
+            <div className="col-3 d-flex align-items-center justify-content-center">Total Reverse Price</div>
             <div className="col-3">Outstanding</div>
           </div>
 

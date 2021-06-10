@@ -13,10 +13,12 @@ export class ListCustomerClass extends React.Component {
     state = {
         headerDetails: [
             { label: 'Customer Name', sortKey: "customerName" },
-            { label: 'Address', sortKey: "address" },
             { label: 'Contact Number' },
-            { label: 'Last Visit', sortKey: "lastVisit" },
-            { label: 'Upcoming Appointments' },
+            { label: 'Card No1' },
+            { label: 'Card No2' },
+            { label: 'Card No3' },
+            { label: 'Card No4' },
+            { label: 'Card No5' },
             { label: '' }
         ],
         customerList: [],
@@ -208,18 +210,22 @@ export class ListCustomerClass extends React.Component {
                                         let {
                                             id,
                                             cust_name,
-                                            cust_address,
-                                            last_visit,
-                                            upcoming_appointments,
-                                            cust_phone1
+                                            cardno1,
+                                            cardno2,
+                                            cardno3,
+                                            cardno4,
+                                            cardno5,
+                                            cust_phone2
                                         } = item
                                         return (
                                             <tr key={index}>
                                                 <td><div className="d-flex align-items-center justify-content-center">{cust_name}</div></td>
-                                                <td><div className="d-flex align-items-center justify-content-center">{cust_address}</div></td>
-                                                <td><div className="d-flex align-items-center justify-content-center">{cust_phone1}</div></td>
-                                                <td><div className="d-flex align-items-center justify-content-center">{last_visit}</div></td>
-                                                <td><div className="d-flex align-items-center justify-content-center">{upcoming_appointments}</div></td>
+                                                <td><div className="d-flex align-items-center justify-content-center">{cust_phone2}</div></td>
+                                                <td><div className="d-flex align-items-center justify-content-center">{cardno1}</div></td>
+                                                <td><div className="d-flex align-items-center justify-content-center">{cardno2}</div></td>
+                                                <td><div className="d-flex align-items-center justify-content-center">{cardno3}</div></td>
+                                                <td><div className="d-flex align-items-center justify-content-center">{cardno4}</div></td>
+                                                <td><div className="d-flex align-items-center justify-content-center">{cardno5}</div></td>
                                                 <td className="position-relative" ref={node => { this.node = node; }}
                                                     onClick={() => this.handleClick(index)}
                                                 >

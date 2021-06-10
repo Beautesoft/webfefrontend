@@ -195,7 +195,7 @@ export class TopupTreatmentClass extends Component {
                     </div>
                     <div className="d-flex">
                         <label className="text-left w-100 text-black common-label-text mr-2">
-                            New Outstanging
+                            New Outstanding
                         </label>
                         <div className="input-group">
                             <NormalInput

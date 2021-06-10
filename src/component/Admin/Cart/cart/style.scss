@@ -9,18 +9,18 @@
 }
 .make-payment-section {
   background: $white;
-  padding: 15px;
+  padding: 5px;
   min-height: 489px;
   h4 {
-    font-family: Muli-SemiBold;
-    font-size: fontSize(20px);
+    font-family: "Poppins";
+    font-size: fontSize(16px);
   }
   .payment,
   .subtotal {
-    border: 1px solid #ffb26b;
+    border: 1px solid $primary-color;
   }
   .payment {
-    height: 358px;
+    height: 408px;
     overflow-y: auto;
     .credit-card {
       width: 560px;
@@ -54,7 +54,7 @@
   width: 20px;
   height: 20px;
   border-radius: 11px;
-  border: 2px solid #ffa500;
+  border: 2px solid $primary-color;
   background-color: transparent;
 }
 
@@ -67,7 +67,7 @@
   left: 10px;
   content: " ";
   display: block;
-  background: #ffa500;
+  background: $primaryalt-color;
 }
 
 .input-group {
@@ -81,7 +81,7 @@
     font-weight: 700;
   }
   .payment-detail {
-    border-top: 1px solid #ffa500;
+    border-top: 1px solid $primary-color;
     p {
       line-height: 30px;
     }
@@ -106,6 +106,12 @@
       img {
         width: 62px;
         height: 62px;
+        border-radius: 50%;
+      }
+      P {
+        font-size: 10px;
+        text-transform: uppercase;
+        text-align: center;
       }
     }
   }
@@ -121,24 +127,24 @@
         width: 100px;
         height: 30px;
         padding: 0px;
-        background: #09d71e;
-        color: #f9f9f9;
+        background: $theme-color;
+        color: $primary-color;
         &:hover {
-          border: 1px solid #09d71e;
+          border: 1px solid $primary-color;
           background: #f9f9f9;
-          color: #09d71e;
+          color: $primary-color;
         }
       }
       .reset {
         width: 100px;
         height: 30px;
         padding: 0px;
-        background: #ffa500;
-        color: #f9f9f9;
+        background: $white;
+        color: $primary-color;
         &:hover {
-          border: 1px solid #ffa500;
-          background: #f9f9f9;
-          color: #ffa500;
+          border: 1px solid $primary-color;
+          background: $primary-color;
+          color: $white;
         }
       }
     }
@@ -174,11 +180,8 @@
   }
 }
 
-.borderless td, .borderless th {
-  border: none;
-}
-
-.accordion-menu:hover {
-  background-color: #ccc;
-  cursor:pointer
+.stock-memo-staff-listing .staff-listing .staff-list img {
+  width: 55px !important;
+  height: 55px !important;
+  border-radius: 50%;
 }

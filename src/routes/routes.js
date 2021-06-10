@@ -65,6 +65,25 @@ const routers = [
         exact: true,
       },
       {
+        component: "TransactionHistory",
+        path: "/transactionhistory",
+        auth: false,
+        exact: true,
+      },
+      {
+        component: "TransactionReceipt",
+        path: "/transactionhistory/print",
+        auth: false,
+        exact: true,
+      },
+
+      {
+        component: "TransactionReceipt",
+        path: "/transactionhistory/print/bill/:id",
+        auth: false,
+        exact: true,
+      },
+      {
         component: "CartHome",
         path: "/cart/old",
         auth: false,
@@ -335,6 +354,12 @@ const routers = [
         exact: true,
       },
       {
+        component: "InvoiceHistorys",
+        path: "/customer/:id/invoice",
+        auth: false,
+        exact: true,
+      },
+      {
         component: "TreatmentDetails",
         path: "/customer/:id/treatment",
         auth: false,
@@ -367,6 +392,12 @@ const routers = [
       {
         component: "NewCreateAppointment",
         path: "/newappointment/create",
+        auth: false,
+        exact: true,
+      },
+      {
+        component: "InventoryMainPage",
+        path: "/inventory",
         auth: false,
         exact: true,
       },
@@ -451,6 +482,12 @@ const routers = [
       {
         component: "Review",
         path: "/review",
+        auth: false,
+        exact: true,
+      },
+      {
+        component: "DayEndReport",
+        path: "/DayEndReport",
         auth: false,
         exact: true,
       },

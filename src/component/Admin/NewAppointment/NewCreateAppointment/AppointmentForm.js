@@ -5,7 +5,7 @@ import {
   NormalButton,
   NormalDate,
   NormalModal,
-  NormalDateTime,
+  NormalCheckbox,
 } from "component/common";
 import { CreateAppointment, updateForm } from "redux/actions/appointment";
 import { getCustomer, getCommonApi } from "redux/actions/common";
@@ -16,7 +16,9 @@ import { history } from "helpers";
 import SimpleReactValidator from "simple-react-validator";
 import closeIcon from "assets/images/close.png";
 import _ from "lodash";
-import TimePicker from "react-time-picker";
+import { AddWalkinCustomer } from "./NewWalkinCustomer";
+import { AppointmentLog } from "../CommonModal/Appointmentlog";
+import logicon from "assets/images/logicon.png";
 
 export class AppointmentFormClass extends Component {
   state = {
@@ -36,6 +38,7 @@ export class AppointmentFormClass extends Component {
       // emp_noid : 4,
       Room_Codeid: "",
       sec_status: "",
+      walkin: false,
     },
     multipleCustomerForm: {
       noOfCustomer: 1,
@@ -56,9 +59,12 @@ export class AppointmentFormClass extends Component {
     search: "",
     customerId: 0,
     appointmentId: null,
+    isWalkin: false,
+    isAppointmentLogModal: false,
+    visible: false,
   };
 
-  componentWillMount = async () => {
+  componentWillMount = () => {
     this.validator = new SimpleReactValidator({
       element: message => (
         <span className="error-message text-danger validNo fs14">
@@ -100,9 +106,9 @@ export class AppointmentFormClass extends Component {
     let { staffList, formFields } = this.state;
     let { basicApptDetail } = this.props;
     formFields["appointmentDate"] = basicApptDetail.date;
-    //    formFields["bookingStatus"] = "Booking";
+    //formFields["bookingStatus"] = "Booking";
     formFields["ItemSite_Codeid"] = basicApptDetail.branchId;
-    await this.setState({ formFields });
+    this.setState({ formFields });
     this.getListData();
     this.props
       .getCommonApi(
@@ -121,6 +127,7 @@ export class AppointmentFormClass extends Component {
       });
 
     if (basicApptDetail.appt_id) {
+      console.log(basicApptDetail.appt_id);
       this.setState({ appointmentId: basicApptDetail.appt_id });
       this.props
         .getCommonApi(`appointmentresources/${basicApptDetail.appt_id}/`)
@@ -144,19 +151,6 @@ export class AppointmentFormClass extends Component {
             this.setState({ customerId: data.cust_id });
             this.props.selectedCustomer(data.cust_id);
             this.props.updateForm("appointmentCustomerDetail", formFields);
-            //     "appt_date": "23/02/2021",
-            // "cust_name": "(SK)CUSTMERS",
-            // "cust_id": 43437,
-            // "booking_status": "Waiting",
-            // "channel": "",
-            // "channel_id": "",
-            // "ori_remark": "testing",
-            // "edit_remark": "",
-            // "source": "",
-            // "source_id": "",
-            // "room": "Room 1",
-            // "room_id": 10,
-            // "secondary_status": "Rescheduled"
           }
         });
     }
@@ -242,15 +236,18 @@ export class AppointmentFormClass extends Component {
   };
 
   handleClick = key => {
-    if (!this.state.active) {
+    if (!this.state.visible) {
       document.addEventListener("click", this.handleOutsideClick, false);
     } else {
       document.removeEventListener("click", this.handleOutsideClick, false);
     }
 
+    if (this.state.visible) {
+      let { basicApptDetail } = this.props;
+      this.search(basicApptDetail);
+    }
     this.setState(prevState => ({
-      active: !prevState.active,
-      currentValue: key,
+      visible: !prevState.visible,
     }));
   };
 
@@ -288,6 +285,15 @@ export class AppointmentFormClass extends Component {
             this.setState({ staffList });
           }
         });
+    }
+    if (name === "walkin") {
+      let { formFields } = this.state;
+      formFields["customerName"] = "";
+      formFields["custName"] = "";
+      this.setState({ formFields });
+      this.setState(prevState => ({
+        isWalkin: !prevState.isWalkin,
+      }));
     }
   };
 
@@ -358,27 +364,13 @@ export class AppointmentFormClass extends Component {
     this.handleCustomerElement(multipleCustomerForm.noOfCustomer);
   };
 
-  // handleSearch = (event) => {
-  //     event.persist();
-
-  //     if (!this.debouncedFn) {
-  //         this.debouncedFn = _.debounce(() => {
-  //             let searchString = event.target.value;
-  //             let data = { search: searchString }
-  //             // this.queryHandler(data)
-  //             let { customerList } = this.state;
-  //             let { basicApptDetail } = this.props;
-  //             console.log(basicApptDetail)
-  //             this.search(basicApptDetail, searchString)
-  //         }, 500);
-  //     }
-  //     this.debouncedFn();
-  // }
-
   handleSearch = async event => {
-    // event.persist();
-    await this.setState({ search: event.target.value });
-    console.log(this.state.search);
+    //    event.persist();
+    let { formFields, visible } = this.state;
+    formFields["custName"] = event.target.value;
+    visible = true;
+    await this.setState({ formFields, visible });
+    console.log(this.state.formFields.custName);
     if (!this.debouncedFn) {
       this.debouncedFn = _.debounce(async () => {
         let { customerList } = this.state;
@@ -390,12 +382,12 @@ export class AppointmentFormClass extends Component {
   };
 
   search = basicApptDetail => {
-    let { search } = this.state;
+    let { formFields } = this.state;
     this.props
       .getCommonApi(
         `custappt/?Outlet=${
           basicApptDetail.branchId ? basicApptDetail.branchId : ""
-        }&search=${search}`
+        }&search=${formFields.custName}`
       )
       .then(key => {
         let { status, data } = key;
@@ -408,15 +400,34 @@ export class AppointmentFormClass extends Component {
       });
   };
 
-  handleSelectCustomer = data => {
+  handleSelectCustomer = async data => {
     let { formFields } = this.state;
     formFields["customerName"] = data.id;
     formFields["custName"] = data.cust_name;
-    this.setState({ formFields, isOpenModal: false, customerOption: [] });
-    this.setState({ customerId: data.id });
+    await this.setState({ formFields, customerOption: [] });
+    await this.setState({ customerId: data.id });
     this.props.selectedCustomer(data.id);
+    this.handleClick();
   };
 
+  handleWalkInCustomer = data => {
+    let { formFields } = this.state;
+    formFields["customerName"] = data.id;
+    formFields["custName"] = data.cust_name;
+    this.setState({ formFields });
+    this.setState({ customerId: data.id });
+    this.props.selectedCustomer(data.id);
+    this.setState(prevState => ({
+      isWalkin: !prevState.isWalkin,
+    }));
+  };
+
+  handleLogClick = () => {
+    debugger;
+    this.setState(prevState => ({
+      isAppointmentLogModal: !prevState.isAppointmentLogModal,
+    }));
+  };
   render() {
     let {
       appt_fr_time,
@@ -436,262 +447,282 @@ export class AppointmentFormClass extends Component {
       customerElement,
       formFields,
       appointmentId,
+      isWalkin,
+      isAppointmentLogModal,
+      visible,
     } = this.state;
     let { customerDetail, customerList, multipleCustomerForm } = this.props;
     let { noOfCustomer, treatment, room } = multipleCustomerForm;
     return (
-      <div className="form-group mb-4 pb-2">
-        <div className="row">
-          <div className="col-3 mb-3">
-            <label className="text-left text-black common-label-text ">
-              Date{" "}
-              <span className="error-message text-danger validNo fs-18">*</span>
-            </label>
-            <div className="">
-              <NormalDate
-                value={new Date(formFields.appointmentDate)}
-                name="appointmentDate"
-                type="date"
-                onChange={this.handleChange}
-                minDate={new Date()}
-                showDisabledMonthNavigation
-              />
+      <>
+        <div className="form-group mb-4 pb-2 appointment-form">
+          <div className="d-flex">
+            <div className="d-flex justify-content-start col-9 h5 p-0">
+              Appointment
             </div>
-            {this.validator.message(
-              "appointmentDate",
-              formFields.appointmentDate,
-              "required|date"
-            )}
+            {appointmentId && appointmentId > 0 ? (
+              <div
+                className="d-flex justify-content-end align-items-center bg-white col-3"
+                onClick={this.handleLogClick}
+              >
+                <img src={logicon} alt="" width="35px" height="35px" />
+              </div>
+            ) : null}
           </div>
-          <div className="col-3 mb-3">
-            <div>
+          <div className="row">
+            <div className="col-3 mb-3">
               <label className="text-left text-black common-label-text ">
-                Name{" "}
+                Date{" "}
                 <span className="error-message text-danger validNo fs-18">
                   *
                 </span>
               </label>
-            </div>
-            <div className="input-group">
-              {appointmentId ? (
-                <NormalInput
-                  // placeholder="Enter here"
-                  // options={siteList}
-                  value={formFields.custName}
-                  name="customerName"
-                  onClick={() => this.setState({ isOpenModal: true })}
-                  // onChange={this.handleSearch}
-                  className={`search px-3 p-0`}
-                  disabled
+              <div className="">
+                <NormalDate
+                  value={new Date(formFields.appointmentDate)}
+                  name="appointmentDate"
+                  type="date"
+                  onChange={this.handleChange}
+                  minDate={new Date()}
+                  showDisabledMonthNavigation
                 />
-              ) : (
-                <NormalInput
-                  // placeholder="Enter here"
-                  // options={siteList}
-                  value={formFields.custName}
-                  name="customerName"
-                  onClick={() => this.setState({ isOpenModal: true })}
-                  // onChange={this.handleSearch}
-                  className={`search px-3 p-0`}
-                />
+              </div>
+              {this.validator.message(
+                "appointmentDate",
+                formFields.appointmentDate,
+                "required|date"
               )}
             </div>
-            {this.validator.message(
-              "customerName",
-              formFields.customerName,
-              "required"
-            )}
-          </div>
-
-          <div className="col-3 mb-3">
-            <label className="text-left text-black common-label-text ">
-              Booking status{" "}
-              <span className="error-message text-danger validNo fs-18">*</span>
-            </label>
-            <div className="input-group">
-              <NormalSelect
-                // placeholder="Enter here" }
-                options={bookingList}
-                value={formFields.bookingStatus} //
-                name="bookingStatus"
-                onChange={this.handleChange}
-                className="customer-name status py-1"
-              />
+            <div className="col-3 mb-3">
+              <div>
+                <label className="text-left text-black common-label-text ">
+                  Name{" "}
+                  <span className="error-message text-danger validNo fs-18">
+                    *
+                  </span>
+                </label>
+              </div>
+              <div className="input-group">
+                {appointmentId ? (
+                  <NormalInput
+                    value={formFields.custName}
+                    name="customerName"
+                    onChange={this.handleSearch}
+                    onClick={this.handleClick}
+                    disabled
+                  />
+                ) : (
+                  <NormalInput
+                    placeholder="search"
+                    value={formFields.custName}
+                    name="customerName"
+                    onChange={this.handleSearch}
+                    onClick={this.handleClick}
+                  />
+                )}
+              </div>
               {this.validator.message(
-                "Booking Status",
-                formFields.bookingStatus,
+                "customerName",
+                formFields.customerName,
                 "required"
               )}
             </div>
-          </div>
 
-          <div className="col-3 mb-3">
-            <div>
+            <div className="col-3 mb-3">
               <label className="text-left text-black common-label-text ">
-                Channel
+                Booking status{" "}
+                <span className="error-message text-danger validNo fs-18">
+                  *
+                </span>
               </label>
-            </div>
-            <div className="input-group">
-              <NormalSelect
-                // placeholder="Enter here"
-                options={channelList}
-                value={formFields.Appt_typeid}
-                name="Appt_typeid"
-                onChange={this.handleChange}
-                className="customer-name py-1"
-              />
-            </div>
-            {/* {this.validator.message('Appt_typeid', formFields.Appt_typeid, 'required')} */}
-          </div>
-
-          <div className="col-3 mb-3">
-            <div>
-              <label className="text-left text-black common-label-text ">
-                Remark
-              </label>
-            </div>
-            <div className="input-group">
-              {appointmentId ? (
-                <NormalInput
-                  // placeholder="Enter here"
-                  // options={siteList}
-                  value={formFields.new_remark}
-                  name="new_remark"
+              <div className="input-group">
+                <NormalSelect
+                  // placeholder="Enter here" }
+                  options={bookingList}
+                  value={formFields.bookingStatus} //
+                  name="bookingStatus"
                   onChange={this.handleChange}
-                  className="customer-name"
-                  disabled
+                  className="customer-name status py-1"
                 />
-              ) : (
-                <NormalInput
+                {this.validator.message(
+                  "Booking Status",
+                  formFields.bookingStatus,
+                  "required"
+                )}
+              </div>
+            </div>
+
+            <div className="col-3 mb-3">
+              <div>
+                <label className="text-left text-black common-label-text ">
+                  Channel
+                </label>
+              </div>
+              <div className="input-group">
+                <NormalSelect
                   // placeholder="Enter here"
-                  // options={siteList}
-                  value={formFields.new_remark}
-                  name="new_remark"
+                  options={channelList}
+                  value={formFields.Appt_typeid}
+                  name="Appt_typeid"
                   onChange={this.handleChange}
-                  className="customer-name"
+                  className="customer-name py-1"
                 />
-              )}
+              </div>
+              {/* {this.validator.message('Appt_typeid', formFields.Appt_typeid, 'required')} */}
             </div>
-            {/* {this.validator.message('Remark', formFields.new_remark, 'required')} */}
-          </div>
 
-          <div className="col-3 mb-3">
-            <div>
+            <div className="col-3 mb-3">
+              <div>
+                <label className="text-left text-black common-label-text ">
+                  Remark
+                </label>
+              </div>
+              <div className="input-group">
+                {appointmentId ? (
+                  <NormalInput
+                    // placeholder="Enter here"
+                    // options={siteList}
+                    value={formFields.new_remark}
+                    name="new_remark"
+                    onChange={this.handleChange}
+                    disabled
+                  />
+                ) : (
+                  <NormalInput
+                    // placeholder="Enter here"
+                    // options={siteList}
+                    value={formFields.new_remark}
+                    name="new_remark"
+                    onChange={this.handleChange}
+                  />
+                )}
+              </div>
+              {/* {this.validator.message('Remark', formFields.new_remark, 'required')} */}
+            </div>
+
+            <div className="col-3 mb-3">
+              <div>
+                <label className="text-left text-black common-label-text ">
+                  Source Name
+                </label>
+              </div>
+              <div className="input-group">
+                <NormalSelect
+                  // placeholder="Enter here"
+                  options={sourceList}
+                  value={formFields.Source_Codeid}
+                  name="Source_Codeid"
+                  onChange={this.handleChange}
+                  className="customer-name py-1"
+                />
+              </div>
+              {/* {this.validator.message('Source name', formFields.Source_Codeid, 'required')} */}
+            </div>
+            <div className="col-3 mb-3">
+              <div>
+                <label className="text-left text-black common-label-text ">
+                  Room
+                </label>
+              </div>
+              <div className="input-group">
+                <NormalSelect
+                  // placeholder="Enter here"
+                  options={roomList}
+                  value={formFields.Room_Codeid}
+                  name="Room_Codeid"
+                  onChange={this.handleChange}
+                  className="customer-name py-1"
+                />
+              </div>
+              {/* {this.validator.message('Room', formFields.Room_Codeid, 'required')} */}
+            </div>
+
+            <div className="col-3 mb-3">
               <label className="text-left text-black common-label-text ">
-                Source Name
+                Secondary status
               </label>
-            </div>
-            <div className="input-group">
-              <NormalSelect
-                // placeholder="Enter here"
-                options={sourceList}
-                value={formFields.Source_Codeid}
-                name="Source_Codeid"
-                onChange={this.handleChange}
-                className="customer-name py-1"
-              />
-            </div>
-            {/* {this.validator.message('Source name', formFields.Source_Codeid, 'required')} */}
-          </div>
-          <div className="col-3 mb-3">
-            <div>
-              <label className="text-left text-black common-label-text ">
-                Room
-              </label>
-            </div>
-            <div className="input-group">
-              <NormalSelect
-                // placeholder="Enter here"
-                options={roomList}
-                value={formFields.Room_Codeid}
-                name="Room_Codeid"
-                onChange={this.handleChange}
-                className="customer-name py-1"
-              />
-            </div>
-            {/* {this.validator.message('Room', formFields.Room_Codeid, 'required')} */}
-          </div>
-
-          <div className="col-3 mb-3">
-            <label className="text-left text-black common-label-text ">
-              Secondary status
-            </label>
-            <div className="input-group">
-              <NormalSelect
-                // placeholder="Enter here"
-                options={secStatusList}
-                value={formFields.sec_status}
-                name="sec_status"
-                onChange={this.handleChange}
-                className="customer-name py-1"
-              />
-              {/* {this.validator.message('Secondary Status', formFields.sec_status, 'required')} */}
-            </div>
-          </div>
-        </div>
-
-        <NormalModal
-          className={"multiple-appointment select-category"}
-          style={{ minWidth: "800px" }}
-          modal={isOpenModal}
-          handleModal={this.handleDialog}
-        >
-          <img
-            onClick={this.handleDialog}
-            className="close"
-            src={closeIcon}
-            alt=""
-          />
-          <div className="row mt-2 mb-5 mx-3">
-            <div className="col-12 pl-0 mb-3 fs-18 py-2">Select Customer</div>
-            <div className="col-2 pl-0">Search</div>
-            <div className="col-5">
-              <input
-                name="search"
-                onChange={this.handleSearch}
-                className="search m-0 p-0 px-3"
-              />
-            </div>
-            <div className="col-3">
-              <NormalButton
-                buttonClass={"mx-2 p-0"}
-                mainbg={true}
-                className=" fs-15 confirm"
-                label="Search"
-                outline={false}
-                onClick={() => this.search(this.state.search)}
-              />
+              <div className="input-group">
+                <NormalSelect
+                  // placeholder="Enter here"
+                  options={secStatusList}
+                  value={formFields.sec_status}
+                  name="sec_status"
+                  onChange={this.handleChange}
+                  className="customer-name py-1"
+                />
+                {/* {this.validator.message('Secondary Status', formFields.sec_status, 'required')} */}
+              </div>
             </div>
 
-            <div className="row mt-4 table-header w-100 m-0">
-              <div className="col-2">Name</div>
-              <div className="col-2">Phone</div>
-              <div className="col-3">Cust Code</div>
-              <div className="col-5">Email</div>
-            </div>
-            <div className="response-table w-100">
-              {customerOption.length > 0 ? (
-                customerOption.map((item, index) => {
-                  return (
-                    <div
-                      className="row m-0 table-body w-100"
-                      onClick={() => this.handleSelectCustomer(item)}
-                      key={index}
-                    >
-                      <div className="col-2">{item.cust_name}</div>
-                      <div className="col-2">{item.cust_phone1}</div>
-                      <div className="col-3">{item.cust_code}</div>
-                      <div className="col-5">{item.cust_email}</div>
+            {!appointmentId ? (
+              <div className="col-1 mb-3">
+                <label className="text-left text-black common-label-text ">
+                  Walkin
+                </label>
+                <div className="input-group">
+                  <NormalCheckbox
+                    onChange={this.handleChange}
+                    value={formFields.walkin}
+                    name="walkin"
+                  />
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+            {visible ? (
+              <div className="customerSearch-block">
+                <div className="row mt-4 table table-header w-100 m-0">
+                  <div className="col-4">Name</div>
+                  <div className="col-2">Phone</div>
+                  <div className="col-3">Cust Code</div>
+                  <div className="col-3">Email</div>
+                </div>
+                <div className="response-table w-100">
+                  {customerOption.length > 0 ? (
+                    customerOption.map((item, index) => {
+                      return (
+                        <div
+                          className="row m-0 table-body w-100 border"
+                          onClick={() => this.handleSelectCustomer(item)}
+                          key={index}
+                        >
+                          <div className="col-4">{item.cust_name}</div>
+                          <div className="col-2">{item.cust_phone1}</div>
+                          <div className="col-3">{item.cust_code}</div>
+                          <div className="col-3">{item.cust_email}</div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className="text-center w-100">
+                      No Data are available
                     </div>
-                  );
-                })
-              ) : (
-                <div className="text-center w-100">No Data are available</div>
-              )}
-            </div>
+                  )}
+                </div>
+              </div>
+            ) : null}
+            {isWalkin ? (
+              <>
+                <AddWalkinCustomer
+                  site_codeId={formFields.ItemSite_Codeid}
+                  handleWalkInCustomer={this.handleWalkInCustomer}
+                />
+              </>
+            ) : (
+              ""
+            )}
           </div>
-        </NormalModal>
-      </div>
+
+          {isAppointmentLogModal ? (
+            <AppointmentLog
+              isAppointmentLogModal={isAppointmentLogModal}
+              handleLogClick={this.handleLogClick}
+              appointmentId={appointmentId}
+            />
+          ) : null}
+        </div>
+      </>
     );
   }
 }

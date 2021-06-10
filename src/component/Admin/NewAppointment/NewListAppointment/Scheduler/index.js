@@ -1,13 +1,7 @@
 import React, { Component } from "react";
 import { NewSchedulerModal } from "component/common/Plugins/NewScheduler";
 // import BigSchedulerModal from 'component/common/Plugins/BigScheduler';
-import {
-  NormalInput,
-  NormalSelect,
-  NormalButton,
-  NormalDate,
-  NormalModal,
-} from "component/common";
+
 import {
   getCustomer,
   getCommonApi,
@@ -21,28 +15,9 @@ import { history } from "helpers";
 import "./style.scss";
 import SimpleReactValidator from "simple-react-validator";
 import { CreateAppointment, updateForm } from "redux/actions/appointment";
-
-const data = [
-  {
-    start_date: "2020-06-09 4:00",
-    end_date: "2020-06-09 6:00",
-    text: "Event 1",
-    id: 1,
-  },
-  {
-    start_date: "2020-06-11 8:00",
-    end_date: "2020-06-11 10:00",
-    text: "Event 2",
-    id: 2,
-  },
-  {
-    start_date: "2020-06-12 12:00",
-    end_date: "2018-06-12 14:00",
-    text: "dblclick me!",
-    id: 3,
-  },
-];
-
+import { NewCreateAppointment } from "../../NewCreateAppointment/index";
+import { LoadPanel } from "devextreme-react/load-panel";
+const position = { of: "#appointment" };
 export class SchedulerClass extends Component {
   state = {
     appointment: [
@@ -90,8 +65,16 @@ export class SchedulerClass extends Component {
     selectedId: "",
     staffList: [],
     page: 1,
-    limit: 7,
+    limit: 6,
     meta: [],
+    searchtext: "",
+    staffSortlist: [],
+    isOpenModal: false,
+    loadPanelVisible: false,
+    showIndicator: true,
+    shading: true,
+    showPane: true,
+    groupByType: "staff",
   };
 
   componentWillMount = () => {
@@ -103,38 +86,37 @@ export class SchedulerClass extends Component {
       ),
       autoForceUpdate: this,
     });
-    let { brachList, appointment, formField, filterDate } = this.state;
-    this.props.getCommonApi(`treatment/Outlet/`).then(key => {
-      let { status, data } = key;
-      if (status === 200) {
-        for (let value of data) {
-          brachList.push({ value: value.id, label: value.itemsite_desc });
-        }
-        this.setState({ brachList });
-        // console.log(brachList, "jhksdfkjsdhfks")
-      }
-    });
     //this.getAvailability();
     // this.getAppointment();
     this.getAppointmentWithStaff();
+    // let { brachList, appointment, formField, filterDate } = this.state;
+    // this.props.getCommonApi(`treatment/Outlet/`).then(key => {
+    //   let { status, data } = key;
+    //   if (status === 200) {
+    //     for (let value of data) {
+    //       brachList.push({ value: value.id, label: value.itemsite_desc });
+    //     }
+    //     this.setState({ brachList });
+    //   }
+    // });
   };
 
-  getAvailability = () => {
-    let { filterDate } = this.state;
-    this.props
-      .getCommonApi(
-        `staffsavailable/?Appt_date=${dateFormat(filterDate, "yyyy-mm-dd")}`
-      )
-      .then(key => {
-        let { status, data } = key;
-        if (status === 200) {
-          // for (let value of data) {
-          //     staffList.push({ value: value.id, label: value.emp_name })
-          // }
-          this.setState({ list: data });
-        }
-      });
-  };
+  // getAvailability = () => {
+  //   let { filterDate } = this.state;
+  //   this.props
+  //     .getCommonApi(
+  //       `staffsavailable/?Appt_date=${dateFormat(filterDate, "yyyy-mm-dd")}`
+  //     )
+  //     .then(key => {
+  //       let { status, data } = key;
+  //       if (status === 200) {
+  //         // for (let value of data) {
+  //         //     staffList.push({ value: value.id, label: value.emp_name })
+  //         // }
+  //         this.setState({ list: data });
+  //       }
+  //     });
+  // };
 
   handleAppointmentOpen = (id, e) => {
     console.log(e, id, "hgjsydfisuyfsdfm ==== handleAppointmentOpen");
@@ -159,15 +141,15 @@ export class SchedulerClass extends Component {
   handleEmptyEvent = async (date, e) => {
     let { customerDetail } = this.props;
     let { formField } = this.state;
-    // if (this.validator.allValid()) {
+
     let time = new Date(date);
 
     formField["time"] = this.getHoursFromDate(time);
     formField["date"] = date;
+    formField["appt_id"] = 0;
     if (e.groups) {
       formField["staff_id"] = e.groups.id;
     }
-
     if (e.appt_id) {
       formField["appt_id"] = e.appt_id;
     }
@@ -180,35 +162,44 @@ export class SchedulerClass extends Component {
       time.getHours
     );
     await this.props.updateForm("basicApptDetail", formField);
-    history.push(`/admin/newappointment/create`);
+    await this.setState({ isOpenModal: true });
   };
-
-  getAppointment = () => {
-    let { brachList, events, formField, filterType, filterDate } = this.state;
-    this.props
-      .getCommonApi(
-        `appointmentcalender/?date=${dateFormat(
-          filterDate
-        )}&check=${filterType}`
-      )
-      .then(async key => {
-        let { status, data } = key;
-        if (status === 200) {
-          events = [];
-          await this.setState({ events: null });
-          events = data;
-          await this.setState({ events });
-          console.log(events, "appointmentlist", key);
-        }
-      });
+  handleCloseDialog = async () => {
+    await this.props.updateForm("treatmentList", []);
+    await this.props.updateForm("basicApptDetail", {});
+    await this.props.updateForm("appointmentCustomerDetail", {});
+    await this.setState({
+      isOpenModal: false,
+    });
   };
-  handleChangeFilter = async (prevMode, prevDate, newMode, newDate) => {
-    let { filterDate, filterType } = this.state;
+  // getAppointment = () => {
+  //   let { brachList, events, formField, filterType, filterDate } = this.state;
+  //   this.props
+  //     .getCommonApi(
+  //       `appointmentcalender/?date=${dateFormat(
+  //         filterDate
+  //       )}&check=${filterType}`
+  //     )
+  //     .then(async key => {
+  //       let { status, data } = key;
+  //       if (status === 200) {
+  //         events = [];
+  //         await this.setState({ events: null });
+  //         events = data;
+  //         await this.setState({ events });
+  //         console.log(events, "appointmentlist", key);
+  //       }
+  //     });
+  // };
+  handleChangeFilter = async (prevMode, prevDate, newMode, newDate, search) => {
+    let { filterDate, filterType, searchtext } = this.state;
     filterDate = newDate;
     filterType = newMode;
+    searchtext = search;
     await this.setState({
       filterDate,
       filterType,
+      searchtext,
     });
     console.log("dfhgfhjhjghjdfhg", prevMode, prevDate, newMode, newDate);
     if (prevMode !== newMode || prevDate !== newDate) {
@@ -251,25 +242,41 @@ export class SchedulerClass extends Component {
   };
 
   getAppointmentWithStaff = () => {
-    let { filterDate, filterType, page, limit } = this.state;
-    this.props
-      .getCommonApi(
-        `empappointmentview/?date=${dateFormat(
-          filterDate
-        )}&check=${filterType}&page=${page}&limit=${limit}`
-      )
-      .then(key => {
-        let { status, data, event } = key;
-        console.log(event);
-        if (status === 200) {
-          this.setState({
-            staffList: data.dataList,
-            events: event,
-            meta: data.meta,
+    this.setState(
+      {
+        loadPanelVisible: true,
+      },
+      () => {
+        let {
+          filterDate,
+          filterType,
+          page,
+          limit,
+          searchtext,
+          staffList,
+          events,
+          meta,
+          groupByType,
+        } = this.state;
+        this.props
+          .getCommonApi(
+            `empappointmentview/?date=${dateFormat(
+              filterDate
+            )}&check=${filterType}&page=${page}&limit=${limit}&search=${searchtext}&type=${groupByType}`
+          )
+          .then(async key => {
+            let { status, data, event } = key;
+
+            if (status === 200) {
+              staffList = data.dataList;
+              meta = data.meta;
+              events = event;
+              await this.setState({ events, staffList, meta });
+            }
           });
-        }
-        console.log(data, "staffwithpagination");
-      });
+        setTimeout(this.hideLoadPanel, 3000);
+      }
+    );
   };
 
   handleNext = async () => {
@@ -293,6 +300,19 @@ export class SchedulerClass extends Component {
       this.getAppointmentWithStaff();
     }
   };
+  hideLoadPanel = () => {
+    this.setState({
+      loadPanelVisible: false,
+    });
+  };
+
+  groupByAppointment = async groupBy => {
+    debugger;
+    await this.setState({
+      groupByType: groupBy,
+    });
+    this.getAppointmentWithStaff();
+  };
 
   render() {
     let {
@@ -307,11 +327,24 @@ export class SchedulerClass extends Component {
       staffList,
       limit,
       meta,
+      searchtext,
+      staffSortlist,
+      isLoading,
+      isOpenModal,
     } = this.state;
 
     return (
       <>
-        <div className="row m-0">
+        <div className="row m-0" id="appointment">
+          <LoadPanel
+            shadingColor="rgba(0,0,0,0.4)"
+            position={position}
+            onHiding={this.hideLoadPanel}
+            visible={this.state.loadPanelVisible}
+            showIndicator={this.state.showIndicator}
+            shading={this.state.shading}
+            showPane={this.state.showPane}
+          />
           <div className="scheduler-container pr-0">
             <NewSchedulerModal
               staffList={staffList}
@@ -322,13 +355,21 @@ export class SchedulerClass extends Component {
               handleChangeFilter={this.handleChangeFilter}
               filterType={filterType}
               filterDate={filterDate}
+              searchtext={searchtext}
               onDeleteEvent={this.handleDelete}
-              openDetail={this.openDetail}
-              openStaffView={this.handleOpenStaff}
               handleBack={this.handleBack}
               handleNext={this.handleNext}
+              staffSortlist={staffSortlist}
+              getAppointmentWithStaff={this.getAppointmentWithStaff}
+              groupByAppointment={groupBy => this.groupByAppointment(groupBy)}
             />
           </div>
+          <NewCreateAppointment
+           style={{ minWidth: "1000px" }}
+            isOpenModal={isOpenModal}
+            handleCloseDialog={this.handleCloseDialog}
+            handleSaveorUpdate={this.getAppointmentWithStaff}
+          />
         </div>
       </>
     );

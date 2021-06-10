@@ -1,7 +1,7 @@
-@import '../../../../assets/scss/abstracts/abstracts-dir.scss';
+@import "../../../../assets/scss/abstracts/abstracts-dir.scss";
 
 .staffList-container {
-  .btn{
+  .btn {
     height: 35px;
   }
   .input-container {
@@ -72,13 +72,13 @@
     .color-detail {
       display: flex;
       .color {
-        width: 25px;
-        height: 25px;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
         background: $green;
-        &.not-available{
-          background: #FF0000;
+        &.not-available {
+          background: #ff0000;
         }
-       
       }
       .detail {
         padding-left: 20px;
@@ -88,9 +88,9 @@
       }
     }
   }
-  table{
-    td{
-      .option{
+  table {
+    td {
+      .option {
         width: 172px;
       }
     }

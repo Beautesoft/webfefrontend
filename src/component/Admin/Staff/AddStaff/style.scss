@@ -1,7 +1,6 @@
-@import '../../../../assets/scss/abstracts/abstracts-dir.scss';
+@import "../../../../assets/scss/abstracts/abstracts-dir.scss";
 
 .create-staff {
-
   .btn {
     font-family: Muli-Regular;
   }
@@ -12,11 +11,20 @@
     input,
     textarea {
       font-size: fontSize(14px);
-      font-family: 'Montserrat', sans-serif;
+      font-family: "Montserrat", sans-serif;
       font-weight: normal;
       background: #f9f9f9;
       border: 0.25px solid #c0c0c0;
       height: 63px;
+    }
+    .staff-detail {
+      margin: 30px;
+      .form-control {
+        height: 57px;
+      }
+      .select-icon {
+        top: 17px;
+      }
     }
   }
   .staff-detail {
@@ -24,36 +32,36 @@
     .form-control {
       height: 57px;
     }
-    .select-icon{
+    .select-icon {
       top: 27px;
     }
   }
   .input-group {
-    .staff-skills-select{
-        .basic-multi-select{
-          .select__control--is-focused{
-           height: 63px; 
-          }
-          .css-bg1rzq-control{
+    .staff-skills-select {
+      .basic-multi-select {
+        .select__control--is-focused {
+          height: 63px;
+        }
+        .css-bg1rzq-control {
+          height: 63px;
+          .css-1hwfws3 {
             height: 63px;
-            .css-1hwfws3{
-              height: 63px;
-              .css-1g6gooi{
-                margin: 0px;
-                padding: 0px;
-              }
+            .css-1g6gooi {
+              margin: 0px;
+              padding: 0px;
             }
           }
         }
       }
-      .overflow-y-set{
-        .basic-multi-select{
-          .css-bg1rzq-control{
-            .css-1hwfws3{
-              overflow-y: auto !important;
-            }
+    }
+    .overflow-y-set {
+      .basic-multi-select {
+        .css-bg1rzq-control {
+          .css-1hwfws3 {
+            overflow-y: auto !important;
           }
         }
       }
+    }
   }
 }

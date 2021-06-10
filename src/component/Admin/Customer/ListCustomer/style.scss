@@ -1,8 +1,8 @@
-@import '../../../../assets/scss/abstracts/abstracts-dir.scss';
+@import "../../../../assets/scss/abstracts/abstracts-dir.scss";
 
 .customer-list {
   .head-label {
-    font-family: Muli-Regular;
+    font-family: "Poppins";
     font-weight: bold;
     font-size: 18px;
     line-height: 23px;
@@ -62,5 +62,4 @@
       right: 18px;
     }
   }
-  
 }

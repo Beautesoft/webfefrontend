@@ -37,9 +37,22 @@ export class AddCustomerForm extends Component {
 
 
     render() {
-        let { formFields, sexOption, handleCancel, handleDatePick, salonList } = this.props;
+        let { formFields, sexOption, handleCancel, handleDatePick, salonList,sourceList,stateList,countryList,languageList } = this.props;
 
-        let { cust_name, cust_address, cust_phone2, cust_email, cust_dob, Cust_sexesid, Site_Codeid } = formFields;
+        let { cust_name, cust_address, cust_phone2, 
+        cust_email, cust_dob, Cust_sexesid, Site_Codeid,           
+        cust_state      ,
+        cust_country    ,
+        cust_postcode   ,
+        cust_nric       ,
+        cust_language   ,
+        cust_source     ,
+        emergencycontact,
+        cardno1         ,
+        cardno2         ,
+        cardno3         ,
+        cardno4         ,
+        cardno5        } = formFields;
         return (
 
             <div className="form-group mb-4 pb-2">
@@ -59,19 +72,37 @@ export class AddCustomerForm extends Component {
                 </div>
                 <div className="pb-md-4">
                     <label className="text-left text-black common-label-text fs-17 pb-2">
-                        Email
-                                </label>
+                        Handphone (e.g 012-XXXXXXX)
+                            </label>
                     <div className="input-group">
                         <NormalInput
                             placeholder="Enter here"
-                            value={cust_email}
-                            name="cust_email"
+                            value={cust_phone2}
+                            name="cust_phone2"
                             onChange={this.props.handleChange}
                         />
                     </div>
-                    {this.validator.message('Address', cust_address, 'required')}
+                    {this.validator.message('Phone', cust_phone2, 'required')}
                 </div>
 
+                <div className="pb-md-4">
+                    <label className="text-left text-black common-label-text fs-17 pb-2">
+                        IC
+                     </label>
+
+                    <div className="input-group">
+                        <NormalInput
+                            placeholder="Enter here"
+                            value={cust_nric}
+                            name="cust_nric"
+                            onChange={this.props.handleChange}
+                        />
+                    </div>
+                    {this.validator.message('NRIC', cust_nric, 'required')}
+                  
+                </div>
+
+                
                 <div className="pb-md-4">
                     <label className="text-left text-black common-label-text fs-17 pb-2">
                         Address
@@ -86,7 +117,95 @@ export class AddCustomerForm extends Component {
                     </div>
                     {this.validator.message('Address', cust_address, 'required')}
                 </div>
-
+                <div className="pb-md-4">
+                    <label className="text-left text-black common-label-text fs-17 pb-2">
+                    Post Code
+                    </label>
+                        <div className="input-group">
+                                    <NormalInput
+                                        placeholder="Enter here"
+                                        value={cust_postcode}
+                                        name="cust_postcode"
+                                        onChange={this.props.handleChange}
+                                    />
+                                </div>
+                                {this.validator.message('postcode', cust_postcode, 'required')}
+                            
+                </div>
+                <div className="gender mt-3">
+                    <label className="text-left text-black common-label-text fs-17 pb-2">
+                        State
+                            </label>
+                    <div className="input-group">
+                        <NormalSelect
+                            // placeholder="Enter here"
+                            options={stateList}
+                            value={cust_state}
+                            name="cust_state"
+                            onChange={this.props.handleChange}
+                        />
+                    </div>
+                    {this.validator.message('State', cust_state, 'required')}
+                </div>
+                <div className="gender mt-3">
+                    <label className="text-left text-black common-label-text fs-17 pb-2">
+                    Country
+                            </label>
+                    <div className="input-group">
+                        <NormalSelect
+                            // placeholder="Enter here"
+                            options={countryList}
+                            value={cust_country}
+                            name="cust_country"
+                            onChange={this.props.handleChange}
+                        />
+                    </div>
+                    {this.validator.message('Country', cust_country, 'required')}
+                </div>
+                
+                <div className="pb-md-4">
+                    <label className="text-left text-black common-label-text fs-17 pb-2">
+                        Email Address
+                                </label>
+                    <div className="input-group">
+                        <NormalInput
+                            placeholder="Enter here"
+                            value={cust_email}
+                            name="cust_email"
+                            onChange={this.props.handleChange}
+                        />
+                    </div>
+                   
+                </div>
+                <div className="pb-md-4">
+                    <label className="text-left text-black common-label-text fs-17 pb-2">
+                        Emergency Contact
+                    </label>
+                    <div className="input-group">
+                    <NormalInput
+                            placeholder="Enter here"
+                            value={emergencycontact}
+                            name="emergencycontact"
+                            onChange={this.props.handleChange}
+                        />
+                    </div>
+                </div>
+                <div className="gender mt-3">
+                    <label className="text-left text-black common-label-text fs-17 pb-2">
+                        Preferred Language
+                    </label>
+                    <div className="input-group">
+                        <NormalSelect
+                            // placeholder="Enter here"
+                            options={languageList}
+                            value={cust_language}
+                            name="cust_language"
+                            onChange={this.props.handleChange}
+                        />
+                    </div>
+                    {this.validator.message('Language', cust_language, 'required')}
+ 
+                </div>
 
                 <div className="pb-md-4">
                     <label className="text-left text-black common-label-text fs-17 pb-2">
@@ -113,20 +232,25 @@ export class AddCustomerForm extends Component {
                     </div>
                     {this.validator.message('Date Of Birth', cust_dob, 'required')}
                 </div>
-                <div className="pb-md-4">
+
+                <div className="gender mt-3">
                     <label className="text-left text-black common-label-text fs-17 pb-2">
-                        Contact Number
+                        Source
                             </label>
                     <div className="input-group">
-                        <NormalInput
-                            placeholder="Enter here"
-                            value={cust_phone2}
-                            name="cust_phone2"
+                        <NormalSelect
+                            // placeholder="Enter here"
+                            options={sourceList}
+                            value={cust_source}
+                            name="cust_source"
                             onChange={this.props.handleChange}
                         />
                     </div>
-                    {this.validator.message('Phone', cust_phone2, 'required')}
+                    {this.validator.message('cust_source', cust_source, 'required')}
                 </div>
+
+                
+                
                 <div className="gender">
                     <label className="text-left text-black common-label-text fs-17 pb-2">
                         Gender
@@ -142,22 +266,73 @@ export class AddCustomerForm extends Component {
                     </div>
                     {this.validator.message('Gender', Cust_sexesid, 'required')}
                 </div>
-                <div className="gender mt-3">
+                
+                
+                <div className="pb-md-4">
                     <label className="text-left text-black common-label-text fs-17 pb-2">
-                        Site
-                            </label>
+                        CardNo1
+                    </label>
                     <div className="input-group">
-                        <NormalSelect
-                            // placeholder="Enter here"
-                            options={salonList}
-                            value={Site_Codeid}
-                            name="Site_Codeid"
+                    <NormalInput
+                            placeholder="Enter here"
+                            value={cardno1}
+                            name="cardno1"
                             onChange={this.props.handleChange}
                         />
                     </div>
-                    {this.validator.message('site', Site_Codeid, 'required')}
                 </div>
-                
+                <div className="pb-md-4">
+                    <label className="text-left text-black common-label-text fs-17 pb-2">
+                        CardNo2
+                    </label>
+                    <div className="input-group">
+                    <NormalInput
+                            placeholder="Enter here"
+                            value={cardno2}
+                            name="cardno2"
+                            onChange={this.props.handleChange}
+                        />
+                    </div>
+                </div>
+                <div className="pb-md-4">
+                    <label className="text-left text-black common-label-text fs-17 pb-2">
+                        cardNo3
+                    </label>
+                    <div className="input-group">
+                    <NormalInput
+                            placeholder="Enter here"
+                            value={cardno3}
+                            name="cardno3"
+                            onChange={this.props.handleChange}
+                        />
+                    </div>
+                </div>
+                <div className="pb-md-4">
+                    <label className="text-left text-black common-label-text fs-17 pb-2">
+                        cardNo4
+                    </label>
+                    <div className="input-group">
+                    <NormalInput
+                            placeholder="Enter here"
+                            value={cardno4}
+                            name="cardno4"
+                            onChange={this.props.handleChange}
+                        />
+                    </div>
+                </div>
+                <div className="pb-md-4">
+                    <label className="text-left text-black common-label-text fs-17 pb-2">
+                        cardNo5
+                    </label>
+                    <div className="input-group">
+                    <NormalInput
+                            placeholder="Enter here"
+                            value={cardno5}
+                            name="cardno5"
+                            onChange={this.props.handleChange}
+                        />
+                    </div>
+                </div>
                 <div className="gender mt-3">
                     
                     <FormGroup check>

@@ -37,11 +37,11 @@ export class BillOpsClass extends Component {
         workPoint: 0,
         isOpenReversal: false,
         menuItems: [
-            { to: '/admin/catalog', label: "Suspend Bill", id: "suspendBill" },
-            { to: '/admin/catalog', label: "Recall Sus Bill", id: "recallSusBill" },
-            { to: '/admin/catalog', label: "Recall Tran", id: "reacallBill" },
-            { to: '/admin/catalog', label: "Reprint Bill", id: "reprint" },
-            { to: '/admin/catalog', label: "Void itam/bill", id: "VoidItemBill" },
+            //{ to: '/admin/catalog', label: "Suspend Bill", id: "suspendBill" },
+            //{ to: '/admin/catalog', label: "Recall Sus Bill", id: "recallSusBill" },
+            //{ to: '/admin/catalog', label: "Recall Tran", id: "reacallBill" },
+            //{ to: '/admin/catalog', label: "Reprint Bill", id: "reprint" },
+           // { to: '/admin/catalog', label: "Void itam/bill", id: "VoidItemBill" },
             { to: '/admin/catalog', label: "Void Paid Trans", id: "voidPaidTrns" }
         ],
         activeMenu: "voidPaidTrns",

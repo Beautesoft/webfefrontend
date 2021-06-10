@@ -100,20 +100,20 @@ handleBack = () => {
 
   render() {
     let { treatmentList, headerDetails, accountList=[], accountHeader={}, activeTab, detailHeader, DetailList } = this.state;
-    let { balance, outstanding, totalproduct_count, credit_balance, outstanding_balance, totalholdqty } = accountHeader;
+    let { balance, outstanding, totalproduct_count, credit_balance, outstanding_balance } = accountHeader;
     return (
 
       <div className="treatment-account row">
         <div className="col-6 mt-3">
           <div className="row">
-            <div className="col-5 mb-2">Qty Hold</div>
-            <div className="col-5 mb-2">{totalholdqty}</div>
+            <div className="col-5 mb-2"></div>
+            <div className="col-5 mb-2"></div>
           </div>
         </div>
         <div className="col-6 mt-3">
           <div className="row">
             <div className="col-6 mb-2">Credit Balance</div>
-            <div className="col-6 mb-2">${activeTab !== 'detail' ? balance:credit_balance}</div>
+            <div className="col-6 mb-2">{localStorage.getItem("Currency")}{activeTab !== 'detail' ? balance:credit_balance}</div>
           </div>
         </div>
         {activeTab !== 'detail' ?
@@ -126,7 +126,7 @@ handleBack = () => {
         <div className="col-6 mt-3 mb-4">
           <div className="row">
             <div className="col-6">Outstanding Balance</div>
-            <div className="col-6">${activeTab !== 'detail' ? outstanding:outstanding_balance}</div>
+            <div className="col-6">{localStorage.getItem("Currency")}{activeTab !== 'detail' ? outstanding:outstanding_balance}</div>
           </div>
         </div>
         <div className="col-12">

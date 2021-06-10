@@ -1,38 +1,38 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { logout } from 'service/utilities';
-import { Logout } from 'redux/actions/auth'
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { logout } from "service/utilities";
+import { Logout } from "redux/actions/auth";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-import './style.scss';
+import "./style.scss";
 
 export class ProfileMenuClass extends Component {
   state = {
     navLinks: [
       {
-        to: '/admin/editUserProfile',
-        label: 'Edit Profile',
-        iconName: 'Group-81',
+        to: "/admin/editUserProfile",
+        label: "Edit Profile",
+        iconName: "Group-81",
         typeId: [1, 2],
       },
       {
-        to: '/admin/adminManagement',
-        label: 'Admin Management',
-        iconName: 'Group-59',
+        to: "/admin/adminManagement",
+        label: "Admin Management",
+        iconName: "Group-59",
         typeId: [1],
       },
     ],
   };
 
   handleLogout = () => {
-    this.props.Logout().then((res)=>{
-      console.log(res, "fggfhfhtf")
-      if(res.status===200){
+    this.props.Logout().then(res => {
+      console.log(res, "fggfhfhtf");
+      if (res.status === 200) {
         logout();
       }
-    })
-  }
+    });
+  };
 
   render() {
     let { navLinks } = this.state;
@@ -42,7 +42,7 @@ export class ProfileMenuClass extends Component {
     let tokentypeId = typeId;
 
     return (
-      <div className={`profile-menu ${this.props.active ? 'active' : ''}`}>
+      <div className={`profile-menu ${this.props.active ? "active" : ""}`}>
         <ul>
           {navLinks.map((item, index) => {
             let { to, label, iconName, typeId } = item;
@@ -52,12 +52,14 @@ export class ProfileMenuClass extends Component {
                 {typeId.indexOf(tokentypeId) != -1 ? (
                   <li>
                     <Link to={to}>
-                      <span className={`profile-menu-icon icon-${iconName}`}></span>
+                      <span
+                        className={`profile-menu-icon icon-${iconName}`}
+                      ></span>
                       <span className="profile-menu-desc">{label}</span>
                     </Link>
                   </li>
                 ) : (
-                  ''
+                  ""
                 )}
               </React.Fragment>
             );
@@ -81,15 +83,13 @@ export class ProfileMenuClass extends Component {
   }
 }
 
-
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       Logout,
     },
-    dispatch,
+    dispatch
   );
 };
-
 
 export const ProfileMenu = connect(null, mapDispatchToProps)(ProfileMenuClass);

@@ -42,15 +42,7 @@ export class Details extends Component {
                                         </NavLink>
                             </NavItem>
 
-                            <NavItem>
-                                <NavLink
-                                    className={classnames({ active: this.state.activeTab === '2' })}
-                                    onClick={() => { this.toggle('2'); }}
-                                >
-                                    Appointments
-                                        </NavLink>
-                            </NavItem>
-
+                       
                             <NavItem>
                                 <NavLink
                                     className={classnames({ active: this.state.activeTab === '3' })}

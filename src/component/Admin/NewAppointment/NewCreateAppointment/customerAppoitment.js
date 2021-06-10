@@ -26,18 +26,19 @@ export class CustomerAppointment extends Component {
   render() {
     return (
       <div className="appointment-holder pt-4 px-3">
-        <div className="">
-          <p className="header fs-18 f-600 mb-3">Appointments</p>
+        <div className="row">
           <AppointmentForm
             onRef={ref => (this.child = ref)}
             selectedCustomer={this.selectedCustomer}
           ></AppointmentForm>
         </div>
-        <div className="select-appointment">
-          <p className="header fs-18 f-600">Select Treatments</p>
+        <div className="row select-appointment">
+          <p className="header h5">Select Treatments</p>
           <NewSelectTreatment
             showErrorMessage={this.showErrorMessage}
             customerId={this.state.customerId}
+            handleCloseDialog={this.props.handleCloseDialog}
+            handleSaveorUpdate={this.props.handleSaveorUpdate}
           ></NewSelectTreatment>
         </div>
       </div>

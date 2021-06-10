@@ -7,48 +7,48 @@
       background: $green;
       color: $white;
       &:hover {
-        border: 1px solid  $green;
+        border: 1px solid $green;
         background: $white;
         color: $green;
       }
     }
   }
-  .action-bar{
+  .action-bar {
     justify-content: center;
-    .print{
+    .print {
       button {
         width: 224px;
-        border: 1px solid  $green;
-        background: $white;
-        color: $green;
+        border: 1px solid $theme-color;
+        background: linear-gradient(91.15deg, #a0e5f7 0.45%, #ed91d4 100%);
+        color: $primary-color;
         &:hover {
-          // border: 1px solid  $green;
-          background: $green;
-          color: $white;
+          border: 1px solid $primary-color;
+          background: $white;
+          color: $primary-color;
         }
       }
     }
-    .action{
-      button{
+    .action {
+      button {
         width: 224px;
         background: $white;
         color: $primary-color;
-        border: 1px solid  $primary-color;
+        border: 1px solid $primary-color;
         &:hover {
-          border: 1px solid  $primary-color;
+          border: 1px solid $primary-color;
           background: $primary-color;
           color: $white;
         }
       }
     }
     .cancel {
-      button{
+      button {
         width: 224px;
         background: $white;
         color: $primary-color;
-        border: 1px solid  $primary-color;
+        border: 1px solid $primary-color;
         &:hover {
-          border: 1px solid  $primary-color;
+          border: 1px solid $primary-color;
           background: $primary-color;
           color: $white;
         }
@@ -69,8 +69,8 @@
       border-radius: 0px;
     }
   }
-  .adjustment{
-    input{
+  .adjustment {
+    input {
       margin-top: -10px;
     }
     .input-group {
@@ -78,7 +78,7 @@
         width: 187px;
         height: 30px;
         margin-top: 0px;
-        background: #F9F9F9;
+        background: #f9f9f9;
       }
     }
   }
@@ -87,7 +87,7 @@
       input {
         width: 187px;
         height: 30px;
-        background: #F9F9F9;
+        background: #f9f9f9;
       }
     }
   }
@@ -96,12 +96,12 @@
       textarea {
         width: 393px;
         min-height: 56px;
-        background: #F9F9F9;
+        background: #f9f9f9;
       }
     }
   }
   .header {
-    background: #ffb26b;
+    background: $primary-color;
     color: $white;
     padding: 10px 0px;
   }
@@ -110,28 +110,28 @@
   }
 }
 
-.update-reverse{
-  .print{
+.update-reverse {
+  .print {
     button {
       width: 224px;
-      
+
       background: $green;
       color: $white;
       &:hover {
-        border: 1px solid  $green;
+        border: 1px solid $green;
         background: $white;
         color: $green;
       }
     }
   }
   .cancel {
-    button{
+    button {
       width: 224px;
       background: $white;
       color: $primary-color;
-      border: 1px solid  $primary-color;
+      border: 1px solid $primary-color;
       &:hover {
-        border: 1px solid  $primary-color;
+        border: 1px solid $primary-color;
         background: $primary-color;
         color: $white;
       }

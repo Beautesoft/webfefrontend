@@ -6,6 +6,7 @@ import {
   NormalInput,
   NormalDateTime,
   NormalCheckbox,
+  NormalDate,
 } from "component/common";
 import "./style.scss";
 import {
@@ -26,7 +27,8 @@ import { dateFormat } from "service/helperFunctions";
 import { history } from "helpers";
 import _ from "lodash";
 import { TableWrapper } from "component/common";
-import { TreatmentPackage } from "./modal/TreatmentPackage";
+import { TreatmentPackage } from "./modal/index";
+import { Toast } from "service/toast";
 
 export class NewSelectTreatmentClass extends Component {
   state = {
@@ -36,10 +38,13 @@ export class NewSelectTreatmentClass extends Component {
       end_time: "",
       Item_Codeid: null,
       add_duration: "",
-      emp_no: [],
+      emp_no: 0,
       requesttherapist: false,
       Item_CodeName: "",
       edit_remark: "",
+      recur_days: null,
+      recur_qty: null,
+      item_text: null,
     },
     selectedList: [
       {
@@ -47,10 +52,13 @@ export class NewSelectTreatmentClass extends Component {
         end_time: "",
         Item_Codeid: null,
         add_duration: "",
-        emp_no: [],
+        emp_no: 0,
         requesttherapist: false,
         Item_CodeName: "",
         edit_remark: "",
+        recur_days: null,
+        recur_qty: null,
+        item_text: null,
       },
     ],
     outletOption: [],
@@ -79,11 +87,16 @@ export class NewSelectTreatmentClass extends Component {
     meta: {},
     isTreatementModal: false,
     appointmentId: null,
+    PackageIndex: 0,
+    selectedRec_days: null,
+    selectedRec_qty: null,
+    recurringList: [],
+    recurringSelectedItems: [],
+    recurringSelectAll: false,
   };
   componentDidMount() {
     this.search({});
-  }
-  componentWillMount() {
+
     this.validator = new SimpleReactValidator({
       element: message => (
         <span className="error-message text-danger validNo fs14">
@@ -93,17 +106,14 @@ export class NewSelectTreatmentClass extends Component {
       autoForceUpdate: this,
     });
     let {
-      appointmentDetail,
       categoryList,
       staffOption,
       selectedList,
       formFields,
       duration,
-      appointmentId,
+      recurringList,
     } = this.state;
-    // this.props.getSelectedTreatmentList(`?appt_id=${appointmentDetail.id}`).then((res) => {
-    //     console.log("namekkuhkjn", res)
-    // })
+
     let { basicApptDetail } = this.props;
 
     if (basicApptDetail.appt_id) {
@@ -112,6 +122,7 @@ export class NewSelectTreatmentClass extends Component {
         .getCommonApi(`appointmentresources/${basicApptDetail.appt_id}/`)
         .then(key => {
           let { status, data } = key;
+          console.log(data.recur_lst, "RecurringAppointmentrelatedList");
           if (status === 200) {
             console.log(data, "selectedCustomer");
             formFields["start_time"] = data ? data.start_time : "";
@@ -122,6 +133,9 @@ export class NewSelectTreatmentClass extends Component {
             formFields["add_duration"] = data.add_duration;
             formFields["edit_remark"] = "";
             formFields["requesttherapist"] = data.requesttherapist;
+            formFields["recur_days"] = data.recur_days;
+            formFields["recur_qty"] = data.recur_qty;
+            formFields["item_text"] = data.item_name;
 
             selectedList[0]["start_time"] = data ? data.start_time : "";
             selectedList[0]["end_time"] = data ? data.end_time : "";
@@ -131,26 +145,51 @@ export class NewSelectTreatmentClass extends Component {
             selectedList[0]["add_duration"] = data.add_duration;
             selectedList[0]["edit_remark"] = "";
             selectedList[0]["requesttherapist"] = data.requesttherapist;
+            selectedList[0]["recur_days"] = data.recur_days;
+            selectedList[0]["recur_qty"] = data.recur_qty;
+            selectedList[0]["item_text"] = data.item_name;
+            this.setState({
+              selectedRec_days: data.recur_days,
+              selectedRec_qty: data.recur_qty,
+            });
+            for (let value of data.recur_lst) {
+              recurringList.push({
+                id: value.id,
+                date: value.date,
+                appt_status: value.appt_status,
+                start_time: value.start_time,
+                end_time: value.end_time,
+                item_name: value.item_name,
+                Item_Codeid: value.Item_Codeid,
+                emp_name: value.emp_name,
+                emp_id: value.emp_id,
+                requesttherapist: value.requesttherapist,
+                add_duration: value.add_duration,
+                selected: false,
+              });
+            }
             this.setState({
               formFields,
               selectedList,
             });
+
+            this.props.updateForm("treatmentList", selectedList);
           }
         });
-      this.props.updateForm("treatmentList", selectedList);
     } else {
       formFields["start_time"] = basicApptDetail ? basicApptDetail.time : "";
-      formFields["emp_no"] = basicApptDetail ? basicApptDetail.staff_id : "";
+      formFields["emp_no"] = basicApptDetail ? basicApptDetail.staff_id : 0;
       selectedList[0]["start_time"] = basicApptDetail
         ? basicApptDetail.time
         : "";
       selectedList[0]["emp_no"] = basicApptDetail
         ? basicApptDetail.staff_id
-        : "";
+        : 0;
       this.setState({
         formFields,
         selectedList,
       });
+      this.props.updateForm("treatmentList", selectedList);
     }
     this.props.getCommonApi(`itemdept/`).then(key => {
       let { status, data } = key;
@@ -187,6 +226,7 @@ export class NewSelectTreatmentClass extends Component {
     });
     this.getStaffAvailability();
   }
+  componentWillMount() {}
 
   getStaffAvailability = () => {
     this.props
@@ -246,12 +286,8 @@ export class NewSelectTreatmentClass extends Component {
   };
 
   handleChangeTreatment = async ({ target: { value, name } }) => {
-    let {
-      treatmentField,
-      treatmentList,
-      search,
-      selectTreatmentId,
-    } = this.state;
+    let { treatmentField, treatmentList, search, selectTreatmentId } =
+      this.state;
     console.log("uihwkjrwkej", name, value);
     treatmentField[name] = value;
     if (name === "category") {
@@ -284,37 +320,40 @@ export class NewSelectTreatmentClass extends Component {
 
   handleChange = async ({ target: { value, name } }, index) => {
     let { formFields, selectedList } = this.state;
-    console.log("hgjfgjfcghfghfgh", name, value, index);
-    if (selectedList.length > 0 && selectedList.length !== index + 1) {
-      console.log("hgjfgjfcghfghfgh indexed", name, value, index);
-      selectedList[index][name] = value;
-      if (name === "add_duration") {
-        selectedList[index]["end_time"] = this.addTimes(
-          selectedList[index]["start_time"],
-          value
-        );
+
+    if (name === "add_duration") {
+      selectedList[index]["end_time"] = this.addTimes(
+        selectedList[index]["start_time"],
+        value
+      );
+      selectedList[index]["add_duration"] = value;
+      if (selectedList.length - 1 > index) {
         selectedList[index + 1]["start_time"] = selectedList[index]["end_time"];
+        if (selectedList[index + 1]["add_duration"] !== "") {
+          selectedList[index + 1]["end_time"] = this.addTimes(
+            selectedList[index]["end_time"],
+            selectedList[index + 1]["add_duration"]
+          );
+        }
       }
-      await this.setState({
-        selectedList,
-      });
-      await this.props.updateForm("treatmentList", selectedList);
+    } else if (name == "Item_CodeName") {
+      selectedList[index]["Item_Codeid"] = 6213;
+      selectedList[index]["Item_CodeName"] = value;
+      selectedList[index]["item_text"] = value;
+    } else if (name == "recur_days" || name == "recur_qty") {
+      if (value <= 0 || value == "") {
+        selectedList[index][name] = null;
+      } else {
+        selectedList[index][name] = Number(value);
+      }
     } else {
-      console.log("hgjfgjfcghfghfgh else", name, value, index);
-      formFields[name] = value;
-      if (name === "add_duration") {
-        formFields["end_time"] = this.addTimes(formFields["start_time"], value);
-      }
-      await this.setState({
-        formFields,
-      });
-      selectedList.splice(selectedList.length - 1, 1);
-      selectedList.push(formFields);
-      await this.setState({
-        selectedList,
-      });
-      await this.props.updateForm("treatmentList", selectedList);
+      selectedList[index][name] = value;
     }
+
+    await this.setState({
+      selectedList,
+    });
+    await this.props.updateForm("treatmentList", selectedList);
   };
 
   handleMultiSelect = data => {
@@ -358,52 +397,151 @@ export class NewSelectTreatmentClass extends Component {
     return hours + ":" + minutes;
   };
 
+  stafflistvalidation = appointmentTreatmentList => {
+    if (appointmentTreatmentList.length > 0) {
+      for (let item of appointmentTreatmentList) {
+        if (!item.emp_no || item.emp_no == "" || item.emp_no == null) {
+          Toast({ type: "error", message: "Please select Staff" });
+          return false;
+        } else {
+          return true;
+        }
+      }
+    }
+  };
   handleUpdate = () => {
     let { appointmentCustomerDetail, appointmentTreatmentList } = this.props;
-    let { appointmentId } = this.state;
-    let data = {
-      //   "appt_date": "2021-02-23",
-      // "Room_Codeid" : "",
-      // "edit_remark" : "testing",
-      // "appt_status" : "Waiting",
-      // "sec_status" : "Rescheduled",
-      // "start_time": "01:00",
-      // "end_time" : "01:20",
-      // "item_id": 5658,
-      // "add_duration":"00:20",
-      // "emp_id" : 279,
-      // "requesttherapist" :false
-      appt_date: dateFormat(
-        new Date(appointmentCustomerDetail.appointmentDate),
-        "yyyy-mm-dd"
-      ),
-      Room_Codeid: appointmentCustomerDetail.Room_Codeid,
-      appt_status: appointmentCustomerDetail.bookingStatus,
-      sec_status: appointmentCustomerDetail.sec_status,
-      edit_remark: appointmentTreatmentList[0].edit_remark,
-      start_time: appointmentTreatmentList[0].start_time,
-      end_time: appointmentTreatmentList[0].end_time,
-      item_id: appointmentTreatmentList[0].Item_Codeid,
-      add_duration: appointmentTreatmentList[0].add_duration,
-      emp_id: appointmentTreatmentList[0].emp_no,
-      requesttherapist: appointmentTreatmentList[0].requesttherapist,
-    };
+    let { appointmentId, selectedRec_days, selectedRec_qty } = this.state;
 
-    console.log(data);
     if (
       appointmentCustomerDetail.customerName &&
       appointmentCustomerDetail.bookingStatus
     ) {
-      this.props
-        .commonPatchApi(`appointmentresources/${appointmentId}/`, data)
-        .then(async res => {
-          if (res.status === 200) {
-            await this.props.updateForm("treatmentList", []);
-            await this.props.updateForm("basicApptDetail", {});
-            await this.props.updateForm("appointmentCustomerDetail", {});
-            history.push("/admin/newappointment");
-          }
-        });
+      if (this.stafflistvalidation(appointmentTreatmentList)) {
+        let data = {
+          appt_date: dateFormat(
+            new Date(appointmentCustomerDetail.appointmentDate),
+            "yyyy-mm-dd"
+          ),
+          Room_Codeid: appointmentCustomerDetail.Room_Codeid,
+          appt_status: appointmentCustomerDetail.bookingStatus,
+          sec_status: appointmentCustomerDetail.sec_status,
+          edit_remark: appointmentTreatmentList[0].edit_remark,
+          start_time: appointmentTreatmentList[0].start_time,
+          end_time: appointmentTreatmentList[0].end_time,
+          item_id: appointmentTreatmentList[0].Item_Codeid,
+          add_duration: appointmentTreatmentList[0].add_duration,
+          emp_id: appointmentTreatmentList[0].emp_no,
+          requesttherapist: appointmentTreatmentList[0].requesttherapist,
+          item_text: appointmentTreatmentList[0].item_text,
+          recur_days:
+            selectedRec_days === appointmentTreatmentList[0].recur_days ||
+            appointmentTreatmentList[0].recur_days === "" ||
+            appointmentTreatmentList[0].recur_days <= 0
+              ? null
+              : appointmentTreatmentList[0].recur_days,
+          recur_qty:
+            Number(selectedRec_qty) ===
+              Number(appointmentTreatmentList[0].recur_qty) ||
+            Number(appointmentTreatmentList[0].recur_qty) === "" ||
+            Number(appointmentTreatmentList[0].recur_qty) <= 0
+              ? null
+              : Number(appointmentTreatmentList[0].recur_qty),
+        };
+        console.log(data, "UpdatedappointmentTreatmentListWhenupdate");
+
+        this.props
+          .commonPatchApi(`appointmentresources/${appointmentId}/`, data)
+          .then(async res => {
+            console.log(res, "type all clicked result");
+            if (res.status === 200) {
+              this.handleCloseDialog();
+              this.handleSaveorUpdate();
+            }
+          });
+      }
+    } else {
+      this.props.showErrorMessage();
+    }
+  };
+  handleRecurringUpdate = () => {
+    let { appointmentCustomerDetail, appointmentTreatmentList } = this.props;
+    let {
+      appointmentId,
+      selectedRec_days,
+      selectedRec_qty,
+      recurringList,
+      recurringSelectAll,
+    } = this.state;
+    let finalRecurring = [];
+    for (var recurringItem of recurringList) {
+      if (recurringItem.selected) {
+        let value = recurringItem.id;
+        finalRecurring.push(value);
+      }
+    }
+    console.log(finalRecurring, "finalrecurringList");
+    if (
+      appointmentCustomerDetail.customerName &&
+      appointmentCustomerDetail.bookingStatus
+    ) {
+      if (this.stafflistvalidation(appointmentTreatmentList)) {
+        let data = {
+          appt_date: dateFormat(
+            new Date(appointmentCustomerDetail.appointmentDate),
+            "yyyy-mm-dd"
+          ),
+          Room_Codeid: appointmentCustomerDetail.Room_Codeid,
+          appt_status: appointmentCustomerDetail.bookingStatus,
+          sec_status: appointmentCustomerDetail.sec_status,
+          edit_remark: appointmentTreatmentList[0].edit_remark,
+          start_time: appointmentTreatmentList[0].start_time,
+          end_time: appointmentTreatmentList[0].end_time,
+          item_id: appointmentTreatmentList[0].Item_Codeid,
+          add_duration: appointmentTreatmentList[0].add_duration,
+          emp_id: appointmentTreatmentList[0].emp_no,
+          requesttherapist: appointmentTreatmentList[0].requesttherapist,
+          item_text: appointmentTreatmentList[0].item_text,
+          recur_days:
+            selectedRec_days === appointmentTreatmentList[0].recur_days ||
+            appointmentTreatmentList[0].recur_days === "" ||
+            appointmentTreatmentList[0].recur_days <= 0
+              ? null
+              : appointmentTreatmentList[0].recur_days,
+          recur_qty:
+            Number(selectedRec_qty) ===
+              Number(appointmentTreatmentList[0].recur_qty) ||
+            Number(appointmentTreatmentList[0].recur_qty) === "" ||
+            Number(appointmentTreatmentList[0].recur_qty) <= 0
+              ? null
+              : Number(appointmentTreatmentList[0].recur_qty),
+          recur_ids: finalRecurring,
+        };
+        console.log(data, "UpdatedappointmentTreatmentListWhenupdate");
+        if (recurringSelectAll) {
+          this.props
+            .commonPatchApi(
+              `appointmentrecur/${appointmentId}/?type=${`all`} `,
+              data
+            )
+            .then(async res => {
+              if (res.status === 200) {
+                this.handleCloseDialog();
+                this.handleSaveorUpdate();
+              }
+            });
+        } else {
+          this.props
+            .commonPatchApi(`appointmentrecur/${appointmentId}/`, data)
+            .then(async res => {
+              console.log(res, "type all clicked result");
+              if (res.status === 200) {
+                this.handleCloseDialog();
+                this.handleSaveorUpdate();
+              }
+            });
+        }
+      }
     } else {
       this.props.showErrorMessage();
     }
@@ -416,37 +554,43 @@ export class NewSelectTreatmentClass extends Component {
       appointmentTreatmentList,
       "sdfgdfsdggf"
     );
-    let data = {
-      Appointment: {
-        appt_date: dateFormat(
-          new Date(appointmentCustomerDetail.appointmentDate),
-          "yyyy-mm-dd"
-        ),
-        Appt_typeid: appointmentCustomerDetail.Appt_typeid,
-        cust_noid: appointmentCustomerDetail.customerName,
-        new_remark: appointmentCustomerDetail.new_remark,
-        // emp_noid: appointmentCustomerDetail.emp_id,
-        Source_Codeid: appointmentCustomerDetail.Source_Codeid,
-        Room_Codeid: appointmentCustomerDetail.Room_Codeid,
-        appt_status: appointmentCustomerDetail.bookingStatus,
-        sec_status: appointmentCustomerDetail.sec_status,
-        ItemSite_Codeid: appointmentCustomerDetail.ItemSite_Codeid,
-      },
-      Treatment: appointmentTreatmentList,
-    };
-    console.log(data);
+    console.log(
+      appointmentTreatmentList,
+      "UpdatedappointmentTreatmentListWhenSave"
+    );
     if (
       appointmentCustomerDetail.customerName &&
       appointmentCustomerDetail.bookingStatus
     ) {
-      this.props.commonCreateApi(`appointment/`, data).then(async res => {
-        if (res.status === 201) {
-          await this.props.updateForm("treatmentList", []);
-          await this.props.updateForm("basicApptDetail", {});
-          await this.props.updateForm("appointmentCustomerDetail", {});
-          history.push("/admin/newappointment");
-        }
-      });
+      if (this.stafflistvalidation(appointmentTreatmentList)) {
+        debugger;
+        let data = {
+          Appointment: {
+            appt_date: dateFormat(
+              new Date(appointmentCustomerDetail.appointmentDate),
+              "yyyy-mm-dd"
+            ),
+            Appt_typeid: appointmentCustomerDetail.Appt_typeid,
+            cust_noid: appointmentCustomerDetail.customerName,
+            new_remark: appointmentCustomerDetail.new_remark,
+            // emp_noid: appointmentCustomerDetail.emp_id,
+            Source_Codeid: appointmentCustomerDetail.Source_Codeid,
+            Room_Codeid: appointmentCustomerDetail.Room_Codeid,
+            appt_status: appointmentCustomerDetail.bookingStatus,
+            sec_status: appointmentCustomerDetail.sec_status,
+            ItemSite_Codeid: appointmentCustomerDetail.ItemSite_Codeid,
+            walkin: appointmentCustomerDetail.walkin,
+          },
+          Treatment: appointmentTreatmentList,
+        };
+
+        this.props.commonCreateApi(`appointment/`, data).then(async res => {
+          if (res.status === 201) {
+            this.handleCloseDialog();
+            this.handleSaveorUpdate();
+          }
+        });
+      }
     } else {
       this.props.showErrorMessage();
     }
@@ -474,75 +618,103 @@ export class NewSelectTreatmentClass extends Component {
   };
 
   handleSelectPackage = async data => {
-    let { formFields, selectedList, index } = this.state;
-    if (selectedList.length === 1 || selectedList.length === index + 1) {
-      formFields["start_time"] = formFields["start_time"];
-      formFields["end_time"] = this.addTimes(
-        formFields["start_time"],
+    let { formFields, selectedList, PackageIndex } = this.state;
+
+    if (PackageIndex === 0 && selectedList[0]["Item_CodeName"] === "") {
+      selectedList[0]["start_time"] = selectedList[0]["start_time"];
+      selectedList[0]["end_time"] = this.addTimes(
+        selectedList[0]["start_time"],
         data.add_duration
       );
-      formFields["Item_Codeid"] = data.id;
-      formFields["Item_CodeName"] = data.item_desc;
-      formFields["add_duration"] = data.add_duration;
+      selectedList[0]["Item_Codeid"] = data.id;
+      selectedList[0]["Item_CodeName"] = data.item_desc;
+      selectedList[0]["item_text"] = null;
+      selectedList[0]["add_duration"] = data.add_duration;
+
       await this.setState({
-        formFields,
+        selectedList,
+        PackageIndex: PackageIndex + 1,
       });
-    }
-    if (selectedList.length > index + 1) {
+      await this.props.updateForm("treatmentList", selectedList);
+    } else if (selectedList[selectedList.length - 1]["Item_CodeName"] === "") {
+      selectedList[selectedList.length - 1]["start_time"] =
+        selectedList[selectedList.length - 1]["start_time"];
+      selectedList[selectedList.length - 1]["end_time"] = this.addTimes(
+        selectedList[selectedList.length - 1]["start_time"],
+        data.add_duration
+      );
+      selectedList[selectedList.length - 1]["Item_Codeid"] = data.id;
+      selectedList[selectedList.length - 1]["Item_CodeName"] = data.item_desc;
+      selectedList[selectedList.length - 1]["item_text"] = null;
+      selectedList[selectedList.length - 1]["add_duration"] = data.add_duration;
+
+      await this.setState({
+        selectedList,
+        PackageIndex: PackageIndex + 1,
+      });
+      await this.props.updateForm("treatmentList", selectedList);
+    } else {
       var listCount = selectedList.length - 1;
-      selectedList[listCount]["end_time"] = this.addTimes(
-        selectedList[listCount]["start_time"],
+      let treatment = {};
+      treatment["start_time"] = selectedList[listCount]["end_time"];
+      treatment["end_time"] = this.addTimes(
+        selectedList[listCount]["end_time"],
         data.add_duration
       );
-      selectedList[listCount]["Item_Codeid"] = data.id;
-      selectedList[listCount]["Item_CodeName"] = data.item_desc;
-      selectedList[listCount]["add_duration"] = data.add_duration;
+      treatment["Item_Codeid"] = data.id;
+      treatment["Item_CodeName"] = data.item_desc;
+      treatment["item_text"] = null;
+      treatment["add_duration"] = data.add_duration;
+      selectedList.push(treatment);
       await this.setState({
         selectedList,
       });
-    }
-    selectedList.splice(selectedList.length - 1, 1);
-    selectedList.push(formFields);
-    await this.setState({
-      selectedList,
-    });
-    await this.props.updateForm("treatmentList", selectedList);
-    this.setState({ isOpenModal: false });
-  };
-  handleSelectTreatment = async data => {
-    let { treatmentList } = this.state;
-    let { formFields, selectedList, index } = this.state;
-    console.log("uihwkjrwkej", selectedList.length, "===", index);
-    if (selectedList.length === 1 || selectedList.length === index + 1) {
-      formFields["start_time"] = formFields["start_time"];
-      formFields["end_time"] = this.addTimes(
-        formFields["start_time"],
-        data.add_duration
-      );
-      formFields["Item_Codeid"] = data.id;
-      formFields["Item_CodeName"] = data.item_desc;
-      formFields["add_duration"] = data.add_duration;
-      await this.setState({
-        formFields,
-      });
-    }
-    console.log(index);
-    if (selectedList.length > index + 1) {
-      selectedList[index]["Item_CodeName"] = data.item_desc;
-      selectedList[index]["Item_Codeid"] = data.id;
-      selectedList[index]["add_duration"] = data.add_duration;
-      await this.setState({
-        selectedList,
-      });
+      await this.props.updateForm("treatmentList", selectedList);
     }
 
-    selectedList.splice(selectedList.length - 1, 1);
-    selectedList.push(formFields);
-    await this.setState({
-      selectedList,
-    });
-    // console.log("uihwkjrwkej", data, selectedList)
-    await this.props.updateForm("treatmentList", selectedList);
+    this.setState({ isOpenModal: false });
+  };
+
+  handleSelectTreatment = async data => {
+    let { selectedList, index } = this.state;
+
+    if (index == 0 && selectedList.length == 1) {
+      selectedList[0]["start_time"] = selectedList[0]["start_time"];
+      selectedList[0]["end_time"] = this.addTimes(
+        selectedList[0]["start_time"],
+        data.add_duration
+      );
+      selectedList[0]["Item_Codeid"] = data.id;
+      selectedList[0]["Item_CodeName"] = data.item_desc;
+      selectedList[0]["add_duration"] = data.add_duration;
+
+      await this.setState({
+        selectedList,
+      });
+      await this.props.updateForm("treatmentList", selectedList);
+    } else {
+      selectedList[index]["start_time"] = selectedList[index]["start_time"];
+      selectedList[index]["end_time"] = this.addTimes(
+        selectedList[index]["start_time"],
+        data.add_duration
+      );
+      selectedList[index]["Item_Codeid"] = data.id;
+      selectedList[index]["Item_CodeName"] = data.item_desc;
+      selectedList[index]["add_duration"] = data.add_duration;
+      if (selectedList.length - 1 > index) {
+        selectedList[index + 1]["start_time"] = selectedList[index]["end_time"];
+        if (selectedList[index + 1]["add_duration"] !== "") {
+          selectedList[index + 1]["end_time"] = this.addTimes(
+            selectedList[index]["end_time"],
+            selectedList[index + 1]["add_duration"]
+          );
+        }
+      }
+      await this.setState({
+        selectedList,
+      });
+      await this.props.updateForm("treatmentList", selectedList);
+    }
     this.setState({ isOpenModal: false });
   };
 
@@ -579,29 +751,39 @@ export class NewSelectTreatmentClass extends Component {
     };
   };
 
-  handleAddtreatment = async () => {
+  handleAddtreatment = async index => {
     let { selectedList, formFields } = this.state;
-    formFields = {
-      start_time: selectedList[selectedList.length - 1].end_time,
-      end_time: "",
-      Item_Codeid: null,
-      add_duration: "",
-      emp_no: [],
-      requesttherapist: false,
-    };
-    selectedList.push({
-      start_time: selectedList[selectedList.length - 1].end_time,
-      end_time: "",
-      Item_Codeid: 1,
-      Item_CodeName: "",
-      add_duration: "",
-      emp_no: [],
-      requesttherapist: false,
-    });
+    if (selectedList[index]["end_time"]) {
+      formFields = {
+        start_time: selectedList[selectedList.length - 1].end_time,
+        end_time: "",
+        Item_Codeid: 6213,
+        add_duration: "",
+        emp_no: 0,
+        requesttherapist: false,
+        recur_days: null,
+        recur_qty: null,
+        item_text: null,
+      };
+      selectedList.push({
+        start_time: selectedList[selectedList.length - 1].end_time,
+        end_time: "",
+        Item_Codeid: 6213,
+        Item_CodeName: "",
+        add_duration: "",
+        emp_no: 0,
+        requesttherapist: false,
+        recur_days: null,
+        recur_qty: null,
+        item_text: null,
+      });
 
-    await this.setState({ selectedList, formFields });
+      await this.setState({ selectedList, formFields });
 
-    await this.props.updateForm("treatmentList", selectedList);
+      await this.props.updateForm("treatmentList", selectedList);
+    } else {
+      Toast({ type: "error", message: "End time shouldn't be empty" });
+    }
   };
 
   deleteTreatment = async index => {
@@ -617,7 +799,6 @@ export class NewSelectTreatmentClass extends Component {
     }));
   };
   handleChangeremark = async ({ target: { value, name } }) => {
-    debugger;
     let { formFields, selectedList } = this.state;
     formFields[name] = value;
     selectedList[0][name] = value;
@@ -629,7 +810,6 @@ export class NewSelectTreatmentClass extends Component {
   };
 
   handleCheckbox = async ({ target: { value, name } }, index) => {
-    debugger;
     let { treatmentList } = this.state;
     let { selectedList } = this.state;
     selectedList[index]["requesttherapist"] = value;
@@ -639,31 +819,35 @@ export class NewSelectTreatmentClass extends Component {
     await this.props.updateForm("treatmentList", selectedList);
   };
 
-  handleCheckbox = async ({ target: { value, name } }, index) => {
-    let { formFields, selectedList } = this.state;
-
-    if (selectedList.length > 0 && selectedList.length !== index + 1) {
-      selectedList[index][name] = value;
-
-      await this.setState({
-        selectedList,
-      });
-      await this.props.updateForm("treatmentList", selectedList);
+  handleCloseDialog = async () => {
+    this.props.handleCloseDialog();
+  };
+  handleSaveorUpdate = async () => {
+    this.props.handleSaveorUpdate();
+  };
+  handleRecurringlistCheckbox = async ({ target: { value, name } }, item) => {
+    let { recurringList } = this.state;
+    let listCheckbox = recurringList.find(acc => acc.id === item.id);
+    if (listCheckbox) {
+      listCheckbox["selected"] = value;
+      await this.setState({ ...this.state.recurringList, listCheckbox });
+    }
+    let Checkbox = recurringList.filter(acc => acc.selected === true).length;
+    if (Checkbox == this.state.recurringList.length) {
+      await this.setState({ recurringSelectAll: true });
     } else {
-      console.log("hgjfgjfcghfghfgh else", name, value, index);
-      formFields[name] = value;
-      await this.setState({
-        formFields,
-      });
-      selectedList.splice(selectedList.length - 1, 1);
-      selectedList.push(formFields);
-      await this.setState({
-        selectedList,
-      });
-      await this.props.updateForm("treatmentList", selectedList);
+      await this.setState({ recurringSelectAll: false });
     }
   };
 
+  handleRecurringSelectAllCheckbox = async ({ target: { value, name } }) => {
+    let { recurringList } = this.state;
+    await this.setState({ recurringSelectAll: value });
+    for (let item of recurringList) {
+      item["selected"] = value;
+      await this.setState({ ...this.state.recurringList, item });
+    }
+  };
   render() {
     let {
       outletOption,
@@ -683,6 +867,10 @@ export class NewSelectTreatmentClass extends Component {
       meta,
       isTreatementModal,
       appointmentId,
+      selectedRec_days,
+      selectedRec_qty,
+      recurringList,
+      recurringSelectAll,
     } = this.state;
     let { customerDetail, selectedTreatmentList, customerId } = this.props;
     let { outlet, staff, rooms } = customerDetail;
@@ -694,16 +882,14 @@ export class NewSelectTreatmentClass extends Component {
               <div className="row">
                 {appointmentId ? (
                   <div className="col-3 mt-3 mb-3">
-                    <label className="text-left text-black common-label-text ">
-                      New Time
-                    </label>
+                    <label className="text-left">New Time</label>
                     <div className="input-group">
                       <NormalDateTime
                         onChange={this.handleDatePick}
                         label="newStartTime"
                         name="newStartTime"
                         timeOnly={true}
-                        dateFormat="hh:mm aa"
+                        dateFormat="hh:mm"
                         showTime={true}
                         selected={false}
                       />
@@ -715,9 +901,7 @@ export class NewSelectTreatmentClass extends Component {
 
                 {appointmentId ? (
                   <div className="col-6 mt-3 mb-3">
-                    <label className="text-left text-black common-label-text ">
-                      Remark
-                    </label>
+                    <label className="text-left">Remark</label>
 
                     <div className="input-group">
                       <NormalInput
@@ -726,10 +910,8 @@ export class NewSelectTreatmentClass extends Component {
                         value={formFields.edit_remark}
                         name="edit_remark"
                         onChange={this.handleChangeremark}
-                        className="customer-name"
                       />
                     </div>
-                    {/* {this.validator.message('Remark', formFields.new_remark, 'required')} */}
                   </div>
                 ) : (
                   ""
@@ -739,30 +921,27 @@ export class NewSelectTreatmentClass extends Component {
                 <div className="treatment-section">
                   <div className="select-treatment select-list w-100">
                     <div className="row selected selected-header mb-4">
-                      {/* <div className="col-7 p-0">
-                                                <div className="row"> */}
                       <div className="col-1 p-0">Start</div>
                       <div className="col-1 p-0">End</div>
-                      <div className="col-5 p-0 header-detail">Services</div>
-                      {/* </div>
-                                            </div> */}
-                      {/* <div className="col-3 p-0">
-                                                <div className="row"> */}
+                      <div className="col-3 p-0 header-detail">Services</div>
+
                       <div className="col-1 p-0 header-detail">Duration</div>
                       <div className="col-2 p-0">Treatment staff</div>
                       <div className="col-1 p-0 d-flex justify-content-center">
-                        <img src={req_therapist} alt="" />
+                        <img
+                          src={req_therapist}
+                          alt=""
+                          height="25"
+                          width="25"
+                        />
                       </div>
-                      {/* </div>
-                                            </div> */}
-                      {/* <div>
-
-                                            </div> */}
+                      <div className="col-1 p-0 header-detail">Recur. Days</div>
+                      <div className="col-1 p-0 header-detail">Recur. Qty</div>
                     </div>
                     {selectedList.length > 0
                       ? selectedList.map((item, index) => {
                           return (
-                            <div className="row selected  mb-4">
+                            <div className="row selected  mb-4" key={index}>
                               <div className="col-1 mr-1 p-0">
                                 <NormalInput
                                   placeholder="start"
@@ -785,7 +964,7 @@ export class NewSelectTreatmentClass extends Component {
                                   disabled={true}
                                 />
                               </div>
-                              <div className="col-5 mr-1 p-0">
+                              <div className="col-3 mr-1 p-0">
                                 <div className="header-detail"></div>
                                 <NormalInput
                                   placeholder="service"
@@ -798,6 +977,7 @@ export class NewSelectTreatmentClass extends Component {
                                       index: index,
                                     })
                                   }
+                                  onChange={e => this.handleChange(e, index)}
                                   className="customer-name p-0 px-2"
                                 />
                               </div>
@@ -842,6 +1022,22 @@ export class NewSelectTreatmentClass extends Component {
                                   />
                                 )}
                               </div>
+                              <div className="col-1 p-0 d-flex justify-content-start">
+                                <NormalInput
+                                  type="number"
+                                  name="recur_days"
+                                  value={item.recur_days ? item.recur_days : ""}
+                                  onChange={e => this.handleChange(e, index)}
+                                />
+                              </div>
+                              <div className="col-1 p-0 d-flex justify-content-start">
+                                <NormalInput
+                                  type="number"
+                                  name="recur_qty"
+                                  value={item.recur_qty ? item.recur_qty : ""}
+                                  onChange={e => this.handleChange(e, index)}
+                                />
+                              </div>
                               {appointmentId ? (
                                 <></>
                               ) : (
@@ -849,7 +1045,9 @@ export class NewSelectTreatmentClass extends Component {
                                   {selectedList.length === index + 1 ? (
                                     <div
                                       className="ml-3"
-                                      onClick={this.handleAddtreatment}
+                                      onClick={() =>
+                                        this.handleAddtreatment(index)
+                                      }
                                     >
                                       <svg
                                         width="31"
@@ -866,14 +1064,14 @@ export class NewSelectTreatmentClass extends Component {
                                         <path
                                           d="M15 8V22"
                                           stroke="#848484"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
                                         />
                                         <path
                                           d="M8 15H22"
                                           stroke="#848484"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
                                         />
                                       </svg>
                                     </div>
@@ -895,41 +1093,159 @@ export class NewSelectTreatmentClass extends Component {
                           );
                         })
                       : ""}
-                    <div className="confirm confirm-selected mt-5">
+                    <div className="mt-5">
                       <div className="row">
-                        <NormalButton
-                          buttonClass={"treatment"}
-                          mainbg={true}
-                          className="col-12 mr-4 fs-15 "
-                          label="Treatment Package"
-                          onClick={this.handleTreatementmodal}
-                        />
-                        <NormalButton
-                          buttonClass={"treatment"}
-                          mainbg={true}
-                          className="col-12 mr-4 ml-4 fs-15 "
-                          label="cancel"
-                          onClick={() => history.push("/admin/newappointment")}
-                        />
-                        {appointmentId ? (
-                          <NormalButton
-                            buttonClass={"treatment"}
-                            mainbg={true}
-                            className="col-12 ml-5 fs-15 "
-                            label="Update Booking"
-                            onClick={this.handleUpdate}
-                          />
-                        ) : (
-                          <NormalButton
-                            buttonClass={"treatment"}
-                            mainbg={true}
-                            className="col-12 ml-5 fs-15 "
-                            label="Confirm Booking"
-                            onClick={this.handleSubmit}
-                          />
-                        )}
+                        <div className="col-md-8">
+                          <div className="d-flex justify-content-start">
+                            <NormalButton
+                              buttonClass={"treatment"}
+                              mainbg={true}
+                              className="col-12 fs-15 "
+                              label="Treatment Package"
+                              onClick={this.handleTreatementmodal}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-4">
+                          <div className="d-flex justify-content-around">
+                            <NormalButton
+                              buttonClass={"treatment"}
+                              mainbg={true}
+                              className="col-12"
+                              label="Cancel"
+                              onClick={this.handleCloseDialog}
+                            />
+                            {appointmentId ? (
+                              <NormalButton
+                                buttonClass={"submit-btn"}
+                                mainbg={false}
+                                className="col-12 submit-btn"
+                                label="Update Booking"
+                                onClick={this.handleUpdate}
+                              />
+                            ) : (
+                              <NormalButton
+                                buttonClass={"submit-btn"}
+                                mainbg={false}
+                                className="col-12 submit-btn "
+                                label="Confirm Booking"
+                                onClick={this.handleSubmit}
+                              />
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
+                    {recurringList && recurringList.length > 0 ? (
+                      <div className="mt-5 mb-3">
+                        <div>
+                          <p>Recurring Related Appointments</p>
+                        </div>
+
+                        <div className="row selected selected-header mb-2">
+                          <div className="col-1">
+                            <NormalCheckbox
+                              label={`All`}
+                              onChange={e =>
+                                this.handleRecurringSelectAllCheckbox(e)
+                              }
+                              value={recurringSelectAll}
+                              name="recurringSelectAll"
+                              checked={recurringSelectAll}
+                            />
+                          </div>
+                          <div className="col-2 p-0">Date</div>
+                          <div className="col-1 p-0">Start</div>
+                          <div className="col-1 p-0">End</div>
+                          <div className="col-3 p-0 header-detail">
+                            Services
+                          </div>
+
+                          <div className="col-1 p-0 header-detail">
+                            Duration
+                          </div>
+                          <div className="col-2 p-0">Treatment staff</div>
+                          <div className="col-1 p-0 d-flex justify-content-center">
+                            <img
+                              src={req_therapist}
+                              alt=""
+                              height="25"
+                              width="25"
+                            />
+                          </div>
+                        </div>
+                        {recurringList && recurringList.length > 0 ? (
+                          recurringList.map((item, index) => {
+                            return (
+                              <div className="row selected  mb-4" key={index}>
+                                <div className="col-1 text-center">
+                                  <NormalCheckbox
+                                    onChange={e =>
+                                      this.handleRecurringlistCheckbox(e, item)
+                                    }
+                                    value={item.selected}
+                                    name="recurringItem"
+                                    checked={item.selected}
+                                  />
+                                </div>
+                                <div className="col-2 p-0">{item.date}</div>
+                                <div className="col-1 p-0">
+                                  {item.start_time}
+                                </div>
+                                <div className="col-1 p-0">{item.end_time}</div>
+                                <div className="col-3 p-0 header-detail">
+                                  {item.item_name}
+                                </div>
+
+                                <div className="col-1 p-0 header-detail">
+                                  {item.add_duration}
+                                </div>
+                                <div className="col-2 p-0">{item.emp_name}</div>
+                                <div className="col-1 p-0 d-flex justify-content-center">
+                                  <NormalCheckbox
+                                    onChange={e =>
+                                      this.handleRecurringlistCheckbox(e, item)
+                                    }
+                                    value={item.requesttherapist}
+                                    name="requesttherapist"
+                                    checked={item.requesttherapist}
+                                    disabled
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })
+                        ) : (
+                          <div className="text-center w-100">No data</div>
+                        )}
+                        <div className="d-flex justify-content-end">
+                          <div className="mt-5">
+                            <div className="d-flex justify-content-between">
+                              <div>
+                                <NormalButton
+                                  buttonClass={"treatment"}
+                                  mainbg={true}
+                                  className="col-12"
+                                  label="Cancel"
+                                  onClick={this.handleCloseDialog}
+                                />
+                              </div>
+                              <div>
+                                {appointmentId ? (
+                                  <NormalButton
+                                    buttonClass={"submit-btn"}
+                                    mainbg={false}
+                                    className="col-12 submit-btn ml-4"
+                                    label="Update Recurring"
+                                    onClick={this.handleRecurringUpdate}
+                                  />
+                                ) : null}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               </div>
@@ -1028,17 +1344,19 @@ export class NewSelectTreatmentClass extends Component {
                 )}
               </TableWrapper>
             </div>
+
             <div className="row text-center justify-center w-100">
               <NormalButton
                 buttonClass={"col-3"}
                 mainbg={true}
-                className="col-12 ml-4 fs-15 "
+                className="col-12 ml-4"
                 label="Cancel"
                 onClick={this.handleDialog}
               />
             </div>
           </div>
         </NormalModal>
+
         <div className="col-12">
           {isTreatementModal ? (
             <TreatmentPackage

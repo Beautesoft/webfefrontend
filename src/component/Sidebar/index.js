@@ -14,7 +14,11 @@ export class SidebarClass extends Component {
         label: "Dashboard",
         role: ["MANAGER", "ADMINISTRATOR", "THERAPIST"],
       },
-
+      {
+        to: "/admin/newappointment",
+        label: "Appointment",
+        role: ["MANAGER", "ADMINISTRATOR", "THERAPIST"],
+      },
       {
         to: "/admin/salons",
         label: "Saloon",
@@ -36,11 +40,6 @@ export class SidebarClass extends Component {
         role: ["MANAGER", "ADMINISTRATOR", "THERAPIST"],
       },
       {
-        to: "/admin/appointment",
-        label: "Appointments",
-        role: ["MANAGER", "ADMINISTRATOR", "THERAPIST"],
-      },
-      {
         to: "/admin/catalog",
         label: "Catalog",
         role: ["MANAGER", "THERAPIST"],
@@ -50,6 +49,11 @@ export class SidebarClass extends Component {
         label: "Cart",
         role: ["MANAGER", "THERAPIST"],
       },
+      //{
+      // to: "/admin/transactionhistory",
+      // label: "Transaction History",
+      //role: ["MANAGER", "THERAPIST"],
+      // },
       // {
       //   to: '/admin/payment',
       //   label: 'Payment',
@@ -61,19 +65,19 @@ export class SidebarClass extends Component {
         role: ["MANAGER", "THERAPIST"],
       },
       {
-        to: "/admin/staff",
-        label: "Staff",
-        role: ["MANAGER", "THERAPIST"],
+        to: "/admin/dayendreport",
+        label: "Day End",
+        role: ["MANAGER", "ADMINISTRATOR", "THERAPIST"],
+      },
+      {
+        to: "/admin/Inventory",
+        label: "Inventory",
+        role: ["MANAGER", "ADMINISTRATOR", "THERAPIST"],
       },
       {
         to: "/admin/staffplus",
         label: "Staff+",
         role: ["MANAGER", "THERAPIST"],
-      },
-      {
-        to: "/admin/newappointment",
-        label: "Appointment+",
-        role: ["MANAGER", "ADMINISTRATOR", "THERAPIST"],
       },
       {
         to: "/admin/service",

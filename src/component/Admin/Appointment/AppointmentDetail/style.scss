@@ -1,4 +1,4 @@
-@import '../../../../assets/scss/abstracts/abstracts-dir.scss';
+@import "../../../../assets/scss/abstracts/abstracts-dir.scss";
 
 .appointment-detail {
   .re-direct {
@@ -16,7 +16,7 @@
     }
   }
   .head-label {
-    font-size: fontSize(18px);
+    font-size: fontSize(16px);
     font-weight: 600;
     font-size: 18px;
     line-height: 23px;
@@ -49,7 +49,7 @@
         top: 19px;
         right: 5px;
         font-size: 5px;
-    }
+      }
     }
   }
   .status {
@@ -88,7 +88,7 @@
       }
       .user-name {
         font-weight: 600;
-        font-size: fontSize(18px);
+        font-size: fontSize(16px);
         color: $primary-color;
         line-height: 23px;
         padding: 15px;
@@ -99,7 +99,7 @@
     }
     .user-detail {
       padding: 0 20px;
-      .detail{
+      .detail {
         padding-bottom: 20px;
         align-items: center;
         // justify-content: space-evenly;
@@ -118,9 +118,8 @@
           line-height: 15px;
           color: $black;
           padding-left: 20px;
-
         }
-        .spliter{
+        .spliter {
           padding-left: 20px;
         }
       }

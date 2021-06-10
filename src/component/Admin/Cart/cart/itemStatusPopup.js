@@ -2,61 +2,102 @@ import React, { Component } from "react";
 import { NormalInput, NormalButton, NormalSelect } from "component/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { getCommonApi, commonCreateApi } from "redux/actions/common";
 
 import "./style.scss";
 
 export class itemStatusPopupClass extends Component {
   state = {
-    data_list: [
-      {
-        id: 0,
-        item: "Short length 98",
-        quantity: 1,
-        unit_price: 218.0,
-        discount: 0.0,
-        discount_price: 218.0,
-        amount: 218.0,
-        deposit: 218.0,
-        outlet: "Hilltop",
-        item_status: "",
-        foc_reason: "",
-        is_foc: false,
-      },
-      {
-        id: 1,
-        item: "Short length 98",
-        quantity: 1,
-        unit_price: 218.0,
-        discount: 0.0,
-        discount_price: 218.0,
-        amount: 218.0,
-        deposit: 218.0,
-        outlet: "Hilltop",
-        item_status: "",
-        foc_reason: "",
-        is_foc: false,
-      },
-    ],
+    data_list: [],
     item_status_options: [],
+    focReasonList: [],
+    sourceList: [],
   };
 
   componentDidMount() {
-    if (this.state.data_list.length != 0) {
-      document
-        .getElementById(this.state.data_list[0].id)
-        .classList.toggle("d-none");
-    }
+    let { item_status_options, focReasonList } = this.state;
+
+    this.props.getCommonApi(`focreason/`).then(key => {
+      let { status, data } = key;
+      if (status === 200) {
+        for (let value of data) {
+          focReasonList.push({
+            value: Number(value.id),
+            label: value.foc_reason_ldesc,
+          });
+        }
+        this.setState({ focReasonList });
+      }
+    });
+    this.props.getCommonApi(`itemstatus/`).then(key => {
+      let { status, data } = key;
+      if (status === 200) {
+        for (let value of data) {
+          item_status_options.push({
+            value: Number(value.id),
+            label: value.status_short_desc,
+          });
+        }
+        this.setState({ item_status_options });
+      }
+    });
+    this.getStatusList();
   }
-
-  handleSubmit = () => {};
-
-  handleChange = (e, index) => {
-    let data = this.state.data_list[index];
-    data[[e.target.name]] = e.target.value;
-    this.setState({});
+  getStatusList = () => {
+    let { data_list } = this.state;
+    let { basicApptDetail } = this.props;
+    this.props
+      .getCommonApi(
+        `cartpopup/?cust_noid=${basicApptDetail.custId}&cart_id=${this.props.id}&is_status=1`
+      )
+      .then(async key => {
+        let { status, data } = key;
+        if (status == "200") {
+          console.log(key, "cartstatuspopuplist");
+          data_list = data;
+          await this.setState({
+            data_list,
+          });
+          if (this.state.data_list.length > 0) {
+            document
+              .getElementById(this.state.data_list[0].id)
+              .classList.toggle("d-none");
+          }
+        }
+      });
   };
 
-  handleAccordion = (id) => {
+  handleSubmit = () => {
+    let { data_list, sourceList } = this.state;
+
+    for (let value of data_list) {
+      sourceList.push({
+        id: value.id,
+        itemstatus: value.itemstatus,
+        focreason: value.focreason,
+      });
+    }
+
+    this.props.commonCreateApi(`cartpopup/`, sourceList).then(key => {
+      let { status, data } = key;
+      if (status == 200) {
+        this.props.handleModal();
+      }
+    });
+  };
+
+  handleChange = (e, index) => {
+    let { data_list } = this.state;
+    let data = e.target.value;
+    if ([e.target.name] == "itemstatus" || [e.target.name] == "focreason") {
+      data_list[index][e.target.name] = Number(data);
+    } else {
+      data_list[index][e.target.name] = data;
+    }
+    this.setState({ data_list });
+  };
+
+  handleAccordion = id => {
     let elements = document.getElementsByClassName("accordion");
     for (let i = 0; i < elements.length; i++) {
       elements[i].classList.add("d-none");
@@ -66,7 +107,7 @@ export class itemStatusPopupClass extends Component {
   };
 
   render() {
-    let { data_list, item_status_options } = this.state;
+    let { data_list, item_status_options, focReasonList } = this.state;
     return (
       <>
         <div className="container-fluid mb-4 mt-2 product-details">
@@ -74,96 +115,102 @@ export class itemStatusPopupClass extends Component {
             <div className="col-10">
               <h4>Item Status</h4>
             </div>
-            <div className="col-2">
-              <NormalButton
-                mainbg={true}
-                className="col-12 fs-15 "
-                label="Done "
-                onClick={() => this.handleSubmit()}
-              />
-            </div>
+            {data_list && data_list.length > 0 ? (
+              <div className="col-2">
+                <NormalButton
+                  mainbg={false}
+                  className="col-12 fs-15 submit-btn"
+                  label="Done"
+                  onClick={() => this.handleSubmit()}
+                />
+              </div>
+            ) : null}
           </div>
+          {data_list && data_list.length <= 0 ? (
+            <div className="row pl-5 pr-5 mt-4">No Record Found</div>
+          ) : null}
           <div className="row pl-5 pr-5 mt-4">
-            {data_list.map((item, index) => {
-              return (
-                <div className="row w-100 mb-2">
-                  <div
-                    className="row w-100 border rounded p-3 accordion-menu"
-                    onClick={() => this.handleAccordion(item.id)}
-                  >
-                    <div className="col">{item.item}</div>
-                    <div className="col">
-                      <NormalInput
-                        name="quantity"
-                        type="number"
-                        value={item.quantity}
-                        onChange={(e) => this.handleChange(e, index)}
-                      />
-                    </div>
-                    <div className="col">{item.unit_price}</div>
-                    <div className="col">{item.discount}</div>
-                    <div className="col">{item.discount_price}</div>
-                    <div className="col">{item.discount}</div>
-                    <div className="col">{item.amount}</div>
-                    <div className="col">
-                      {item.item_status == "" ? "Status" : item.item_status}
-                    </div>
-                    <div className="col">{item.outlet}</div>
-                  </div>
-                  <div
-                    className="row w-100 rounded bg-light p-3 d-none accordion"
-                    id={item.id}
-                  >
-                    <div className="row w-100 pl-3 mb-3">
-                      <div className="col-4">
-                        <label className="text-left text-black common-label-text fs-17 pb-2">
-                          Item Status
-                        </label>
-                        <div className="input-group">
-                          <NormalSelect
-                            options={item_status_options}
-                            value={item.item_status}
-                            name="item_status"
-                            onChange={(e) => this.handleChange(e, index)}
-                          />
-                        </div>
+            {data_list &&
+              data_list.length > 0 &&
+              data_list.map((item, index) => {
+                return (
+                  <div className="row w-100 mb-2" key={index}>
+                    <div
+                      className="row w-100 border rounded p-3 accordion-menu"
+                      onClick={() => this.handleAccordion(item.id)}
+                    >
+                      <div className="col">{item.itemdesc}</div>
+                      <div className="col">
+                        {/* <NormalInput
+                          name="quantity"
+                          type="number"
+                          value={item.quantity}
+                          onChange={e => this.handleChange(e, index)}
+                        /> */}
+                        {item.quantity}
                       </div>
-                      <div className="col-4">
-                        <label className="text-left text-black common-label-text fs-17 pb-2">
-                          FOC Reason
-                        </label>
-                        <div className="input-group">
-                          <NormalInput
-                            placeholder="Enter here"
-                            value={item.foc_reason}
-                            name="foc_reason"
-                            onChange={(e) => this.handleChange(e, index)}
-                          />
-                        </div>
-                      </div>
-                      <div className="col-4">
-                        <div className="input-group mt-4 pt-3">
-                          <div className="p-2">
-                            <input
-                              type="checkbox"
-                              checked={item.is_foc}
-                              name="is_foc"
-                              onClick={() => {
-                                this.state.data_list[index].is_foc = !item.is_foc;
-                                this.setState({});
-                              }}
+                      <div className="col">{item.price}</div>
+                      <div className="col">{item.discount}</div>
+                      <div className="col">{item.discount_price}</div>
+                      <div className="col">{item.trans_amt}</div>
+                      <div className="col">{item.deposit}</div>
+                      <div className="col">{item.sales_staffs}</div>
+                    </div>
+                    <div
+                      className="row w-100 rounded bg-light p-3 d-none accordion"
+                      id={item.id}
+                    >
+                      <div className="row w-100 pl-3 mb-3">
+                        <div className="col-4">
+                          <label className="text-left text-black common-label-text fs-17 pb-2">
+                            Item Status
+                          </label>
+                          <div className="input-group">
+                            <NormalSelect
+                              options={item_status_options}
+                              value={item.itemstatus ? item.itemstatus : 0}
+                              name="itemstatus"
+                              onChange={e => this.handleChange(e, index)}
                             />
                           </div>
-                          <label className="text-left text-black common-label-text fs-17 mt-1">
-                            FOC
-                          </label>
                         </div>
+                        {item.is_foc ? (
+                          <>
+                            <div className="col-4">
+                              <label className="text-left text-black common-label-text fs-17 pb-2">
+                                FOC Reason
+                              </label>
+                              <div className="input-group">
+                                <NormalSelect
+                                  options={focReasonList}
+                                  value={item.focreason ? item.focreason : 0}
+                                  name="focreason"
+                                  onChange={e => this.handleChange(e, index)}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-4">
+                              <div className="input-group mt-4 pt-3">
+                                <div className="p-2">
+                                  <input
+                                    type="checkbox"
+                                    checked={item.is_foc}
+                                    name="is_foc"
+                                    onChange={e => this.handleChange(e, index)}
+                                  />
+                                </div>
+                                <label className="text-left text-black common-label-text fs-17 mt-1">
+                                  FOC
+                                </label>
+                              </div>
+                            </div>
+                          </>
+                        ) : null}
                       </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         </div>
       </>
@@ -171,10 +218,18 @@ export class itemStatusPopupClass extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = state => ({
+  basicApptDetail: state.appointment.basicApptDetail,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({}, dispatch);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      getCommonApi,
+      commonCreateApi,
+    },
+    dispatch
+  );
 };
 
 export const ItemStatusPopup = connect(

@@ -1,6 +1,6 @@
-@import '../../../../assets/scss/abstracts/abstracts-dir.scss';
+@import "../../../../assets/scss/abstracts/abstracts-dir.scss";
 
-.select-treatment-appointment{
+.select-treatment-appointment {
   .step-view.step-1::before {
     max-width: 23%;
   }
@@ -12,7 +12,7 @@
 .create-appointment {
   .timeline-view::before {
     position: absolute;
-    content: '';
+    content: "";
     width: 100%;
     margin-left: 10px;
     top: 8px;
@@ -32,7 +32,7 @@
   // }
   .step-view::before {
     position: absolute;
-    content: '';
+    content: "";
     border-bottom: 1px solid;
     width: 100%;
     top: 8px;
@@ -64,7 +64,6 @@
       margin: auto;
       z-index: 3;
       background: $white;
-     
     }
     .timeline {
       position: relative;
@@ -131,7 +130,9 @@
     padding: 20px;
     .select-list {
       .selected-header {
-        background-color: #fadce2;
+        background-color: $temptablehead-color;
+        border-radius: 4px;
+        padding: 5px;
       }
     }
     .treatment-label {
@@ -170,16 +171,16 @@
         color: #222222;
       }
     }
-    .treatment-detail{
+    .treatment-detail {
       padding: 25px 0 0 25px;
-      .treatment-img{
+      .treatment-img {
         width: 100%;
       }
       .headline {
         font-size: 14px;
         line-height: 27px;
       }
-      .detail{
+      .detail {
         font-size: 14px;
         line-height: 27px;
         color: #888888;
@@ -202,7 +203,7 @@
           margin-left: -30px;
         }
       }
-      .confirm{
+      .confirm {
         width: 100%;
         display: flex;
         justify-content: center;
@@ -219,9 +220,8 @@
           }
         }
       }
-      
+
       .select-treatment {
-       
         .input-group {
           width: 275px;
           display: flex;
@@ -232,11 +232,11 @@
           .input-select {
             width: 224px;
           }
-          .form-control{
+          .form-control {
             padding: 0 15px;
           }
           .select .select-icon {
-            top: 14px;
+            top: 16px;
             right: 14px;
           }
           textarea {
@@ -250,21 +250,20 @@
           background: rgba(237, 125, 49, 0.05);
           .header-detail {
             padding: 15px;
-            .title{
+            .title {
               line-height: 25px;
             }
-            .subtitle{
+            .subtitle {
               line-height: 30px;
               color: #424242;
               opacity: 0.8;
             }
           }
-          .treatment-img{
+          .treatment-img {
             width: 137px;
             height: 127px;
           }
         }
-        
       }
       .booked-appointment {
         .customer-title {
@@ -274,7 +273,7 @@
       }
     }
   }
-  .availability{
+  .availability {
     background: white;
     left: 0;
     height: 90vh;
@@ -282,10 +281,10 @@
     margin-top: -23px;
     z-index: 1;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08);
-    padding: 10px; 
-    .side-menus{
-      .detail{
-        p{
+    padding: 10px;
+    .side-menus {
+      .detail {
+        p {
           line-height: 20px;
         }
       }
@@ -293,7 +292,7 @@
         color: #676767;
       }
     }
-    .heading{
+    .heading {
       font-size: 18px;
       color: #ffc55c;
       text-align: center;
@@ -312,7 +311,7 @@
     .appointment {
       // margin: 20px 100px 20px 100px;
       // margin: 20px 173px 20px 114px;
-      .stepper{
+      .stepper {
         margin: 26px;
         padding: 17px;
         background: $white;
@@ -323,17 +322,17 @@
         }
       }
       .appointment-holder {
-        .form-group{
-          .input-group{
-            .select{
-              .select-icon{
+        .form-group {
+          .input-group {
+            .select {
+              .select-icon {
                 top: 14px;
                 right: 8px;
               }
             }
           }
         }
-        .customer-appointment{
+        .customer-appointment {
           .create {
             justify-content: center;
             width: 400px;
@@ -344,23 +343,23 @@
               text-transform: unset;
               width: 180px;
             }
-            .confirm{
+            .confirm {
               height: unset;
               text-transform: unset;
               width: 180px;
             }
           }
           .create-appointment {
-            button{
+            button {
               width: 224px;
             }
           }
-          .customer-name{
+          .customer-name {
             padding: 0px !important;
             height: 30px;
           }
-          .select .select-icon{
-            top: 14px;
+          .select .select-icon {
+            top: 16px;
           }
         }
         .booked-appointment {
@@ -371,28 +370,27 @@
           .selected {
             background: rgba(237, 125, 49, 0.05);
           }
-          .confirm{
-            .multiple-customer{
+          .confirm {
+            .multiple-customer {
               border-radius: unset;
               height: unset;
             }
-            .treatment{
+            .treatment {
               button {
                 height: unset;
               }
             }
           }
-          .form-control{
+          .form-control {
             padding: 0 15px;
           }
-          .select .select-icon{
-            top: 14px;
+          .select .select-icon {
+            top: 16px;
           }
-          input{
+          input {
             width: unset;
           }
           .time-form img {
-            
           }
         }
         .book-treatment {
@@ -417,21 +415,21 @@
             }
             .header-detail {
               color: #222222;
-              p{
+              p {
                 color: #222222;
               }
             }
           }
-          .confirm{
+          .confirm {
             display: flex;
             justify-content: center;
-            .confirm-booking{
+            .confirm-booking {
               width: 224px;
               height: 40px;
-              button{
+              button {
                 border: 1px solid $green;
                 background-color: $green;
-                &:hover{
+                &:hover {
                   border: 1px solid $green;
                   color: $green;
                   background-color: $white;
@@ -451,18 +449,18 @@
       }
     }
   }
-  
+
   .cart-holder {
     position: fixed;
     top: 100px;
-    .confirm-booking{
+    .confirm-booking {
       margin: auto;
       width: 200px;
       height: 40px;
-      button{
+      button {
         border: 1px solid $green;
         background-color: $green;
-        &:hover{
+        &:hover {
           border: 1px solid $green;
           color: $green;
           background-color: $white;
@@ -473,11 +471,11 @@
   .select-list {
     .selected {
       // background-color: #faabab4f;
-      .select{
+      .select {
         .form-control {
           padding: 0px !important;
         }
-        .select-icon{
+        .select-icon {
           top: 14px;
           right: 8px;
         }
@@ -487,19 +485,22 @@
           top: 13px;
         }
       }
-      .customer-name, .form-control {
+      .customer-name,
+      .form-control {
         height: 30px;
       }
       .multi-select {
         .css-1hwfws3 {
-        overflow-y: auto;
-        height: 43px;
+          overflow-y: auto;
+          height: 43px;
         }
       }
     }
     .selected-header {
       .row {
-        background-color: #f7c4c491;
+        background-color: $temptablehead-color;
+        border-radius: 4px;
+        padding: 5px;
       }
     }
   }
@@ -562,7 +563,6 @@
 
 @media only screen and (min-width: 1500px) {
   .create-appointment {
-   
     .appointment-col {
       .appointment {
         // margin: 20px 100px 20px 70px;
@@ -576,63 +576,66 @@
   .modal-body {
     .search {
       width: 100%;
-      border: none;
+      border: 1px solid #ced4da;
       background: #f9f9f9;
       margin-top: 10px;
       height: 30px;
+      border-radius: 3px;
     }
     .table-header {
-      background-color: #f7c4c491;
+      background-color: $temptablehead-color;
+      border-radius: 4px;
+      padding: 5px;
     }
     .table-body {
-      
     }
   }
 }
 
-.treatment-done{
-  .action-bar{
-    .confirm, .clear-line, .clear-all {
+.treatment-done {
+  .action-bar {
+    .confirm,
+    .clear-line,
+    .clear-all {
       width: 124px;
       height: 40px;
     }
     .confirm {
-      background: $green;
-      border: 1px solid $green;
-      &:hover{
-        border: 1px solid $green;
+      background: linear-gradient(91.15deg, #a0e5f7 0.45%, #ed91d4 100%);
+      border: 1px solid $theme-color;
+      color: $primary-color;
+      &:hover {
+        border: 1px solid $primary-color;
         background: $white;
-        color: $green;
       }
     }
-    
   }
   .input-group {
     input {
       width: 180px;
       height: 30px;
-      background: #F9F9F9;
+      background: #f9f9f9;
       border: none;
     }
-    .select{
+    .select {
       width: 180px !important;
       .select-form-control {
-       
         height: 30px;
-        background: #F9F9F9;
+        background: #f9f9f9;
       }
       .select-icon {
-          top: 13px;
+        top: 13px;
       }
     }
   }
-  .staff-listing{
+  .staff-listing {
     img {
       max-width: 62px;
       max-height: 62px;
       border: 1px solid;
     }
-    .forward-button, .back-button {
+    .forward-button,
+    .back-button {
       width: 30px;
       height: 82px;
       padding: 28px 10px;
@@ -648,41 +651,40 @@
     input {
       width: 180px;
       height: 30px;
-      background: #F9F9F9;
+      background: #f9f9f9;
       border: none;
     }
-    .select{
+    .select {
       width: 180px !important;
       .select-form-control {
-      
         height: 30px;
-        background: #F9F9F9;
+        background: #f9f9f9;
       }
       .select-icon {
-          top: 13px;
+        top: 13px;
       }
     }
   }
-  .discount-section { 
-    .apply{
+  .discount-section {
+    .apply {
       width: 180px;
-      background: $white;
-      border: 1px solid $green;
+      background: linear-gradient(91.15deg, #a0e5f7 0.45%, #ed91d4 100%);
+      border: 1px solid $theme-color;
       color: $green;
-      &:hover{
-        border: 1px solid $green;
-        background: $green;
-        color: $white;
+      &:hover {
+        border: 1px solid $primary-color;
+        background: $white;
+        color: $primary-color;
       }
     }
     .confirm {
       width: 180px;
-      background: $green;
-      border: 1px solid $green;
-      &:hover{
-        border: 1px solid $green;
+      background: linear-gradient(91.15deg, #a0e5f7 0.45%, #ed91d4 100%);
+      border: 1px solid $theme-color;
+      &:hover {
+        border: 1px solid $primary-color;
         background: $white;
-        color: $green;
+        color: $primary-color;
       }
     }
   }

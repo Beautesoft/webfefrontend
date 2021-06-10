@@ -1,15 +1,13 @@
-@import 'assets/scss/abstracts/abstracts-dir.scss';
+@import "assets/scss/abstracts/abstracts-dir.scss";
 
 .catalog-section {
-  .catalog-content{
-    background-color: $white;
-    border: 1px solid #ffb26b;
+  .catalog-content {
+    border: 1px solid $primary-color;
     padding: 24px 31px;
-    .tab-menus{}
   }
   ul {
     display: flex;
-    li{
+    li {
       margin-right: 41px;
     }
     // justify-content: space-between;
@@ -17,21 +15,26 @@
       padding: 0 0 1.3rem 0;
     }
   }
-  .catelog-service{
+  .catelog-service {
     justify-content: unset !important;
   }
   .sidebar-menu {
     display: flex;
     &.active {
       .sidebar-menu-desc {
-        color: $primary-color;
-        font-family: Muli-Bold;
+        color: $white;
+        font-family: "Poppins";
+        background: $primary-color;
+        border-radius: 4px;
+        border-color: $primary-color;
       }
     }
     .sidebar-menu-desc {
       color: #666666;
-      font-size: fontSize(16px);
-      font-family: Muli-Medium;
+      font-size: fontSize(14px);
+      font-family: "Poppins";
+      padding: 7px;
+      margin: 2px;
     }
   }
   .nav-icon {
@@ -45,14 +48,15 @@
       background: $white;
     }
   }
-  .category .product-card, .dept .product-card {
+  .category .product-card,
+  .dept .product-card {
     margin-right: 18px;
     min-height: 48px;
   }
-.list{
-  height: 55vh;
-  overflow-y: auto;
-}
+  .list {
+    height: 55vh;
+    overflow-y: auto;
+  }
   .product-card {
     padding-top: 15px;
     margin-top: 20px;
@@ -61,14 +65,15 @@
     min-height: 310px;
     position: relative;
     margin-right: 20px;
-    font-family: Muli-Regular;
-
-    .card-title{
+    font-family: "Poppins";
+    border-radius: 4px;
+    box-shadow: 0px -1px 4px rgba(0, 0, 0, 0.13);
+    .card-title {
       min-height: 77px;
     }
     .label {
       font-size: fontSize(16px);
-      line-height: 23px;
+      line-height: 20px;
       color: $black;
     }
     .cart-img {
@@ -83,8 +88,8 @@
       }
     }
     .cost {
-      font-size: fontSize(20px);
-      font-family: Muli-SemiBold;
+      font-size: fontSize(16px);
+      font-family: "Poppins";
       line-height: 25px;
       color: $primary-color;
     }
@@ -112,14 +117,14 @@
       font-size: fontSize(16px);
       line-height: 20px;
       text-transform: none;
-      border-radius: unset;
-      &:hover{
+      border-radius: 4px;
+      &:hover {
         color: $white;
       }
     }
   }
   .product-card.card.stock-nill::before {
-    content: 'Not in Stock';
+    content: "Not in Stock";
     font-size: fontSize(16px);
     font-family: Muli-Regular;
     position: absolute;
@@ -132,17 +137,16 @@
     display: flex;
     align-items: center;
   }
- 
+
   .product-detail {
     font-family: Muli-Regular;
     .detail-view {
-      box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.68);
+      box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.68);
       img {
         width: 100%;
         max-width: 296px;
         min-height: 296px;
         object-fit: contain;
-       
       }
     }
     .thumbnail-view {
@@ -222,7 +226,7 @@
     background-color: $primary-color;
     float: right;
     color: $white;
-    &:hover{
+    &:hover {
       color: $primary-color;
       background-color: $white;
       border: 1px solid $primary-color;
@@ -231,16 +235,16 @@
   .cart-bar {
     // top: 100px;
     // width: 92%;
-    border: 1px solid #ffb26b;
+    border: 1px solid $primary-color;
     background-color: $white;
     padding: 17px 27px;
     .checkout {
-      button{
-        border: 1px solid $green;
-        background: $green;
-        color: #F9F9F9;
-        &:hover{
-          color: $green;
+      button {
+        border: 1px solid $theme-color;
+        background: $theme-color;
+        color: #f9f9f9;
+        &:hover {
+          color: $primary-color;
           background: $white;
         }
       }
@@ -248,9 +252,9 @@
     .catalog-cart-item {
       background: rgba(237, 125, 49, 0.05);
     }
-    .products{
+    .products {
       min-height: 65vh;
-      .list{
+      .list {
         height: 54vh;
         overflow-y: auto;
       }

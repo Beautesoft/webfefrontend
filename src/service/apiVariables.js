@@ -277,6 +277,74 @@ export const saloon = {
   },
 };
 
+export const staff = {
+  addStaff: {
+    api: "staffs/",
+    method: "post",
+    baseURL: "normal",
+  },
+  updateStaff: {
+    url: "staffs/",
+    method: "put",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  deleteStaff: {
+    url: "staffs/",
+    method: "delete",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  getStaff: {
+    url: "staffs/",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  getStaffAvailability: {
+    url: "shiftdatewise/",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  getStaffBranchwise: {
+    url: "employeebranchwise/",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+};
+
 export const staffPlus = {
   addStaff: {
     api: "staffPlus/",
@@ -432,86 +500,6 @@ export const staffPlus = {
     id: null,
     get api() {
       return this.url + this.id + "/StaffSkills/";
-    },
-    set addQuery({ key, payload }) {
-      this[key] = payload;
-    },
-    baseURL: "token",
-  },
-};
-
-export const staff = {
-  addStaff: {
-    api: "staffs/",
-    method: "post",
-    baseURL: "normal",
-  },
-  updateStaff: {
-    url: "staffs/",
-    method: "put",
-    id: null,
-    get api() {
-      return this.url + this.id;
-    },
-    set addQuery({ key, payload }) {
-      this[key] = payload;
-    },
-    baseURL: "token",
-  },
-  deleteStaff: {
-    url: "staffs/",
-    method: "delete",
-    id: null,
-    get api() {
-      return this.url + this.id;
-    },
-    set addQuery({ key, payload }) {
-      this[key] = payload;
-    },
-    baseURL: "token",
-  },
-  getStaff: {
-    url: "staffs/",
-    method: "get",
-    id: null,
-    get api() {
-      return this.url + this.id;
-    },
-    set addQuery({ key, payload }) {
-      this[key] = payload;
-    },
-    baseURL: "token",
-  },
-  getStaffPlus: {
-    url: "staffPlus/",
-    method: "get",
-    id: null,
-    get api() {
-      return this.url + this.id;
-    },
-    set addQuery({ key, payload }) {
-      this[key] = payload;
-    },
-    baseURL: "token",
-  },
-  getStaffAvailability: {
-    url: "shiftdatewise/",
-    method: "get",
-    id: null,
-    get api() {
-      return this.url + this.id;
-    },
-    set addQuery({ key, payload }) {
-      this[key] = payload;
-    },
-    baseURL: "token",
-  },
-  getStaffBranchwise: {
-    url: "employeebranchwise/",
-    method: "get",
-    id: null,
-    get api() {
-      return this.url + this.id;
     },
     set addQuery({ key, payload }) {
       this[key] = payload;

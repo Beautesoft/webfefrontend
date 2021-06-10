@@ -15,7 +15,7 @@ const cookies = new Cookies();
 export class LoginClass extends Component {
   state = {
     formFields: {
-      salon: "",
+      salon: 0,
       username: '',
       password: ''
     },
@@ -39,15 +39,14 @@ export class LoginClass extends Component {
       element: message => <span className="error-message font-md">{message}</span>,
       autoForceUpdate: this,
     });
-    let { salonList } = this.state;
+    /*let { salonList } = this.state;
     this.props.getLoginSaloon().then((res) => {
       for (let key of res.data) {
         salonList.push({ value: key.id, label: key.itemsite_desc })
       }
       this.setState({ salonList })
-    })
+    })*/
   }
-
   handleChange = ({ target: { value, name } }) => {
     let formFields = Object.assign({}, this.state.formFields);
 
@@ -57,16 +56,54 @@ export class LoginClass extends Component {
       formFields,
     });
   };
+  handleChangeAndSubmit = ({ target: { value, name } }) => {
+    let formFields = Object.assign({}, this.state.formFields);
 
-  handleSubmit = event => {
+    formFields[name] = value;
+
+    this.setState({
+      formFields,
+    }, () => {
+      this.handleSubmit();
+    });
+  };
+
+  handleFirstLogin = event => {
     event.preventDefault();
+
+    if (this.validator.allValid()) {
+      let { formFields, rememberme,salonList} = this.state;
+
+      this.props.login(formFields).then((res) => {
+        let { status, data } = res;
+         if (status === 200) {
+           if(res.data.sites.length>1){
+            for (let key of res.data.sites) {
+              salonList.push({ value: key.id, label: key.itemsite_desc })
+            }
+            this.setState({ salonList })
+           }
+           else{
+             formFields.salon=res.data.sites[0].id;
+             this.handleSubmit();
+           }
+          
+        }
+      });
+    } else {
+      this.validator.showMessages();
+    }
+  };
+
+  handleSubmit () {
+   // event.preventDefault();
 
     if (this.validator.allValid()) {
       let { formFields, rememberme } = this.state;
 
       this.props.login(formFields).then((res) => {
         let { status, data } = res;
-        if (status === 200) {
+         if (status === 200) {
           history.push('/admin/dashboard');
           if (rememberme) {
             let date = new Date();
@@ -97,18 +134,7 @@ export class LoginClass extends Component {
       <>
         <div className="login-container h-100 py-5">
           <h1 className="text-left login-heading mb-5">Sign in to access BeauteSoft</h1>
-          <div className="form-group mb-4 pb-3">
-            <div className="input-group">
-              <NormalSelect
-                // placeholder="Enter here"
-                options={salonList}
-                value={salon}
-                name="salon"
-                onChange={this.handleChange}
-              />
-            </div>
-            {this.validator.message('salon', salon, 'required|string')}
-          </div>
+         
           <div className="form-group mb-4 pb-3">
             <div className="input-group">
               <NormalInput
@@ -155,8 +181,27 @@ export class LoginClass extends Component {
           </div>
 
           <div className="form-group mb-0 p-0 d-flex justify-content-center col-12">
-            <NormalButton buttonClass={"w-100"} onClick={this.handleSubmit} id="loginBtn" label="LOGIN" mainbg={true} className="mr-2 fs-14 col-12" />
+            <NormalButton buttonClass={"w-100"} onClick={this.handleFirstLogin} id="loginBtn" label="LOGIN" mainbg={true} className="mr-2 fs-14 col-12" />
           </div>
+          <br/><br/>
+          {salonList.length>1 &&
+          <div className="form-group mb-4 pb-3">
+            <div className="input-group">
+              <NormalSelect
+                placeholder="Please Select Site"
+                options={salonList}
+                value={salon}
+                name="salon"
+                onChange={this.handleChangeAndSubmit}
+              />
+            </div>
+            {this.validator.message('salon', salon, 'required|string')}
+          </div>
+         }
+          <center><p>Copyrights (c) Acy7lab.com. 
+          </p><p> Licensed to Sequoia - Version 6.6</p>
+          <br/>
+          <p>Dated: 5.28</p></center>
         </div>
       </>
     );

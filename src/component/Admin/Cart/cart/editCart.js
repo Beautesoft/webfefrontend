@@ -405,7 +405,7 @@ export class EditCartClass extends Component {
                         </div>
                     </div>
 
-                    {cartDetail.id ? <Discount cartData={cartDetail} id={this.props.id} handleRefresh={this.getCartData}></Discount> : ""}
+                    {cartDetail.id ? <Discount cartData={cartDetail} discount_price = {formFields.discount_price} id={this.props.id} handleRefresh={this.getCartData}></Discount> : ""}
 
                     <div className="row">
                         <div className="col-4">

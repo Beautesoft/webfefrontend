@@ -54,11 +54,14 @@ componentDidMount() {
 }
 
 getAccountData = (api) => {
-  let { show, accountHeader } = this.state;
+  console.log("this.props.id",this.props.id);
+  console.log("api",api);
+  let {  accountHeader } = this.state;
   this.props.getCommonApi(`prepaidacclist/?cust_id=${this.props.id}${api}`).then((key) => {
     let { data, header_data } = key;
     let { accountList } = this.state;
     accountList = data;
+    console.log("getAccountData-accountList",accountList);
     accountHeader = header_data;
     this.setState({ accountList, accountHeader })
 })
@@ -139,13 +142,13 @@ handleBack = () => {
         <div className="col-6 mt-3 mb-4">
           <div className="row">
             <div className="col-6 mb-2">Balance of Product Type</div>
-            <div className="col-6 mb-2">$ {balance_producttype}</div>
+            <div className="col-6 mb-2">{localStorage.getItem("Currency")}{balance_producttype}</div>
             
             <div className="col-6">Balance of Service Type</div>
-            <div className="col-6">$ {balance_servicetype}</div>
+            <div className="col-6">{localStorage.getItem("Currency")}{balance_servicetype}</div>
 
             <div className="col-6">Balance of All Types</div>
-            <div className="col-6">$ {balance_alltype}</div>
+            <div className="col-6">{localStorage.getItem("Currency")}{balance_alltype}</div>
           </div>
         </div>
         <div className="col-12">

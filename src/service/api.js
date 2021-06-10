@@ -1,3 +1,4 @@
+import helpers from "./Helper";
 import { axiosInstance, logout } from "./utilities";
 
 export var api = async function ({
@@ -21,7 +22,8 @@ export var api = async function ({
     if (!!localStorage.getItem("AuthToken"))
       axiosInstance.defaults.headers.common["Authorization"] =
         "token " + localStorage.getItem("AuthToken");
-    console.log(header);
+
+    axiosInstance.defaults.crossDomain = true;
     if (!!header) {
       axiosInstance.defaults.headers.put[header.type] = header.value;
       axiosInstance.defaults.headers.post[header.type] = header.value;
@@ -70,20 +72,23 @@ var statusHelper = (status, data) => {
 
 let getServiceUrl = (baseURL) => {
   let finalURL = "";
-
   switch (baseURL) {
     case "normal":
-      // finalURL = 'http://103.253.15.184:8000/api/'; //live
-      finalURL = "http://127.0.0.1:8000/api/";
+      finalURL = helpers.getUrl() + "api/"; //live
+      // finalURL = "http://52.60.58.9:8000/api/";
       break;
     case "token":
-      // finalURL = 'http://103.253.15.184:8000/api/'; //live
-      finalURL = "http://127.0.0.1:8000/api/";
+      finalURL = helpers.getUrl() + "api/"; //live
+      // finalURL = "http://52.60.58.9:8000/api/";
       break;
     default:
-      // finalURL = 'http://103.253.15.184:8000/api/'; //live
-      finalURL = "http://127.0.0.1:8000/api/";
+      finalURL = helpers.getUrl() + "api/"; //live
+    // finalURL = "http://52.60.58.9:8000/api/";
   }
 
   return finalURL;
 };
+
+export function getUrl() {
+  return "test";
+}

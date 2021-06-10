@@ -11,38 +11,91 @@ import { bindActionCreators } from "redux";
 import { AddCustomerForm } from './addCustomer';
 import { dateFormat } from 'service/helperFunctions';
 import { getLoginSaloon } from 'redux/actions/auth';
-import { updateForm } from 'redux/actions/common';
+import { updateForm,getCommonApi } from 'redux/actions/common';
 
 export class AddCustomerClass extends Component {
     state = {
         formFields: {
             cust_name: '',
             cust_address: '',
-            cust_dob: "",
+            cust_dob:new Date(),
             cust_phone2: '',
             cust_email: '',
             Cust_sexesid: '',
             Site_Codeid: '',
             custallowsendsms: false,
-            cust_maillist: false
+            cust_maillist: false,
+            cust_state      : '',
+            cust_country    : '',
+            cust_postcode   : '',
+            cust_nric       : '',
+            cust_language   : '',
+            cust_source     : '',
+            emergencycontact: '',
+            cardno1:'',
+            cardno2:'',
+            cardno3:'',
+            cardno4:'',
+            cardno5:''
         },
         sexOption: [
             { value: 1, label: "Male" },
             { value: 2, label: "Female" }
         ],
-        salonList: []
+        salonList: [],
+        sourceList:[],
+        stateList :[],
+        countryList :[],
+        languageList:[],
     };
 
     componentWillMount() {
         if (this.props.match.params.id) {
             this.getCustomer();
         }
-        let { salonList } = this.state;
+        let { salonList,sourceList,stateList,countryList,languageList } = this.state;
         this.props.getLoginSaloon().then((res) => {
             for (let key of res.data) {
                 salonList.push({ value: key.id, label: key.itemsite_desc })
             }
             this.setState({ salonList })
+            console.log("salonList",salonList);
+        })
+        this.props.getCommonApi(`source/`).then((key) => {
+            let { status, data } = key;
+            if (status === 200) {
+                for (let value of data) {
+                    sourceList.push({ value: value.source_code, label: value.source_desc })
+                }
+                this.setState({ sourceList })
+            }
+        })
+        this.props.getCommonApi(`state/`).then((key) => {
+            let { status, data } = key;
+            if (status === 200) {
+                for (let value of data) {
+                    stateList.push({ value: value.itm_code, label: value.itm_desc })
+                }
+                this.setState({ stateList })
+            }
+        })
+        this.props.getCommonApi(`country/`).then((key) => {
+            let { status, data } = key;
+            if (status === 200) {
+                for (let value of data) {
+                    countryList.push({ value: value.itm_code, label: value.itm_desc })
+                }
+                this.setState({ countryList })
+            }
+        })
+        this.props.getCommonApi(`language/`).then((key) => {
+            let { status, data } = key;
+            if (status === 200) {
+                for (let value of data) {
+                    languageList.push({ value: value.itm_code, label: value.itm_desc })
+                }
+                this.setState({ languageList })
+            }
         })
     }
 
@@ -55,6 +108,7 @@ export class AddCustomerClass extends Component {
     getDataFromStore = () => {
         let { formFields } = this.state;
         let { customerDetail } = this.props
+        console.log("customerDetail",customerDetail);
         formFields['cust_name'] = customerDetail.cust_name;
         formFields['cust_address'] = customerDetail.cust_address;
         formFields['cust_dob'] = new Date(customerDetail.cust_dob);
@@ -64,6 +118,18 @@ export class AddCustomerClass extends Component {
         formFields['Site_Codeid'] = customerDetail.Site_Codeid;
         formFields['custallowsendsms'] = customerDetail.custallowsendsms;
         formFields['cust_maillist'] = customerDetail.cust_maillist;
+        formFields['cust_state'] = customerDetail.cust_state;
+        formFields['cust_country'] = customerDetail.cust_country;
+        formFields['cust_postcode'] = customerDetail.cust_postcode;
+        formFields['cust_nric'] = customerDetail.cust_nric;
+        formFields['cust_language'] = customerDetail.cust_language;
+        formFields['cust_source'] = customerDetail.cust_source;
+        formFields['emergencycontact'] = customerDetail.emergencycontact;
+        formFields['cardno1'] = customerDetail.cardno1;
+        formFields['cardno2'] = customerDetail.cardno2;
+        formFields['cardno3'] = customerDetail.cardno3;
+        formFields['cardno4'] = customerDetail.cardno4;
+        formFields['cardno5'] = customerDetail.cardno5;
         this.setState({ formFields })
         console.log(formFields, customerDetail, "sfsdfhsdfsdfg")
     }
@@ -126,6 +192,7 @@ export class AddCustomerClass extends Component {
             })
             
         } else {
+            console.log("formFields",formFields);
             await this.props.CreateCustomer(formFields).then(async (data) => {
                 if (data.status === 201) {
                     this.resetData();
@@ -159,7 +226,7 @@ export class AddCustomerClass extends Component {
     }
 
     handleDatePick = async (name, value) => {
-        console.log(name, value, "sdfgdfhfshg", dateFormat(new Date()))
+        console.log(name, value, "date", dateFormat(new Date()))
         // dateFormat(new Date())
         let { formFields } = this.state;
         formFields[name] = value;
@@ -178,11 +245,23 @@ export class AddCustomerClass extends Component {
         formFields['cust_email'] = "";
         formFields['Cust_sexesid'] = "";
         formFields['Site_Codeid'] = "";
-        this.setState(formFields)
+        formFields['cust_state      '] = "";
+        formFields['cust_country    '] = "";
+        formFields['cust_postcode   '] = "";
+        formFields['cust_nric       '] = "";
+        formFields['cust_language   '] = "";
+        formFields['cust_source     '] = "";
+        formFields['emergencycontact'] = "";
+        formFields['cardno1'] = "";
+        formFields['cardno2'] = "";
+        formFields['cardno3'] = "";
+        formFields['cardno4'] = "";
+        formFields['cardno5'] = "";
+        this.setState(formFields)  
     }
 
     render() {
-        let { formFields, sexOption, salonList } = this.state;
+        let { formFields, sexOption, salonList,sourceList,stateList,countryList,languageList } = this.state;
         let { cust_name } = formFields;
         return (
             <div className="create-customer-section container">
@@ -194,7 +273,13 @@ export class AddCustomerClass extends Component {
                         <p className="sub-category">{this.props.match.params.id ? "Edit" : "Add"} New Customer</p>
                     </div>
                     <div className="customer-detail">
-                        <AddCustomerForm formFields={formFields} salonList={salonList} handleDatePick={this.handleDatePick} sexOption={sexOption} handleChange={this.handleChange} handleSubmit={this.handleSubmit} handleCancel={this.handleCancel} handleChangeBox={this.handleChangeBox}></AddCustomerForm>
+                        <AddCustomerForm formFields={formFields} 
+                        salonList={salonList}
+                        sourceList={sourceList}
+                        stateList={stateList} 
+                        countryList ={countryList} 
+                        languageList={languageList}
+                        handleDatePick={this.handleDatePick} sexOption={sexOption} handleChange={this.handleChange} handleSubmit={this.handleSubmit} handleCancel={this.handleCancel} handleChangeBox={this.handleChangeBox}></AddCustomerForm>
                     </div>
 
                 </div>
@@ -214,7 +299,8 @@ const mapDispatchToProps = dispatch => {
         getCustomer,
         updateCustomer,
         getLoginSaloon,
-        updateForm
+        updateForm,
+        getCommonApi
     }, dispatch)
 }
 

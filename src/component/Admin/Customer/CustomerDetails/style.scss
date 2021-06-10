@@ -14,53 +14,53 @@
     border: 1px solid #c8c8c8;
     border-radius: 4px;
     width: 100%;
-    .last-visit{
+    .last-visit {
       font-size: fontSize(15px);
       opacity: 0.8;
-      .last-visit-date{
+      .last-visit-date {
         color: #555555;
       }
     }
-    .modal-avatar{
+    .modal-avatar {
       border-radius: 50%;
       object-fit: contain;
     }
-    .customer-detail-heading{
-        font-family: Muli-SemiBold;
-        color: #0d0d0d;
-        opacity: 0.8;
+    .customer-detail-heading {
+      font-family: Muli-SemiBold;
+      color: #0d0d0d;
+      opacity: 0.8;
     }
-    .customer-detail-sub-text{
-        opacity: 0.8;
-        color: $gray-55;
+    .customer-detail-sub-text {
+      opacity: 0.8;
+      color: $gray-55;
     }
-    .icon-change{
-        button{
-            background: $white;
-            border: 1px solid #4976F2;
-            color: #4976F2;
-            font-family:"Poppins", sans-serif; 
-            min-width: 123px;
-            &:hover {
-              background: #4976F2;
-              color: $white;
-            }
+    .icon-change {
+      button {
+        background: $white;
+        border: 1px solid $primaryalt-color;
+        color: $primaryalt-color;
+        font-family: "Poppins", sans-serif;
+        min-width: 123px;
+        &:hover {
+          background: $primaryalt-color;
+          color: $white;
         }
-        .top-up {
-          border: 1px solid  $green;
-          color: $green;
-          &:hover {
-            background: $green;
-            color: $white;
-          }
+      }
+      .top-up {
+        border: 1px solid $green;
+        color: $green;
+        &:hover {
+          background: $green;
+          color: $white;
         }
+      }
     }
 
-    .menu-list{
-      button.treatment{
+    .menu-list {
+      button.treatment {
         min-width: 160px;
       }
-      button.active{
+      button.active {
         background: $primary-color;
         color: $white;
       }
@@ -68,15 +68,15 @@
         font-size: 14px;
       }
       button {
-        border: 1px solid  $primary-color;
-          color: $primary-color;
-          &:hover {
-            background: $primary-color;
-            color: $white;
-          }
+        border: 1px solid $primary-color;
+        color: $primary-color;
+        &:hover {
+          background: $primary-color;
+          color: $white;
+        }
       }
     }
-   
+
     // .view-detail-navlink {
     //   .nav-tabs {
     //     border: 0;
@@ -133,13 +133,13 @@
       }
     }
   }
-    .credit-note {
-      .action-bar{
-        justify-content: center;
+  .credit-note {
+    .action-bar {
+      justify-content: center;
       .credit-note-button {
         button {
           width: 224px;
-          border: 1px solid  $primary-color;
+          border: 1px solid $primary-color;
           color: $primary-color;
           &:hover {
             background: $primary-color;
@@ -154,14 +154,14 @@
 .topup-update-modal {
   .top-up {
     .input-group {
-      input{
+      input {
         border: none;
         background: #dadadac2;
       }
     }
     .action-bar {
       text-align: center;
-      .confirm{
+      .confirm {
         width: 180px;
         height: 40px;
       }
