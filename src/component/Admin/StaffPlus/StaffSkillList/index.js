@@ -76,7 +76,7 @@ export class StaffSkillListClass extends React.Component {
     skillList = skillSetRes.data;
     data = this.props.empSkillList.data;
     let header = [{ label: "" }];
-    for (let key of this.props.empSkillList.data) {
+    for (let key of this.props.empSkillList?.data) {
       header.push({ label: key.staffname });
     }
     this.updateState({ header, skillList, data, isLoading: false });
