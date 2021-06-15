@@ -506,6 +506,22 @@ export const staffPlus = {
     },
     baseURL: "token",
   },
+  getSecurityAuthorizationSettings: {
+    url: "EmployeeSecuritySettings/",
+    method: "get",
+    get api() {
+      return this.url;
+    },
+    baseURL: "token",
+  },
+  updateSecurityAuthorizationSettings: {
+    url: "EmployeeSecuritySettings/",
+    method: "post",
+    get api() {
+      return this.url;
+    },
+    baseURL: "token",
+  },
 };
 
 export const customer = {
@@ -593,6 +609,33 @@ export const customerPlus = {
     method: "put",
     get api() {
       return this.url;
+    },
+    baseURL: "token",
+  },
+};
+
+export const lpManagement = {
+  getRewardPolicy: {
+    url: "RewardPolicy",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  getRedeemPolicy: {
+    url: "RedeemPolicy",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
     },
     baseURL: "token",
   },

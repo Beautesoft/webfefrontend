@@ -1,26 +1,13 @@
 import React, { Component } from "react";
 import "./style.scss";
 import { Link } from "react-router-dom";
-import SimpleReactValidator from "simple-react-validator";
+import { NormalSelect, NormalButton } from "component/common";
 import {
-  NormalInput,
-  NormalSelect,
-  NormalButton,
-  NormalTextarea,
-} from "component/common";
-import { displayImg, dateFormat } from "service/helperFunctions";
-import { DragFileUpload } from "../../../common";
-import { createStaff, getStaff, updateStaff } from "redux/actions/staff";
-import {
-  getBranch,
-  getJobtitle,
-  getShift,
-  getSkills,
-  getCommonApi,
-} from "redux/actions/common";
+  getAuthorizationSettings,
+  updateAuthorizationSettings,
+} from "redux/actions/staffPlus";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { FormGroup, Label, Input } from "reactstrap";
 import { GroupAuthorizationTable } from "./GroupAuthorizationTable";
 import { IndividualAuthorizationTable } from "./IndividualAuthorizationTable";
 
@@ -88,68 +75,7 @@ export class SecurityAuthorizationClass extends Component {
         },
       ],
     },
-    groupData: [
-      {
-        id: "0",
-        name: "FE Operaion",
-        values: [true, true, true, true, true, true],
-        className: "table-danger",
-      },
-      {
-        id: "1",
-        name: "FE Transaction",
-        values: [true, true, true, true, true, true],
-        className: "table-danger",
-      },
-      {
-        id: "2",
-        name: "Master Configuration",
-        values: [true, true, true, true, true, false],
-        className: "table-primary",
-      },
-      {
-        id: "3",
-        name: "Master Article",
-        values: [true, true, true, false, false, false],
-        className: "table-primary",
-      },
-      {
-        id: "4",
-        name: "Work Schedule",
-        values: [true, true, true, false, false, false],
-        className: "table-primary",
-      },
-      {
-        id: "5",
-        name: "Outlet Master",
-        values: [true, true, true, false, false, false],
-        className: "table-primary",
-      },
-      {
-        id: "6",
-        name: "Customer Data",
-        values: [true, true, true, false, false, false],
-        className: "table-primary",
-      },
-      {
-        id: "7",
-        name: "Customer Rewards",
-        values: [true, true, true, false, false, false],
-        className: "table-primary",
-      },
-      {
-        id: "8",
-        name: "General Settings",
-        values: [true, true, true, false, false, false],
-        className: "table-primary",
-      },
-      {
-        id: "9",
-        name: "System Settings",
-        values: [true, true, true, false, false, false],
-        className: "table-primary",
-      },
-    ],
+    groupData: [],
     groupColumns: [
       "Administrator",
       "Director",
@@ -161,12 +87,24 @@ export class SecurityAuthorizationClass extends Component {
     isMounted: true,
   };
 
+  componentDidMount() {
+    this.updateGroupData();
+  }
+
   componentWillUnmount() {
     this.state.isMounted = false;
   }
 
   updateState = (data) => {
     if (this.state.isMounted) this.setState(data);
+  };
+
+  updateGroupData = async () => {
+    console.log("getAuthorizationSettings");
+    await this.props.getAuthorizationSettings();
+    console.log("getAuthorizationSettings - done");
+    let { staffPlusAuthorization } = this.props;
+    this.updateState({ groupData: staffPlusAuthorization });
   };
 
   render() {
@@ -183,7 +121,6 @@ export class SecurityAuthorizationClass extends Component {
             <div className="table-container">
               <GroupAuthorizationTable
                 data={groupData}
-                columns={groupColumns}
                 onChange={(data) =>
                   this.updateState(() => (this.state.groupData = data))
                 }
@@ -264,4 +201,21 @@ export class SecurityAuthorizationClass extends Component {
   }
 }
 
-export const SecurityAuthorization = connect()(SecurityAuthorizationClass);
+const mapStateToProps = (state) => ({
+  staffPlusAuthorization: state.staffPlus.staffPlusAuthorization,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      getAuthorizationSettings,
+      updateAuthorizationSettings,
+    },
+    dispatch
+  );
+};
+
+export const SecurityAuthorization = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SecurityAuthorizationClass);

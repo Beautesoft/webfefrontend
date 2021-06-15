@@ -15,7 +15,7 @@ export { CustomerReceipt } from './Customer'
 export { Cart, CartNew, CartHome, TreatmentDone, BillOps } from './Cart';
 export { Catalog } from './Catalog';
 export { AddCustomer, ListCustomer, CustomerDetails, AccountDetails, TreatmentDetails, TreatmentCourseDetails, HoldSections } from './Customer';
-export { AddCustomerPlus, CustomerDetailsPlus, ListCustomerPlus, AccountDetailsPlus, TreatmentDetailsPlus, TreatmentCourseDetailsPlus, HoldSectionsPlus, LoyaltyPointsManagement, AddRedeemPolicy, AddRewardPolicy } from './CustomerPlus';
+export { AddCustomerPlus, CustomerDetailsPlus, ListCustomerPlus, AccountDetailsPlus, TreatmentDetailsPlus, TreatmentCourseDetailsPlus, HoldSectionsPlus, LoyaltyPointsManagementSettings, Settings, AddRedeemPolicy, AddRewardPolicy, LoyaltyPointsManagement } from './CustomerPlus';
 export { Payment } from './Payment';
 export { ListStaff, AddStaff, StaffDetails, StaffAvailability } from './Staff';
 export { AddStaffPlus,ListStaffPlus, EmployeeInfo, StaffSchedule, SecurityAuthorization, StaffSkillList, AddStaffSkill, StaffPlusDetails, StaffPlusAvailability } from './StaffPlus';

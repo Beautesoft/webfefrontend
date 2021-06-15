@@ -1,6 +1,8 @@
 import React from "react";
-import { NormalButton, NormalSelect } from "component/common";
-import { InputSearch, TableWrapper } from "component/common";
+import { NormalButton } from "component/common";
+import { TableWrapper } from "component/common";
+import { bindActionCreators } from "redux";
+import { getRedeemPlolicySettings } from "redux/actions/customerPlus";
 import { connect } from "react-redux";
 import _ from "lodash";
 
@@ -18,7 +20,12 @@ export class RedeemPolicyTableClass extends React.Component {
     meta: {},
     currentIndex: -1,
     isMounted: true,
+    isLoading: true,
   };
+
+  componentDidMount() {
+    this.handlePagination();
+  }
 
   componentWillUnmount() {
     this.state.isMounted = false;
@@ -28,27 +35,42 @@ export class RedeemPolicyTableClass extends React.Component {
     if (this.state.isMounted) this.setState(data);
   };
 
-  handlePagination = (page) => {
-    console.log(page, "dsfsdfsdfsdf");
-    //this.getCustomer(page);
+  handlePagination = async (data) => {
+    let page = data?.page ?? 1;
+    this.setState({ isLoading: true });
+    await this.props.getRedeemPlolicySettings(`?limit=10&page=${page}`);
+    let { diagnosisList, pagination } = this.props.redeemPolicyList;
+    this.updateState({
+      meta: pagination,
+      dataList: diagnosisList,
+      isLoading: false,
+    });
   };
 
-  handlesearch = (event) => {
-    console.log("sadfasdfasdf", event.target.value);
-    event.persist();
-
-    if (!this.debouncedFn) {
-      this.debouncedFn = _.debounce(() => {
-        let searchString = event.target.value;
-        let data = { search: searchString };
-        //this.getCustomer(data);
-      }, 500);
+  handleClick = (key) => {
+    if (!this.state.active) {
+      document.addEventListener("click", this.handleOutsideClick, false);
+    } else {
+      document.removeEventListener("click", this.handleOutsideClick, false);
     }
-    this.debouncedFn();
+
+    this.updateState((prevState) => ({
+      active: !prevState.active,
+      currentIndex: key,
+    }));
+  };
+
+  handleOutsideClick = (e) => {
+    if (this.node != null) {
+      if (this.node.contains(e.target)) {
+        return;
+      }
+    }
+    this.handleClick();
   };
 
   render() {
-    let { headerDetails, dataList, meta, currentIndex } = this.state;
+    let { headerDetails, dataList, meta, currentIndex, isLoading } = this.state;
     return (
       <>
         <div className="customer-list container-fluid">
@@ -58,17 +80,10 @@ export class RedeemPolicyTableClass extends React.Component {
             </div>
             <div className="col-md-8">
               <div className="d-flex">
-                <div className="w-100 mr-5">
-                  <InputSearch
-                    className=""
-                    placeholder="Search Policy"
-                    onChange={this.handlesearch}
-                  />
-                </div>
-                <div className="w-100 col-6 p-0">
+                <div className="col-12 p-0">
                   <NormalButton
                     mainbg={true}
-                    className="col-12 fs-15 float-right"
+                    className="col-md-6 col-sm-12 fs-15 float-right"
                     label="Add Redeem Policy"
                     onClick={() =>
                       this.props.history.push("lpmanagement/addredeem/")
@@ -78,138 +93,154 @@ export class RedeemPolicyTableClass extends React.Component {
               </div>
             </div>
           </div>
-          <div className="tab-table-content">
-            <div className="py-4">
-              <div className="table-container">
-                <TableWrapper
-                  headerDetails={headerDetails}
-                  queryHandler={this.handlePagination}
-                  pageMeta={meta}
-                  showFilterColumn={true}
-                  parentHeaderChange={(value) =>
-                    this.updateState(() => (headerDetails = value))
-                  }
-                >
-                  {dataList
-                    ? dataList.map((item, index) => {
-                        let {
-                          id,
-                          cust_code,
-                          cust_refer,
-                          cust_name,
-                          cust_phone2,
-                          cust_dob,
-                        } = item;
-                        console.log(headerDetails[0]);
-                        return (
-                          <tr key={index}>
-                            <td
-                              className={
-                                headerDetails[0].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_code}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[1].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_refer}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[2].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {""}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[3].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_name}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[4].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_phone2}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[5].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_dob}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[6].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {"123"}
-                              </div>
-                            </td>
-                            <td
-                              className="position-relative"
-                              ref={(node) => {
-                                this.node = node;
-                              }}
-                              onClick={() => this.handleClick(index)}
-                            >
-                              {currentIndex === index ? (
-                                <>
-                                  <div className="d-flex align-items-center justify-content-center horizontal-more-active">
-                                    <i className="icon-more"></i>
-                                  </div>
-                                  <div className="option card">
-                                    <div
-                                      className="d-flex align-items-center fs-16 pt-3"
-                                      onClick={() =>
-                                        this.props.history.push(
-                                          `lpmanagement/${id}/editredeem`
-                                        )
-                                      }
-                                    >
-                                      <span className="icon-eye-grey px-3"></span>{" "}
-                                      Edit
-                                    </div>
-                                  </div>
-                                </>
-                              ) : (
-                                <div className="d-flex align-items-center justify-content-center horizontal-more">
-                                  <i className="icon-more"></i>
-                                </div>
-                              )}
-                            </td>
-                          </tr>
-                        );
-                      })
-                    : ""}
-                </TableWrapper>
+          {isLoading ? (
+            <div class="d-flex mt-5 align-items-center justify-content-center">
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="tab-table-content">
+              <div className="py-4">
+                <div className="table-container">
+                  <TableWrapper
+                    headerDetails={headerDetails}
+                    queryHandler={this.handlePagination}
+                    pageMeta={meta}
+                    showFilterColumn={true}
+                    parentHeaderChange={(value) =>
+                      this.updateState(() => (headerDetails = value))
+                    }
+                  >
+                    {dataList
+                      ? dataList.map((item, index) => {
+                          let {
+                            id,
+                            redeem_code,
+                            cust_type,
+                            cur_value,
+                            point_value,
+                            isactive,
+                          } = item;
+                          console.log(headerDetails[0]);
+                          return (
+                            <tr key={index}>
+                              <td
+                                className={
+                                  headerDetails[0].enabled ?? true
+                                    ? ""
+                                    : "d-none"
+                                }
+                              >
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {redeem_code}
+                                </div>
+                              </td>
+                              <td
+                                className={
+                                  headerDetails[1].enabled ?? true
+                                    ? ""
+                                    : "d-none"
+                                }
+                              >
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {cust_type}
+                                </div>
+                              </td>
+                              <td
+                                className={
+                                  headerDetails[2].enabled ?? true
+                                    ? ""
+                                    : "d-none"
+                                }
+                              >
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {cur_value}
+                                </div>
+                              </td>
+                              <td
+                                className={
+                                  headerDetails[3].enabled ?? true
+                                    ? ""
+                                    : "d-none"
+                                }
+                              >
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {point_value}
+                                </div>
+                              </td>
+                              <td
+                                className={
+                                  headerDetails[5].enabled ?? true
+                                    ? ""
+                                    : "d-none"
+                                }
+                              >
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {isactive}
+                                </div>
+                              </td>
+                              <td
+                                className="position-relative"
+                                ref={(node) => {
+                                  this.node = node;
+                                }}
+                                onClick={() => this.handleClick(index)}
+                              >
+                                {currentIndex === index ? (
+                                  <>
+                                    <div className="d-flex align-items-center justify-content-center horizontal-more-active">
+                                      <i className="icon-more"></i>
+                                    </div>
+                                    <div className="option card">
+                                      <div
+                                        className="d-flex align-items-center fs-16 pt-3"
+                                        onClick={() =>
+                                          this.props.history.push(
+                                            `lpmanagement/${id}/editredeem`
+                                          )
+                                        }
+                                      >
+                                        <span className="icon-eye-grey px-3"></span>{" "}
+                                        Edit
+                                      </div>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <div className="d-flex align-items-center justify-content-center horizontal-more">
+                                    <i className="icon-more"></i>
+                                  </div>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })
+                      : ""}
+                  </TableWrapper>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </>
     );
   }
 }
 
-export const RedeemPolicyTable = connect()(RedeemPolicyTableClass);
+const mapStateToProps = (state) => ({
+  redeemPolicyList: state.customerPlus.redeemPolicyList,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      getRedeemPlolicySettings,
+    },
+    dispatch
+  );
+};
+
+export const RedeemPolicyTable = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RedeemPolicyTableClass);

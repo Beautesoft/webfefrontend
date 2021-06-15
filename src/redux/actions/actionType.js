@@ -35,6 +35,7 @@ export const StaffPlusActionType = {
   getStaffPlusAllEmpSchedule: "GET_STAFF_PLUS_ALL_EMP_SCHEDULE",
   getStaffPlusSkillList: "GET_STAFF_PLUS_SKILL_LIST",
   getEmpEmpSkillList: "GET_EMP_SKILL_LIST",
+  getAuthorizationSettings: "GET_AUTHORIZATION_SETTINGS",
 };
 
 export const SaloonActionType = {
@@ -56,4 +57,6 @@ export const CustomerActionType = {
 export const CustomerPlusActionType = {
   getCustomerPlusDetail: "GET_CUSTOMER_PLUS_DETAIL",
   getCustomerPlusSettings: "GET_CUSTOMER_PLUS_SETTINGS",
+  getRewardPolicySettings: "GET_REWARD_POLICY_SETTINGS",
+  getRedeemPolicySettings: "GET_REDEEM_POLICY_SETTINGS",
 };

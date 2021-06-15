@@ -1,12 +1,13 @@
-import { StaffPlusActionType } from 'redux/actions/actionType';
+import { StaffPlusActionType } from "redux/actions/actionType";
 
 const initialState = {
   staffPlusDetail: {},
   staffPlusWorkScheduleDetails: {},
   staffPlusSchedule: {},
   staffPlusAllEmpSchedule: {},
-  staffPlusSkillList : {},
-  staffPlustEmpSkillList : {},
+  staffPlusSkillList: {},
+  staffPlustEmpSkillList: {},
+  staffPlusAuthorization: {},
 };
 
 export default (state = Object.assign({}, initialState), { type, payload }) => {
@@ -16,30 +17,35 @@ export default (state = Object.assign({}, initialState), { type, payload }) => {
         ...state,
         staffPlusDetail: payload,
       };
-      case StaffPlusActionType.getStaffPlusWorkSchedule:
+    case StaffPlusActionType.getStaffPlusWorkSchedule:
       return {
         ...state,
         staffPlusWorkScheduleDetails: payload,
       };
-      case StaffPlusActionType.getStaffPlusSchedule:
+    case StaffPlusActionType.getStaffPlusSchedule:
       return {
         ...state,
         staffPlusSchedule: payload,
       };
-      case StaffPlusActionType.getStaffPlusSkillList:
+    case StaffPlusActionType.getStaffPlusSkillList:
       return {
         ...state,
         staffPlusSkillList: payload,
       };
-      case StaffPlusActionType.getEmpEmpSkillList:
+    case StaffPlusActionType.getEmpEmpSkillList:
       return {
         ...state,
         staffPlustEmpSkillList: payload,
       };
-      case StaffPlusActionType.getStaffPlusAllEmpSchedule:
+    case StaffPlusActionType.getStaffPlusAllEmpSchedule:
       return {
         ...state,
         staffPlusAllEmpSchedule: payload,
+      };
+    case StaffPlusActionType.getAuthorizationSettings:
+      return {
+        ...state,
+        staffPlusAuthorization: payload,
       };
     default:
       return state;

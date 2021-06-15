@@ -248,7 +248,6 @@ export const getStaffSchedule =
     });
   };
 
-
 //update staffplus schedule action
 export const updateStaffPlusSchedule =
   (body) =>
@@ -313,6 +312,56 @@ export const deleteStaffPlus =
           let { message, status } = response;
           if (status === 200) {
             // dispatch({ type: ArticalsActionType.getArticalsDetails, payload: data });
+            Toast({ type: "success", message });
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
+// get staffplus authorization  action
+export const getAuthorizationSettings =
+  () =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      api({ ...staffPlus.getSecurityAuthorizationSettings })
+        .then((response) => {
+          resolve(response);
+          let { message, status, data } = response;
+          if (status === 200) {
+            dispatch({
+              type: StaffPlusActionType.getAuthorizationSettings,
+              payload: data,
+            });
+            // Toast({ type: 'success', message })
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
+//update staffplus authorization settings action
+export const updateAuthorizationSettings =
+  (body) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      api({
+        ...staffPlus.updateSecurityAuthorizationSettings,
+        body,
+        header: { type: "Content-Type", value: "application/json" },
+      })
+        .then((response) => {
+          resolve(response);
+          let { message, status } = response;
+          if (status === 200) {
             Toast({ type: "success", message });
           } else {
             reject(Toast({ type: "error", message }));

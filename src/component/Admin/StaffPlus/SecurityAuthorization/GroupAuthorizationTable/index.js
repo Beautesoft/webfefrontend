@@ -3,13 +3,45 @@ import "./style.scss";
 
 export class GroupAuthorizationTable extends Component {
   render() {
-    let { onChange, disabled = false, data = [], columns = [] } = this.props;
+    let {
+      onChange,
+      disabled = false,
+      data = [],
+      columns = [],
+      rowHead = [],
+    } = this.props;
 
-    const handleOnChange = (index1, index2) => {
+    const handleOnChange = (code, controlname) => {
       if (disabled) return;
-      data[index1].values[index2] = !data[index1].values[index2];
+      let index1 = data.indexOf(data.find((element) => element.code == code));
+      let index2 = data[index1].levels.indexOf(
+        data[index1].levels.find((element) => element.controlname == controlname)
+      );
+      data[index1].levels[index2].controlstatus = !data
+        .find((element) => element.code == code)
+        .levels.find((element) => element.controlname == controlname)
+        .controlstatus;
       if (onChange) onChange(data);
     };
+
+    if (data.length != 0) {
+      columns = data.map(({ securieties, code }) => {
+        return { securieties, code };
+      });
+
+      data.forEach((element) => {
+        element.levels.forEach(({ controlname, controldesc }) => {
+          if (!rowHead.find((e) => e.controlname == controlname))
+            rowHead.push({ controlname, controldesc });
+        });
+      });
+
+      rowHead.sort((a, b) => {
+        if (a.controldesc > b.controldesc) return 1;
+        if (a.controldesc < b.controldesc) return -1;
+        return 0;
+      });
+    }
 
     return (
       <div className="maintable table-container">
@@ -23,30 +55,47 @@ export class GroupAuthorizationTable extends Component {
                 {columns.map((e) => (
                   <th className="table-header-150">
                     <div className="d-flex align-items-center justify-content-center">
-                      {e}
+                      {e.securieties}
                     </div>
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody>
-              {data.map((e, index1) => (
-                <tr key={e.id}>
-                  <td className={e.className}>{e.name}</td>
-                  {e.values.map((e, index2) => (
-                    <td>
-                      <div className="d-flex align-items-center justify-content-center">
-                        <input
-                          type="checkbox"
-                          checked={e}
-                          onChange={() => handleOnChange(index1, index2)}
-                        />
-                      </div>
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
+            {data.length != 0 ? (
+              <tbody>
+                {rowHead.map((e, index1) => (
+                  <tr key={e.controlname}>
+                    <td className={e.className}>{e.controldesc}</td>
+                    {columns.map((e2, index2) => (
+                      <td>
+                        {data
+                          .find((element) => element.code == e2.code)
+                          .levels.find(
+                            (element) => element.controlname == e.controlname
+                          ) ? (
+                          <div className="d-flex align-items-center justify-content-center">
+                            <input
+                              type="checkbox"
+                              checked={
+                                data
+                                  .find((element) => element.code == e2.code)
+                                  .levels.find(
+                                    (element) =>
+                                      element.controlname == e.controlname
+                                  ).controlstatus
+                              }
+                              onChange={() =>
+                                handleOnChange(e2.code, e.controlname)
+                              }
+                            />
+                          </div>
+                        ) : null}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            ) : null}
           </table>
         </div>
       </div>

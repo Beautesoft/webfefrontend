@@ -3,6 +3,8 @@ import { CustomerPlusActionType } from "redux/actions/actionType";
 const initialState = {
   customerPlusDetail: {},
   customerPlusSettings: {},
+  rewardPolicyList: {},
+  redeemPolicyList: {},
 };
 
 export default (state = Object.assign({}, initialState), { type, payload }) => {
@@ -16,6 +18,16 @@ export default (state = Object.assign({}, initialState), { type, payload }) => {
       return {
         ...state,
         customerPlusSettings: payload,
+      };
+    case CustomerPlusActionType.getRewardPolicySettings:
+      return {
+        ...state,
+        rewardPolicyList: payload,
+      };
+    case CustomerPlusActionType.getRedeemPolicySettings:
+      return {
+        ...state,
+        redeemPolicyList: payload,
       };
     default:
       return state;
