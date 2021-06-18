@@ -184,8 +184,10 @@ export class ListCustomerPlusClass extends React.Component {
                           cust_name,
                           cust_phone2,
                           cust_dob,
+                          class_name,
                         } = item;
-                        console.log(headerDetails[0]);
+                        let date = new Date(cust_dob);
+                        cust_dob = date.toLocaleDateString()
                         return (
                           <tr key={index}>
                             <td
@@ -248,7 +250,7 @@ export class ListCustomerPlusClass extends React.Component {
                               }
                             >
                               <div className="d-flex align-items-center justify-content-center">
-                                {"123"}
+                                {class_name}
                               </div>
                             </td>
                             <td
