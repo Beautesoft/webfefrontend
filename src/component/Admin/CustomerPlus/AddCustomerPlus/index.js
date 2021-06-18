@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./style.scss";
-import { Link } from "react-router-dom";
 import SimpleReactValidator from "simple-react-validator";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -12,7 +11,6 @@ import {
 } from "redux/actions/customerPlus";
 import {
   NormalInput,
-  NormalDate,
   NormalDateTime,
   NormalSelect,
   NormalMultiSelect,
@@ -82,7 +80,7 @@ export class AddCustomerPlusClass extends Component {
     console.log(this.state.formFields);
     try {
       this.state.fields
-        .filter((e) => e.data_type == "date" || e.data_type == "datetime")
+        .filter((e) => e.data_type == "date")
         .forEach((e) => {
           if (this.state.formFields[e.field_name]) {
             let date = new Date(this.state.formFields[e.field_name]);
@@ -167,7 +165,7 @@ export class AddCustomerPlusClass extends Component {
 
   renderFields = () => {
     return this.state.fields.map((e) => (
-      <div className="pb-md-4">
+      <div className="col-md-6 pb-md-4">
         <label className="text-left text-black common-label-text fs-17 pb-2">
           {e.display_field_name}
         </label>
@@ -180,7 +178,7 @@ export class AddCustomerPlusClass extends Component {
               onChange={this.handleChange}
             />
           ) : e.data_type == "date" ? (
-            <NormalDate
+            <NormalDateTime
               onChange={this.handleDatePick}
               value={
                 this.state.formFields[e.field_name]
@@ -267,7 +265,7 @@ export class AddCustomerPlusClass extends Component {
               </div>
             ) : (
               <>
-                <div className="form-group mb-4 pb-2">
+                <div className="form-group mb-4 pb-2 row">
                   {this.renderFields()}
                 </div>
                 <div className="row d-flex justify-content-center">
