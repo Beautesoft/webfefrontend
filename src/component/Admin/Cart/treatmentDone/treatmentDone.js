@@ -826,7 +826,7 @@ export class SelectStaffClass extends Component {
     let { tsStaff = {} } = this.props;
     let { course, unit_amount, workpoint } = tsStaff;
     return (
-      <div className="row new-cart treatment-done">
+      <div className="row new-cart treatment-done" id="treatment-done-sesiions">
         <div className="col-12">
           <p className="fs-18 font-700 mb-3 title">Treatment Done</p>
         </div>
@@ -1063,6 +1063,7 @@ export class SelectStaffClass extends Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 <NormalMultiSelect
                                   // placeholder="Enter here"
+                                  target={document.getElementById('treatment-done-sesiions')}
                                   options={employeeOptions}
                                   value={item.values}
                                   handleMultiSelect={(e) =>
