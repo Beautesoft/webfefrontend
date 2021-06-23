@@ -45,7 +45,7 @@ export class AddCustomerPlusClass extends Component {
     if (this.state.isMounted) this.setState(data);
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.validator = new SimpleReactValidator({
       validators: {},
       element: (message) => (
@@ -93,18 +93,24 @@ export class AddCustomerPlusClass extends Component {
           }
         });
       if (this.props.match.params.id) {
-        await this.props.updateCustomerPlus(
+        var formFields = {};
+        this.state.fields.forEach((e) => {
+          formFields[e.field_name] = this.state.formFields[e.field_name];
+        });
+        var res = await this.props.updateCustomerPlus(
           this.props.match.params.id + "/",
-          JSON.stringify(this.state.formFields)
+          JSON.stringify(formFields)
         );
-        if (type === "catalog") {
-          this.props.history.push(`/admin/cart`);
-        } else
-          this.props.history.push(
-            `/admin/customer/${this.props.match.params.id}/details`
-          );
+        if (res.status == 200) {
+          if (type === "catalog") {
+            this.props.history.push(`/admin/cart`);
+          } else
+            this.props.history.push(
+              `/admin/customerplus/${this.props.match.params.id}/details`
+            );
+        }
       } else {
-        await this.props.CreateCustomerPlus(
+        var res = await this.props.CreateCustomerPlus(
           JSON.stringify(this.state.formFields)
         );
         if (type === "catalog") {
@@ -164,91 +170,239 @@ export class AddCustomerPlusClass extends Component {
   };
 
   renderFields = () => {
-    return this.state.fields.map((e) => (
-      <div className="col-md-6 pb-md-4">
-        <label className="text-left text-black common-label-text fs-17 pb-2">
-          {e.display_field_name}
-        </label>
-        <div className="input-group py-3">
-          {e.data_type == "text" ? (
-            <NormalInput
-              placeholder="Enter here"
-              value={this.state.formFields[e.field_name]}
-              name={e.field_name}
-              onChange={this.handleChange}
-            />
-          ) : e.data_type == "date" ? (
-            <NormalDateTime
-              onChange={this.handleDatePick}
-              value={
-                this.state.formFields[e.field_name]
-                  ? new Date(this.state.formFields[e.field_name])
-                  : new Date()
-              }
-              name={e.field_name}
-              showYearDropdown={true}
-            />
-          ) : e.data_type == "datetime" ? (
-            <NormalDateTime
-              onChange={this.handleDatePick}
-              value={
-                this.state.formFields[e.field_name]
-                  ? new Date(this.state.formFields[e.field_name])
-                  : new Date()
-              }
-              name={e.field_name}
-              showYearDropdown={true}
-            />
-          ) : e.data_type == "selection" ? (
-            <NormalSelect
-              options={e.selection}
-              value={this.state.formFields[e.field_name]}
-              name={e.field_name}
-              onChange={this.handleChange}
-            />
-          ) : e.data_type == "multiSelect" ? (
-            <NormalMultiSelect
-              options={e.selection}
-              defaultValue={this.state.formFields[e.field_name]}
-              name={e.field_name}
-              handleMultiSelect={(e) => this.handleMultiSelect(e.field_name, e)}
-            />
-          ) : e.data_type == "boolean" ? (
-            <input
-              type="checkbox"
-              checked={this.state.formFields[e.field_name]}
-              name={e.field_name}
-              onClick={this.handleChangeBox}
-            />
-          ) : e.data_type == "number" ? (
-            <NormalInput
-              type="number"
-              placeholder="Enter here"
-              value={this.state.formFields[e.field_name]}
-              name={e.field_name}
-              onChange={this.handleChange}
-            />
-          ) : (
-            "NO FILED RENDER DATA FOUND"
-          )}
+    let extraFields =
+      this.state.fields.filter((e) => e.field_name == "cust_address").length > 0
+        ? this.state.fields.filter((e) => e.field_name.match(/cust_address\w+/))
+        : [];
+    let leftLength =
+      extraFields.length > 0
+        ? (12 - extraFields[0].col_width) * extraFields.length
+        : 0;
+        console.log(leftLength,"len")
+    let addressFileds = extraFields.map((e) => {
+      return (
+        <div className="input-group pb-2">
+          <NormalInput
+            placeholder="Enter here"
+            value={this.state.formFields[e.field_name]}
+            name={e.field_name}
+            onChange={this.handleChange}
+          />
         </div>
-        {e.mandatory
-          ? this.validator.message(
-              e.display_field_name,
-              e.field_name,
-              "required"
-            )
-          : null}
-      </div>
-    ));
+      );
+    });
+    let sorted = this.state.fields.sort((a, b) => {
+      if (a.order > b.order) return 1;
+      else return -1;
+    });
+    let rowElements = [];
+    let totalWidth = 0;
+    sorted
+      .slice(sorted.indexOf(extraFields[extraFields.length - 1]) + 1)
+      .forEach((e) => {
+        totalWidth += e.col_width;
+        if (totalWidth <= leftLength) rowElements.push(e);
+        else return;
+      });
+    console.log(sorted, "sorted fields");
+    console.log(rowElements, "row fields");
+    return sorted
+      .slice(0, sorted.indexOf(extraFields[0]))
+      .concat(
+        sorted.slice(sorted.indexOf(rowElements[rowElements.length - 1]) + 1)
+      )
+      .map((e) => {
+        if (e.field_name.includes("cust_address")) {
+          return (
+            <>
+              <div className={`col-md-${e.col_width} pb-md-4`}>
+                <label className="text-left text-black common-label-text fs-17 p-0">
+                  {e.display_field_name}
+                </label>
+                <div className="input-group pb-2">
+                  <NormalInput
+                    placeholder="Enter here"
+                    value={this.state.formFields[e.field_name]}
+                    name={e.field_name}
+                    onChange={this.handleChange}
+                  />
+                </div>
+                {addressFileds}
+                {e.mandatory
+                  ? this.validator.message(
+                      e.display_field_name,
+                      this.state.formFields[e.field_name],
+                      "required"
+                    )
+                  : null}
+              </div>
+              <div className={`col-md-${12 - e.col_width} pb-md-4`}>
+                <div className="row">
+                  {rowElements.map((e) => {
+                    return (
+                      <div className={`col-md-${e.col_width * 2} pb-md-4`}>
+                        <label className="text-left text-black common-label-text fs-17 p-0">
+                          {e.display_field_name}
+                        </label>
+                        <div className="input-group">
+                          {e.data_type == "text" ? (
+                            <NormalInput
+                              placeholder="Enter here"
+                              value={this.state.formFields[e.field_name]}
+                              name={e.field_name}
+                              onChange={this.handleChange}
+                            />
+                          ) : e.data_type == "date" ? (
+                            <NormalDateTime
+                              onChange={this.handleDatePick}
+                              value={
+                                new Date(this.state.formFields[e.field_name])
+                              }
+                              name={e.field_name}
+                              showYearDropdown={true}
+                            />
+                          ) : e.data_type == "datetime" ? (
+                            <NormalDateTime
+                              onChange={this.handleDatePick}
+                              value={
+                                new Date(this.state.formFields[e.field_name])
+                              }
+                              name={e.field_name}
+                              showYearDropdown={true}
+                            />
+                          ) : e.data_type == "selection" ? (
+                            <NormalSelect
+                              options={e.selection}
+                              value={this.state.formFields[e.field_name]}
+                              name={e.field_name}
+                              onChange={this.handleChange}
+                            />
+                          ) : e.data_type == "multiSelect" ? (
+                            <NormalMultiSelect
+                              options={e.selection}
+                              defaultValue={this.state.formFields[e.field_name]}
+                              name={e.field_name}
+                              handleMultiSelect={(e) =>
+                                this.handleMultiSelect(e.field_name, e)
+                              }
+                            />
+                          ) : e.data_type == "boolean" ? (
+                            <input
+                              type="checkbox"
+                              checked={this.state.formFields[e.field_name]}
+                              name={e.field_name}
+                              onClick={this.handleChangeBox}
+                            />
+                          ) : e.data_type == "number" ? (
+                            <NormalInput
+                              type="number"
+                              placeholder="Enter here"
+                              value={this.state.formFields[e.field_name]}
+                              name={e.field_name}
+                              onChange={this.handleChange}
+                            />
+                          ) : (
+                            "NO FILED RENDER DATA FOUND"
+                          )}
+                        </div>
+                        {e.mandatory
+                          ? this.validator.message(
+                              e.display_field_name,
+                              this.state.formFields[e.field_name],
+                              "required"
+                            )
+                          : null}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </>
+          );
+        }
+        if (e.data_type == "date" || e.data_type == "datetime")
+          if (!this.state.formFields[e.field_name])
+            this.state.formFields[e.field_name] = new Date();
+        return (
+          <div className={`col-md-${e.col_width} pb-md-4`}>
+            <label className="text-left text-black common-label-text fs-17 p-0">
+              {e.display_field_name}
+            </label>
+            <div className="input-group">
+              {e.data_type == "text" ? (
+                <NormalInput
+                  placeholder="Enter here"
+                  value={this.state.formFields[e.field_name]}
+                  name={e.field_name}
+                  onChange={this.handleChange}
+                />
+              ) : e.data_type == "date" ? (
+                <NormalDateTime
+                  onChange={this.handleDatePick}
+                  value={new Date(this.state.formFields[e.field_name])}
+                  name={e.field_name}
+                  showYearDropdown={true}
+                />
+              ) : e.data_type == "datetime" ? (
+                <NormalDateTime
+                  onChange={this.handleDatePick}
+                  value={new Date(this.state.formFields[e.field_name])}
+                  name={e.field_name}
+                  showYearDropdown={true}
+                />
+              ) : e.data_type == "selection" ? (
+                <NormalSelect
+                  options={e.selection}
+                  value={this.state.formFields[e.field_name]}
+                  name={e.field_name}
+                  onChange={this.handleChange}
+                />
+              ) : e.data_type == "multiSelect" ? (
+                <NormalMultiSelect
+                  options={e.selection}
+                  defaultValue={this.state.formFields[e.field_name]}
+                  name={e.field_name}
+                  handleMultiSelect={(e) =>
+                    this.handleMultiSelect(e.field_name, e)
+                  }
+                />
+              ) : e.data_type == "boolean" ? (
+                <input
+                  type="checkbox"
+                  checked={this.state.formFields[e.field_name]}
+                  name={e.field_name}
+                  onClick={this.handleChangeBox}
+                />
+              ) : e.data_type == "number" ? (
+                <NormalInput
+                  type="number"
+                  placeholder="Enter here"
+                  value={this.state.formFields[e.field_name]}
+                  name={e.field_name}
+                  onChange={this.handleChange}
+                />
+              ) : (
+                "NO FILED RENDER DATA FOUND"
+              )}
+            </div>
+            {e.mandatory
+              ? this.validator.message(
+                  e.display_field_name,
+                  this.state.formFields[e.field_name],
+                  "required"
+                )
+              : null}
+          </div>
+        );
+      });
   };
 
   render() {
     let { isLoading } = this.state;
     return (
-      <div className="create-customer-section container">
+      <div className="create-customer-section container-fluid">
         {/* <p className="list-heading pb-4"> {id ? "Edit" : "Add"} Customer</p> */}
-        <div className="create-customer">
+        <div className="create-customerplus">
           <div className="head-label-nav">
             <p className="category">Customer Plus</p>
             <i className="icon-right mx-md-3"></i>

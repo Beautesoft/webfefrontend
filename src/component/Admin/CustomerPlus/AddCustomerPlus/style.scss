@@ -3,13 +3,13 @@
 .create-customer-section {
   background-color: $white;
   padding: 20px 0;
-  .create-customer {
-    max-width: 960px;
+  .create-customerplus {
+    max-width: 1400px;
     margin: auto;
     .input-group {
-      input,
+      input, select,
       textarea {
-        font-size: fontSize(14px);
+        font-size: fontSize(20px);
         font-family: Muli-Regular;
         font-weight: normal;
         background: #f9f9f9;
