@@ -20,7 +20,7 @@ export const InputSearch = ({
         value={value}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            onEnter(e);
+            if (onEnter) onEnter(e);
           }
         }}
         onChange={(e) => {

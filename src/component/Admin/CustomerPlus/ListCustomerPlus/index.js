@@ -23,6 +23,7 @@ export class ListCustomerPlusClass extends React.Component {
       { label: "" },
     ],
     customerList: [],
+    search: "",
     meta: {},
     active: false,
     currentIndex: -1,
@@ -65,7 +66,8 @@ export class ListCustomerPlusClass extends React.Component {
 
   getCustomerPlus = async (data) => {
     this.updateState({ isLoading: true });
-    let { page = 1, limit = 10, search = "" } = data;
+    let { search } = this.state;
+    let { page = 1, limit = 10 } = data;
     await this.props.getCustomerPlus(
       `?page=${page}&limit=${limit}&search=${search}`
     );
@@ -83,14 +85,13 @@ export class ListCustomerPlusClass extends React.Component {
   };
 
   handlesearch = (event) => {
-    console.log("sadfasdfasdf", event.target.value);
     event.persist();
-
+    let { search } = this.state;
     if (!this.debouncedFn) {
-      this.debouncedFn = _.debounce(() => {
-        let searchString = event.target.value;
-        let data = { search: searchString };
-        this.getCustomerPlus(data);
+      this.debouncedFn = _.debounce(async () => {
+        search = event.target.value;
+        await this.setState({ search });
+        this.getCustomerPlus({});
       }, 500);
     }
     this.debouncedFn();
@@ -139,7 +140,7 @@ export class ListCustomerPlusClass extends React.Component {
                 <InputSearch
                   className=""
                   placeholder="Search Customer"
-                  onChange={this.handlesearch}
+                  onEnter={this.handlesearch}
                 />
               </div>
               <div className="col-md-4 col-sm-12">
@@ -187,7 +188,7 @@ export class ListCustomerPlusClass extends React.Component {
                           class_name,
                         } = item;
                         let date = new Date(cust_dob);
-                        cust_dob = date.toLocaleDateString()
+                        cust_dob = date.toLocaleDateString();
                         return (
                           <tr key={index}>
                             <td
