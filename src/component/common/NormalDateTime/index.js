@@ -33,6 +33,7 @@ export const NormalDateTime = ({
         showTimeSelectOnly={timeOnly}
         timeIntervals={15}
         // timeCaption="Time"
+        dropdownMode="select"
         dateFormat={dateFormat}
         showYearDropdown={showYearDropdown}
       />

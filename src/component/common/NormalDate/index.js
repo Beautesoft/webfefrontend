@@ -27,6 +27,7 @@ export class NormalDate extends Component {
           autoComplete={"off"}
           minDate={minDate}
           showDisabledMonthNavigation={showDisabledMonthNavigation}
+          dropdownMode="select"
           onChange={date => {
             let body = {};
 
