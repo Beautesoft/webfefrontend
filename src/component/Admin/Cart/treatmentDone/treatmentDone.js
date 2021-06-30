@@ -772,6 +772,12 @@ export class SelectStaffClass extends Component {
       Toast({ type: "error", message: "Session count cannot exceed!" });
       return;
     }
+
+    function round(num) {
+      var m = Number((Math.abs(num) * 100).toPrecision(15));
+      return (Math.round(m) / 100) * Math.sign(num);
+    }
+
     employeeOptions.forEach((e) => {
       let total = 0.0;
       sessionTableDetails.forEach((sessionTable, index) => {
@@ -781,8 +787,21 @@ export class SelectStaffClass extends Component {
             sessionTableDetails[index].values.length;
         }
       });
-      tstaffList.filter((ele) => ele.helper_id == e.value)[0].session = total;
+      tstaffList.filter((ele) => ele.helper_id == e.value)[0].session =
+        round(total);
     });
+
+    let total = 0;
+    if (tstaffList.length > 2)
+      total = tstaffList
+        .slice(0, -1)
+        .reduce((e1, e2) => e1.session + e2.session);
+    else total = tstaffList[0].session;
+
+    tstaffList[tstaffList.length - 1].session = round(
+      this.props.session - total + Number.EPSILON
+    );
+
     console.log(tstaffList, "list with sessions");
     this.setState({ tstaffList });
 
@@ -1023,9 +1042,7 @@ export class SelectStaffClass extends Component {
         </div>
 
         <div className="col-12 cart-item">
-          <Tree
-            content="Assign Sessions"
-          >
+          <Tree content="Assign Sessions">
             <div className="item-list p-0">
               <div className="d-flex justify-content-end">
                 <div className="col-md-4 p-0 mb-2">
@@ -1063,7 +1080,9 @@ export class SelectStaffClass extends Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 <NormalMultiSelect
                                   // placeholder="Enter here"
-                                  target={document.getElementById('treatment-done-sesiions')}
+                                  target={document.getElementById(
+                                    "treatment-done-sesiions"
+                                  )}
                                   options={employeeOptions}
                                   value={item.values}
                                   handleMultiSelect={(e) =>
