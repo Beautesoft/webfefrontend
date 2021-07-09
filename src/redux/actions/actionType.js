@@ -60,3 +60,12 @@ export const CustomerPlusActionType = {
   getRewardPolicySettings: "GET_REWARD_POLICY_SETTINGS",
   getRedeemPolicySettings: "GET_REDEEM_POLICY_SETTINGS",
 };
+
+export const KPIActionType = {
+  getDailyCollections : "GET_DAILY_COLLECTIONS",
+  getMonthlyCollections : "GET_MONTHLY_COLLECTIONS",
+  getConsultantCollections : "GET_CONSULTATNT_COLLECTIONS",
+  getRankingByOutlet : "GET_RANKING_BY_OUTLET",
+  getConsultantServiceRanking : "GET_CONSULTATNT_SERVICE_RANKING",
+  getConsultantSalesRanking : "GET_CONSULTATNT_SALES_RANKING",
+}

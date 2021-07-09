@@ -879,3 +879,78 @@ export const common = {
     baseURL: "token",
   },
 };
+
+export const KPI = {
+  getDailyCollections: {
+    url: "DailySalesBySite",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  getMonthlyCollections: {
+    url: "MonthlySalesBySite",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  getConsultantCollections: {
+    url: "DailySalesByConsultant",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  getRankingByOutlet: {
+    url: "RankingByOutlet",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  getServicesRankingByConsultant: {
+    url: "ServicesByConsultant",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  getSalesRankingByConsultant: {
+    url: "SalesByConsultant",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+};

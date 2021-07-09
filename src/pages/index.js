@@ -19,7 +19,7 @@ export { AddCustomerPlus, CustomerDetailsPlus, ListCustomerPlus, AccountDetailsP
 export { Payment } from './Payment';
 export { ListStaff, AddStaff, StaffDetails, StaffAvailability } from './Staff';
 export { AddStaffPlus,ListStaffPlus, EmployeeInfo, StaffSchedule, SecurityAuthorization, StaffSkillList, AddStaffSkill, StaffPlusDetails, StaffPlusAvailability } from './StaffPlus';
-
+export { KPIDashboard } from './KPI'
 
 
 export { ListSalons, CreateSalon, SalonDetails } from './Saloon';

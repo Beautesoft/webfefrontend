@@ -16,7 +16,9 @@ export const NormalDateTime = ({
   value,
   className,
   showYearDropdown = false,
-  dateFormat
+  dateFormat,
+  showMonthYearPicker,
+  minDate
 }) => {
   const [startDate, setStartDate] = useState(new Date());
   const handleDateSelect = (date) => {
@@ -33,9 +35,11 @@ export const NormalDateTime = ({
         showTimeSelectOnly={timeOnly}
         timeIntervals={15}
         // timeCaption="Time"
+        minDate={minDate}
         dropdownMode="select"
         dateFormat={dateFormat}
         showYearDropdown={showYearDropdown}
+        showMonthYearPicker={showMonthYearPicker}
       />
       <span className="icon-calendar icon font-lg icon"></span>
     </div>

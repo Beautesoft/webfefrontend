@@ -10,6 +10,7 @@ import payment from "./payment";
 import customer from "./customer";
 import customerPlus from "./customerPlus";
 import appointment from "./appointment";
+import kpi from "./kpi";
 
 export const reducers = combineReducers({
   authStore,
@@ -23,4 +24,5 @@ export const reducers = combineReducers({
   customer,
   customerPlus,
   appointment,
+  kpi,
 });

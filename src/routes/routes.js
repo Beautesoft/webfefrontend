@@ -552,6 +552,12 @@ const routers = [
         auth: false,
         exact: true,
       },
+      {
+        component: "KPIDashboard",
+        path: "/kpi",
+        auth: false,
+        exact: true,
+      },
     ],
   },
 ];
