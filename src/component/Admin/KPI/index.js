@@ -41,10 +41,16 @@ class KPIDashboardClass extends Component {
     selectedSiteGroup: "",
     siteOptions: [],
     siteGroupOptions: [],
+    perPageOptions: [
+      { label: 5, value: 5 },
+      { label: 10, value: 10 },
+      { label: 15, value: 15 },
+    ],
     isMounted: true,
     isLoading: true,
     chartData: [],
     diffTablePagination: { current_page: 1, total_pages: 1, per_page: 10 },
+    collectionCardPagination: { current_page: 1, total_pages: 1, per_page: 6 },
   };
 
   getFormatedDate = (input) => {
@@ -124,6 +130,14 @@ class KPIDashboardClass extends Component {
     this.state.selectedOrder = e.target.value;
     this.updateState({});
     this.loadData();
+  };
+
+  hanldePerPageChange = (e) => {
+    if (e.target.value != "")
+      this.state.diffTablePagination.per_page = e.target.value;
+    else this.state.diffTablePagination.per_page = this.state.data.length;
+    this.state.diffTablePagination.current_page = 1;
+    this.updateState({});
   };
 
   handleSiteChange = (e) => {
@@ -248,11 +262,6 @@ class KPIDashboardClass extends Component {
       );
       this.state.data = this.props.rankingByOutlet;
     }
-    this.state.diffTablePagination = {
-      current_page: 1,
-      total_pages: Math.ceil(this.state.data.length / 10),
-      per_page: 10,
-    };
     this.updateState({
       isLoading: false,
     });
@@ -270,59 +279,148 @@ class KPIDashboardClass extends Component {
     this.updateState({});
   };
 
-  drawGraph = (prevValue, currentValue) => {
+  handleCollectionPagination = (page) => {
+    this.state.collectionCardPagination.current_page = page;
+    this.updateState({});
+  };
+
+  drawGraph = (value, color, largestValue) => {
     return (
       <div className="mb-1" style={{ position: "relative", minWidth: "200px" }}>
         <hr
           style={{
             position: "absolute",
             margin: 0,
-            border: "10px solid gray",
+            border: "10px solid " + color,
             borderRadius: "5px",
-            width: "80%",
-          }}
-        ></hr>
-        <hr
-          style={{
-            position: "absolute",
-            margin: 0,
-            border: "10px solid blue",
-            borderRadius: "5px",
-            width: (currentValue / (currentValue + prevValue)) * 80 + "%",
+            width: (value / largestValue) * 90 + "%",
           }}
         ></hr>
         <div
           style={{
             position: "absolute",
-            color: "white",
+            color: "black",
             margin: 0,
             marginLeft: "5px",
             fontSize: 14,
             fontWeight: "bold",
           }}
         >
-          {currentValue}
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            color: "white",
-            margin: 0,
-            marginLeft: "15px",
-            width: "80%",
-            textAlign: "right",
-            fontSize: 14,
-            fontWeight: "bold",
-          }}
-        >
-          {prevValue}
+          {value}
         </div>
       </div>
     );
   };
 
+  getLargestRankingAmount = () => {
+    let { data, selectedIndex } = this.state;
+    let sortedByAmount = [];
+    let sortedByPrev = [];
+    data.forEach((e) => {
+      sortedByAmount.push(e);
+      sortedByPrev.push(e);
+    });
+    sortedByAmount.sort((a, b) => {
+      if (
+        selectedIndex == 6
+          ? a[
+              this.state.selectedOrder.length == 0
+                ? "count"
+                : this.state.selectedOrder
+            ]
+          : a.amount > selectedIndex == 6
+          ? b[
+              this.state.selectedOrder.length == 0
+                ? "count"
+                : this.state.selectedOrder
+            ]
+          : b.amount
+      )
+        return -1;
+      if (
+        selectedIndex == 6
+          ? a[
+              this.state.selectedOrder.length == 0
+                ? "count"
+                : this.state.selectedOrder
+            ]
+          : a.amount < selectedIndex == 6
+          ? b[
+              this.state.selectedOrder.length == 0
+                ? "count"
+                : this.state.selectedOrder
+            ]
+          : b.amount
+      )
+        return -1;
+      return 0;
+    });
+
+    sortedByPrev.sort((a, b) => {
+      if (a.prevValue > b.prevValue) return -1;
+      if (a.prevValue < b.prevValue) return 1;
+      return 0;
+    });
+
+    function kFormatter(num) {
+      return Math.abs(num) > 999
+        ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
+        : Math.sign(num) * Math.abs(num);
+    }
+
+    if (
+      sortedByPrev[0].prevValue > selectedIndex == 6
+        ? sortedByAmount[0][
+            this.state.selectedOrder.length == 0
+              ? "count"
+              : this.state.selectedOrder
+          ]
+        : sortedByAmount[0].amount
+    )
+      return {
+        value: sortedByPrev[0].prevValue,
+        label: kFormatter(sortedByPrev[0].prevValue),
+      };
+    else
+      return {
+        value:
+          selectedIndex == 6
+            ? sortedByAmount[0][
+                this.state.selectedOrder.length == 0
+                  ? "count"
+                  : this.state.selectedOrder
+              ]
+            : sortedByAmount[0].amount,
+        label: kFormatter(
+          selectedIndex == 6
+            ? sortedByAmount[0][
+                this.state.selectedOrder.length == 0
+                  ? "count"
+                  : this.state.selectedOrder
+              ]
+            : sortedByAmount[0].amount
+        ),
+      };
+  };
+
   render() {
-    let { data, selectedIndex, chartData } = this.state;
+    let {
+      data,
+      selectedIndex,
+      chartData,
+      diffTablePagination,
+      collectionCardPagination,
+    } = this.state;
+
+    diffTablePagination = {
+      ...diffTablePagination,
+      total_pages: Math.ceil(data.length / diffTablePagination.per_page),
+    };
+
+    collectionCardPagination = {
+      ...collectionCardPagination,
+      total_pages: Math.ceil(data.length / collectionCardPagination.per_page),
+    };
 
     var sortedChartData = [];
     for (var key in chartData) {
@@ -370,20 +468,11 @@ class KPIDashboardClass extends Component {
                 headerName:
                   e.replaceAll("_", " ").charAt(0).toUpperCase() +
                   e.replaceAll("_", " ").slice(1),
+                type: typeof data[0][e],
               };
             });
 
     const rows = data;
-
-    const getDefaultDateFormat = () => {
-      let customDate = new Date(2222, 11, 18);
-      let strDate = customDate.toLocaleDateString();
-      let format = strDate
-        .replace("12", "mm")
-        .replace("18", "dd")
-        .replace("2222", "yyyy");
-      console.log(format);
-    };
 
     const getMenuName = () => {
       switch (selectedIndex) {
@@ -458,406 +547,575 @@ class KPIDashboardClass extends Component {
               ]}
             />
           </div>
-          <div className="col kpi-dashboard">
+          <div className="col-lg-9 kpi-dashboard">
             <div className="row mb-4">
               <div className="col">
                 <h3>{getMenuName()}</h3>
               </div>
             </div>
-            <div
-              className="kpi-options mb-2"
-              springConfig={(e) => console.log(e, "tree")}
-            >
-              <Tree
-                content="Options"
-                springConfig={(e) => {
-                  if (document.getElementById("optionsTree") != null)
-                    if (e)
-                      document
-                        .getElementById("optionsTree")
-                        .classList.remove("d-none");
-                    else
-                      document
-                        .getElementById("optionsTree")
-                        .classList.add("d-none");
-                }}
-              >
-                <div id="optionsTree">
-                  {selectedIndex > 1 ? (
-                    <>
-                      <div className="row mb-2">
-                        <div className="col-sm-4 col-md-3">
-                          <input
-                            type="radio"
-                            name="rankingDateType"
-                            checked={this.state.rankingDateType == "month"}
-                            className="mr-2"
-                            defaultChecked
-                            onClick={() =>
-                              this.updateState({ rankingDateType: "month" })
-                            }
-                          />
-                          By Month
-                        </div>
-                        <div className="col-sm-4 col-md-3">
-                          <input
-                            type="radio"
-                            name="rankingDateType"
-                            checked={this.state.rankingDateType == "week"}
-                            className="mr-2"
-                            defaultChecked
-                            onClick={() =>
-                              this.updateState({ rankingDateType: "week" })
-                            }
-                          />
-                          By Week
-                        </div>
-                        <div className="col-sm-4 col-md-3">
-                          <input
-                            type="radio"
-                            name="rankingDateType"
-                            checked={this.state.rankingDateType == "day"}
-                            className="mr-2"
-                            defaultChecked
-                            onClick={() =>
-                              this.updateState({ rankingDateType: "day" })
-                            }
-                          />
-                          By Day
-                        </div>
-                      </div>
-                      <div className="row mb-4">
-                        <div className="col-sm-4 col-md-3">
-                          <input
-                            type="radio"
-                            name="isSiteGroup"
-                            checked={!this.state.isSiteGroup}
-                            className="mr-2"
-                            onClick={() =>
-                              this.updateState({ isSiteGroup: false })
-                            }
-                          />
-                          By Site
-                        </div>
-                        <div className="col-sm-4 col-md-3">
-                          <input
-                            type="radio"
-                            name="isSiteGroup"
-                            checked={this.state.isSiteGroup}
-                            className="mr-2"
-                            defaultChecked
-                            onClick={() =>
-                              this.updateState({ isSiteGroup: true })
-                            }
-                          />
-                          By Site Group
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="row mb-2">
-                        <div className="col-sm-6 col-md-4">
-                          <input
-                            type="radio"
-                            name="isMonth"
-                            checked={!this.state.isMonth}
-                            className="mr-2"
-                            defaultChecked
-                            onClick={() => this.updateState({ isMonth: false })}
-                          />
-                          By Date
-                        </div>
-                        <div className="col-sm-6 col-md-4">
-                          <input
-                            type="radio"
-                            name="isSiteGroup"
-                            checked={!this.state.isSiteGroup}
-                            className="mr-2"
-                            defaultChecked
-                            onClick={() =>
-                              this.updateState({ isSiteGroup: false })
-                            }
-                          />
-                          By Site
-                        </div>
-                      </div>
-                      <div className="row mb-4">
-                        <div className="col-sm-6 col-md-4">
-                          <input
-                            type="radio"
-                            name="isMonth"
-                            checked={this.state.isMonth}
-                            className="mr-2"
-                            onClick={() => this.updateState({ isMonth: true })}
-                          />
-                          By Month
-                        </div>
-                        <div className="col-sm-6 col-md-4">
-                          <input
-                            type="radio"
-                            name="isSiteGroup"
-                            checked={this.state.isSiteGroup}
-                            className="mr-2"
-                            onClick={() =>
-                              this.updateState({ isSiteGroup: true })
-                            }
-                          />
-                          By Site Group
-                        </div>
-                      </div>
-                    </>
-                  )}
-                  <div
-                    className="row"
-                    style={{ overflow: "visible !important" }}
+            {this.state.isLoading ? null : (
+              <>
+                <div
+                  className="kpi-options mb-2"
+                  springConfig={(e) => console.log(e, "tree")}
+                >
+                  <Tree
+                    content="Options"
+                    springConfig={(e) => {
+                      if (document.getElementById("optionsTree") != null)
+                        if (e)
+                          document
+                            .getElementById("optionsTree")
+                            .classList.remove("d-none");
+                        else
+                          document
+                            .getElementById("optionsTree")
+                            .classList.add("d-none");
+                    }}
                   >
-                    {selectedIndex > 1 ? (
-                      <>
-                        <div className="col-md-8 mb-4">
-                          <label className="text-left text-black common-label-text fs-17 pb-3">
-                            {this.state.rankingDateType == "month"
-                              ? "Select Month"
-                              : this.state.rankingDateType == "week"
-                              ? "Select Start Day of the Week"
-                              : "Select Date"}
-                          </label>
-                          <NormalDateTime
-                            onChange={this.handleDatePick}
-                            value={this.state.startDate}
-                            name="startDate"
-                            showYearDropdown={true}
-                            dateFormat={
-                              this.state.rankingDateType == "month"
-                                ? "yyyy/MM"
-                                : getDefaultDateFormat()
-                            }
-                            showMonthYearPicker={
-                              this.state.rankingDateType == "month"
-                            }
-                          />
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="col-md-4 mb-4">
-                          <label className="text-left text-black common-label-text fs-17 pb-3">
-                            Start Date
-                          </label>
-                          <NormalDateTime
-                            onChange={this.handleDatePick}
-                            value={this.state.startDate}
-                            name="startDate"
-                            showYearDropdown={true}
-                            dateFormat={
-                              this.state.isMonth
-                                ? "yyyy/MM"
-                                : getDefaultDateFormat()
-                            }
-                            showMonthYearPicker={this.state.isMonth}
-                          />
-                        </div>
-                        <div className="col-md-4 mb-4">
-                          <label className="text-left text-black common-label-text fs-17 pb-3">
-                            End Date
-                          </label>
-                          <NormalDateTime
-                            onChange={this.handleDatePick}
-                            value={this.state.endDate}
-                            minDate={this.state.startDate}
-                            name="endDate"
-                            showYearDropdown={true}
-                            dateFormat={
-                              this.state.isMonth
-                                ? "yyyy/MM"
-                                : getDefaultDateFormat()
-                            }
-                            showMonthYearPicker={this.state.isMonth}
-                          />
-                        </div>
-                      </>
-                    )}
-                    <div className="col-md-8 mb-4">
-                      {this.state.isSiteGroup ? (
+                    <div id="optionsTree" className="d-none">
+                      {selectedIndex > 1 ? (
                         <>
-                          <label className="text-left text-black common-label-text fs-17 pb-3">
-                            Filter By Site Group
-                          </label>
-                          <NormalSelect
-                            options={this.state.siteGroupOptions}
-                            value={this.state.selectedSiteGroup}
-                            onChange={this.handleSiteGroupChange}
-                          />
+                          <div className="row mb-2">
+                            <div className="col-sm-4 col-md-3">
+                              <input
+                                type="radio"
+                                name="rankingDateType"
+                                checked={this.state.rankingDateType == "month"}
+                                className="mr-2"
+                                defaultChecked
+                                onClick={() =>
+                                  this.updateState({ rankingDateType: "month" })
+                                }
+                              />
+                              By Month
+                            </div>
+                            <div className="col-sm-4 col-md-3">
+                              <input
+                                type="radio"
+                                name="rankingDateType"
+                                checked={this.state.rankingDateType == "week"}
+                                className="mr-2"
+                                defaultChecked
+                                onClick={() =>
+                                  this.updateState({ rankingDateType: "week" })
+                                }
+                              />
+                              By Week
+                            </div>
+                            <div className="col-sm-4 col-md-3">
+                              <input
+                                type="radio"
+                                name="rankingDateType"
+                                checked={this.state.rankingDateType == "day"}
+                                className="mr-2"
+                                defaultChecked
+                                onClick={() =>
+                                  this.updateState({ rankingDateType: "day" })
+                                }
+                              />
+                              By Day
+                            </div>
+                          </div>
+                          <div className="row mb-4">
+                            <div className="col-sm-4 col-md-3">
+                              <input
+                                type="radio"
+                                name="isSiteGroup"
+                                checked={!this.state.isSiteGroup}
+                                className="mr-2"
+                                onClick={() =>
+                                  this.updateState({ isSiteGroup: false })
+                                }
+                              />
+                              By Site
+                            </div>
+                            <div className="col-sm-4 col-md-3">
+                              <input
+                                type="radio"
+                                name="isSiteGroup"
+                                checked={this.state.isSiteGroup}
+                                className="mr-2"
+                                defaultChecked
+                                onClick={() =>
+                                  this.updateState({ isSiteGroup: true })
+                                }
+                              />
+                              By Site Group
+                            </div>
+                          </div>
                         </>
                       ) : (
                         <>
-                          <label className="text-left text-black common-label-text fs-17 pb-3">
-                            Filter By Site
-                          </label>
-                          <NormalMultiSelect
-                            options={this.state.siteOptions}
-                            value={this.state.selectedSite}
-                            handleMultiSelect={this.handleSiteChange}
-                          />
+                          <div className="row mb-2">
+                            <div className="col-sm-6 col-md-4">
+                              <input
+                                type="radio"
+                                name="isMonth"
+                                checked={!this.state.isMonth}
+                                className="mr-2"
+                                defaultChecked
+                                onClick={() =>
+                                  this.updateState({ isMonth: false })
+                                }
+                              />
+                              By Date
+                            </div>
+                            <div className="col-sm-6 col-md-4">
+                              <input
+                                type="radio"
+                                name="isSiteGroup"
+                                checked={!this.state.isSiteGroup}
+                                className="mr-2"
+                                defaultChecked
+                                onClick={() =>
+                                  this.updateState({ isSiteGroup: false })
+                                }
+                              />
+                              By Site
+                            </div>
+                          </div>
+                          <div className="row mb-4">
+                            <div className="col-sm-6 col-md-4">
+                              <input
+                                type="radio"
+                                name="isMonth"
+                                checked={this.state.isMonth}
+                                className="mr-2"
+                                onClick={() =>
+                                  this.updateState({ isMonth: true })
+                                }
+                              />
+                              By Month
+                            </div>
+                            <div className="col-sm-6 col-md-4">
+                              <input
+                                type="radio"
+                                name="isSiteGroup"
+                                checked={this.state.isSiteGroup}
+                                className="mr-2"
+                                onClick={() =>
+                                  this.updateState({ isSiteGroup: true })
+                                }
+                              />
+                              By Site Group
+                            </div>
+                          </div>
                         </>
                       )}
-                    </div>
-                    {selectedIndex == 6 ? (
-                      <div className="col-md-8 mb-4">
-                        <label className="text-left text-black common-label-text fs-17 pb-3">
-                          Order By
-                        </label>
-                        <NormalSelect
-                          options={this.state.orderOptions}
-                          value={this.state.selectedOrder}
-                          onChange={this.handleOrderChange}
-                        />
-                      </div>
-                    ) : null}
-                  </div>
-                </div>
-              </Tree>
-            </div>
-            <div className="row">
-              {this.state.isLoading ? null : (
-                <div className="col-12 mb-4">
-                  {selectedIndex <= 1 ? (
-                    <Tree content="Visualize">
                       <div
-                        style={{
-                          height: Object.keys(chartData)?.length * 40 + 50,
-                        }}
+                        className="row"
+                        style={{ overflow: "visible !important" }}
                       >
-                        <HorizontalBar data={chartDataObj} options={options} />
+                        {selectedIndex > 1 ? (
+                          <>
+                            <div className="col-md-8 mb-4">
+                              <label className="text-left text-black common-label-text fs-17 pb-3">
+                                {this.state.rankingDateType == "month"
+                                  ? "Select Month"
+                                  : this.state.rankingDateType == "week"
+                                  ? "Select Start Day of the Week"
+                                  : "Select Date"}
+                              </label>
+                              <NormalDateTime
+                                onChange={this.handleDatePick}
+                                value={this.state.startDate}
+                                name="startDate"
+                                showYearDropdown={true}
+                                dateFormat={
+                                  this.state.rankingDateType == "month"
+                                    ? "yyyy/MM"
+                                    : "dd/MM/yyyy"
+                                }
+                                showMonthYearPicker={
+                                  this.state.rankingDateType == "month"
+                                }
+                              />
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="col-md-4 mb-4">
+                              <label className="text-left text-black common-label-text fs-17 pb-3">
+                                Start Date
+                              </label>
+                              <NormalDateTime
+                                onChange={this.handleDatePick}
+                                value={this.state.startDate}
+                                name="startDate"
+                                showYearDropdown={true}
+                                dateFormat={
+                                  this.state.isMonth ? "yyyy/MM" : "dd/MM/yyyy"
+                                }
+                                showMonthYearPicker={this.state.isMonth}
+                              />
+                            </div>
+                            <div className="col-md-4 mb-4">
+                              <label className="text-left text-black common-label-text fs-17 pb-3">
+                                End Date
+                              </label>
+                              <NormalDateTime
+                                onChange={this.handleDatePick}
+                                value={this.state.endDate}
+                                minDate={this.state.startDate}
+                                name="endDate"
+                                showYearDropdown={true}
+                                dateFormat={
+                                  this.state.isMonth ? "yyyy/MM" : "dd/MM/yyyy"
+                                }
+                                showMonthYearPicker={this.state.isMonth}
+                              />
+                            </div>
+                          </>
+                        )}
+                        <div className="col-md-8 mb-4">
+                          {this.state.isSiteGroup ? (
+                            <>
+                              <label className="text-left text-black common-label-text fs-17 pb-3">
+                                Filter By Site Group
+                              </label>
+                              <NormalSelect
+                                options={this.state.siteGroupOptions}
+                                value={this.state.selectedSiteGroup}
+                                onChange={this.hanldePerPageChange}
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <label className="text-left text-black common-label-text fs-17 pb-3">
+                                Filter By Site
+                              </label>
+                              <NormalMultiSelect
+                                options={this.state.siteOptions}
+                                value={this.state.selectedSite}
+                                handleMultiSelect={this.handleSiteChange}
+                              />
+                            </>
+                          )}
+                        </div>
+                        {selectedIndex == 6 ? (
+                          <div className="col-md-8 mb-4">
+                            <label className="text-left text-black common-label-text fs-17 pb-3">
+                              Order By
+                            </label>
+                            <NormalSelect
+                              options={this.state.orderOptions}
+                              value={this.state.selectedOrder}
+                              onChange={this.handleOrderChange}
+                            />
+                          </div>
+                        ) : null}
+                        {selectedIndex > 1 ? (
+                          <div className="col-md-8 mb-4">
+                            <label className="text-left text-black common-label-text fs-17 pb-3">
+                              Show per page
+                            </label>
+                            <NormalSelect
+                              options={this.state.perPageOptions}
+                              value={diffTablePagination.per_page}
+                              onChange={this.hanldePerPageChange}
+                            />
+                          </div>
+                        ) : null}
                       </div>
-                    </Tree>
-                  ) : (
-                    <div className="table-responsive">
-                      <table
-                        class="table"
-                        style={{
-                          height: 50 * this.state.diffTablePagination.per_page,
-                        }}
-                      >
-                        <thead className="font-weight-bold">
-                          <tr>
-                            <th scope="col">Rank</th>
-                            <th scope="col">
-                              {selectedIndex == 6 || selectedIndex == 7
-                                ? "Consultant"
-                                : "Outlet"}
-                            </th>
-                            <th scope="col">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="30"
-                                height="30"
-                                fill="blue"
-                                class="bi bi-caret-up-fill"
-                                viewBox="0 0 30 20"
+                    </div>
+                  </Tree>
+                </div>
+                <div className="row">
+                  <div className="col-12 mb-4">
+                    {selectedIndex <= 1 ? (
+                      <Tree content="Visualize">
+                        <div
+                          style={{
+                            height: Object.keys(chartData)?.length * 40 + 50,
+                          }}
+                        >
+                          <HorizontalBar
+                            data={chartDataObj}
+                            options={options}
+                          />
+                        </div>
+                      </Tree>
+                    ) : (
+                      <div className="table-responsive">
+                        <table
+                          class="table"
+                          style={{
+                            height: 50 * diffTablePagination.per_page,
+                          }}
+                        >
+                          <thead className="font-weight-bold">
+                            <tr>
+                              <th
+                                scope="col"
+                                style={{ verticalAlign: "middle" }}
                               >
-                                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
-                              </svg>
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="30"
-                                height="30"
-                                fill="red"
-                                class="bi bi-caret-down-fill"
-                                viewBox="0 0 30 20"
+                                Rank
+                              </th>
+                              <th
+                                scope="col"
+                                style={{ verticalAlign: "middle" }}
                               >
-                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-                              </svg>
-                            </th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Graph</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {this.state.data
-                            .slice(
-                              (this.state.diffTablePagination.current_page -
-                                1) *
-                                10,
-                              data.length <
-                                this.state.diffTablePagination.current_page * 10
-                                ? data.length
-                                : this.state.diffTablePagination.current_page *
-                                    10
-                            )
-                            .map((e) => (
-                              <tr key={e.id}>
-                                <td>#{e.rank}</td>
-                                <td>
-                                  {selectedIndex == 6 || selectedIndex == 7
-                                    ? e.consultant
-                                    : e.outlet}
-                                </td>
-                                {e.rankDif == 0 ? (
-                                  <td></td>
-                                ) : Math.sign(e.rankDif) == 1 ? (
-                                  <td className="text-primary">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="30"
-                                      height="30"
-                                      fill="blue"
-                                      class="bi bi-caret-up-fill"
-                                      viewBox="0 0 30 20"
-                                    >
-                                      <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
-                                    </svg>
-                                    {Math.abs(e.rankDif)}
+                                {selectedIndex == 6 || selectedIndex == 7
+                                  ? "Consultant"
+                                  : "Outlet"}
+                              </th>
+                              <th
+                                scope="col"
+                                style={{ verticalAlign: "middle" }}
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="30"
+                                  height="30"
+                                  fill="green"
+                                  class="bi bi-caret-up-fill"
+                                  viewBox="0 0 30 20"
+                                >
+                                  <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                                </svg>
+                              </th>
+                              <th
+                                scope="col"
+                                style={{ verticalAlign: "middle" }}
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="30"
+                                  height="30"
+                                  fill="red"
+                                  class="bi bi-caret-down-fill"
+                                  viewBox="0 0 30 20"
+                                >
+                                  <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                </svg>
+                              </th>
+                              <th
+                                scope="col"
+                                style={{
+                                  textAlign: "right",
+                                  paddingRight: "2vw",
+                                  verticalAlign: "middle",
+                                }}
+                              >
+                                Amount
+                              </th>
+                              <th scope="col">
+                                <div>This {this.state.rankingDateType}</div>
+                                <div className="d-flex justify-content-between">
+                                  <div>0</div>
+                                  <div>
+                                    {this.getLargestRankingAmount().label}
+                                  </div>
+                                </div>
+                              </th>
+                              <th scope="col">
+                                <div>Previous {this.state.rankingDateType}</div>
+                                <div className="d-flex justify-content-between">
+                                  <div>0</div>
+                                  <div>
+                                    {this.getLargestRankingAmount().label}
+                                  </div>
+                                </div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.state.data
+                              .slice(
+                                (diffTablePagination.current_page - 1) *
+                                  diffTablePagination.per_page,
+                                data.length <
+                                  diffTablePagination.current_page *
+                                    diffTablePagination.per_page
+                                  ? data.length
+                                  : diffTablePagination.current_page *
+                                      diffTablePagination.per_page
+                              )
+                              .map((e) => (
+                                <tr key={e.id}>
+                                  <td>#{e.rank}</td>
+                                  <td>
+                                    {selectedIndex == 6 || selectedIndex == 7
+                                      ? e.consultant
+                                      : e.outlet}
                                   </td>
-                                ) : (
-                                  <td className="text-danger">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="30"
-                                      height="30"
-                                      fill="red"
-                                      class="bi bi-caret-down-fill"
-                                      viewBox="0 0 30 20"
-                                    >
-                                      <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-                                    </svg>
-                                    {Math.abs(e.rankDif)}
-                                  </td>
-                                )}
-                                <td>
-                                  {selectedIndex == 6
-                                    ? e[
-                                        this.state.selectedOrder.length == 0
-                                          ? "count"
-                                          : this.state.selectedOrder
-                                      ]
-                                    : e.amount}
-                                </td>
-                                <td style={{ width: "50%" }}>
-                                  {this.drawGraph(
-                                    e.prevValue,
-                                    selectedIndex == 6
+                                  {e.rankDif == 0 ? (
+                                    <>
+                                      <td></td> <td></td>
+                                    </>
+                                  ) : Math.sign(e.rankDif) == 1 ? (
+                                    <>
+                                      <td style={{ color: "green" }}>
+                                        <div style={{ width: "50px" }}>
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="30"
+                                            height="30"
+                                            fill="green"
+                                            class="bi bi-caret-up-fill"
+                                            viewBox="0 0 30 20"
+                                          >
+                                            <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                                          </svg>
+                                          {Math.abs(e.rankDif)}
+                                        </div>
+                                      </td>
+                                      <td></td>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <td></td>
+                                      <td style={{ color: "red" }}>
+                                        <div style={{ width: "50px" }}>
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="30"
+                                            height="30"
+                                            fill="red"
+                                            class="bi bi-caret-down-fill"
+                                            viewBox="0 0 30 20"
+                                          >
+                                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                          </svg>
+                                          {Math.abs(e.rankDif)}
+                                        </div>
+                                      </td>
+                                    </>
+                                  )}
+                                  <td
+                                    style={{
+                                      textAlign: "right",
+                                      paddingRight: "2vw",
+                                    }}
+                                  >
+                                    {selectedIndex == 6
                                       ? e[
                                           this.state.selectedOrder.length == 0
                                             ? "count"
                                             : this.state.selectedOrder
                                         ]
-                                      : e.amount
-                                  )}
-                                </td>
-                              </tr>
-                            ))}
-                        </tbody>
-                      </table>
-                      <Pagination
-                        handlePagination={this.handlePagination}
-                        pageMeta={this.state.diffTablePagination}
-                      />
-                    </div>
-                  )}
+                                      : e.amount}
+                                  </td>
+                                  <td style={{ width: "30%" }}>
+                                    {this.drawGraph(
+                                      selectedIndex == 6
+                                        ? e[
+                                            this.state.selectedOrder.length == 0
+                                              ? "count"
+                                              : this.state.selectedOrder
+                                          ]
+                                        : e.amount,
+                                      e.prevValue >
+                                        (selectedIndex == 6
+                                          ? e[
+                                              this.state.selectedOrder.length ==
+                                              0
+                                                ? "count"
+                                                : this.state.selectedOrder
+                                            ]
+                                          : e.amount)
+                                        ? "#f89898"
+                                        : "#93eaad",
+                                      this.getLargestRankingAmount().value
+                                    )}
+                                  </td>
+                                  <td style={{ width: "30%" }}>
+                                    {this.drawGraph(
+                                      e.prevValue,
+                                      e.prevValue >
+                                        (selectedIndex == 6
+                                          ? e[
+                                              this.state.selectedOrder.length ==
+                                              0
+                                                ? "count"
+                                                : this.state.selectedOrder
+                                            ]
+                                          : e.amount)
+                                        ? "#93eaad"
+                                        : "#f89898",
+                                      this.getLargestRankingAmount().value
+                                    )}
+                                  </td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                        <Pagination
+                          handlePagination={this.handlePagination}
+                          pageMeta={diffTablePagination}
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
-              )}
-            </div>
+
+                {selectedIndex == 0 ? (
+                  <div className="row pl-2 mb-4">
+                    {this.state.data
+                      .slice(
+                        (collectionCardPagination.current_page - 1) *
+                          collectionCardPagination.per_page,
+                        data.length <
+                          collectionCardPagination.current_page *
+                            collectionCardPagination.per_page
+                          ? data.length
+                          : collectionCardPagination.current_page *
+                              collectionCardPagination.per_page
+                      )
+                      .map((e, index) => {
+                        return (
+                          <div className="col-md-4 col-sm-6">
+                            <div class="card shadow mb-2">
+                              <div class="card-header">
+                                <div className="d-flex justify-content-between">
+                                  <div>
+                                    <strong>Date</strong>
+                                  </div>
+                                  <div>
+                                    <strong>{e.date}</strong>
+                                  </div>
+                                </div>
+                              </div>
+                              <ul class="list-group list-group-flush">
+                                {Object.keys(this.state.data[index])
+                                  .filter(
+                                    (e) =>
+                                      e != "id" && e != "total" && e != "date"
+                                  )
+                                  .map((e) => {
+                                    return (
+                                      <li class="list-group-item pt-0 pb-0 fs-8">
+                                        <div className="d-flex justify-content-between">
+                                          <div>{e}</div>
+                                          <div>{data[index][e]}</div>
+                                        </div>
+                                      </li>
+                                    );
+                                  })}
+                                <li class="list-group-item">
+                                  <div className="d-flex justify-content-between">
+                                    <div>
+                                      <strong>Total</strong>
+                                    </div>
+                                    <div>
+                                      <strong>{e.total}</strong>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    <Pagination
+                      handlePagination={this.handleCollectionPagination}
+                      pageMeta={collectionCardPagination}
+                    />
+                  </div>
+                ) : null}
+              </>
+            )}
             <div className="row">
               <div className="col-12" style={{ height: 800 }}>
                 {this.state.isLoading ? (
