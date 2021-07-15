@@ -1,15 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Routes from './routes';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
-import { store } from "./helpers"
-import 'react-notifications/lib/notifications.css';
-import "./assets/scss/index.scss"
+import { store } from "./helpers";
+import "react-notifications/lib/notifications.css";
+import "./assets/scss/index.scss";
+import { MultiLanguage } from "multiLanguage";
 
 ReactDOM.render(
-    <Provider store={store}><Routes /></Provider>,
-    document.getElementById('root')
+  <Provider store={store}>
+    <MultiLanguage />
+  </Provider>,
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

@@ -954,3 +954,10 @@ export const KPI = {
     baseURL: "token",
   },
 };
+export const multiLanguage = {
+  getMultiLanguage: {
+    api: "MultiLanguage",
+    method: "get",
+    baseURL: "normal",
+  },
+};
