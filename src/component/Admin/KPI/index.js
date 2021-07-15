@@ -909,47 +909,52 @@ class KPIDashboardClass extends Component {
                                 >
                                   Amount
                                 </th>
-                                <th scope="col">
-                                  <div
-                                    style={{ width: "90%", minWidth: "300px" }}
-                                  >
-                                    <div className="d-flex justify-content-between">
-                                      <div style={{ width: "20px" }}>0</div>
-                                      <div style={{ width: "20px" }}>
-                                        {this.getShortFormat(
-                                          (this.getLargestRankingAmount()
-                                            .value /
-                                            4) *
-                                            1
-                                        )}
+                                {data.length === 0 ? null : (
+                                  <th scope="col">
+                                    <div
+                                      style={{
+                                        width: "90%",
+                                        minWidth: "300px",
+                                      }}
+                                    >
+                                      <div className="d-flex justify-content-between">
+                                        <div style={{ width: "20px" }}>0</div>
+                                        <div style={{ width: "20px" }}>
+                                          {this.getShortFormat(
+                                            (this.getLargestRankingAmount()
+                                              .value /
+                                              4) *
+                                              1
+                                          )}
+                                        </div>
+                                        <div style={{ width: "20px" }}>
+                                          {this.getShortFormat(
+                                            this.getLargestRankingAmount()
+                                              .value / 2
+                                          )}
+                                        </div>
+                                        <div style={{ width: "20px" }}>
+                                          {this.getShortFormat(
+                                            (this.getLargestRankingAmount()
+                                              .value /
+                                              4) *
+                                              3
+                                          )}
+                                        </div>
+                                        <div style={{ width: "20px" }}>
+                                          {this.getLargestRankingAmount().label}
+                                        </div>
                                       </div>
-                                      <div style={{ width: "20px" }}>
-                                        {this.getShortFormat(
-                                          this.getLargestRankingAmount().value /
-                                            2
-                                        )}
-                                      </div>
-                                      <div style={{ width: "20px" }}>
-                                        {this.getShortFormat(
-                                          (this.getLargestRankingAmount()
-                                            .value /
-                                            4) *
-                                            3
-                                        )}
-                                      </div>
-                                      <div style={{ width: "20px" }}>
-                                        {this.getLargestRankingAmount().label}
+                                      <div className="d-flex justify-content-between">
+                                        <div>|</div>
+                                        <div>|</div>
+                                        <div>|</div>
+                                        <div>|</div>
+                                        <div>|</div>
                                       </div>
                                     </div>
-                                    <div className="d-flex justify-content-between">
-                                      <div>|</div>
-                                      <div>|</div>
-                                      <div>|</div>
-                                      <div>|</div>
-                                      <div>|</div>
-                                    </div>
-                                  </div>
-                                </th>
+                                  </th>
+                                )}
                               </tr>
                             </thead>
                             <tbody>
