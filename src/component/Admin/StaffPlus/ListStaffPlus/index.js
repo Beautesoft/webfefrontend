@@ -9,11 +9,12 @@ import { bindActionCreators } from "redux";
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import { Navigation } from "react-minimal-side-navigation";
+import { withTranslation } from "react-i18next";
 
 export class ListStaffPlusClass extends React.Component {
   state = {
     headerDetails: [
-      { label: "Staff name", sortKey: true },
+      { label: "Staff Name", sortKey: true },
       { label: "Phone" },
       { label: "Staff ID", sortKey: true },
       { label: "Specialist", sortKey: true },
@@ -214,6 +215,12 @@ export class ListStaffPlusClass extends React.Component {
       is_loading,
       selectedMenu,
     } = this.state;
+    let { t } = this.props;
+
+    headerDetails = headerDetails.map((e) => {
+      return { ...e, label: t(e.label) };
+    });
+
     return (
       <div className="container-fluid">
         <div className="row mb-4">
@@ -222,7 +229,7 @@ export class ListStaffPlusClass extends React.Component {
               <NormalButton
                 normal={true}
                 className="col-12 fs-15 float-right"
-                label="Schedule"
+              label={t("Schedule")}
               />
             </Link>
           </div>
@@ -231,7 +238,7 @@ export class ListStaffPlusClass extends React.Component {
               <NormalButton
                 normal={true}
                 className="col-12 fs-15 float-right"
-                label="Authorization"
+                label={t("Authorization")}
               />
             </Link>
           </div>
@@ -240,7 +247,7 @@ export class ListStaffPlusClass extends React.Component {
               <NormalButton
                 normal={true}
                 className="col-12 fs-15 float-right"
-                label="Skill Listing"
+                label={t("Skill Listing")}
               />
             </Link>
           </div>
@@ -248,7 +255,7 @@ export class ListStaffPlusClass extends React.Component {
         <div className="row">
           <div className="col-sm-12 col-lg-3 mb-4">
             <div className="col-md-4 p-0">
-              <h4>Filters</h4>
+              <h4>{t("Filters")}</h4>
             </div>
             {is_loading ? (
               <div class="d-flex mt-5 align-items-center justify-content-center">
@@ -262,37 +269,37 @@ export class ListStaffPlusClass extends React.Component {
                 onSelect={({ itemId }) => this.handleFilterChange(itemId)}
                 items={[
                   {
-                    title: "Show All",
+                    title: t("Show All"),
                     itemId: "/",
                   },
                   {
-                    title: "Show Active",
+                    title: t("Show Active"),
                     itemId: "/active",
                   },
                   {
-                    title: "Show Inctive",
+                    title: t("Show Inactive"),
                     itemId: "/inactive",
                   },
                   {
-                    title: "By Emp Level",
+                    title: t("By Emp Level"),
                     itemId: "/emplvl",
                     subNav: levelList,
                   },
                   {
-                    title: "With Security Account",
+                    title: t("With Security Account"),
                     itemId: "/withSecurityAccount",
                   },
                   {
-                    title: "Without Security Account",
+                    title: t("Without Security Account"),
                     itemId: "/withoutSecurityAccount",
                   },
                   {
-                    title: "By Site List",
+                    title: t("By Site List"),
                     itemId: "/sitelist",
                     subNav: locationOption,
                   },
                   {
-                    title: "By Operation",
+                    title: t("By Operation"),
                     itemId: "/operation",
                     subNav: jobOption,
                   },
@@ -303,14 +310,14 @@ export class ListStaffPlusClass extends React.Component {
           <div className="staffList-container col-xl">
             <div className="row align-items-center">
               <div className="col-md-4">
-                <h3>List of Staffs</h3>
+                <h3>{t("List of Staffs")}</h3>
               </div>
               <div className="col-md-8">
                 <div className="d-flex justify-content-between">
                   <div className="w-100 col-8">
                     <InputSearch
                       className=""
-                      placeholder="Search Staff"
+                      placeholder={t("Search Staff")}
                       onEnter={this.handlesearch}
                     />
                   </div>
@@ -318,7 +325,7 @@ export class ListStaffPlusClass extends React.Component {
                     <NormalButton
                       mainbg={true}
                       className="col-12 fs-15 float-right"
-                      label="Add Staff"
+                      label={t("Add Staff")}
                       onClick={() =>
                         this.props.history.push("/admin/staffplus/add")
                       }
@@ -335,7 +342,6 @@ export class ListStaffPlusClass extends React.Component {
                     queryHandler={this.handlePagination}
                     pageMeta={pageMeta}
                   >
-                    {" "}
                     {is_loading ? (
                       <tr>
                         <td colSpan="7">
@@ -422,8 +428,8 @@ export class ListStaffPlusClass extends React.Component {
                                           )
                                         }
                                       >
-                                        <span className="icon-eye-grey px-3"></span>{" "}
-                                        View{" "}
+                                        <span className="icon-eye-grey px-3"></span>
+                                        {t("View")}
                                       </div>
                                       <div
                                         className="d-flex align-items-center fs-14"
@@ -433,8 +439,8 @@ export class ListStaffPlusClass extends React.Component {
                                           )
                                         }
                                       >
-                                        <span className="icon-edit px-3"></span>{" "}
-                                        Edit{" "}
+                                        <span className="icon-edit px-3"></span>
+                                        {t("Edit")}
                                       </div>
                                       <div
                                         className="d-flex align-items-center fs-14 pb-3"
@@ -442,8 +448,8 @@ export class ListStaffPlusClass extends React.Component {
                                           this.handleDeleteStaff(id)
                                         }
                                       >
-                                        <span className="icon-delete px-3"></span>{" "}
-                                        Delete{" "}
+                                        <span className="icon-delete px-3"></span>
+                                        {t("Delete")}
                                       </div>
                                     </div>
                                   </>
@@ -464,11 +470,11 @@ export class ListStaffPlusClass extends React.Component {
                   <div className="palette">
                     <div className="color-detail">
                       <div className="color"></div>
-                      <div className="detail">Available today</div>
+                      <div className="detail">{t("Available today")}</div>
                     </div>
                     <div className="color-detail">
                       <div className="color not-available"></div>
-                      <div className="detail">Not Available today</div>
+                      <div className="detail">{t("Unavailable today")}</div>
                     </div>
                   </div>
                 </div>
@@ -498,7 +504,6 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export const ListStaffPlus = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ListStaffPlusClass);
+export const ListStaffPlus = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(ListStaffPlusClass)
+);
