@@ -12,9 +12,8 @@ export class NormalInput extends Component {
       type = "text",
       iconname = "",
       onClick,
-      min,
-      max,
-      onFocus = ()=>{}
+      onFocus = () => {},
+      onBlur = () => {},
     } = this.props;
 
     return (
@@ -22,30 +21,29 @@ export class NormalInput extends Component {
         {iconname !== "" ? (
           <span className={`${iconname} input-icon`}></span>
         ) : (
-            ""
-          )}
+          ""
+        )}
         <input
           className={`${className} ${iconname !== "" ? "pl-5" : ""}`}
           name={name}
           type={type}
           disabled={disabled}
-          value={value == null ? "" : value}
+          value={value}
           min={0}
           placeholder={placeholder}
           autoComplete="off"
           onFocus={onFocus}
-          onClick={onClick ? onClick:()=>{}}
-          min = {min}
-          max = {max}
+          onBlur={onBlur}
+          onClick={onClick ? onClick : () => {}}
           onChange={e => {
-            console.log(e)
+            console.log(e);
             let body = {};
 
             body = {
               target: {
                 name: e.target.name,
-                value: e.target.value
-              }
+                value: e.target.value,
+              },
             };
 
             onChange(body);

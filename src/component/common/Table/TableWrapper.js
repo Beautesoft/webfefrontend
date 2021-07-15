@@ -2,10 +2,7 @@ import React, { Component } from "react";
 import { Pagination } from "../index";
 import PropTypes from "prop-types";
 import { scrollTop, appendQuery } from "service/helperFunctions";
-import { NormalButton } from "../../common";
-import { FormGroup, Label, Input } from "reactstrap";
 import "assets/scss/components/table.scss";
-import "./style.scss";
 
 export class TableWrapper extends Component {
   state = {
@@ -30,7 +27,7 @@ export class TableWrapper extends Component {
     return <p className="text-center">{placeHolder}</p>;
   };
 
-  handlePagination = (page) => {
+  handlePagination = page => {
     let { queryHandler, scrollProps = "" } = this.props;
     console.log(page, "dsfsdfsdfsdf");
     queryHandler({ page: page });
@@ -42,7 +39,7 @@ export class TableWrapper extends Component {
     // });
   };
 
-  handleFilter = (sortKey) => {
+  handleFilter = sortKey => {
     console.log("queryHandler ===", sortKey);
     let { queryAppend = true } = this.props;
     if (!sortKey) {
@@ -103,70 +100,19 @@ export class TableWrapper extends Component {
       isEmpty = false,
       className = "",
       overFlow = true,
-      showFilterColumn = false,
-      parentHeaderChange,
+      clickFunc,
     } = this.props;
     let { sortKey: currentSortKey, orderBy = "" } =
       this.state.currentSortKeyDetails || {};
 
     return (
       <div className="maintable table-container">
-        {showFilterColumn ? (
-          <>
-            <div className="col-3 p-0 dropdown">
-              <NormalButton
-                mainbg={true}
-                className="col-12 float-right"
-                label="Filter"
-                onClick={() =>
-                  document.getElementById("myDropdown").classList.toggle("show")
-                }
-              />
-            </div>
-            <div id="myDropdown" class="dropdown-content">
-              {headerDetails.map(
-                (
-                  {
-                    label,
-                    className,
-                    divClass = "",
-                    sortKey = "",
-                    element,
-                    width = "",
-                    enabled,
-                  },
-                  index
-                ) =>
-                  typeof enabled === "undefined" ? null : (
-                    <div>
-                      <FormGroup check>
-                        <Label check>
-                          <Input
-                            type="checkbox"
-                            onChange={() => {
-                              headerDetails[index].enabled = !enabled;
-                              this.setState();
-
-                              if (parentHeaderChange)
-                                parentHeaderChange(headerDetails);
-                            }}
-                            checked={enabled}
-                          />
-                          {label}
-                        </Label>
-                      </FormGroup>
-                    </div>
-                  )
-              )}
-            </div>
-          </>
-        ) : null}
         <div
           className={`maintable-content ${
             overFlow ? "table-responsive" : ""
           } ${className}`}
         >
-          <table className={"table table-striped rounded " + className}>
+          <table className="table rounded">
             <thead>
               <tr>
                 {headerDetails.map(
@@ -178,11 +124,10 @@ export class TableWrapper extends Component {
                       sortKey = "",
                       element,
                       width = "",
-                      enabled = true,
+                      dblclickFunc,
                     },
                     index
                   ) => {
-                    if (!enabled) className += " d-none";
                     return (
                       <th
                         className={className}
@@ -197,7 +142,8 @@ export class TableWrapper extends Component {
                           className={`d-flex align-items-center justify-content-center text-center ${
                             sortKey && "cursor-pointer"
                           } ${divClass}`}
-                          onClick={(e) => this.handleFilter(sortKey)}
+                          onClick={e => this.handleFilter(sortKey)}
+                          onDoubleClick={dblclickFunc}
                         >
                           {label}
                           {element && element()}
@@ -222,9 +168,7 @@ export class TableWrapper extends Component {
                                 }`}
                               />
                             </div>
-                          ) : (
-                            ""
-                          )}
+                          ) : null}
                         </div>
                       </th>
                     );

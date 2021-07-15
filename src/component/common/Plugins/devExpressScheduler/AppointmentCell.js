@@ -43,146 +43,201 @@ export default function Appointment(model) {
   const { appointmentData } = model.data;
   let fromTime = getTime(appointmentData.startDate);
   let toTime = getTime(appointmentData.endDate);
-  console.log(appointmentData, "Appointment data cell value");
-  //   balance: false
-  // birthday: false
-  // border_color: "#ec40e1"
-  // color: "#f0b5ec"
-  // current_time: "19:04:51"
-  // cust_name: "customer_jan13_01"
-  // cust_phone: "8890276000"
-  // cust_refer: null
-  // endDate: "2021-02-23T10:30:00"
-  // id: 280
-  // inital: true
-  // outstanding: false
-  // remark: false
-  // remark_val: ""
-  // req_therapist: true
-  // startDate: "2021-02-23T10:00:00"
-  // status: "Booking"
-  // text: "BODY SCRUB 30 MIN"
-  // walkin: false
+  let borderStyle = "dotted" + appointmentData.border_color;
   return (
     <div
       className="display-box p-0"
       style={{
         background: appointmentData.color,
-        border: appointmentData.border_color,
+        border: borderStyle,
       }}
     >
-      <div className="d-flex">
-        <div className="col-1 col-sm-1 col-md-1">
-          {appointmentData.inital ? (
-            <div className="d-flex justify-content-center pt-1">
-              <span className="tooltip-img">
-                <img src={calander} />
-                <div className="tooltiptext-img text-left">
-                  <p>
-                    [{fromTime}
-                    {" - "}
-                    {toTime}]
-                  </p>
-                  <p>{appointmentData.cust_name}</p>
-                  <p>{appointmentData.cust_phone}</p>
-                  <p>{appointmentData.status}</p>
-                </div>
-              </span>
+      {appointmentData.status && appointmentData.status === "Block" ? (
+        <div className="d-flex">
+          <div className="col-12 col-sm-12 col-md-12">
+            <div className="app-detail">
+              <p>{appointmentData.reason}</p>
+              <p className="text-uppercase">
+                {appointmentData.text} ({fromTime}
+                {" - "}
+                {toTime})
+              </p>
             </div>
-          ) : (
-            ""
-          )}
-
-          {/* <div className="d-flex justify-content-center pt-1">
-            <span className="tooltip-img">
-              <img src={outstanding}  />
-              <span className="tooltiptext-img">
-                <p >{appointmentData.text}</p>
-              </span>
-            </span>
           </div>
-           */}
-          {appointmentData.req_therapist ? (
-            <div className="d-flex justify-content-center pt-1">
-              <span className="tooltip-img">
-                <img src={req_therapist} />
-                <span className="tooltiptext-img">
-                  <p>{`Request Therapist`}</p>
-                </span>
-              </span>
-            </div>
-          ) : (
-            ""
-          )}
-
-          <div className="d-flex justify-content-center pt-1">
-            <span className="tooltip-img">
-              <img src={treatmentbal} />
-              <span className="tooltiptext-img">
-                {!appointmentData.balance ? (
-                  <p>{`No balance for Treatment or product`}</p>
-                ) : (
-                  ""
-                )}
-              </span>
-            </span>
-          </div>
-
-          {appointmentData.birthday ? (
-            <div className="d-flex justify-content-center pt-1">
-              <span className="tooltip-img">
-                <img src={birthday} />
-                <span className="tooltiptext-img">
-                  <p>{`Birthday Month`}</p>
-                </span>
-              </span>
-            </div>
-          ) : (
-            ""
-          )}
-          {appointmentData.remark ? (
-            <div className="d-flex justify-content-center pt-1">
-              <span className="tooltip-img">
-                <img src={new_remark} />
-                <span className="tooltiptext-img">
-                  <p>{appointmentData.remark_val}</p>
-                </span>
-              </span>
-            </div>
-          ) : (
-            ""
-          )}
-          {/* <div className="d-flex justify-content-center pt-1">
-            <span className="tooltip-img">
-              <img src={storecard}  />
-              <span className="tooltiptext-img">
-                <p >{appointmentData.text}</p>
-              </span>
-            </span>
-          </div>
-          <div className="d-flex justify-content-center pt-1">
-            <span className="tooltip-img">
-              <img src={walkin}  />
-              <span className="tooltiptext-img">
-                <p >{appointmentData.text}</p>
-              </span>
-            </span>
-          </div> */}
         </div>
-        <div className="col-11 col-sm-11 col-md-11">
-          <div className="app-detail">
+      ) : (
+        <div className="d-flex">
+          <div className="col p-0 ml-2">
+            {appointmentData.link_flag ? (
+              <div className="pt-1">
+                <span className="tooltip-img">
+                  <span>
+                    <span>
+                      <svg
+                        width="15"
+                        height="15"
+                        viewBox="0 0 15 15"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          cx="7"
+                          cy="8"
+                          r="7"
+                          fill="rgba(60, 64, 135, 0.31)"
+                          stroke="#3C4087"
+                        ></circle>
+                        <text x="5" y="12" fill="#3C4087">
+                          L
+                        </text>
+                      </svg>
+                    </span>
+                  </span>
+                  <div className="tooltiptext-img text-left">
+                    <p>{`Linked Appointment`}</p>
+                  </div>
+                </span>
+              </div>
+            ) : (
+              ""
+            )}
+            {appointmentData.inital ? (
+              <div className="pt-1">
+                <span className="tooltip-img">
+                  <img src={calander} />
+                  <div className="tooltiptext-img text-left">
+                    <p>
+                      [{fromTime}
+                      {" - "}
+                      {toTime}]
+                    </p>
+                    <p>{appointmentData.cust_name}</p>
+                    <p>{appointmentData.cust_phone}</p>
+                    <p>{appointmentData.status}</p>
+                  </div>
+                </span>
+              </div>
+            ) : (
+              ""
+            )}
+            {appointmentData.outstanding ? (
+              <div className="pt-1">
+                <span className="tooltip-img">
+                  <img src={outstanding} />
+                  <span className="tooltiptext-img">
+                    <p>{`Outstanding $${appointmentData.outstanding_amt}`}</p>
+                  </span>
+                </span>
+              </div>
+            ) : (
+              ""
+            )}
+            {appointmentData.req_therapist ? (
+              <div className="pt-1">
+                <span className="tooltip-img">
+                  <img src={req_therapist} />
+                  <span className="tooltiptext-img">
+                    <p>{`Request Therapist`}</p>
+                  </span>
+                </span>
+              </div>
+            ) : (
+              ""
+            )}
+            {appointmentData.balance ? (
+              <div className="pt-1">
+                <span className="tooltip-img">
+                  <img src={treatmentbal} />
+                  <span className="tooltiptext-img">
+                    <p>{`Have balance for Treatment or Product`}</p>
+                  </span>
+                </span>
+              </div>
+            ) : (
+              ""
+            )}
+            {appointmentData.birthday ? (
+              <div className="pt-1">
+                <span className="tooltip-img">
+                  <img src={birthday} />
+                  <span className="tooltiptext-img">
+                    <p>{`Birthday Month`}</p>
+                  </span>
+                </span>
+              </div>
+            ) : (
+              ""
+            )}
+            {appointmentData.remark ? (
+              <div className="pt-1">
+                <span className="tooltip-img">
+                  <img src={new_remark} />
+                  <span className="tooltiptext-img">
+                    <p>{appointmentData.remark_val}</p>
+                  </span>
+                </span>
+              </div>
+            ) : (
+              ""
+            )}
+            {appointmentData.permanent_remark != "" ? (
+              <div className="pt-1">
+                <span className="tooltip-img">
+                  <img src={new_remark} />
+                  <span className="tooltiptext-img">
+                    <p>{appointmentData.permanent_remark}</p>
+                  </span>
+                </span>
+              </div>
+            ) : (
+              ""
+            )}
+            {/* <div className="pt-1">
+          <span className="tooltip-img">
+            <img src={storecard}  />
+            <span className="tooltiptext-img">
+              <p >{appointmentData.text}</p>
+            </span>
+          </span>
+        </div>
+        */}
+            {appointmentData.walkin ? (
+              <div className="pt-1">
+                <span className="tooltip-img">
+                  <img src={walkin} />
+                  <span className="tooltiptext-img">
+                    <p>{`Walkin`}</p>
+                  </span>
+                </span>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+
+          <div className="app-detail col-11 col-sm-11 col-md-11 p-0 ml-4">
             <p>
               {fromTime}
               {" - "}
               {toTime}
             </p>
             <p>{appointmentData.cust_name}</p>
-            <p>{appointmentData.cust_phone}</p>
-            <p>{appointmentData.cust_refer}</p>
-            <p>{appointmentData.text}</p>
+            <p>
+              {appointmentData.cust_code}&ensp;{appointmentData.gender}{" "}
+              {appointmentData.gender ? "/" : ""}
+              {appointmentData.age}
+            </p>
+            <p>
+              {appointmentData.cust_phone}&nbsp;
+              {appointmentData.cust_phone1 ? "/" : ""}
+              &nbsp;{appointmentData.cust_phone1}
+            </p>
+            {/* <p>{appointmentData.cust_refer}</p> */}
+            <p>{appointmentData.appt_remark}</p>
+            <p>{appointmentData.room}</p>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

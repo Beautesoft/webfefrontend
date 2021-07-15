@@ -6,6 +6,7 @@ import {
   NormalDate,
   NormalModal,
   NormalCheckbox,
+  NormalTextarea,
 } from "component/common";
 import { CreateAppointment, updateForm } from "redux/actions/appointment";
 import { getCustomer, getCommonApi } from "redux/actions/common";
@@ -39,6 +40,8 @@ export class AppointmentFormClass extends Component {
       Room_Codeid: "",
       sec_status: "",
       walkin: false,
+      remark_setting: false,
+      edit_remark: "",
     },
     multipleCustomerForm: {
       noOfCustomer: 1,
@@ -93,6 +96,9 @@ export class AppointmentFormClass extends Component {
         },
       },
     });
+  };
+
+  componentDidMount = async () => {
     this.props.getCustomer("all/").then(() => {});
     this.props.getCommonApi("bookingstatus/").then(res => {
       let { status, data, sec_data } = res;
@@ -106,9 +112,12 @@ export class AppointmentFormClass extends Component {
     let { staffList, formFields } = this.state;
     let { basicApptDetail } = this.props;
     formFields["appointmentDate"] = basicApptDetail.date;
-    //formFields["bookingStatus"] = "Booking";
+
+    let booking_status = "Booking";
+    formFields["bookingStatus"] = booking_status;
     formFields["ItemSite_Codeid"] = basicApptDetail.branchId;
     this.setState({ formFields });
+    await this.props.updateForm("appointmentCustomerDetail", formFields);
     this.getListData();
     this.props
       .getCommonApi(
@@ -129,40 +138,43 @@ export class AppointmentFormClass extends Component {
     if (basicApptDetail.appt_id) {
       console.log(basicApptDetail.appt_id);
       this.setState({ appointmentId: basicApptDetail.appt_id });
-      this.props
-        .getCommonApi(`appointmentresources/${basicApptDetail.appt_id}/`)
-        .then(key => {
-          let { status, data } = key;
-          let appt_Date = data.appt_date;
-          let date = appt_Date.split("/");
-          let finaldate = date[2] + "-" + date[1] + "-" + date[0];
-          if (status === 200) {
-            console.log(data, "selectedCustomer");
-            formFields["custName"] = data.cust_name;
-            formFields["appointmentDate"] = finaldate;
-            formFields["bookingStatus"] = data.booking_status;
-            formFields["new_remark"] = data.ori_remark;
-            formFields["customerName"] = data.cust_id;
-            formFields["Source_Codeid"] = data.source_id;
-            formFields["Room_Codeid"] = data.room_id;
-            formFields["sec_status"] = data.secondary_status;
-            formFields["Appt_typeid"] = data.channel_id;
-            this.setState({ formFields });
-            this.setState({ customerId: data.cust_id });
-            this.props.selectedCustomer(data.cust_id);
-            this.props.updateForm("appointmentCustomerDetail", formFields);
-          }
-        });
+      this.handleAppointmentDetailRender(basicApptDetail.appt_id, false);
+    } else if (
+      this.props.PasteAppointmentId &&
+      this.props.PasteAppointmentId > 0
+    ) {
+      this.handleAppointmentDetailRender(this.props.PasteAppointmentId, true);
     }
   };
 
-  componentDidMount() {
-    // let formFields = Object.assign({}, this.state.formFields);
-    // formFields["bookingStatus"] = "Booking";
-    // this.setState({
-    //   formFields,
-    // });
-  }
+  handleAppointmentDetailRender = (appt_id, copy) => {
+    let { formFields } = this.state;
+    this.props.getCommonApi(`appointmentedit/${appt_id}/`).then(key => {
+      let { status, data } = key;
+      if (status === 200) {
+        if (data.appointment) {
+          console.log(data.appointment, "selectedCustomer");
+          formFields["custName"] = data.appointment.cust_name;
+          if (!copy) {
+            formFields["appointmentDate"] = data.appointment.appt_date;
+          }
+          formFields["bookingStatus"] = data.appointment.appt_status;
+          formFields["new_remark"] = data.appointment.ori_remark;
+          formFields["edit_remark"] = data.appointment.edit_remark;
+          formFields["customerName"] = data.appointment.cust_id;
+          formFields["Source_Codeid"] = data.appointment.source_id;
+          formFields["Room_Codeid"] = data.appointment.Room_Codeid;
+          formFields["sec_status"] = data.appointment.sec_status;
+          formFields["Appt_typeid"] = data.appointment.channel_id;
+          formFields["remark_setting"] = data.appointment.remark_setting;
+          this.setState({ formFields });
+          this.setState({ customerId: data.appointment.cust_id });
+          this.props.selectedCustomer(data.appointment.cust_id);
+          this.props.updateForm("appointmentCustomerDetail", formFields);
+        }
+      }
+    });
+  };
 
   componentWillUnmount() {
     this.props.onRef(null);
@@ -423,7 +435,6 @@ export class AppointmentFormClass extends Component {
   };
 
   handleLogClick = () => {
-    debugger;
     this.setState(prevState => ({
       isAppointmentLogModal: !prevState.isAppointmentLogModal,
     }));
@@ -457,12 +468,12 @@ export class AppointmentFormClass extends Component {
       <>
         <div className="form-group mb-4 pb-2 appointment-form">
           <div className="d-flex">
-            <div className="d-flex justify-content-start col-9 h5 p-0">
+            <div className="d-flex justify-content-start col-md-11 col-12 h5 p-0">
               Appointment
             </div>
             {appointmentId && appointmentId > 0 ? (
               <div
-                className="d-flex justify-content-end align-items-center bg-white col-3"
+                className="d-flex justify-content-end align-items-center bg-white cursor-pointer col-md-1 col-12"
                 onClick={this.handleLogClick}
               >
                 <img src={logicon} alt="" width="35px" height="35px" />
@@ -470,7 +481,7 @@ export class AppointmentFormClass extends Component {
             ) : null}
           </div>
           <div className="row">
-            <div className="col-3 mb-3">
+            <div className="col-md-3 mb-3">
               <label className="text-left text-black common-label-text ">
                 Date{" "}
                 <span className="error-message text-danger validNo fs-18">
@@ -493,7 +504,7 @@ export class AppointmentFormClass extends Component {
                 "required|date"
               )}
             </div>
-            <div className="col-3 mb-3">
+            <div className="col-md-3 mb-3">
               <div>
                 <label className="text-left text-black common-label-text ">
                   Name{" "}
@@ -528,7 +539,7 @@ export class AppointmentFormClass extends Component {
               )}
             </div>
 
-            <div className="col-3 mb-3">
+            <div className="col-md-3 mb-3">
               <label className="text-left text-black common-label-text ">
                 Booking status{" "}
                 <span className="error-message text-danger validNo fs-18">
@@ -552,7 +563,7 @@ export class AppointmentFormClass extends Component {
               </div>
             </div>
 
-            <div className="col-3 mb-3">
+            <div className="col-md-3 mb-3">
               <div>
                 <label className="text-left text-black common-label-text ">
                   Channel
@@ -571,15 +582,14 @@ export class AppointmentFormClass extends Component {
               {/* {this.validator.message('Appt_typeid', formFields.Appt_typeid, 'required')} */}
             </div>
 
-            <div className="col-3 mb-3">
-              <div>
-                <label className="text-left text-black common-label-text ">
-                  Remark
-                </label>
-              </div>
+            <div className="col-md-3 mb-3">
+              <label className="text-left text-black common-label-text ">
+                Remark
+              </label>
+
               <div className="input-group">
-                {appointmentId ? (
-                  <NormalInput
+                {formFields.remark_setting ? (
+                  <NormalTextarea
                     // placeholder="Enter here"
                     // options={siteList}
                     value={formFields.new_remark}
@@ -588,7 +598,7 @@ export class AppointmentFormClass extends Component {
                     disabled
                   />
                 ) : (
-                  <NormalInput
+                  <NormalTextarea
                     // placeholder="Enter here"
                     // options={siteList}
                     value={formFields.new_remark}
@@ -600,7 +610,7 @@ export class AppointmentFormClass extends Component {
               {/* {this.validator.message('Remark', formFields.new_remark, 'required')} */}
             </div>
 
-            <div className="col-3 mb-3">
+            <div className="col-md-3 mb-3">
               <div>
                 <label className="text-left text-black common-label-text ">
                   Source Name
@@ -618,7 +628,7 @@ export class AppointmentFormClass extends Component {
               </div>
               {/* {this.validator.message('Source name', formFields.Source_Codeid, 'required')} */}
             </div>
-            <div className="col-3 mb-3">
+            <div className="col-md-3 mb-3">
               <div>
                 <label className="text-left text-black common-label-text ">
                   Room
@@ -637,7 +647,7 @@ export class AppointmentFormClass extends Component {
               {/* {this.validator.message('Room', formFields.Room_Codeid, 'required')} */}
             </div>
 
-            <div className="col-3 mb-3">
+            <div className="col-md-3 col-12 mb-3">
               <label className="text-left text-black common-label-text ">
                 Secondary status
               </label>
@@ -653,9 +663,26 @@ export class AppointmentFormClass extends Component {
                 {/* {this.validator.message('Secondary Status', formFields.sec_status, 'required')} */}
               </div>
             </div>
+            {formFields.remark_setting ? (
+              <div className="col-md-3 mb-3">
+                <label className="text-left text-black common-label-text ">
+                  New Remark
+                </label>
+
+                <div className="input-group">
+                  <NormalTextarea
+                    // placeholder="Enter here"
+                    // options={siteList}
+                    value={formFields.edit_remark}
+                    name="edit_remark"
+                    onChange={this.handleChange}
+                  />
+                </div>
+              </div>
+            ) : null}
 
             {!appointmentId ? (
-              <div className="col-1 mb-3">
+              <div className="col-md-1 col-12 mb-3">
                 <label className="text-left text-black common-label-text ">
                   Walkin
                 </label>
@@ -672,13 +699,15 @@ export class AppointmentFormClass extends Component {
             )}
             {visible ? (
               <div className="customerSearch-block">
-                <div className="row mt-4 table table-header w-100 m-0">
+                <div className="row mt-5 table table-header w-100 m-0 overflow-auto">
                   <div className="col-4">Name</div>
                   <div className="col-2">Phone</div>
-                  <div className="col-3">Cust Code</div>
+                  <div className="col-2">Cust Code</div>
                   <div className="col-3">Email</div>
+                  <div className="col-1">NRIC</div>
                 </div>
-                <div className="response-table w-100">
+                <div className="response-table w-100 row">
+                  {console.log(customerOption, "customer search result")}
                   {customerOption.length > 0 ? (
                     customerOption.map((item, index) => {
                       return (
@@ -689,8 +718,9 @@ export class AppointmentFormClass extends Component {
                         >
                           <div className="col-4">{item.cust_name}</div>
                           <div className="col-2">{item.cust_phone1}</div>
-                          <div className="col-3">{item.cust_code}</div>
+                          <div className="col-2">{item.cust_code}</div>
                           <div className="col-3">{item.cust_email}</div>
+                          <div className="col-1">{item.cust_nric}</div>
                         </div>
                       );
                     })

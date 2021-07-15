@@ -35,7 +35,7 @@ export class UpcomingAppointmentClass extends Component {
 
   getUpcomingAppList = data => {
     let { customerNumber } = this.state;
-    let { page = 1, limit = 8, search = "" } = data;
+    let { page = 1, limit = 10, search = "" } = data;
     this.props
       .getCommonApi(
         `upcomingappointment/?cust_id=${customerNumber}&page=${page}&limit=${limit}`
@@ -71,19 +71,14 @@ export class UpcomingAppointmentClass extends Component {
   // }
 
   render() {
-    let {
-      headerDetails,
-      upcomingAppList,
-      meta,
-      CustomerName,
-      customerPhone,
-    } = this.state;
+    let { headerDetails, upcomingAppList, meta, CustomerName, customerPhone } =
+      this.state;
     let { customerId } = this.props;
     return (
       <>
         <NormalModal
           className={"multiple-appointment select-category"}
-          style={{ minWidth: "75%" }}
+          style={{ minWidth: "80%" }}
           modal={this.props.isUpcomingAppointmentModal}
           handleModal={this.props.handleUpcomingAppointment}
         >
@@ -97,7 +92,7 @@ export class UpcomingAppointmentClass extends Component {
             <div className="tab-table-content">
               <div className="py-4">
                 <div className="col-12 p-2 text-center">
-                  <h5 className="fw-500">Appointment History</h5>
+                  <h5 className="fw-500">Upcoming Appointment</h5>
                 </div>
                 <div className="d-flex flex-noWrap mb-2">
                   <div className="col-4">

@@ -17,6 +17,7 @@ import SimpleReactValidator from "simple-react-validator";
 import { CreateAppointment, updateForm } from "redux/actions/appointment";
 import { NewCreateAppointment } from "../../NewCreateAppointment/index";
 import { LoadPanel } from "devextreme-react/load-panel";
+
 const position = { of: "#appointment" };
 export class SchedulerClass extends Component {
   state = {
@@ -65,13 +66,15 @@ export class SchedulerClass extends Component {
     selectedId: "",
     staffList: [],
     page: 1,
-    limit: 6,
+    limit: 8,
     meta: [],
     searchtext: "",
     staffSortlist: [],
     isOpenModal: false,
     loadPanelVisible: false,
-    showIndicator: true,
+    showIndicator: false,
+    showCurrentTimeIndicator: false,
+    shadeUntilCurrentTime: true,
     shading: true,
     showPane: true,
     groupByType: "staff",
@@ -86,8 +89,7 @@ export class SchedulerClass extends Component {
       ),
       autoForceUpdate: this,
     });
-    //this.getAvailability();
-    // this.getAppointment();
+
     this.getAppointmentWithStaff();
     // let { brachList, appointment, formField, filterDate } = this.state;
     // this.props.getCommonApi(`treatment/Outlet/`).then(key => {
@@ -100,23 +102,6 @@ export class SchedulerClass extends Component {
     //   }
     // });
   };
-
-  // getAvailability = () => {
-  //   let { filterDate } = this.state;
-  //   this.props
-  //     .getCommonApi(
-  //       `staffsavailable/?Appt_date=${dateFormat(filterDate, "yyyy-mm-dd")}`
-  //     )
-  //     .then(key => {
-  //       let { status, data } = key;
-  //       if (status === 200) {
-  //         // for (let value of data) {
-  //         //     staffList.push({ value: value.id, label: value.emp_name })
-  //         // }
-  //         this.setState({ list: data });
-  //       }
-  //     });
-  // };
 
   handleAppointmentOpen = (id, e) => {
     console.log(e, id, "hgjsydfisuyfsdfm ==== handleAppointmentOpen");
@@ -172,25 +157,7 @@ export class SchedulerClass extends Component {
       isOpenModal: false,
     });
   };
-  // getAppointment = () => {
-  //   let { brachList, events, formField, filterType, filterDate } = this.state;
-  //   this.props
-  //     .getCommonApi(
-  //       `appointmentcalender/?date=${dateFormat(
-  //         filterDate
-  //       )}&check=${filterType}`
-  //     )
-  //     .then(async key => {
-  //       let { status, data } = key;
-  //       if (status === 200) {
-  //         events = [];
-  //         await this.setState({ events: null });
-  //         events = data;
-  //         await this.setState({ events });
-  //         console.log(events, "appointmentlist", key);
-  //       }
-  //     });
-  // };
+
   handleChangeFilter = async (prevMode, prevDate, newMode, newDate, search) => {
     let { filterDate, filterType, searchtext } = this.state;
     filterDate = newDate;
@@ -203,8 +170,6 @@ export class SchedulerClass extends Component {
     });
     console.log("dfhgfhjhjghjdfhg", prevMode, prevDate, newMode, newDate);
     if (prevMode !== newMode || prevDate !== newDate) {
-      // this.getAvailability();
-      //this.getAppointment();
       this.getAppointmentWithStaff();
     }
   };
@@ -216,11 +181,8 @@ export class SchedulerClass extends Component {
       formField,
     });
     if (name === "branchId") {
-      //this.getAvailability();
-      // this.getAppointment();
       this.getAppointmentWithStaff();
     }
-    // console.log(formField, "afasfasdfdfasd")
     this.props.updateForm("basicApptDetail", formField);
   };
 
@@ -269,12 +231,54 @@ export class SchedulerClass extends Component {
 
             if (status === 200) {
               staffList = data.dataList;
+
+              events = [];
+              meta = [];
+              this.setState({ events, meta });
               meta = data.meta;
-              events = event;
-              await this.setState({ events, staffList, meta });
+              //events = event;
+              if (event) {
+                for (let cell of event) {
+                  let filterList = events.find(
+                    Appoint =>
+                      Appoint.linkcode === cell.linkcode &&
+                      Appoint.id === cell.id &&
+                      Appoint.cust_id === cell.cust_id &&
+                      (Appoint.endDate === cell.startDate ||
+                        Appoint.startDate === cell.endDate)
+                  );
+                  if (filterList) {
+                    if (filterList.startDate < cell.startDate) {
+                      filterList["startDate"] = filterList.startDate;
+                    } else {
+                      filterList["startDate"] = cell.startDate;
+                    }
+                    if (filterList.endDate > cell.endDate) {
+                      filterList["endDate"] = filterList.endDate;
+                    } else {
+                      filterList["endDate"] = cell.endDate;
+                    }
+                    filterList["appt_remark"] =
+                      filterList.appt_remark +
+                      " " +
+                      "/" +
+                      " " +
+                      cell.appt_remark;
+                    filterList["Merged"] = true;
+                    await this.setState({ ...this.state.events, filterList });
+                  } else {
+                    events.push(cell);
+                    await this.setState({ ...events, events });
+                  }
+                }
+              }
+              await this.setState({ staffList, meta });
+              // await this.setState({ events, staffList, meta });
+              console.log(event, "appointment cell data");
+
+              setTimeout(this.hideLoadPanel);
             }
           });
-        setTimeout(this.hideLoadPanel, 3000);
       }
     );
   };
@@ -307,11 +311,14 @@ export class SchedulerClass extends Component {
   };
 
   groupByAppointment = async groupBy => {
-    debugger;
     await this.setState({
       groupByType: groupBy,
     });
     this.getAppointmentWithStaff();
+  };
+  timeToMins = time => {
+    var b = time.split(":");
+    return b[0] * 60 + +b[1];
   };
 
   render() {
@@ -344,7 +351,9 @@ export class SchedulerClass extends Component {
             showIndicator={this.state.showIndicator}
             shading={this.state.shading}
             showPane={this.state.showPane}
-          />
+            showCurrentTimeIndicator={this.state.showCurrentTimeIndicator}
+            shadeUntilCurrentTime={this.state.shadeUntilCurrentTime}
+            />
           <div className="scheduler-container pr-0">
             <NewSchedulerModal
               staffList={staffList}
@@ -365,7 +374,6 @@ export class SchedulerClass extends Component {
             />
           </div>
           <NewCreateAppointment
-           style={{ minWidth: "1000px" }}
             isOpenModal={isOpenModal}
             handleCloseDialog={this.handleCloseDialog}
             handleSaveorUpdate={this.getAppointmentWithStaff}

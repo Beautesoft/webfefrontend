@@ -201,7 +201,7 @@ export class LoginClass extends Component {
           <center><p>Copyrights (c) Acy7lab.com. 
           </p><p> Licensed to Sequoia - Version 6.6</p>
           <br/>
-          <p>Dated: 5.28</p></center>
+          <p>Dated: 6.15</p></center>
         </div>
       </>
     );

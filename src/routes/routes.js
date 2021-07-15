@@ -312,6 +312,12 @@ const routers = [
         exact: true,
       },
       {
+        component: "InvoiceHistoryPlus",
+        path: "/customerplus/:id/invoice",
+        auth: false,
+        exact: true,
+      },
+      {
         component: "HoldSectionsPlus",
         path: "/customerplus/:id/hold",
         auth: false,

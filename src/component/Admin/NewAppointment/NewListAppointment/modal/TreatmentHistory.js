@@ -36,7 +36,7 @@ export class ListTreatmentHistoryClass extends Component {
 
   getPackageList = data => {
     let { customerNumber } = this.state;
-    let { page = 1, limit = 8, search = "" } = data;
+    let { page = 1, limit = 10, search = "" } = data;
     this.props
       .getCommonApi(
         `appttreatmentdonehistory/?cust_id=${customerNumber}&page=${page}&limit=${limit}`
@@ -84,7 +84,7 @@ export class ListTreatmentHistoryClass extends Component {
       <>
         <NormalModal
           className={"multiple-appointment select-category"}
-          style={{ minWidth: "75%" }}
+          style={{ minWidth: "80%" }}
           modal={this.props.isTreatmentHistoryModal}
           handleModal={this.props.handleTreatmentHistory}
         >

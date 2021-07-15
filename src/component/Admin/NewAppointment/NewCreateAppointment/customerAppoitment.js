@@ -3,19 +3,11 @@ import { AppointmentForm } from "./AppointmentForm";
 import { NewSelectTreatment } from "./NewSelectTreatment";
 
 export class CustomerAppointment extends Component {
-  constructor(props) {
-    super(props);
-    this.child = React.createRef();
-  }
   state = {
     customerId: 0,
   };
 
   componentWillMount() {}
-
-  showErrorMessage = () => {
-    this.child.onFocus();
-  };
 
   selectedCustomer = data => {
     this.setState({
@@ -27,15 +19,16 @@ export class CustomerAppointment extends Component {
     return (
       <div className="appointment-holder pt-4 px-3">
         <div className="row">
-          <AppointmentForm
+          {/* <AppointmentForm
             onRef={ref => (this.child = ref)}
             selectedCustomer={this.selectedCustomer}
-          ></AppointmentForm>
+            PasteAppointmentId={this.props.PasteAppointmentId}
+          ></AppointmentForm> */}
         </div>
         <div className="row select-appointment">
-          <p className="header h5">Select Treatments</p>
+          {/* <p className="header h5">Select Treatments</p> */}
           <NewSelectTreatment
-            showErrorMessage={this.showErrorMessage}
+            selectedCustomer={this.selectedCustomer}
             customerId={this.state.customerId}
             handleCloseDialog={this.props.handleCloseDialog}
             handleSaveorUpdate={this.props.handleSaveorUpdate}

@@ -195,7 +195,8 @@ export class TreatmentDoneClass extends Component {
                     "price" : key.unit_amount,
                     "item_uom" : null,
                     "treatment_account" : key.TreatmentAccountid,
-                    "treatment": reverseTreatmentIds.slice(0, key.session)
+                    "treatment": reverseTreatmentIds.slice(0, key.session),
+                    "ori_stockid": null,
                 }
                 payload.push(obj);
             }

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import logo from '../assets/images/logo.svg'
+import logo from "../assets/images/logo.png";
 
 export class AuthLayout extends Component {
   // componentWillMount() { }
@@ -17,7 +17,13 @@ export class AuthLayout extends Component {
                 <div className="auth-layout-bg w-100 h-100">
                   <div className="page-wrapper w-100 h-100 position-relative">
                     <div className="d-flex justify-content-center align-items-center h-100 w-100">
-                      <img src={logo} alt="" className="position-relative" />
+                      <img
+                        src={logo}
+                        alt=""
+                        width="334"
+                        height="73"
+                        className="position-relative"
+                      />
                     </div>
                   </div>
                 </div>

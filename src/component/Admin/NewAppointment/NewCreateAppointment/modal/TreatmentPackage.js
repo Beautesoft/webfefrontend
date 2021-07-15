@@ -103,6 +103,7 @@ export class ListTreatmentPackageClass extends React.Component {
     formFields["item_desc"] = item.item_name;
     formFields["add_duration"] = item.add_duration;
     formFields["Item_CodeName"] = item.item_name;
+    formFields["treatment_parentcode"] = item.treatment_parentcode;
 
     this.setState({
       formFields,
@@ -127,7 +128,7 @@ export class ListTreatmentPackageClass extends React.Component {
       <>
         <NormalModal
           className={"multiple-appointment select-category"}
-          style={{ minWidth: "800px" }}
+          style={{ minWidth: "60%" }}
           modal={this.props.isTreatementModal}
           handleModal={this.props.handleTreatementmodal}
         >
@@ -140,8 +141,8 @@ export class ListTreatmentPackageClass extends React.Component {
           <div className="customer-list container">
             <div className="tab-table-content">
               <div className="py-4">
-                <div className="col-12 p-2 text-center">
-                  <h2 className="fw-500">Treatment</h2>
+                <div className="col-12 p-2">
+                  <h5 className="fw-500">Treatment</h5>
                 </div>
                 <div className="table-container">
                   <TableWrapper
@@ -159,6 +160,7 @@ export class ListTreatmentPackageClass extends React.Component {
                           price,
                           expiry,
                           add_duration,
+                          treatment_parentcode,
                         } = item;
                         return (
                           <tr

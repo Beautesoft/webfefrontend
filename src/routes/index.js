@@ -17,7 +17,7 @@ class Routes extends Component {
     this.state = {
       renderRoute: false,
       pathname: null,
-      loading: true
+      loading: true,
     };
   }
 
@@ -28,7 +28,6 @@ class Routes extends Component {
     // ) {
     //   history.push("/auth/login");
     // }
-    
   }
 
   // componentDidMount() { }
@@ -41,90 +40,90 @@ class Routes extends Component {
     // history.push("/admin/dashboard");
     // console.log("asdfgadffgdfgdfgdfgdfg")
     // getTokenDetails()
-};
+  };
 
-render() {
-  return (
-    <Router history={history}>
-      {Routers.map(
-        ({
-          component,
-          redirect,
-          path,
-          exact = false,
-          // auth = true,
-          childrens = []
-        }) => {
-          if (childrens.length > 0) {
+  render() {
+    return (
+      <Router history={history}>
+        {Routers.map(
+          ({
+            component,
+            redirect,
+            path,
+            exact = false,
+            // auth = true,
+            childrens = [],
+          }) => {
+            if (childrens.length > 0) {
+              return (
+                <Route
+                  path={path}
+                  exact={exact}
+                  key={path}
+                  render={(props) => {
+                    if (redirect) {
+                      if (props.location.pathname === path) {
+                        props.history.push(redirect);
+                      }
+                    }
+
+                    const LayoutComponent = Layout[component];
+
+                    return (
+                      <LayoutComponent {...props}>
+                        {childrens.map(
+                          ({
+                            component: ChildrenComponent,
+                            path: childrenPath,
+                            exact = false,
+                            auth = true,
+                          }) => {
+                            this.routerGuard();
+                            return (
+                              <Route
+                                path={path + childrenPath}
+                                exact={exact}
+                                key={path + childrenPath}
+                                render={(props) => {
+                                  let PageComponent = Pages[ChildrenComponent];
+
+                                  return <PageComponent {...props} />;
+                                }}
+                              />
+                            );
+                          }
+                        )}
+                      </LayoutComponent>
+                    );
+                  }}
+                />
+              );
+            }
+
             return (
               <Route
                 path={path}
                 exact={exact}
-                key={path}
-                render={props => {
-                  if (redirect) {
-                    if (props.location.pathname === path) {
-                      props.history.push(redirect);
-                    }
+                key={component}
+                render={(props) => {
+                  if (component) {
+                    let PageComponent = Pages[component];
+                    return <PageComponent {...props} />;
                   }
-
-                  const LayoutComponent = Layout[component];
-
-                  return (
-                    <LayoutComponent {...props}>
-                      {childrens.map(
-                        ({
-                          component: ChildrenComponent,
-                          path: childrenPath,
-                          exact = false,
-                          auth = true
-                        }) => {
-                          this.routerGuard();
-                          return (
-                            <Route
-                              path={path + childrenPath}
-                              exact={exact}
-                              key={path + childrenPath}
-                              render={props => {
-                                let PageComponent = Pages[ChildrenComponent];
-
-                                return <PageComponent {...props} />;
-                              }}
-                            />
-                          );
-                        }
-                      )}
-                    </LayoutComponent>
-                  );
+                  if (redirect) {
+                    return <Redirect to={redirect} />;
+                  }
+                  return <div></div>;
                 }}
               />
             );
           }
+        )}
 
-          return (
-            <Route
-              path={path}
-              exact={exact}
-              key={component}
-              render={props => {
-                if (component) {
-                  let PageComponent = Pages[component];
-                  return <PageComponent {...props} />;
-                }
-                if (redirect) {
-                  return <Redirect to={redirect} />;
-                }
-                return <div></div>;
-              }}
-            />
-          );
-        }
-      )}
-
-      <NotificationContainer />
-    </Router>
-  );
-}
+        <NotificationContainer />
+      </Router>
+    );
+  }
 }
 
 export default Routes;

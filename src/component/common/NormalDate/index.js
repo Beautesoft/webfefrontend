@@ -8,18 +8,21 @@ export class NormalDate extends Component {
   render() {
     let {
       className = "form-control",
-      placeholder = "DD/MM/YY",
+      placeholder = "dd/MM/yyyy",
       onChange,
       value = "",
       name,
       iconname = "",
       disabled = false,
       showDisabledMonthNavigation = false,
-      minDate = new Date("1970-01-01")
+      minDate = new Date("1970-01-01"),
+      popperPlacement = "top-start",
     } = this.props;
     return (
       <div className="row date-picker-wrapper m-0 w-100">
         <DatePicker
+          dateFormat="dd/MM/yyyy"
+          popperPlacement={popperPlacement}
           className={className}
           disabled={disabled}
           placeholderText={placeholder}
@@ -28,25 +31,21 @@ export class NormalDate extends Component {
           minDate={minDate}
           showDisabledMonthNavigation={showDisabledMonthNavigation}
           dropdownMode="select"
-          onChange={date => {
+          onChange={(date) => {
             let body = {};
 
             body = {
               target: {
                 name: name,
-                value: date
-
+                value: date,
               },
             };
 
             onChange(body);
-
           }}
           name={name}
         />
         <span className="icon-calendar icon font-lg icon"></span>
-       
-       
       </div>
     );
   }

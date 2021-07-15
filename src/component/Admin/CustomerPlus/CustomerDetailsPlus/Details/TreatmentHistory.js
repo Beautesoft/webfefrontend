@@ -1,109 +1,201 @@
-import React, { Component } from 'react';
-import { TableWrapper } from 'component/common';
-export class TreatmentHistory extends Component {
-    state = {
-        headerDetails: [
-            {
-                label: 'S.No',
-            }, {
-                label: 'Date',
-            }, {
-                label: 'Time',
-            },
-            {
-                label: 'Treatment Name',
-            }, {
-                label: 'Cost of Treatment',
-            },
-            {
-                label: 'Salon Name',
-            }, {
-                label: 'Branch / Location',
-            }, {
-                label: 'Staff Name',
-            }
-        ],
-        invoice: [
-            { no: '1', date: '12/04/19', time: '4.30 PM', treatment: 'Haircut', cost: '$100', salon: 'ABC', branch: 'Kuala Lumpur, Malaysia', staffName: 'John' },
-            { no: '2', date: '12/04/19', time: '4.30 PM', treatment: 'Haircut', cost: '$100', salon: 'ABC', branch: 'Kuala Lumpur, Malaysia', staffName: 'John' },
-            { no: '3', date: '12/04/19', time: '4.30 PM', treatment: 'Haircut', cost: '$100', salon: 'ABC', branch: 'Kuala Lumpur, Malaysia', staffName: 'John' },
-            { no: '4', date: '12/04/19', time: '4.30 PM', treatment: 'Haircut', cost: '$100', salon: 'ABC', branch: 'Kuala Lumpur, Malaysia', staffName: 'John' },
-            { no: '5', date: '12/04/19', time: '4.30 PM', treatment: 'Haircut', cost: '$100', salon: 'ABC', branch: 'Kuala Lumpur, Malaysia', staffName: 'John' },
-            { no: '6', date: '12/04/19', time: '4.30 PM', treatment: 'Haircut', cost: '$100', salon: 'ABC', branch: 'Kuala Lumpur, Malaysia', staffName: 'John' },
-            { no: '7', date: '12/04/19', time: '4.30 PM', treatment: 'Haircut', cost: '$100', salon: 'ABC', branch: 'Kuala Lumpur, Malaysia', staffName: 'John' },
-            { no: '8', date: '12/04/19', time: '4.30 PM', treatment: 'Haircut', cost: '$100', salon: 'ABC', branch: 'Kuala Lumpur, Malaysia', staffName: 'John' },
-        ],
-        pageMeta: {
-            chunk: 10,
-            page: 1,
-            total: 10,
-            totalPages: 2,
+import React, { Component } from "react";
+import { TableWrapper } from "component/common";
+import { getCommonApi, commonDeleteApi } from "redux/actions/common";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-        },
+export class TreatmentHistoryClass extends Component {
+  state = {
+    headerDetails: [
+      {
+        label: "S.No",
+      },
+      {
+        label: "Date",
+      },
+      {
+        label: "From",
+      },
+      {
+        label: "To",
+      },
+      {
+        label: "Staff Name",
+      },
+      {
+        label: "App. Status",
+      },
+      {
+        label: "Site",
+      },
+      {
+        label: "Sec. Status",
+      },
+      {
+        label: "Remarks",
+      },
+    ],
+    upcomingAppointment: [],
+    pageMeta: {},
+    active: false,
+    currentIndex: -1,
+  };
+
+  componentDidMount() {
+    this.setState({
+      CustomerId: this.props.id,
+    });
+    this.queryHandler({});
+  }
+
+  // api call for list
+  queryHandler = data => {
+    let { page = 1, limit = 10, search = "" } = data;
+    this.props
+      .getCommonApi(
+        `custapptupcoming/?cust_id=${this.props.id}&page=${page}&limit=${limit}`
+      )
+      .then(res => {
+        console.log(res, "customerappointmentupdatedupcominglist");
+        let { data } = res;
+        let { upcomingAppointment, pageMeta } = this.state;
+        upcomingAppointment = [];
+        pageMeta = {};
+        this.setState({
+          upcomingAppointment,
+          pageMeta,
+        });
+        if (data && data.dataList) {
+          upcomingAppointment = data.dataList;
+          pageMeta = data.meta.pagination;
+        }
+        this.setState({
+          upcomingAppointment,
+          pageMeta,
+        });
+      });
+  };
+
+  handleClick = key => {
+    let currentIndex;
+    if (this.state.active == true) {
+      this.setState({
         active: false,
-        currentIndex: -1,
+        currentIndex: "-1",
+      });
+    } else {
+      this.setState({
+        active: true,
+        currentIndex: key,
+      });
     }
-    handleClick = (key) => {
-        let currentIndex;
-        if (this.state.active == true) {
-            this.setState({
-                active: false,
-                currentIndex: '-1'
-            })
-        }
-        else {
-            this.setState({
-                active: true,
-                currentIndex: key
-            })
-        }
-    }
-    render() {
-        let { headerDetails, invoice, pageMeta, currentIndex } = this.state
-        return (
-            <>
+  };
 
-                <div className="">
-                    <div className="py-4">
-                        <div className="normal-table">
-                            <TableWrapper
-                                headerDetails={headerDetails}
-                                //queryHandler={this.props.getAdminInvoiceList}
-                                pageMeta={pageMeta}
-                            >
+  handlePagination = page => {
+    this.queryHandler(page);
+  };
 
-                                {invoice.map((item, index) => {
-
-                                    let {
-                                        no,
-                                        date,
-                                        time,
-                                        treatment,
-                                        cost,
-                                        salon,
-                                        branch,
-                                        staffName
-                                    } = item
-                                    return (
-                                        <tr key={index}>
-                                            <td><div className="d-flex align-items-center justify-content-center">{no}</div></td>
-                                            <td><div className="d-flex align-items-center justify-content-center">{date}</div></td>
-                                            <td><div className="d-flex align-items-center justify-content-center">{time}</div></td>
-                                            <td><div className="d-flex align-items-center justify-content-center">{treatment}</div></td>
-                                            <td><div className="d-flex align-items-center justify-content-center">{cost}</div></td>
-                                            <td><div className="d-flex align-items-center justify-content-center">{salon}</div></td>
-                                            <td><div className="d-flex align-items-center justify-content-center">{branch}</div></td>
-                                            <td><div className="d-flex align-items-center justify-content-center">{staffName}</div></td>
-                                           
-                                        </tr>
-                                    )
-                                })}
-
-                            </TableWrapper>
-                        </div>
-                    </div>
-                </div>
-            </>
-        );
-    }
+  render() {
+    let { headerDetails, upcomingAppointment, pageMeta, currentIndex } =
+      this.state;
+    return (
+      <>
+        <div className="">
+          <div className="py-4">
+            <div className="table">
+              <TableWrapper
+                headerDetails={headerDetails}
+                queryHandler={this.handlePagination}
+                pageMeta={pageMeta}
+              >
+                {upcomingAppointment &&
+                  upcomingAppointment.length > 0 &&
+                  upcomingAppointment.map((item, index) => {
+                    let {
+                      id,
+                      appt_date,
+                      appt_fr_time,
+                      appt_to_time,
+                      emp_name,
+                      appt_status,
+                      itemsite_code,
+                      sec_status,
+                      appt_remark,
+                    } = item;
+                    return (
+                      <tr key={index}>
+                        <td>
+                          <div className="d-flex align-items-center justify-content-center">
+                            {index + 1}
+                          </div>
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center justify-content-center">
+                            {appt_date}
+                          </div>
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center justify-content-center">
+                            {appt_fr_time}
+                          </div>
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center justify-content-center">
+                            {appt_to_time}
+                          </div>
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center justify-content-center">
+                            {emp_name}
+                          </div>
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center justify-content-center">
+                            {appt_status}
+                          </div>
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center justify-content-center">
+                            {itemsite_code}
+                          </div>
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center justify-content-center">
+                            {sec_status}
+                          </div>
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center justify-content-center">
+                            {appt_remark}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </TableWrapper>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 }
+
+const mapStateToProps = state => ({
+  // filter: state.dashboard
+});
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      getCommonApi,
+      commonDeleteApi,
+    },
+    dispatch
+  );
+};
+
+export const TreatmentHistory = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TreatmentHistoryClass);

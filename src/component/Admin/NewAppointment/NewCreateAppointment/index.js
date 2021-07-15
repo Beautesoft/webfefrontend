@@ -16,6 +16,7 @@ export class CreateAppointmentClass extends Component {
   state = {
     list: [],
     isOpenModal: false,
+    PasteAppointmentId: "",
   };
 
   componentDidMount = () => {};
@@ -26,7 +27,7 @@ export class CreateAppointmentClass extends Component {
       <>
         <NormalModal
           className="col-12 col-md-12 col-sm-12"
-          style={{ minWidth: "1100px", height: "100%" }}
+          style={{ minWidth: "80%", minHeight: "90%" }}
           modal={isOpenModal}
           handleModal={this.props.handleCloseDialog}
         >

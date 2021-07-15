@@ -28,7 +28,7 @@ export class Details extends Component {
         this.setState({ activeTab: menu });
   }
 
-  toggle = (tab) => {
+  toggle = tab => {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab,
@@ -142,7 +142,11 @@ export class Details extends Component {
             </TabPane>
 
             <TabPane tabId="2">
-              {this.state.activeTab === "2" ? <TreatmentHistory /> : ""}
+              {this.state.activeTab === "2" ? (
+                <TreatmentHistory id={this.props.id} />
+              ) : (
+                ""
+              )}
             </TabPane>
 
             <TabPane tabId="3">

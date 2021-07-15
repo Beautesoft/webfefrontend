@@ -1,5 +1,5 @@
 import React from "react";
-
+import newUser from "assets/images/user-image.png";
 class ResourceCell extends React.PureComponent {
   render() {
     const {
@@ -13,7 +13,7 @@ class ResourceCell extends React.PureComponent {
       <div className="dx-template-wrapper">
         <div className="name" style={{ background: color }}>
           <div className="col-12 d-flex justify-content-center">
-            <img src={emp_pic} className="avatar" />
+            <img src={emp_pic ? emp_pic : newUser} className="avatar" />
           </div>
           <div className="col-12 d-flex justify-content-center">
             <p className="text-center pt-2">{staff_name}</p>

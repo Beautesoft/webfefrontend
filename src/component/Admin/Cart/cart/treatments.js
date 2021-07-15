@@ -867,29 +867,14 @@ export class TreatmentClass extends Component {
                    
                     <div className="col-3 fs-12 p-2" key={data.id}>
                       <div className="service-tab p-0">
-                        <div className="service-ttl px-2 font-700 fs-10">
+                        <div className="service-ttl px-2 fw-700 fs-14">
                           {data.item_desc}
                         </div>
     
                         <div className="price px-2 py-1">
                         
                             <div>
-                            <span
-                              onClick={() =>
-                                this.handleSelectPrice(data, index)
-                              }
-                              className="text-orenge font-700 cursor-pointer"
-                            >
-                              $ select
-                            </span>
                             <div className="non-retail">
-                              <span className="text-orenge font-700">$ </span>
-                              <span className="text-orenge font-700">
-                                {" "}
-                                {data.item_price
-                                  ? Number(data.item_price).toFixed(2)
-                                  : ""}
-                              </span>                                           
                               {tokenDetails.foc == "1" && 
                               <span className="foc-icon" onClick={() => this.handleFocImageClick(data)}>
                                   <svg
@@ -920,14 +905,14 @@ export class TreatmentClass extends Component {
                         </div>
                         {activeMenu === "RETAIL" || activeMenu === "SERVICE" || activeMenu === 8 ? (
                           <div
-                            className="images cursor-pointer"
+                            className="cursor-pointer" style={{backgroundColor: "lightblue"}}
                             onClick={() => this.handleSelectPrice(data, index)}
                           >
                             <img src={data.Stock_PIC} alt="" />
                           </div>
                         ) : (
                           <div
-                            className="images cursor-pointer"
+                            className="cursor-pointer" style={{backgroundColor: "lightgreen"}}
                             onClick={() => this.handleAddCart(data)}
                           >
                             <img src={data.Stock_PIC} alt="" />
@@ -938,7 +923,20 @@ export class TreatmentClass extends Component {
                             buttonClass={"detail-button"}
                             // mainbg={true}
                             className="col-12 fs-15 "
-                            label="Detail"
+                            label={
+                              activeMenu != "RETAIL" ? (
+                                <>
+                                  <span className="fw-700">$ </span>
+                                  <span className="fw-700">
+                                    {data.item_price
+                                      ? Number(data.item_price).toFixed(2)
+                                      : ""}
+                                  </span>
+                                </>
+                              ) : (
+                                "Detail"
+                              )
+                            }
                             outline={true}
                             onClick={() => this.handleSubmit(data, index)}
                           />
@@ -1053,7 +1051,7 @@ export class TreatmentClass extends Component {
 
           <div className=" mt-2 mb-5 mx-3">
             <div className="col-12 pl-0 mb-3 fs-18 py-2">
-              Select Product Variant {serviceDetail.item_name}
+              Select Product UOM For {serviceDetail.item_name}
             </div>
             <div className="row title fs-16 mb-2 f-600">
               <div className="col-1" style={{ width: "20px" }}>
@@ -1092,13 +1090,31 @@ export class TreatmentClass extends Component {
                         />
                       </div>
 
+                      <div className="col-2  d-flex">
+                        <NormalButton
+                          buttonClass={"detail-button addtocart mr-3"}
+                          mainbg={true}
+                          className="col-12 px-4 fs-15 "
+                          label="Add"
+                          onClick={() =>
+                            this.handleAddCart(
+                              serviceDetail,
+                              data.item_price,
+                              data.itemuom_id,
+                              Number(this.state.formQty),
+                              index
+                            )
+                          }
+                        />
+                      </div>
+
                       {this.state.holdCheckbox && (
                         <div className="col-sm-2">
                           <NormalSelect
                             // placeholder="Enter here"
                             options={holdReasonList}
                             value={this.state.holdSelectedReason}
-                            name="focreason"
+                            name="holdreason"
                             onChange={this.handleHoldDropdownChange}
                             className="customer-name py-0"
                           />
@@ -1118,23 +1134,6 @@ export class TreatmentClass extends Component {
                         </div>
                       )}
 
-                      <div className="col-2  d-flex">
-                        <NormalButton
-                          buttonClass={"detail-button addtocart mr-3"}
-                          mainbg={true}
-                          className="col-12 px-4 fs-15 "
-                          label="Cart"
-                          onClick={() =>
-                            this.handleAddCart(
-                              serviceDetail,
-                              data.item_price,
-                              data.itemuom_id,
-                              Number(this.state.formQty),
-                              index
-                            )
-                          }
-                        />
-                      </div>
                     </div>
                   );
                 })
@@ -1159,7 +1158,7 @@ export class TreatmentClass extends Component {
 
           <div className=" mt-2 mb-5 mx-3">
             <div className="col-12 pl-0 mb-3 fs-18 py-2">
-              Select Product Variant {serviceDetail.item_name}
+              {serviceDetail.item_name}
             </div>
             <div className="row title fs-16 mb-2 f-600">
               <div className="col-2">Price</div>

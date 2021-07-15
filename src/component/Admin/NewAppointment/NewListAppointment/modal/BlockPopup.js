@@ -261,8 +261,12 @@ export class BlockPopupClass extends Component {
     if (time) {
       formFields["endTime"] = time;
     }
+    let duration = "0:0";
+    if (formFields.duration !== "" && formFields.duration !== null) {
+      duration = formFields.duration;
+    }
     if (formFields.endTime !== "") {
-      formFields["endTime"] = this.addTimes(time, formFields.duration);
+      formFields["endTime"] = this.addTimes(time, duration);
     }
     await this.setState({
       formFields,
@@ -390,7 +394,7 @@ export class BlockPopupClass extends Component {
     return (
       <NormalModal
         className={`select-category Block-popup`}
-        style={{ minWidth: "800px" }}
+        style={{ minWidth: "55%" }}
         modal={isOpenBlockModal}
         handleModal={this.handleDialog}
       >
@@ -418,7 +422,7 @@ export class BlockPopupClass extends Component {
         </div>
 
         <div className="d-flex flex-wrap justify-content-start p-3">
-          <div className="col-md-6 col-6 mb-3">
+          <div className="col-md-6 col-12 mb-3">
             <label className="text-left text-black common-label-text ">
               Start Date{" "}
               <span className="error-message text-danger validNo fs-18">*</span>
@@ -453,7 +457,7 @@ export class BlockPopupClass extends Component {
               "required|date"
             )}
           </div>
-          <div className="col-md-6 col-6 mb-3">
+          <div className="col-md-6 col-12 mb-3">
             <label className="text-left text-black common-label-text ">
               End Date{" "}
               <span className="error-message text-danger validNo fs-18">*</span>
@@ -488,7 +492,7 @@ export class BlockPopupClass extends Component {
               "required|date"
             )}
           </div>
-          <div className="col-md-6 col-6 mb-3">
+          <div className="col-md-6 col-12 mb-3">
             <div className="row">
               <div className="col-md-6 col-12">
                 <label className="text-left text-black common-label-text ">
@@ -531,7 +535,7 @@ export class BlockPopupClass extends Component {
               </div>
             </div>
           </div>
-          <div className="col-md-6 mb-3">
+          <div className="col-md-6 col-12 mb-3">
             <div className="row">
               <div className="col-md-6 col-12">
                 {" "}
@@ -581,7 +585,7 @@ export class BlockPopupClass extends Component {
               </div>
             </div>
           </div>
-          <div className="col-md-6 mb-3">
+          <div className="col-md-6 col-12 mb-3">
             <label className="text-left text-black common-label-text ">
               Reason{" "}
               <span className="error-message text-danger validNo fs-18">*</span>
@@ -597,7 +601,7 @@ export class BlockPopupClass extends Component {
               {this.validator.message("reason", formFields.reason, "required")}
             </div>
           </div>
-          <div className="col-md-6 mb-3">
+          <div className="col-md-6 col-12 mb-3">
             <label className="text-left text-black common-label-text ">
               Description
             </label>
@@ -704,7 +708,7 @@ export class BlockPopupClass extends Component {
           </div>
         </div>
         <div className="d-flex justify-content-end">
-          <div className="col-2">
+          <div className="col-md-2 col-6">
             {appointmentId && appointmentId > 0 ? (
               <NormalButton
                 buttonClass={"w-100  p-0"}
@@ -725,7 +729,7 @@ export class BlockPopupClass extends Component {
               />
             )}
           </div>
-          <div className="col-2">
+          <div className="col-md-2 col-6">
             <NormalButton
               buttonClass={"w-100 p-0"}
               mainbg={true}

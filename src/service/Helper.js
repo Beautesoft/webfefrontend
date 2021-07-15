@@ -1,6 +1,6 @@
 const helpers = {
   getUrl() {
-    return "http://103.253.15.184:8002/";
+    return "http://103.253.15.184:8008/";
   },
 
   helper2: function (param1) {},

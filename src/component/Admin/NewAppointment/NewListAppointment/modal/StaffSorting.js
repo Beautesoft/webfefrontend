@@ -126,7 +126,7 @@ export class StaffSortingClass extends Component {
     return (
       <NormalModal
         className={"multiple-appointment select-category"}
-        style={{ minWidth: "800px" }}
+        style={{ minWidth: "55%" }}
         modal={isOpenModal}
         handleModal={this.handleDialog}
       >
@@ -140,7 +140,7 @@ export class StaffSortingClass extends Component {
           <h4 className="text-left">Staff Sorting</h4>
         </div>
         <div className="d-flex justify-content-center p-3">
-          <div className="col-5 mt-2 mb-5 mx-3">
+          <div className="col-md-5 col-11 mt-2 mb-5 mx-3">
             <div className="row mt-4 table-header w-100 m-0">
               <div className="col-12 text-center">Employee List</div>
             </div>
@@ -167,7 +167,7 @@ export class StaffSortingClass extends Component {
               )}
             </div>
           </div>
-          <div className="col-2 mt-3 mb-3 mx-3">
+          <div className="col-md-2 col-3 mt-3 mb-3 mx-3">
             <div className="row mt-4 w-100 m-0">
               <NormalButton
                 buttonClass={"mx-2 w-100 p-0"}
@@ -205,8 +205,8 @@ export class StaffSortingClass extends Component {
               />
             </div>
           </div>
-          <div className="col-5 mt-2 mb-5 mx-3">
-            <div className="row mt-4 table-header w-100 m-0">
+          <div className="col-md-5 col-11 mt-2 mb-5 mx-3">
+            <div className="col-12 mt-4 table-header w-100 m-0">
               <div className="col-9 text-center">Employee Order</div>
               <div className="col-3"></div>
             </div>
@@ -235,7 +235,7 @@ export class StaffSortingClass extends Component {
           </div>
         </div>
         <div className="d-flex justify-content-end">
-          <div className="col-2">
+          <div className="col-md-2 col-6">
             <NormalButton
               buttonClass={"w-100  p-0"}
               mainbg={true}
@@ -245,7 +245,7 @@ export class StaffSortingClass extends Component {
               onClick={() => this.sendEmployeeSortList()}
             />
           </div>
-          <div className="col-2">
+          <div className="col-md-2 col-6">
             <NormalButton
               buttonClass={"w-100 p-0"}
               mainbg={true}

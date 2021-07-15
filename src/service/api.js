@@ -4,8 +4,8 @@ import { axiosInstance, logout } from "./utilities";
 export var api = async function ({
   method = "get",
   api,
-  body,
   header,
+  body,
   status = false,
   token = "",
   baseURL = "normal",
@@ -38,10 +38,10 @@ export var api = async function ({
     // axiosInstance.defaults.headers.post['Content-Type'] = 'application/json';
 
     axiosInstance[method](`${getServiceUrl(baseURL)}${api}`, body ? body : "")
-      .then((data) => {
+      .then(data => {
         resolve(statusHelper(status, data));
       })
-      .catch((error) => {
+      .catch(error => {
         try {
           if (error.response) {
             reject(statusHelper(status, error.response));
@@ -70,7 +70,7 @@ var statusHelper = (status, data) => {
   }
 };
 
-let getServiceUrl = (baseURL) => {
+let getServiceUrl = baseURL => {
   let finalURL = "";
   switch (baseURL) {
     case "normal":

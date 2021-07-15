@@ -1,11 +1,11 @@
-import { AppointmentActionType } from 'redux/actions/actionType';
+import { AppointmentActionType } from "redux/actions/actionType";
 
 const initialState = {
   customerDetail: {
     customerName: "",
     appointmentDate: "",
     appointmentTime: "",
-    bookingStatus: ""
+    bookingStatus: "",
   },
   appointmentDetail: {
     // "cust_noid": 3,
@@ -23,7 +23,7 @@ const initialState = {
   treatmentResponse: {},
   selectedTreatment: {
     products_used: "",
-    recurring_appointment: ""
+    recurring_appointment: "",
   },
   treatmentOutletDetail: {},
   treatmentDetail: {
@@ -31,7 +31,7 @@ const initialState = {
     emp_no: "",
     Trmt_Room_Code: "",
     cus_requests: "",
-    Treatment_No: ""
+    Treatment_No: "",
   },
   selectedTreatmentList: [],
   confirmedBookedList: [],
@@ -40,11 +40,12 @@ const initialState = {
   multipleCustomerForm: {
     noOfCustomer: 1,
     treatment: "",
-    room: ""
+    room: "",
   },
   appointmentTreatmentList: [],
   appointmentCustomerDetail: {},
-  basicApptDetail: {}
+  basicApptDetail: {},
+  AppointmentCopy: {},
 };
 
 export default (state = Object.assign({}, initialState), { type, payload }) => {
@@ -109,16 +110,21 @@ export default (state = Object.assign({}, initialState), { type, payload }) => {
         ...state,
         appointmentCustomerDetail: payload,
       };
-      case "treatmentList":
-        return {
-          ...state,
-          appointmentTreatmentList: payload,
-        };
-      case "basicApptDetail":
-        return {
-          ...state,
-          basicApptDetail: payload,
-        };
+    case "treatmentList":
+      return {
+        ...state,
+        appointmentTreatmentList: payload,
+      };
+    case "basicApptDetail":
+      return {
+        ...state,
+        basicApptDetail: payload,
+      };
+    case "AppointmentCopy":
+      return {
+        ...state,
+        AppointmentCopy: payload,
+      };
     default:
       return state;
   }
