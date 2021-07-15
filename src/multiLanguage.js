@@ -26,14 +26,14 @@ class MultiLanguageClass extends Component {
     let resources = { en: { translation: {} }, zh_sg: { translation: {} } };
     resources.en.translation = res.language.ENGLISH.reduce((a, e) => {
       return { ...a, [e.word]: e.word };
-    });
+    }, {});
     resources.zh_sg.translation = res.language.CHINESE.reduce((a, e) => {
       return {
         ...a,
         [res.language.ENGLISH.find((e2) => e2.wordCode == e.wordCode).word]:
           e.word,
       };
-    });
+    }, {});
     console.log(resources, "lang obj");
     localStorage.setItem("translations", JSON.stringify(resources));
     this.init();
@@ -50,7 +50,6 @@ class MultiLanguageClass extends Component {
         lng: localStorage.getItem("lang") ?? "en", // if you're using a language detector, do not define the lng option
         fallbackLng: "en",
       });
-    console.log(i18n);
     this.setState({ isLanguageReady: true });
   };
 

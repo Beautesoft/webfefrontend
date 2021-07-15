@@ -8,12 +8,9 @@ export const getMultiLanguage =
       api({ ...multiLanguage.getMultiLanguage, body })
         .then((response) => {
           resolve(response);
-          let { status } = response;
-          if (status !== 200)
-            reject(Toast({ type: "error", message: "Multi Language Failed" }));
         })
         .catch(({ message }) => {
-          reject(Toast({ type: "error", message }));
+          reject(Toast({ type: "Multilanguage error", message }));
         });
     });
   };
