@@ -15,6 +15,7 @@ class MultiLanguageClass extends Component {
     if (localStorage.getItem("translations") == null) {
       this.getData();
     } else {
+      this.getData();
       this.init();
     }
   }
