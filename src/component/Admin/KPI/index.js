@@ -284,9 +284,17 @@ class KPIDashboardClass extends Component {
     this.updateState({});
   };
 
+  currencyFormatter = (num) => {
+    var formatter = new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: 2,
+    });
+    console.log(formatter.format(num), "num2");
+    return formatter.format(num);
+  };
+
   drawGraph = (value, color, largestValue) => {
     return (
-      <div className="mb-1" style={{ position: "relative", minWidth: "200px" }}>
+      <div className="mb-1" style={{ position: "relative", minWidth: "300px" }}>
         <hr
           style={{
             position: "absolute",
@@ -299,14 +307,14 @@ class KPIDashboardClass extends Component {
         <div
           style={{
             position: "absolute",
-            color: "black",
+            color: color === "gray" ? "white" : "black",
             margin: 0,
             marginLeft: "5px",
             fontSize: 14,
             fontWeight: "bold",
           }}
         >
-          {value}
+          {this.currencyFormatter(value)}
         </div>
       </div>
     );
@@ -362,12 +370,6 @@ class KPIDashboardClass extends Component {
       return 0;
     });
 
-    function kFormatter(num) {
-      return Math.abs(num) > 999
-        ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
-        : Math.sign(num) * Math.abs(num);
-    }
-
     if (
       sortedByPrev[0].prevValue > selectedIndex == 6
         ? sortedByAmount[0][
@@ -379,7 +381,7 @@ class KPIDashboardClass extends Component {
     )
       return {
         value: sortedByPrev[0].prevValue,
-        label: kFormatter(sortedByPrev[0].prevValue),
+        label: this.getShortFormat(sortedByPrev[0].prevValue),
       };
     else
       return {
@@ -391,7 +393,7 @@ class KPIDashboardClass extends Component {
                   : this.state.selectedOrder
               ]
             : sortedByAmount[0].amount,
-        label: kFormatter(
+        label: this.getShortFormat(
           selectedIndex == 6
             ? sortedByAmount[0][
                 this.state.selectedOrder.length == 0
@@ -401,6 +403,12 @@ class KPIDashboardClass extends Component {
             : sortedByAmount[0].amount
         ),
       };
+  };
+
+  getShortFormat = (num) => {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(0) + "k"
+      : Math.sign(num) * Math.abs(num);
   };
 
   render() {
@@ -837,210 +845,253 @@ class KPIDashboardClass extends Component {
                         </div>
                       </Tree>
                     ) : (
-                      <div className="table-responsive">
-                        <table
-                          class="table"
+                      <div>
+                        <div className="table-responsive">
+                          <table
+                            class="table"
+                            style={{
+                              height: 50 * diffTablePagination.per_page,
+                            }}
+                          >
+                            <thead className="font-weight-bold">
+                              <tr>
+                                <th
+                                  scope="col"
+                                  style={{ verticalAlign: "middle" }}
+                                >
+                                  Rank
+                                </th>
+                                <th
+                                  scope="col"
+                                  style={{ verticalAlign: "middle" }}
+                                >
+                                  {selectedIndex == 6 || selectedIndex == 7
+                                    ? "Consultant"
+                                    : "Outlet"}
+                                </th>
+                                <th
+                                  scope="col"
+                                  style={{ verticalAlign: "middle" }}
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="30"
+                                    height="30"
+                                    fill="green"
+                                    class="bi bi-caret-up-fill"
+                                    viewBox="0 0 30 20"
+                                  >
+                                    <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                                  </svg>
+                                </th>
+                                <th
+                                  scope="col"
+                                  style={{ verticalAlign: "middle" }}
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="30"
+                                    height="30"
+                                    fill="red"
+                                    class="bi bi-caret-down-fill"
+                                    viewBox="0 0 30 20"
+                                  >
+                                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                  </svg>
+                                </th>
+                                <th
+                                  scope="col"
+                                  style={{
+                                    textAlign: "right",
+                                    paddingRight: "2vw",
+                                    verticalAlign: "middle",
+                                  }}
+                                >
+                                  Amount
+                                </th>
+                                <th scope="col">
+                                  <div
+                                    style={{ width: "90%", minWidth: "300px" }}
+                                  >
+                                    <div className="d-flex justify-content-between">
+                                      <div style={{ width: "20px" }}>0</div>
+                                      <div style={{ width: "20px" }}>
+                                        {this.getShortFormat(
+                                          (this.getLargestRankingAmount()
+                                            .value /
+                                            4) *
+                                            1
+                                        )}
+                                      </div>
+                                      <div style={{ width: "20px" }}>
+                                        {this.getShortFormat(
+                                          this.getLargestRankingAmount().value /
+                                            2
+                                        )}
+                                      </div>
+                                      <div style={{ width: "20px" }}>
+                                        {this.getShortFormat(
+                                          (this.getLargestRankingAmount()
+                                            .value /
+                                            4) *
+                                            3
+                                        )}
+                                      </div>
+                                      <div style={{ width: "20px" }}>
+                                        {this.getLargestRankingAmount().label}
+                                      </div>
+                                    </div>
+                                    <div className="d-flex justify-content-between">
+                                      <div>|</div>
+                                      <div>|</div>
+                                      <div>|</div>
+                                      <div>|</div>
+                                      <div>|</div>
+                                    </div>
+                                  </div>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {this.state.data
+                                .slice(
+                                  (diffTablePagination.current_page - 1) *
+                                    diffTablePagination.per_page,
+                                  data.length <
+                                    diffTablePagination.current_page *
+                                      diffTablePagination.per_page
+                                    ? data.length
+                                    : diffTablePagination.current_page *
+                                        diffTablePagination.per_page
+                                )
+                                .map((e) => (
+                                  <tr key={e.id}>
+                                    <td>#{e.rank}</td>
+                                    <td>
+                                      {selectedIndex == 6 || selectedIndex == 7
+                                        ? e.consultant
+                                        : e.outlet}
+                                    </td>
+                                    {e.rankDif == 0 ? (
+                                      <>
+                                        <td></td> <td></td>
+                                      </>
+                                    ) : Math.sign(e.rankDif) == 1 ? (
+                                      <>
+                                        <td style={{ color: "green" }}>
+                                          <div style={{ width: "50px" }}>
+                                            <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              width="30"
+                                              height="30"
+                                              fill="green"
+                                              class="bi bi-caret-up-fill"
+                                              viewBox="0 0 30 20"
+                                            >
+                                              <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                                            </svg>
+                                            {Math.abs(e.rankDif)}
+                                          </div>
+                                        </td>
+                                        <td></td>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <td></td>
+                                        <td style={{ color: "red" }}>
+                                          <div style={{ width: "50px" }}>
+                                            <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              width="30"
+                                              height="30"
+                                              fill="red"
+                                              class="bi bi-caret-down-fill"
+                                              viewBox="0 0 30 20"
+                                            >
+                                              <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                            </svg>
+                                            {Math.abs(e.rankDif)}
+                                          </div>
+                                        </td>
+                                      </>
+                                    )}
+                                    <td
+                                      style={{
+                                        textAlign: "right",
+                                        paddingRight: "2vw",
+                                      }}
+                                    >
+                                      {this.currencyFormatter(
+                                        selectedIndex == 6
+                                          ? e[
+                                              this.state.selectedOrder.length ==
+                                              0
+                                                ? "count"
+                                                : this.state.selectedOrder
+                                            ]
+                                          : e.amount
+                                      )}
+                                    </td>
+                                    <td
+                                      style={{ width: "60%", height: "80px" }}
+                                    >
+                                      <div className="pb-4">
+                                        {this.drawGraph(
+                                          selectedIndex == 6
+                                            ? e[
+                                                this.state.selectedOrder
+                                                  .length == 0
+                                                  ? "count"
+                                                  : this.state.selectedOrder
+                                              ]
+                                            : e.amount,
+                                          "#93eaad",
+                                          this.getLargestRankingAmount().value
+                                        )}
+                                      </div>
+                                      <div>
+                                        {this.drawGraph(
+                                          e.prevValue,
+                                          "gray",
+                                          this.getLargestRankingAmount().value
+                                        )}
+                                      </div>
+                                    </td>
+                                  </tr>
+                                ))}
+                            </tbody>
+                          </table>
+                        </div>
+                        <div
+                          class="d-flex justify-content-between"
                           style={{
-                            height: 50 * diffTablePagination.per_page,
+                            width: "160px",
+                            marginLeft: "20px",
                           }}
                         >
-                          <thead className="font-weight-bold">
-                            <tr>
-                              <th
-                                scope="col"
-                                style={{ verticalAlign: "middle" }}
-                              >
-                                Rank
-                              </th>
-                              <th
-                                scope="col"
-                                style={{ verticalAlign: "middle" }}
-                              >
-                                {selectedIndex == 6 || selectedIndex == 7
-                                  ? "Consultant"
-                                  : "Outlet"}
-                              </th>
-                              <th
-                                scope="col"
-                                style={{ verticalAlign: "middle" }}
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="30"
-                                  height="30"
-                                  fill="green"
-                                  class="bi bi-caret-up-fill"
-                                  viewBox="0 0 30 20"
-                                >
-                                  <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
-                                </svg>
-                              </th>
-                              <th
-                                scope="col"
-                                style={{ verticalAlign: "middle" }}
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="30"
-                                  height="30"
-                                  fill="red"
-                                  class="bi bi-caret-down-fill"
-                                  viewBox="0 0 30 20"
-                                >
-                                  <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-                                </svg>
-                              </th>
-                              <th
-                                scope="col"
-                                style={{
-                                  textAlign: "right",
-                                  paddingRight: "2vw",
-                                  verticalAlign: "middle",
-                                }}
-                              >
-                                Amount
-                              </th>
-                              <th scope="col">
-                                <div>This {this.state.rankingDateType}</div>
-                                <div className="d-flex justify-content-between">
-                                  <div>0</div>
-                                  <div>
-                                    {this.getLargestRankingAmount().label}
-                                  </div>
-                                </div>
-                              </th>
-                              <th scope="col">
-                                <div>Previous {this.state.rankingDateType}</div>
-                                <div className="d-flex justify-content-between">
-                                  <div>0</div>
-                                  <div>
-                                    {this.getLargestRankingAmount().label}
-                                  </div>
-                                </div>
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {this.state.data
-                              .slice(
-                                (diffTablePagination.current_page - 1) *
-                                  diffTablePagination.per_page,
-                                data.length <
-                                  diffTablePagination.current_page *
-                                    diffTablePagination.per_page
-                                  ? data.length
-                                  : diffTablePagination.current_page *
-                                      diffTablePagination.per_page
-                              )
-                              .map((e) => (
-                                <tr key={e.id}>
-                                  <td>#{e.rank}</td>
-                                  <td>
-                                    {selectedIndex == 6 || selectedIndex == 7
-                                      ? e.consultant
-                                      : e.outlet}
-                                  </td>
-                                  {e.rankDif == 0 ? (
-                                    <>
-                                      <td></td> <td></td>
-                                    </>
-                                  ) : Math.sign(e.rankDif) == 1 ? (
-                                    <>
-                                      <td style={{ color: "green" }}>
-                                        <div style={{ width: "50px" }}>
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="30"
-                                            height="30"
-                                            fill="green"
-                                            class="bi bi-caret-up-fill"
-                                            viewBox="0 0 30 20"
-                                          >
-                                            <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
-                                          </svg>
-                                          {Math.abs(e.rankDif)}
-                                        </div>
-                                      </td>
-                                      <td></td>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <td></td>
-                                      <td style={{ color: "red" }}>
-                                        <div style={{ width: "50px" }}>
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="30"
-                                            height="30"
-                                            fill="red"
-                                            class="bi bi-caret-down-fill"
-                                            viewBox="0 0 30 20"
-                                          >
-                                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-                                          </svg>
-                                          {Math.abs(e.rankDif)}
-                                        </div>
-                                      </td>
-                                    </>
-                                  )}
-                                  <td
-                                    style={{
-                                      textAlign: "right",
-                                      paddingRight: "2vw",
-                                    }}
-                                  >
-                                    {selectedIndex == 6
-                                      ? e[
-                                          this.state.selectedOrder.length == 0
-                                            ? "count"
-                                            : this.state.selectedOrder
-                                        ]
-                                      : e.amount}
-                                  </td>
-                                  <td style={{ width: "30%" }}>
-                                    {this.drawGraph(
-                                      selectedIndex == 6
-                                        ? e[
-                                            this.state.selectedOrder.length == 0
-                                              ? "count"
-                                              : this.state.selectedOrder
-                                          ]
-                                        : e.amount,
-                                      e.prevValue >
-                                        (selectedIndex == 6
-                                          ? e[
-                                              this.state.selectedOrder.length ==
-                                              0
-                                                ? "count"
-                                                : this.state.selectedOrder
-                                            ]
-                                          : e.amount)
-                                        ? "#f89898"
-                                        : "#93eaad",
-                                      this.getLargestRankingAmount().value
-                                    )}
-                                  </td>
-                                  <td style={{ width: "30%" }}>
-                                    {this.drawGraph(
-                                      e.prevValue,
-                                      e.prevValue >
-                                        (selectedIndex == 6
-                                          ? e[
-                                              this.state.selectedOrder.length ==
-                                              0
-                                                ? "count"
-                                                : this.state.selectedOrder
-                                            ]
-                                          : e.amount)
-                                        ? "#93eaad"
-                                        : "#f89898",
-                                      this.getLargestRankingAmount().value
-                                    )}
-                                  </td>
-                                </tr>
-                              ))}
-                          </tbody>
-                        </table>
+                          <div className="row">
+                            <div
+                              style={{
+                                width: "20px",
+                                height: "20px",
+                                backgroundColor: "#93eaad",
+                                marginRight: "5px",
+                              }}
+                            ></div>
+                            Current
+                          </div>
+                          <div className="row">
+                            <div
+                              style={{
+                                width: "20px",
+                                height: "20px",
+                                backgroundColor: "gray",
+                                marginRight: "5px",
+                              }}
+                            ></div>
+                            Previous
+                          </div>
+                        </div>
                         <Pagination
                           handlePagination={this.handlePagination}
                           pageMeta={diffTablePagination}
