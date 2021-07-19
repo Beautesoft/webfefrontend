@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
+  NormalButton,
   NormalDateTime,
   NormalMultiSelect,
   NormalSelect,
@@ -19,7 +20,7 @@ import { getCommonApi } from "redux/actions/common";
 import Tree from "react-animated-tree";
 import { HorizontalBar } from "react-chartjs-2";
 import { Navigation } from "react-minimal-side-navigation";
-import { DataGrid, GridToolbar } from "@material-ui/data-grid";
+import MaterialTable from "material-table";
 import "./style.scss";
 
 class KPIDashboardClass extends Component {
@@ -117,19 +118,16 @@ class KPIDashboardClass extends Component {
         this.state.endDate = this.state.startDate;
     }
     this.updateState({});
-    this.loadData();
   };
 
   handleSiteGroupChange = (e) => {
     this.state.selectedSiteGroup = e.target.value;
     this.updateState({});
-    this.loadData();
   };
 
   handleOrderChange = (e) => {
     this.state.selectedOrder = e.target.value;
     this.updateState({});
-    this.loadData();
   };
 
   hanldePerPageChange = (e) => {
@@ -147,11 +145,10 @@ class KPIDashboardClass extends Component {
     });
     this.state.selectedSite = sites;
     this.updateState({});
-    this.loadData();
   };
 
-  updateState = (data) => {
-    if (this.state.isMounted) this.setState(data);
+  updateState = (state) => {
+    if (this.state.isMounted) this.setState(state);
   };
 
   loadData = async () => {
@@ -288,20 +285,28 @@ class KPIDashboardClass extends Component {
     var formatter = new Intl.NumberFormat("en-US", {
       minimumFractionDigits: 2,
     });
-    console.log(formatter.format(num), "num2");
     return formatter.format(num);
   };
 
   drawGraph = (value, color, largestValue) => {
     return (
-      <div className="mb-1" style={{ position: "relative", minWidth: "300px" }}>
+      <div
+        className="mb-1"
+        style={{
+          position: "relative",
+          minWidth: "300px",
+          width: "90%",
+          padding: 0,
+          margin: 0,
+        }}
+      >
         <hr
           style={{
             position: "absolute",
             margin: 0,
             border: "10px solid " + color,
             borderRadius: "5px",
-            width: (value / largestValue) * 90 + "%",
+            width: (value / largestValue) * 100 + "%",
           }}
         ></hr>
         <div
@@ -322,86 +327,47 @@ class KPIDashboardClass extends Component {
 
   getLargestRankingAmount = () => {
     let { data, selectedIndex } = this.state;
-    let sortedByAmount = [];
-    let sortedByPrev = [];
+    let maxPrevValue = 0.0;
+    let maxAmount = 0.0;
     data.forEach((e) => {
-      sortedByAmount.push(e);
-      sortedByPrev.push(e);
-    });
-    sortedByAmount.sort((a, b) => {
+      if (maxPrevValue < parseFloat(`${e.prevValue}`))
+        maxPrevValue = parseFloat(`${e.prevValue}`);
       if (
-        selectedIndex == 6
-          ? a[
-              this.state.selectedOrder.length == 0
-                ? "count"
-                : this.state.selectedOrder
-            ]
-          : a.amount > selectedIndex == 6
-          ? b[
-              this.state.selectedOrder.length == 0
-                ? "count"
-                : this.state.selectedOrder
-            ]
-          : b.amount
+        maxAmount <
+        parseFloat(
+          `${
+            selectedIndex == 6
+              ? e[
+                  this.state.selectedOrder.length == 0
+                    ? "count"
+                    : this.state.selectedOrder
+                ]
+              : e.amount
+          }`
+        )
       )
-        return -1;
-      if (
-        selectedIndex == 6
-          ? a[
-              this.state.selectedOrder.length == 0
-                ? "count"
-                : this.state.selectedOrder
-            ]
-          : a.amount < selectedIndex == 6
-          ? b[
-              this.state.selectedOrder.length == 0
-                ? "count"
-                : this.state.selectedOrder
-            ]
-          : b.amount
-      )
-        return -1;
-      return 0;
+        maxAmount = parseFloat(
+          `${
+            selectedIndex == 6
+              ? e[
+                  this.state.selectedOrder.length == 0
+                    ? "count"
+                    : this.state.selectedOrder
+                ]
+              : e.amount
+          }`
+        );
     });
 
-    sortedByPrev.sort((a, b) => {
-      if (a.prevValue > b.prevValue) return -1;
-      if (a.prevValue < b.prevValue) return 1;
-      return 0;
-    });
-
-    if (
-      sortedByPrev[0].prevValue > selectedIndex == 6
-        ? sortedByAmount[0][
-            this.state.selectedOrder.length == 0
-              ? "count"
-              : this.state.selectedOrder
-          ]
-        : sortedByAmount[0].amount
-    )
+    if (maxPrevValue > maxAmount)
       return {
-        value: sortedByPrev[0].prevValue,
-        label: this.getShortFormat(sortedByPrev[0].prevValue),
+        value: maxPrevValue,
+        label: this.getShortFormat(maxPrevValue),
       };
     else
       return {
-        value:
-          selectedIndex == 6
-            ? sortedByAmount[0][
-                this.state.selectedOrder.length == 0
-                  ? "count"
-                  : this.state.selectedOrder
-              ]
-            : sortedByAmount[0].amount,
-        label: this.getShortFormat(
-          selectedIndex == 6
-            ? sortedByAmount[0][
-                this.state.selectedOrder.length == 0
-                  ? "count"
-                  : this.state.selectedOrder
-              ]
-            : sortedByAmount[0].amount
-        ),
+        value: maxAmount,
+        label: this.getShortFormat(maxAmount),
       };
   };
 
@@ -468,19 +434,25 @@ class KPIDashboardClass extends Component {
       data.length == 0
         ? []
         : Object.keys(data[0])
-            .filter((e) => e != "id")
+            .filter((e) => e != "id" && e != "total")
             .map((e) => {
               return {
                 field: e,
-                width: e.length * 30 + 40,
-                headerName:
+                title:
                   e.replaceAll("_", " ").charAt(0).toUpperCase() +
                   e.replaceAll("_", " ").slice(1),
                 type: typeof data[0][e],
               };
             });
+    if (data.length !== 0)
+      if ("total" in data[0])
+        columns.splice(1, 0, {
+          field: "total",
+          title: "Total",
+          type: "number",
+        });
 
-    const rows = data;
+    const rows = JSON.parse(JSON.stringify(data));
 
     const getMenuName = () => {
       switch (selectedIndex) {
@@ -783,9 +755,10 @@ class KPIDashboardClass extends Component {
                                 Filter By Site Group
                               </label>
                               <NormalSelect
+                                placeholder="Show All"
                                 options={this.state.siteGroupOptions}
                                 value={this.state.selectedSiteGroup}
-                                onChange={this.hanldePerPageChange}
+                                onChange={this.handleSiteGroupChange}
                               />
                             </>
                           ) : (
@@ -794,6 +767,7 @@ class KPIDashboardClass extends Component {
                                 Filter By Site
                               </label>
                               <NormalMultiSelect
+                                placeholder="Show All"
                                 options={this.state.siteOptions}
                                 value={this.state.selectedSite}
                                 handleMultiSelect={this.handleSiteChange}
@@ -825,6 +799,16 @@ class KPIDashboardClass extends Component {
                             />
                           </div>
                         ) : null}
+                      </div>
+                      <div className="row">
+                        <div className="col-md-3">
+                          <NormalButton
+                            label="Load"
+                            mainbg={true}
+                            c
+                            onClick={() => this.loadData()}
+                          />
+                        </div>
                       </div>
                     </div>
                   </Tree>
@@ -915,6 +899,8 @@ class KPIDashboardClass extends Component {
                                       style={{
                                         width: "90%",
                                         minWidth: "300px",
+                                        padding: 0,
+                                        margin: 0,
                                       }}
                                     >
                                       <div className="d-flex justify-content-between">
@@ -1181,10 +1167,52 @@ class KPIDashboardClass extends Component {
                     </div>
                   </div>
                 ) : (
-                  <DataGrid
-                    rows={rows}
+                  <MaterialTable
+                    data={rows}
                     columns={columns}
-                    components={{ Toolbar: GridToolbar }}
+                    options={{
+                      exportButton: true,
+                      filtering: true,
+                      search: true,
+                      sorting: true,
+                      exportAllData: true,
+                    }}
+                    title={
+                      selectedIndex > 1
+                        ? this.state.rankingDateType == "month"
+                          ? getMenuName() +
+                            " : " +
+                            new Date(this.state.startDate).toLocaleDateString(
+                              "en-GB",
+                              { year: "numeric", month: "numeric" }
+                            )
+                          : getMenuName() +
+                            " : " +
+                            new Date(this.state.startDate).toLocaleDateString(
+                              "en-GB"
+                            )
+                        : this.state.isMonth
+                        ? getMenuName() +
+                          " : " +
+                          new Date(this.state.startDate).toLocaleDateString(
+                            "en-GB",
+                            { year: "numeric", month: "numeric" }
+                          ) +
+                          " - " +
+                          new Date(this.state.endDate).toLocaleDateString(
+                            "en-GB",
+                            { year: "numeric", month: "numeric" }
+                          )
+                        : getMenuName() +
+                          " : " +
+                          new Date(this.state.startDate).toLocaleDateString(
+                            "en-GB"
+                          ) +
+                          " - " +
+                          new Date(this.state.endDate).toLocaleDateString(
+                            "en-GB"
+                          )
+                    }
                   />
                 )}
               </div>
