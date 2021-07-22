@@ -9,7 +9,7 @@ export class LineChart extends Component {
     hoverData: null,
   };
 
-  setHoverData = e => {
+  setHoverData = (e) => {
     this.setState({ hoverData: e.target.category });
   };
 

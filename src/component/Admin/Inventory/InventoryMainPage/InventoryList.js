@@ -15,6 +15,7 @@ import { dateFormat } from "service/helperFunctions";
 import closeIcon from "assets/images/close.png";
 import { CreateNewInventory } from "./Model";
 import "./style.scss";
+import { withTranslation } from "react-i18next";
 
 export class InventoryListClass extends Component {
   state = {
@@ -40,7 +41,7 @@ export class InventoryListClass extends Component {
     this.getstockMemoList({});
   };
 
-  getstockMemoList = data => {
+  getstockMemoList = (data) => {
     let { searchDate } = this.state;
     let { page = 1, limit = 10, search = "" } = data;
     this.props
@@ -49,7 +50,7 @@ export class InventoryListClass extends Component {
           searchDate
         )}&page=${page}&limit=${limit}`
       )
-      .then(key => {
+      .then((key) => {
         let { status, data } = key;
         if (status === 200) {
           if (data) {
@@ -67,12 +68,12 @@ export class InventoryListClass extends Component {
     });
     this.getstockMemoList({});
   };
-  handlePagination = page => {
+  handlePagination = (page) => {
     this.getstockMemoList(page);
   };
 
   handleCreateNewPopup = async () => {
-    await this.setState(prevState => ({
+    await this.setState((prevState) => ({
       isCreateNewInventoryPopup: !prevState.isCreateNewInventoryPopup,
     }));
   };
@@ -81,12 +82,12 @@ export class InventoryListClass extends Component {
     this.getstockMemoList({});
   };
   handleReversalPopup = async () => {
-    await this.setState(prevState => ({
+    await this.setState((prevState) => ({
       isReversalPopup: !prevState.isReversalPopup,
     }));
   };
 
-  handleReversal = async data => {
+  handleReversal = async (data) => {
     await this.setState({
       stockMemoId: 0,
       qty: 0,
@@ -111,7 +112,7 @@ export class InventoryListClass extends Component {
     let data = { quantity: Number(reversalqty) };
     this.props
       .commonPatchApi(`stockusagememo/${stockMemoId}/`, data)
-      .then(async res => {
+      .then(async (res) => {
         console.log(res);
         if (res.status === 200) {
           this.handleReversalPopup();
@@ -135,6 +136,7 @@ export class InventoryListClass extends Component {
       qty,
       reversalqty,
     } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="row mt-3">
@@ -232,12 +234,12 @@ export class InventoryListClass extends Component {
                   alt=""
                 />
                 <div className="d-flex h5 justify-content-center p-1">
-                  Reversal
+                  {t("Reversal")}
                 </div>
                 <div className="row p-3">
                   <div className="col-4 mb-3">
                     <label className="text-left text-black common-label-text ">
-                      Qty
+                      {t("Qty")}
                     </label>
                     <div className="input-group">
                       <NormalInput value={qty} name="qty" disabled />
@@ -247,7 +249,7 @@ export class InventoryListClass extends Component {
                   <div className="col-4 mb-3">
                     <div>
                       <label className="text-left text-black common-label-text ">
-                        Reversal Qty
+                        {t("Reversal Qty")}
                         <span className="error-message text-danger validNo fs-16">
                           *
                         </span>
@@ -289,9 +291,9 @@ export class InventoryListClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -301,7 +303,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const InventoryList = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(InventoryListClass);
+export const InventoryList = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(InventoryListClass)
+);

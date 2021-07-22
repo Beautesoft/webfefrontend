@@ -1,16 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import { withTranslation } from "react-i18next";
 
-export class NormalCheckbox extends Component {
+class NormalCheckboxClass extends Component {
   render() {
     let {
-      className = 'custom-checkbox d-flex align-items-center',
-      label = '',
-      value = '',
-      name = '',
+      className = "custom-checkbox d-flex align-items-center",
+      label = "",
+      value = "",
+      name = "",
       onChange,
       checked,
-      inputClass = '',
+      inputClass = "",
       disabled = false,
+      t,
     } = this.props;
 
     return (
@@ -29,8 +31,10 @@ export class NormalCheckbox extends Component {
         <span className="checkbox-tick d-flex justify-content-center align-items-center">
           <i className="icon-tick fs-10"></i>
         </span>
-        {label ? <span className="label-txt fs-14 pl-1">{label}</span> : ''}
+        {label ? <span className="label-txt fs-14 pl-1">{t(label)}</span> : ""}
       </label>
     );
   }
 }
+
+export const NormalCheckbox = withTranslation()(NormalCheckboxClass);

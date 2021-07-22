@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { withTranslation } from "react-i18next";
 import "./style.scss";
 
-export class BigCalander extends Component {
+class BigCalanderClass extends Component {
   state = {
     selectedMonth: "",
   };
@@ -76,6 +77,7 @@ export class BigCalander extends Component {
       options,
       onChange,
       disabled = false,
+      t,
     } = this.props;
     console.log(data);
     let d = new Date(date);
@@ -107,9 +109,11 @@ export class BigCalander extends Component {
                     : "white",
               }}
             >
-              {options.find((val) => val.value == data.itm_type) != null
-                ? options.find((val) => val.value == data.itm_type).shortDesc
-                : "N/A"}
+              {t(
+                options.find((val) => val.value == data.itm_type) != null
+                  ? options.find((val) => val.value == data.itm_type).shortDesc
+                  : "N/A"
+              )}
               <div id={staff.emp_code + index} class="dropdown-content">
                 <label
                   onClick={() => handOnOptionClick(staffIndex, index, "e")}
@@ -137,7 +141,7 @@ export class BigCalander extends Component {
         <table className="table">
           <thead>
             <tr className="table-header-color">
-              <th className="text-dark">Staff</th>
+              <th className="text-dark">{t("Staff")}</th>
               {headers}
             </tr>
           </thead>
@@ -147,3 +151,5 @@ export class BigCalander extends Component {
     );
   }
 }
+
+export const BigCalander = withTranslation()(BigCalanderClass);

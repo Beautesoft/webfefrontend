@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import { NormalModal } from "component/common";
 import closeIcon from "assets/images/close.png";
 import _ from "lodash";
+import { withTranslation } from "react-i18next";
 
 export class ListTreatmentPackageClass extends React.Component {
   state = {
@@ -28,20 +29,20 @@ export class ListTreatmentPackageClass extends React.Component {
     this.getPackageList({});
   };
 
-  handleClick = key => {
+  handleClick = (key) => {
     if (!this.state.active) {
       document.addEventListener("click", this.handleOutsideClick, false);
     } else {
       document.removeEventListener("click", this.handleOutsideClick, false);
     }
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       active: !prevState.active,
       currentIndex: key,
     }));
   };
 
-  handleOutsideClick = e => {
+  handleOutsideClick = (e) => {
     if (this.node != null) {
       if (this.node.contains(e.target)) {
         return;
@@ -50,14 +51,14 @@ export class ListTreatmentPackageClass extends React.Component {
     this.handleClick();
   };
 
-  getPackageList = data => {
+  getPackageList = (data) => {
     console.log(this.props.customerId);
     let { page = 1, limit = 10, search = "" } = data;
     this.props
       .getCommonApi(
         `treatmentpackages/?cust_id=${this.props.customerId}&page=${page}&limit=${limit}`
       )
-      .then(res => {
+      .then((res) => {
         console.log(res, "dsfdfaafg");
         if (res.status === 200) {
           if (res.data) {
@@ -70,7 +71,7 @@ export class ListTreatmentPackageClass extends React.Component {
       });
   };
 
-  handlePagination = page => {
+  handlePagination = (page) => {
     console.log(page, "dsfsdfsdfsdf");
     this.getPackageList(page);
   };
@@ -97,7 +98,7 @@ export class ListTreatmentPackageClass extends React.Component {
     });
   };
 
-  handleSelectTreatmentPackage = item => {
+  handleSelectTreatmentPackage = (item) => {
     let { formFields } = this.state;
     formFields["id"] = item.stock_id;
     formFields["item_desc"] = item.item_name;
@@ -123,7 +124,7 @@ export class ListTreatmentPackageClass extends React.Component {
       isTreatementModal,
       formFields,
     } = this.state;
-    let { customerId } = this.props;
+    let { customerId, t } = this.props;
     return (
       <>
         <NormalModal
@@ -142,7 +143,7 @@ export class ListTreatmentPackageClass extends React.Component {
             <div className="tab-table-content">
               <div className="py-4">
                 <div className="col-12 p-2">
-                  <h5 className="fw-500">Treatment</h5>
+                  <h5 className="fw-500">{t("Treatment")}</h5>
                 </div>
                 <div className="table-container">
                   <TableWrapper
@@ -201,7 +202,7 @@ export class ListTreatmentPackageClass extends React.Component {
                       <tr>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
-                            No data available
+                            {t("No data available")}
                           </div>
                         </td>
                       </tr>
@@ -217,11 +218,11 @@ export class ListTreatmentPackageClass extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   // filter: state.dashboard
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       updateForm,
@@ -231,7 +232,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const TreatmentPackage = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ListTreatmentPackageClass);
+export const TreatmentPackage = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(ListTreatmentPackageClass)
+);

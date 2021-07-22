@@ -22,6 +22,7 @@ import { HorizontalBar } from "react-chartjs-2";
 import { Navigation } from "react-minimal-side-navigation";
 import MaterialTable from "material-table";
 import "./style.scss";
+import { withTranslation } from "react-i18next";
 
 class KPIDashboardClass extends Component {
   state = {
@@ -378,6 +379,7 @@ class KPIDashboardClass extends Component {
   };
 
   render() {
+    let { t } = this.props;
     let {
       data,
       selectedIndex,
@@ -409,7 +411,7 @@ class KPIDashboardClass extends Component {
       labels: sortedChartData.map((e) => e[0]),
       datasets: [
         {
-          label: "Total Amount",
+          label: t("Total Amount"),
           data: sortedChartData.map((e) => e[1]),
           backgroundColor: "blue",
         },
@@ -493,35 +495,35 @@ class KPIDashboardClass extends Component {
               onSelect={({ itemId }) => this.handleFilterChange(itemId)}
               items={[
                 {
-                  title: "Collections",
+                  title: t("Collections"),
                   itemId: 0,
                 },
                 {
-                  title: "Collections By Consultant",
+                  title: t("Collections By Consultant"),
                   itemId: 1,
                 },
                 {
-                  title: "Sales Ranking By Outlet",
+                  title: t("Sales Ranking By Outlet"),
                   itemId: 2,
                 },
                 {
-                  title: "Service Ranking By Outlet",
+                  title: t("Service Ranking By Outlet"),
                   itemId: 3,
                 },
                 {
-                  title: "Product Ranking By Outlet",
+                  title: t("Product Ranking By Outlet"),
                   itemId: 4,
                 },
                 {
-                  title: "Prepaid Ranking By Outlet",
+                  title: t("Prepaid Ranking By Outlet"),
                   itemId: 5,
                 },
                 {
-                  title: "Sales Ranking (Treatment Done) By Staff",
+                  title: t("Sales Ranking (Treatment Done) By Staff"),
                   itemId: 6,
                 },
                 {
-                  title: "Sales Ranking By Staff",
+                  title: t("Sales Ranking By Staff"),
                   itemId: 7,
                 },
               ]}
@@ -530,7 +532,7 @@ class KPIDashboardClass extends Component {
           <div className="col-lg-9 kpi-dashboard">
             <div className="row mb-4">
               <div className="col">
-                <h3>{getMenuName()}</h3>
+                <h3>{t(getMenuName())}</h3>
               </div>
             </div>
             {this.state.isLoading ? null : (
@@ -568,7 +570,7 @@ class KPIDashboardClass extends Component {
                                   this.updateState({ rankingDateType: "month" })
                                 }
                               />
-                              By Month
+                              {t("By Month")}
                             </div>
                             <div className="col-sm-4 col-md-3">
                               <input
@@ -581,7 +583,7 @@ class KPIDashboardClass extends Component {
                                   this.updateState({ rankingDateType: "week" })
                                 }
                               />
-                              By Week
+                              {t("By Week")}
                             </div>
                             <div className="col-sm-4 col-md-3">
                               <input
@@ -594,7 +596,7 @@ class KPIDashboardClass extends Component {
                                   this.updateState({ rankingDateType: "day" })
                                 }
                               />
-                              By Day
+                              {t("By Day")}
                             </div>
                           </div>
                           <div className="row mb-4">
@@ -608,7 +610,7 @@ class KPIDashboardClass extends Component {
                                   this.updateState({ isSiteGroup: false })
                                 }
                               />
-                              By Site
+                              {t("By Site")}
                             </div>
                             <div className="col-sm-4 col-md-3">
                               <input
@@ -621,7 +623,7 @@ class KPIDashboardClass extends Component {
                                   this.updateState({ isSiteGroup: true })
                                 }
                               />
-                              By Site Group
+                              {t("By Site Group")}
                             </div>
                           </div>
                         </>
@@ -639,7 +641,7 @@ class KPIDashboardClass extends Component {
                                   this.updateState({ isMonth: false })
                                 }
                               />
-                              By Date
+                              {t("By Date")}
                             </div>
                             <div className="col-sm-6 col-md-4">
                               <input
@@ -652,7 +654,7 @@ class KPIDashboardClass extends Component {
                                   this.updateState({ isSiteGroup: false })
                                 }
                               />
-                              By Site
+                              {t("By Site")}
                             </div>
                           </div>
                           <div className="row mb-4">
@@ -666,7 +668,7 @@ class KPIDashboardClass extends Component {
                                   this.updateState({ isMonth: true })
                                 }
                               />
-                              By Month
+                              {t("By Month")}
                             </div>
                             <div className="col-sm-6 col-md-4">
                               <input
@@ -678,7 +680,7 @@ class KPIDashboardClass extends Component {
                                   this.updateState({ isSiteGroup: true })
                                 }
                               />
-                              By Site Group
+                              {t("By Site Group")}
                             </div>
                           </div>
                         </>
@@ -717,7 +719,7 @@ class KPIDashboardClass extends Component {
                           <>
                             <div className="col-md-4 mb-4">
                               <label className="text-left text-black common-label-text fs-17 pb-3">
-                                Start Date
+                                {t("Start Date")}
                               </label>
                               <NormalDateTime
                                 onChange={this.handleDatePick}
@@ -732,7 +734,7 @@ class KPIDashboardClass extends Component {
                             </div>
                             <div className="col-md-4 mb-4">
                               <label className="text-left text-black common-label-text fs-17 pb-3">
-                                End Date
+                                {t("End Date")}
                               </label>
                               <NormalDateTime
                                 onChange={this.handleDatePick}
@@ -752,7 +754,7 @@ class KPIDashboardClass extends Component {
                           {this.state.isSiteGroup ? (
                             <>
                               <label className="text-left text-black common-label-text fs-17 pb-3">
-                                Filter By Site Group
+                                {t("Filter By Site Group")}
                               </label>
                               <NormalSelect
                                 placeholder="Show All"
@@ -764,7 +766,7 @@ class KPIDashboardClass extends Component {
                           ) : (
                             <>
                               <label className="text-left text-black common-label-text fs-17 pb-3">
-                                Filter By Site
+                                {t("Filter By Site")}
                               </label>
                               <NormalMultiSelect
                                 placeholder="Show All"
@@ -778,7 +780,7 @@ class KPIDashboardClass extends Component {
                         {selectedIndex == 6 ? (
                           <div className="col-md-8 mb-4">
                             <label className="text-left text-black common-label-text fs-17 pb-3">
-                              Order By
+                              {t("Order By")}
                             </label>
                             <NormalSelect
                               options={this.state.orderOptions}
@@ -790,7 +792,7 @@ class KPIDashboardClass extends Component {
                         {selectedIndex > 1 ? (
                           <div className="col-md-8 mb-4">
                             <label className="text-left text-black common-label-text fs-17 pb-3">
-                              Show per page
+                              {t("Show per page")}
                             </label>
                             <NormalSelect
                               options={this.state.perPageOptions}
@@ -843,7 +845,7 @@ class KPIDashboardClass extends Component {
                                   scope="col"
                                   style={{ verticalAlign: "middle" }}
                                 >
-                                  Rank
+                                  {t("Rank")}
                                 </th>
                                 <th
                                   scope="col"
@@ -891,7 +893,7 @@ class KPIDashboardClass extends Component {
                                     verticalAlign: "middle",
                                   }}
                                 >
-                                  Amount
+                                  {t("Amount")}
                                 </th>
                                 {data.length === 0 ? null : (
                                   <th scope="col">
@@ -904,7 +906,9 @@ class KPIDashboardClass extends Component {
                                       }}
                                     >
                                       <div className="d-flex justify-content-between">
-                                        <div style={{ width: "20px" }}>0</div>
+                                        <div style={{ width: "20px" }}>
+                                          {t("0")}
+                                        </div>
                                         <div style={{ width: "20px" }}>
                                           {this.getShortFormat(
                                             (this.getLargestRankingAmount()
@@ -1069,7 +1073,7 @@ class KPIDashboardClass extends Component {
                                 marginRight: "5px",
                               }}
                             ></div>
-                            Current
+                            {t("Current")}
                           </div>
                           <div className="row">
                             <div
@@ -1080,7 +1084,7 @@ class KPIDashboardClass extends Component {
                                 marginRight: "5px",
                               }}
                             ></div>
-                            Previous
+                            {t("Previous")}
                           </div>
                         </div>
                         <Pagination
@@ -1112,7 +1116,7 @@ class KPIDashboardClass extends Component {
                               <div class="card-header">
                                 <div className="d-flex justify-content-between">
                                   <div>
-                                    <strong>Date</strong>
+                                    <strong>{t("Date")}</strong>
                                   </div>
                                   <div>
                                     <strong>{e.date}</strong>
@@ -1138,7 +1142,7 @@ class KPIDashboardClass extends Component {
                                 <li class="list-group-item">
                                   <div className="d-flex justify-content-between">
                                     <div>
-                                      <strong>Total</strong>
+                                      <strong>{t("Total")}</strong>
                                     </div>
                                     <div>
                                       <strong>{e.total}</strong>
@@ -1169,7 +1173,9 @@ class KPIDashboardClass extends Component {
                 ) : (
                   <MaterialTable
                     data={rows}
-                    columns={columns}
+                    columns={columns.map((e) => {
+                      return { ...e, title: t(e.title) };
+                    })}
                     options={{
                       exportButton: true,
                       filtering: true,
@@ -1177,7 +1183,7 @@ class KPIDashboardClass extends Component {
                       sorting: true,
                       exportAllData: true,
                     }}
-                    title={
+                    title={t(
                       selectedIndex > 1
                         ? this.state.rankingDateType == "month"
                           ? getMenuName() +
@@ -1212,7 +1218,7 @@ class KPIDashboardClass extends Component {
                           new Date(this.state.endDate).toLocaleDateString(
                             "en-GB"
                           )
-                    }
+                    )}
                   />
                 )}
               </div>
@@ -1247,7 +1253,6 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export const KPIDashboard = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(KPIDashboardClass);
+export const KPIDashboard = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(KPIDashboardClass)
+);

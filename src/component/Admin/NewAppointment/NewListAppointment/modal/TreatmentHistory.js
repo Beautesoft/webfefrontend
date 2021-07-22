@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import { NormalModal } from "component/common";
 import closeIcon from "assets/images/close.png";
 import _ from "lodash";
+import { withTranslation } from "react-i18next";
 
 export class ListTreatmentHistoryClass extends Component {
   state = {
@@ -34,14 +35,14 @@ export class ListTreatmentHistoryClass extends Component {
     this.getPackageList({});
   };
 
-  getPackageList = data => {
+  getPackageList = (data) => {
     let { customerNumber } = this.state;
     let { page = 1, limit = 10, search = "" } = data;
     this.props
       .getCommonApi(
         `appttreatmentdonehistory/?cust_id=${customerNumber}&page=${page}&limit=${limit}`
       )
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           if (res.data) {
             this.setState({
@@ -53,7 +54,7 @@ export class ListTreatmentHistoryClass extends Component {
       });
   };
 
-  handlePagination = page => {
+  handlePagination = (page) => {
     this.getPackageList(page);
   };
 
@@ -79,7 +80,7 @@ export class ListTreatmentHistoryClass extends Component {
       CustomerName,
       customerPhone,
     } = this.state;
-    let { customerId } = this.props;
+    let { customerId, t } = this.props;
     return (
       <>
         <NormalModal
@@ -98,18 +99,18 @@ export class ListTreatmentHistoryClass extends Component {
             <div className="tab-table-content">
               <div className="py-2">
                 <div className="col-12 p-2 text-center">
-                  <h5 className="fw-500">Treatment History</h5>
+                  <h5 className="fw-500">{t("Treatment History")}</h5>
                 </div>
                 <div className="d-flex flex-noWrap mb-2">
                   <div className="col-4">
                     <div className="col-12">
-                      Customer Name :{" "}
+                      {t("Customer Name")} :
                       <span className="fw-500 h6">{CustomerName}</span>
                     </div>
                   </div>
                   <div className="col-5">
                     <div className="col-12">
-                      Customer Phone :{" "}
+                      {t("Customer Phone")} :
                       <span className="fw-500 h6">{customerPhone}</span>
                     </div>
                   </div>
@@ -176,7 +177,7 @@ export class ListTreatmentHistoryClass extends Component {
                       <tr>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
-                            No data available
+                            {t("No data available")}
                           </div>
                         </td>
                       </tr>
@@ -192,11 +193,11 @@ export class ListTreatmentHistoryClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   // filter: state.dashboard
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       updateForm,
@@ -206,7 +207,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const TreatmentHistory = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ListTreatmentHistoryClass);
+export const TreatmentHistory = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(ListTreatmentHistoryClass)
+);

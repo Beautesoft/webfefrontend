@@ -13,6 +13,7 @@ import {
 } from "component/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { withTranslation } from "react-i18next";
 
 class AddStaffSkillClass extends React.Component {
   state = {
@@ -149,26 +150,28 @@ class AddStaffSkillClass extends React.Component {
       skills,
       skillList,
     } = this.state;
+
+    let { t } = this.props;
     return (
       <div className="container-fuild">
         <div className="head-label-nav">
-          <p className="category">StaffPlus</p>
+          <p className="category">{t("StaffPlus")}</p>
           <i className="icon-right mx-md-3"></i>
-          <p className="sub-category">Staff Skill</p>
+          <p className="sub-category">{t("Staff Skill")}</p>
           <i className="icon-right mx-md-3"></i>
-          <p className="sub-category">Add/Edit Skill</p>
+          <p className="sub-category">{t("Add/Edit Skill")}</p>
         </div>
         <div className="container-lg mt-5">
           <div className="row align-items-center">
             <div className="col-md-12 mb-4">
-              <h3>Add/Edit Skill</h3>
+              <h3>{t("Add/Edit Skill")}</h3>
             </div>
           </div>
           <div className="form-group pb-2 mb-4">
             <div className="row">
               <div className="col-md-12 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Select Skill Category
+                  {t("Select Skill Category")}
                 </label>
                 <NormalSelect
                   options={skillCategories}
@@ -182,7 +185,7 @@ class AddStaffSkillClass extends React.Component {
             <div className="row">
               <div className="col-md-12 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Select Employee Type
+                  {t("Select Employee Type")}
                 </label>
                 <NormalSelect
                   options={jobOptions}
@@ -196,7 +199,7 @@ class AddStaffSkillClass extends React.Component {
             <div className="row">
               <div className="col-md-12 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Select Staff
+                  {t("Select Staff")}
                 </label>
                 <NormalSelect
                   options={staffOptions}
@@ -213,7 +216,7 @@ class AddStaffSkillClass extends React.Component {
                 <div className="row">
                   <div className="col-md-8 ">
                     <label className="text-left text-black common-label-text fs-17 pb-3">
-                      Add Skills
+                      {t("Add Skills")}
                     </label>
                     <NormalMultiSelect
                       options={skillList}
@@ -234,7 +237,7 @@ class AddStaffSkillClass extends React.Component {
                 <div className="row">
                   <div className="col-md-8 ">
                     <label className="text-left text-black common-label-text fs-17 pb-3">
-                      Skills Assigned
+                      {t("Skills Assigned")}
                     </label>
                     {skills.map((item, index) => (
                       <div className="row w-100">
@@ -310,7 +313,6 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export const AddStaffSkill = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddStaffSkillClass);
+export const AddStaffSkill = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(AddStaffSkillClass)
+);

@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getCustomer } from "redux/actions/customer";
 import { HoldSection } from "./HoldSection";
+import { withTranslation } from "react-i18next";
 
 export class HoldSectionsPlusClass extends Component {
   state = {
@@ -34,7 +35,7 @@ export class HoldSectionsPlusClass extends Component {
   }
 
   getCustomer = () => {
-    this.props.getCustomer(this.props.match.params.id).then(res => {
+    this.props.getCustomer(this.props.match.params.id).then((res) => {
       console.log(res, "asdasdfasdfasdf resssssss");
     });
   };
@@ -50,7 +51,7 @@ export class HoldSectionsPlusClass extends Component {
   };
 
   render() {
-    let { customerDetail = {} } = this.props;
+    let { customerDetail = {}, t } = this.props;
     console.log(customerDetail, "asdasdfasdfasdf === sdfasdfagf");
     let { id, cust_name } = customerDetail;
     let { isOpenTreatmentDone, formFields, isActiveTab } = this.state;
@@ -62,10 +63,11 @@ export class HoldSectionsPlusClass extends Component {
               className="category"
               onClick={() => history.push("/admin/customerplus")}
             >
-              Customer
+              {t("Customer")}
             </p>
-            <i className="icon-right mx-md-3"></i>
-            <p className="sub-category">Customer Details</p>
+            <i className="icon-right mx-md-3">{t("")}</i>
+            <p className="sub-category">{t("Customer Details")}</p>
+            {t("")}
           </div>
           <div className="col-md-6">
             <div className="d-flex justify-content-between">
@@ -75,6 +77,7 @@ export class HoldSectionsPlusClass extends Component {
                   placeholder="Search Customer"
                   onChange={this.handleChange}
                 />
+                {t("")}
               </div>
 
               <div className="w-100 col-4 mx-2 p-0">
@@ -86,25 +89,33 @@ export class HoldSectionsPlusClass extends Component {
                     this.props.history.push("/admin/customerplus/add")
                   }
                 />
+                {t("")}
               </div>
               <div className="bg-white ">
-                {/* <i className="icon-filter"></i> */}
+                {/* <i className="icon-filter">{t("")}</i> */}
                 <img src={filter} alt="" />
+                {t("")}
               </div>
+              {t("")}
             </div>
+            {t("")}
           </div>
+          {t("")}
         </div>
         <div className="view-detail-box p-4 d-flex flex-column">
           <div className="d-flex pb-3">
             <div className="col-4 d-flex align-items-center">
               <div>
                 <img className="modal-avatar" src={Modal} alt="" />
+                {t("")}
               </div>
               <div className="pl-3">
                 <p className="fs-28 fw-500 customer-detail-heading py-2">
                   {cust_name}
                 </p>
+                {t("")}
               </div>
+              {t("")}
             </div>
             <div className="col-6 icon-change menu-list">
               <button
@@ -115,7 +126,7 @@ export class HoldSectionsPlusClass extends Component {
                   )
                 }
               >
-                Detail
+                {t("Detail")}
               </button>
               <button
                 className={`btn outline-btn col-2 mx-2 fs-14 float-left text-capitalize account`}
@@ -125,7 +136,7 @@ export class HoldSectionsPlusClass extends Component {
                   )
                 }
               >
-                Account
+                {t("Account")}
               </button>
               <button
                 className={`btn outline-btn col-2 mx-2 fs-14 active float-left text-capitalize hold`}
@@ -135,7 +146,7 @@ export class HoldSectionsPlusClass extends Component {
                   )
                 }
               >
-                Hold
+                {t("Hold")}
               </button>
               <button
                 className={`btn outline-btn col-3 mr-1 fs-14 p-1 float-left text-capitalize invoice`}
@@ -145,8 +156,9 @@ export class HoldSectionsPlusClass extends Component {
                   )
                 }
               >
-                Invoice History
+                {t("Invoice History")}
               </button>
+              {t("")}
             </div>
             <div className="col-2 icon-change edit">
               <button
@@ -157,21 +169,26 @@ export class HoldSectionsPlusClass extends Component {
                   )
                 }
               >
-                <span className="icon-edit mr-2"></span>Edit
+                <span className="icon-edit mr-2">{t("")}</span>
+                {t("Edit")}
               </button>
+              {t("")}
             </div>
+            {t("")}
           </div>
-          <HoldSection id={this.props.match.params.id}></HoldSection>
+          <HoldSection id={this.props.match.params.id}>{t("")}</HoldSection>
+          {t("")}
         </div>
+        {t("")}
       </div>
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   customerDetail: state.customer.customerDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCustomer,
@@ -180,7 +197,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const HoldSectionsPlus = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HoldSectionsPlusClass);
+export const HoldSectionsPlus = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(HoldSectionsPlusClass)
+);

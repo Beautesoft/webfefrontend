@@ -24,6 +24,7 @@ import SimpleReactValidator from "simple-react-validator";
 import service from "assets/images/make-up-brush.png";
 // import Discount from './cart/discount';
 import { FormGroup, Label, Input } from "reactstrap";
+import { withTranslation } from "react-i18next";
 
 export class ReversalClass extends Component {
   state = {
@@ -45,14 +46,14 @@ export class ReversalClass extends Component {
   componentWillMount = () => {
     // this.getCart();
     this.validator = new SimpleReactValidator({
-      element: message => (
+      element: (message) => (
         <span className="error-message text-danger validNo fs14">
           {message}
         </span>
       ),
       autoForceUpdate: this,
     });
-    this.props.getCommonApi("reversereason/").then(key => {
+    this.props.getCommonApi("reversereason/").then((key) => {
       let { data } = key;
       let { reasonOption } = this.state;
       for (let value of data) {
@@ -67,7 +68,7 @@ export class ReversalClass extends Component {
     let { cartData, tstaffList, headerDetails, afterAdjustment } = this.state;
     this.props
       .getCommonApi(`reversal/?treatment_id=${this.props.reversalId}`)
-      .then(key => {
+      .then((key) => {
         cartData = key;
         tstaffList = key.data;
         headerDetails = key.header_data;
@@ -81,17 +82,17 @@ export class ReversalClass extends Component {
 
     this.props
       .getCommonApi(`showbalance/?treatment_id=${this.props.reversalId}`)
-      .then(key => {
+      .then((key) => {
         transactioRecord = key.data;
         this.setState({ transactioRecord });
       });
   };
 
-  handleSubmit = id => {};
+  handleSubmit = (id) => {};
 
   handleDialog = () => {};
 
-  handleAddReversal = item => {
+  handleAddReversal = (item) => {
     //debugger;
     let { formFields } = this.state;
     if (this.validator.allValid()) {
@@ -101,7 +102,7 @@ export class ReversalClass extends Component {
             formFields.type + formFields.adj_value
           }&reason_id=${formFields.reason}&remark=${formFields.remark}`
         )
-        .then(res => {
+        .then((res) => {
           window.open(res.data);
           this.props.handleModal();
         });
@@ -157,22 +158,24 @@ export class ReversalClass extends Component {
       formFields,
       afterAdjustment,
     } = this.state;
+    let { t } = this.props;
     return (
       <div className="row new-cart treatment-done">
         <div className="col-12">
-          <p className="fs-18 font-700 mb-3 title">Treatment Reversal</p>
+          <p className="fs-18 font-700 mb-3 title">{t("Treatment Reversal")}</p>
         </div>
 
         <div className="col-6 fs-14">
-          <p className="fs-14">Reverse Treatment List</p>
+          <p className="fs-14">{t("Reverse Treatment List")}</p>
           <p className="fs-14">
-            Reverse No: <b>{headerDetails ? headerDetails.reverse_no : ""}</b>
+            {t("Reverse No")}:{" "}
+            <b>{headerDetails ? headerDetails.reverse_no : ""}</b>
           </p>
           <div className="row">
-            <div className="col-1">S.No</div>
-            <div className="col-3">Treatment #</div>
-            <div className="col-4">Content</div>
-            <div className="col-3 text-center">Value</div>
+            <div className="col-1">{t("S.No")}</div>
+            <div className="col-3">{t("Treatment")} #</div>
+            <div className="col-4">{t("Content")}</div>
+            <div className="col-3 text-center">{t("Value")}</div>
           </div>
           {tstaffList.length > 0
             ? tstaffList.map((item, index) => {
@@ -187,25 +190,27 @@ export class ReversalClass extends Component {
               })
             : ""}
           <div className="row">
-            <div className="col-8 text-right">Total</div>
+            <div className="col-8 text-right">{t("Total")}</div>
             <div className="col-3 text-center">
               {headerDetails ? headerDetails.total : ""}
             </div>
           </div>
           <div className="row mb-2">
-            <div className="col-8 text-right">Total deposit or Balance</div>
+            <div className="col-8 text-right">
+              {t("Total deposit or Balance")}
+            </div>
             <div className="col-3 text-center">
               {headerDetails ? headerDetails.total_depobalance : ""}
             </div>
           </div>
-          
+
           <div className="row mb-3">
-            <div className="col-8 text-right">Adjustment Value</div>
+            <div className="col-8 text-right">{t("Adjustment Value")}</div>
             <div className="col-3 text-center">{formFields.adj_value}</div>
           </div>
           <div className="row mb-3">
             <div className="col-8 text-right">
-              Total credit Note after adjustment
+              {t("Total credit Note after adjustment")}
             </div>
             <div className="col-3 text-center">{Number(afterAdjustment)}</div>
           </div>
@@ -219,12 +224,16 @@ export class ReversalClass extends Component {
           />
         </div>
         <div className="col-6 fs-14">
-          <p>Transaction Record</p>
+          <p>{t("Transaction Record")}</p>
           <div className="row">
-            <div className="col-3">Treatment #</div>
-            <div className="col-3">Balance/Deposit</div>
-            <div className="col-3 d-flex align-items-center justify-content-center">Total Reverse Price</div>
-            <div className="col-3">Outstanding</div>
+            <div className="col-3">{t("Treatment")} #</div>
+            <div className="col-3">
+              {t("Balance")}/{t("Deposit")}
+            </div>
+            <div className="col-3 d-flex align-items-center justify-content-center">
+              {t("Total Reverse Price")}
+            </div>
+            <div className="col-3">{t("Outstanding")}</div>
           </div>
 
           {transactioRecord.length > 0
@@ -242,9 +251,9 @@ export class ReversalClass extends Component {
         </div>
 
         <div className="col-6 fs-14 adjustment">
-          <p>Adjustment Proceedure</p>
+          <p>{t("Adjustment Proceedure")}</p>
           <div className="row mb-1">
-            <div className="col-2">Adjustmet</div>
+            <div className="col-2">{t("Adjustmet")}</div>
             <div className="col-3 pr-0 ">
               <div>
                 <NormalSelect
@@ -276,7 +285,7 @@ export class ReversalClass extends Component {
           </div>
 
           <div className="row mb-1">
-            <div className="col-2">Reason</div>
+            <div className="col-2">{t("Reason")}</div>
 
             <div className="col-6 ">
               <NormalSelect
@@ -290,7 +299,7 @@ export class ReversalClass extends Component {
             </div>
           </div>
           <div className="row">
-            <div className="col-2">Remark</div>
+            <div className="col-2">{t("Remark")}</div>
 
             <div className="col-6">
               <NormalTextarea
@@ -341,12 +350,12 @@ export class ReversalClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   selected_cstomer: state.common.selected_cstomer,
   basicApptDetail: state.appointment.basicApptDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       // getCustomer,
@@ -360,7 +369,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const Reversal = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ReversalClass);
+export const Reversal = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(ReversalClass)
+);

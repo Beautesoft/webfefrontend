@@ -9,7 +9,7 @@ export class CustomerAppointment extends Component {
 
   componentWillMount() {}
 
-  selectedCustomer = data => {
+  selectedCustomer = (data) => {
     this.setState({
       customerId: data,
     });

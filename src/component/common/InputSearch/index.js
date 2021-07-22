@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 import PropTypes from "prop-types";
@@ -6,23 +7,18 @@ import PropTypes from "prop-types";
 export const InputSearch = ({
   inputClassName = "form-control pl-3",
   onChange,
-  onEnter,
   placeholder = "Search",
   value,
 }) => {
+  let { t } = useTranslation();
   return (
     <div className="search-box input-group">
       <input
         className={inputClassName}
-        placeholder={placeholder}
+        placeholder={t(placeholder)}
         name="search"
         type="text"
         value={value}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            if (onEnter) onEnter(e);
-          }
-        }}
         onChange={(e) => {
           if (onChange) {
             onChange(e);

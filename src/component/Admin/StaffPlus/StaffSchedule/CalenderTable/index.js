@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { withTranslation } from "react-i18next";
 import "./style.scss";
 
-export class CalenderTable extends Component {
+class CalenderTableClass extends Component {
   state = {
     selectedMonth: "",
   };
@@ -47,6 +48,7 @@ export class CalenderTable extends Component {
       onChange,
       optionList,
       disabled = false,
+      t,
     } = this.props;
 
     const handOnOptionClick = (index, value) => {
@@ -79,9 +81,11 @@ export class CalenderTable extends Component {
         <>
           {currentDate}
           <br />(
-          {optionList.find((val) => val.value == itm_type) != null
-            ? optionList.find((val) => val.value == itm_type).shortDesc
-            : "N/A"}
+          {t(
+            optionList.find((val) => val.value == itm_type) != null
+              ? optionList.find((val) => val.value == itm_type).shortDesc
+              : "N/A"
+          )}
           )
           <div id={currentDate} class="dropdown-content">
             {optionList.map((val) => {
@@ -91,7 +95,7 @@ export class CalenderTable extends Component {
                   key={"ws" + val.id}
                   onClick={() => handOnOptionClick(currentDate, val.value)}
                 >
-                  {val.label}
+                  {t(val.label)}
                 </label>
               );
             })}
@@ -201,3 +205,5 @@ export class CalenderTable extends Component {
     );
   }
 }
+
+export const CalenderTable = withTranslation()(CalenderTableClass);

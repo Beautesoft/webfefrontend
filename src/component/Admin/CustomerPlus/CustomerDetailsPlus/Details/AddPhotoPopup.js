@@ -4,6 +4,7 @@ import CanvasDraw from "react-canvas-draw";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Webcam from "react-webcam";
+import { withTranslation } from "react-i18next";
 
 export class AddPhotoPopupClass extends Component {
   state = {
@@ -91,13 +92,15 @@ export class AddPhotoPopupClass extends Component {
       height: 720,
       facingMode: "user",
     };
+    let { t } = this.props;
 
     return (
       <>
         <div className="container-fluid mb-4 mt-2 product-details">
           <div className="row">
             <div className="col-6">
-              <h4>Add Photo</h4>
+              <h4>{t("Add Photo")}</h4>
+              {t("")}
             </div>
             {image == null ? null : (
               <div className="col-6">
@@ -107,6 +110,7 @@ export class AddPhotoPopupClass extends Component {
                   label="Done"
                   onClick={() => this.handleSubmit()}
                 />
+                {t("")}
               </div>
             )}
           </div>
@@ -122,6 +126,7 @@ export class AddPhotoPopupClass extends Component {
                       width={"100%"}
                       videoConstraints={videoConstraints}
                     />
+                    {t("")}
                   </div>
                   <div className="col-12 mb-4">
                     <NormalButton
@@ -130,7 +135,9 @@ export class AddPhotoPopupClass extends Component {
                       label="Capture"
                       onClick={() => this.capture()}
                     />
+                    {t("")}
                   </div>
+                  {t("")}
                 </>
               ) : null}
               <div className="col-12">
@@ -155,7 +162,9 @@ export class AddPhotoPopupClass extends Component {
                     }
                   }}
                 />
+                {t("")}
               </div>
+              {t("")}
             </div>
           ) : (
             <div className="row pl-5 pr-5 mt-4">
@@ -168,10 +177,11 @@ export class AddPhotoPopupClass extends Component {
                   brushRadius={brushRadius}
                   brushColor={brushColor}
                 />
+                {t("")}
               </div>
               <div className="col-12 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-2">
-                  Brush Radius
+                  {t("Brush Radius")}
                 </label>
                 <input
                   className="col-12"
@@ -183,10 +193,11 @@ export class AddPhotoPopupClass extends Component {
                     this.updateState({ brushRadius: e.target.value })
                   }
                 />
+                {t("")}
               </div>
               <div className="col-12 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-2">
-                  Brush Color
+                  {t("Brush Color")}
                 </label>
                 <NormalSelect
                   options={brushColorOptions}
@@ -195,6 +206,7 @@ export class AddPhotoPopupClass extends Component {
                     this.updateState({ brushColor: e.target.value })
                   }
                 />
+                {t("")}
               </div>
               <div className="col-12 mb-4">
                 <NormalButton
@@ -205,10 +217,11 @@ export class AddPhotoPopupClass extends Component {
                     this.canvasDraw.clear();
                   }}
                 />
+                {t("")}
               </div>
               <div className="col-12 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-2">
-                  Remarks
+                  {t("Remarks")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -217,11 +230,15 @@ export class AddPhotoPopupClass extends Component {
                     name="remarks"
                     onChange={this.handleChange}
                   />
+                  {t("")}
                 </div>
+                {t("")}
               </div>
+              {t("")}
             </div>
           )}
         </div>
+        {t("")}
       </>
     );
   }
@@ -233,7 +250,6 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({}, dispatch);
 };
 
-export const AddPhotoPopup = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddPhotoPopupClass);
+export const AddPhotoPopup = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(AddPhotoPopupClass)
+);

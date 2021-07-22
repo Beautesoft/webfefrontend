@@ -31,7 +31,7 @@ export class TreatmentUsageDetailClass extends Component {
     this.getTreatmentUsageDetailTabInfo(this.props.TreatmentHistoryId);
   };
 
-  getTreatmentUsageDetailTabInfo = async TreatId => {
+  getTreatmentUsageDetailTabInfo = async (TreatId) => {
     await this.setState({
       TreatmentHistoryId: this.props.TreatmentHistoryId,
       treatment_code: this.props.treatment_code,
@@ -40,7 +40,7 @@ export class TreatmentUsageDetailClass extends Component {
     let { treatmentDetailFace } = this.state;
     this.props
       .getCommonApi(`treatmentface/?treat_id=${TreatId}`)
-      .then(async key => {
+      .then(async (key) => {
         let { status, data } = key;
         if (status === 200) {
           treatmentDetailFace["str1"] = data.str1;
@@ -70,7 +70,7 @@ export class TreatmentUsageDetailClass extends Component {
     });
   };
 
-  handleTreatmentUsageDetailSave = detail => {
+  handleTreatmentUsageDetailSave = (detail) => {
     let { TreatmentHistoryId, remarks, treatment_code } = this.state;
     let Body = {
       treatment_code: treatment_code,
@@ -84,20 +84,16 @@ export class TreatmentUsageDetailClass extends Component {
     };
     this.props
       .commonCreateApi(`treatmentface/?treat_id=${TreatmentHistoryId}`, Body)
-      .then(async res => {
+      .then(async (res) => {
         if (res.status === 200) {
           this.getTreatmentUsageDetailTabInfo(TreatmentHistoryId);
         }
       });
   };
 
-  handleTreatmentUsageDetailUpdate = detail => {
-    let {
-      TreatmentHistoryId,
-      remarks,
-      treatment_code,
-      treatmentDetailId,
-    } = this.state;
+  handleTreatmentUsageDetailUpdate = (detail) => {
+    let { TreatmentHistoryId, remarks, treatment_code, treatmentDetailId } =
+      this.state;
     let Body = {
       treatment_code: treatment_code,
       str1: detail.str1,
@@ -113,7 +109,7 @@ export class TreatmentUsageDetailClass extends Component {
         `treatmentface/${treatmentDetailId}/?treat_id=${TreatmentHistoryId}`,
         Body
       )
-      .then(async res => {
+      .then(async (res) => {
         if (res.status === 200) {
           this.getTreatmentUsageDetailTabInfo(TreatmentHistoryId);
         }
@@ -121,7 +117,7 @@ export class TreatmentUsageDetailClass extends Component {
   };
   getRoomList = () => {
     let { RoomList } = this.state;
-    this.props.getCommonApi(`room/`).then(async key => {
+    this.props.getCommonApi(`room/`).then(async (key) => {
       let { status, data } = key;
       if (status === 200) {
         for (let value of data) {
@@ -143,35 +139,35 @@ export class TreatmentUsageDetailClass extends Component {
         <div className="my-2 w-100 col-6">
           <NormalInput
             name="str1"
-            onChange={e => this.handlechange(e)}
+            onChange={(e) => this.handlechange(e)}
             value={str1}
           />
         </div>
         <div className="my-2 w-100 col-6">
           <NormalInput
             name="str2"
-            onChange={e => this.handlechange(e)}
+            onChange={(e) => this.handlechange(e)}
             value={str2}
           />
         </div>
         <div className="my-2 w-100 col-6">
           <NormalInput
             name="str3"
-            onChange={e => this.handlechange(e)}
+            onChange={(e) => this.handlechange(e)}
             value={str3}
           />
         </div>
         <div className="my-2 w-100 col-6">
           <NormalInput
             name="str4"
-            onChange={e => this.handlechange(e)}
+            onChange={(e) => this.handlechange(e)}
             value={str4}
           />
         </div>
         <div className="my-2 w-100 col-6">
           <NormalInput
             name="str5"
-            onChange={e => this.handlechange(e)}
+            onChange={(e) => this.handlechange(e)}
             value={str5}
           />
         </div>
@@ -179,7 +175,7 @@ export class TreatmentUsageDetailClass extends Component {
           <NormalSelect
             name="room_id"
             options={RoomList}
-            onChange={e => this.handlechange(e)}
+            onChange={(e) => this.handlechange(e)}
             value={room_id}
             placeholder={`Select Room`}
           />
@@ -214,11 +210,11 @@ export class TreatmentUsageDetailClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   // filter: state.dashboard
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,

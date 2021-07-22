@@ -11,6 +11,7 @@ import SimpleReactValidator from "simple-react-validator";
 import { getCommonApi, commonDeleteApi } from "redux/actions/common";
 import { history } from "helpers";
 import "./style.scss";
+import { withTranslation } from "react-i18next";
 
 export class SetupTransDetailsClass extends Component {
   state = {
@@ -36,7 +37,7 @@ export class SetupTransDetailsClass extends Component {
     if (this.props.match.params.id && this.props.match.params.id > 0) {
       this.props
         .getCommonApi(`title/${this.props.match.params.id}/`)
-        .then(res => {
+        .then((res) => {
           if (res.status == 200) {
             this.setState({ formFields: res.data });
             console.log(res, "smtpsettingviewclick");
@@ -44,12 +45,13 @@ export class SetupTransDetailsClass extends Component {
         });
     }
   };
-  handleDeleteSetupTrans = id => {
-    this.props.commonDeleteApi(`title/${id}/`).then(res => {});
+  handleDeleteSetupTrans = (id) => {
+    this.props.commonDeleteApi(`title/${id}/`).then((res) => {});
     this.props.history.push(`/admin/settings/setuptransaction`);
   };
   render() {
     let { formFields, setupTransactionId } = this.state;
+    let { t } = this.props;
     return (
       <div className="smtp-Setting-detail-section col-12">
         <div className="card row">
@@ -62,10 +64,10 @@ export class SetupTransDetailsClass extends Component {
                     this.props.history.push(`/admin/settings/setuptransaction`)
                   }
                 >
-                  Setup Transaction
+                  {t("Setup Transaction")}
                 </p>
                 <i className="icon-right mx-md-3"></i>
-                <p className="sub-category">Details</p>
+                <p className="sub-category">{t("Details")}</p>
               </div>
             </div>
             <div className="col-6">
@@ -79,7 +81,8 @@ export class SetupTransDetailsClass extends Component {
                       )
                     }
                   >
-                    <span className="icon-edit mr-2"></span>Edit
+                    <span className="icon-edit mr-2"></span>
+                    {t("Edit")}
                   </button>
                 </div>
                 <div className="col-3 icon-change">
@@ -89,7 +92,8 @@ export class SetupTransDetailsClass extends Component {
                       this.handleDeleteSetupTrans(this.props.match.params.id)
                     }
                   >
-                    <span className="icon-delete mr-2"></span>Delete
+                    <span className="icon-delete mr-2"></span>
+                    {t("Delete")}
                   </button>
                 </div>
               </div>
@@ -99,7 +103,7 @@ export class SetupTransDetailsClass extends Component {
             <div className="d-flex flex-wrap">
               <div className="col-md-3 col-12"></div>
               <div className="col-md-3 col-12">
-                <p className="fw-500 pb-4">Title</p>
+                <p className="fw-500 pb-4">{t("Title")}</p>
               </div>
               <div className="col-md-6 col-12">
                 <p className="pb-4">{formFields.title}</p>
@@ -107,7 +111,7 @@ export class SetupTransDetailsClass extends Component {
 
               <div className="col-md-3 col-12"></div>
               <div className="col-md-3">
-                <p className="fw-500 pb-4">Header 1</p>
+                <p className="fw-500 pb-4">{t("Header 1")}</p>
               </div>
               <div className="col-md-6">
                 <p className=" pb-4">{formFields.trans_h1}</p>
@@ -115,7 +119,7 @@ export class SetupTransDetailsClass extends Component {
 
               <div className="col-md-3 col-12"></div>
               <div className="col-md-3 col-12">
-                <p className="fw-500 pb-4">Header 2</p>
+                <p className="fw-500 pb-4">{t("Header 2")}</p>
               </div>
               <div className="col-md-6 col-12">
                 <p className=" pb-4">{formFields.trans_h2}</p>
@@ -123,7 +127,7 @@ export class SetupTransDetailsClass extends Component {
 
               <div className="col-md-3 col-12"></div>
               <div className="col-md-3 col-12">
-                <p className="fw-500 pb-4">Footer 1</p>
+                <p className="fw-500 pb-4">{t("Footer 1")}</p>
               </div>
               <div className="col-md-6 col-12">
                 <p className=" pb-4">{formFields.trans_footer1}</p>
@@ -131,7 +135,7 @@ export class SetupTransDetailsClass extends Component {
 
               <div className="col-md-3 col-12"></div>
               <div className="col-md-3 col-12">
-                <p className="fw-500 pb-4">Footer 2</p>
+                <p className="fw-500 pb-4">{t("Footer 2")}</p>
               </div>
               <div className="col-md-6 col-12">
                 <p className=" pb-4">{formFields.trans_footer2}</p>
@@ -139,7 +143,7 @@ export class SetupTransDetailsClass extends Component {
 
               <div className="col-md-3 col-12"></div>
               <div className="col-md-3 col-12">
-                <p className="fw-500 pb-4">Footer 3</p>
+                <p className="fw-500 pb-4">{t("Footer 3")}</p>
               </div>
               <div className="col-md-6 col-12">
                 <p className=" pb-4">{formFields.trans_footer3}</p>
@@ -147,21 +151,21 @@ export class SetupTransDetailsClass extends Component {
 
               <div className="col-md-3 col-12"></div>
               <div className="col-md-3 col-12">
-                <p className="fw-500 pb-4">Footer 4</p>
+                <p className="fw-500 pb-4">{t("Footer 4")}</p>
               </div>
               <div className="col-md-6">
                 <p className=" pb-4">{formFields.trans_footer4}</p>
               </div>
               <div className="col-md-3 col-12"></div>
               <div className="col-md-3 col-12">
-                <p className="fw-500 pb-4">Gst Reg. No.</p>
+                <p className="fw-500 pb-4">{t("Gst Reg. No.")}</p>
               </div>
               <div className="col-md-6 col-12">
                 <p className=" pb-4">{formFields.gst_reg_no}</p>
               </div>
               <div className="col-md-3 col-12"></div>
               <div className="col-md-3 col-12">
-                <p className="fw-500 pb-4">Site</p>
+                <p className="fw-500 pb-4">{t("Site")}</p>
               </div>
               <div className="col-md-6 col-12">
                 <p className=" pb-4">{formFields.product_license}</p>
@@ -169,7 +173,7 @@ export class SetupTransDetailsClass extends Component {
 
               <div className="col-md-3 col-12"></div>
               <div className="col-md-3 col-12">
-                <p className="fw-500 pb-4">Logo</p>
+                <p className="fw-500 pb-4">{t("Logo")}</p>
               </div>
               <div className="col-md-6 col-12">
                 <p className=" pb-4">
@@ -202,11 +206,11 @@ export class SetupTransDetailsClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   customerDetail: state.customer.customerDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -215,7 +219,6 @@ const mapDispatchToProps = dispatch => {
     dispatch
   );
 };
-export const SetupTransDetails = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SetupTransDetailsClass);
+export const SetupTransDetails = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(SetupTransDetailsClass)
+);

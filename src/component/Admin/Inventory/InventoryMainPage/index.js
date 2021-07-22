@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import classnames from "classnames";
 import { InventoryList } from "./InventoryList";
+import { withTranslation } from "react-i18next";
 
-export class InventoryMainPage extends Component {
+class InventoryMainPageClass extends Component {
   state = {
     activeMenu: "stockUsageMemo",
   };
-  toggle = tab => {
+  toggle = (tab) => {
     if (this.state.activeMenu !== tab) {
       this.setState({
         activeMenu: tab,
@@ -16,6 +17,7 @@ export class InventoryMainPage extends Component {
   };
   render() {
     let { activeMenu } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="col-12">
@@ -33,7 +35,7 @@ export class InventoryMainPage extends Component {
                           this.toggle("stockUsageMemo");
                         }}
                       >
-                        Stock Usage Memo
+                        {t("Stock Usage Memo")}
                       </NavLink>
                     </NavItem>
                   </Nav>
@@ -55,3 +57,5 @@ export class InventoryMainPage extends Component {
     );
   }
 }
+
+export const InventoryMainPage = withTranslation()(InventoryMainPageClass);

@@ -12,6 +12,7 @@ import { updateEmpInfo, getStaffPlus } from "redux/actions/staffPlus";
 import { getCommonApi } from "redux/actions/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { withTranslation } from "react-i18next";
 
 export class EmployeeInfoClass extends Component {
   state = {
@@ -243,12 +244,15 @@ export class EmployeeInfoClass extends Component {
       emp_emerno,
       emp_remarks,
     } = formFields;
+
+    let { t } = this.props;
+
     return (
       <div className="px-5 container create-staff">
         <div className="head-label-nav">
-          <p className="category">StaffPlus </p>
+          <p className="category">{t("StaffPlus")} </p>
           <i className="icon-right mx-md-3"></i>
-          <p className="sub-category">Edit Employee Information</p>
+          <p className="sub-category">{t("Edit Employee Information")}</p>
         </div>
         {is_loading ? (
           <div class="d-flex mt-5 align-items-center justify-content-center">
@@ -262,7 +266,7 @@ export class EmployeeInfoClass extends Component {
               <div className="row">
                 <div className="col-md-4">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Name
+                    {t("Name")}
                   </label>
                 </div>
                 <div className="col-md-4">
@@ -277,7 +281,7 @@ export class EmployeeInfoClass extends Component {
                 </div>
                 <div className="col-md-4">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    NRIC / WP
+                    {t("NRIC / WP")}
                   </label>
                 </div>
                 <div className="col-md-4">
@@ -292,7 +296,7 @@ export class EmployeeInfoClass extends Component {
                 </div>
                 <div className="col-md-4">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Username
+                    {t("Username")}
                   </label>
                 </div>
                 <div className="col-md-4">
@@ -311,7 +315,7 @@ export class EmployeeInfoClass extends Component {
               <div className="row">
                 <div className="col-6">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Phone
+                    {t("Phone")}
                   </label>
                   <div className="input-group">
                     <NormalInput
@@ -324,7 +328,7 @@ export class EmployeeInfoClass extends Component {
                 </div>
                 <div className="col-6">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Address
+                    {t("Address")}
                   </label>
                   <div className="input-group">
                     <NormalInput
@@ -342,7 +346,7 @@ export class EmployeeInfoClass extends Component {
               <div className="row">
                 <div className="col-6">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Gender
+                    {t("Gender")}
                   </label>
                   <div className="input-group">
                     <NormalSelect
@@ -356,7 +360,7 @@ export class EmployeeInfoClass extends Component {
                 </div>
                 <div className="col-6">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Race
+                    {t("Race")}
                   </label>
                   <div className="input-group">
                     <NormalSelect
@@ -375,7 +379,7 @@ export class EmployeeInfoClass extends Component {
               <div className="row">
                 <div className="col-6">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Nationality
+                    {t("Nationality")}
                   </label>
                   <div className="input-group">
                     <NormalSelect
@@ -389,7 +393,7 @@ export class EmployeeInfoClass extends Component {
                 </div>
                 <div className="col-6">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Marital Status
+                    {t("Marital Status")}
                   </label>
                   <div className="input-group">
                     <NormalSelect
@@ -408,7 +412,7 @@ export class EmployeeInfoClass extends Component {
               <div className="row">
                 <div className="col-6">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Religion
+                    {t("Religion")}
                   </label>
                   <div className="input-group">
                     <NormalSelect
@@ -422,7 +426,7 @@ export class EmployeeInfoClass extends Component {
                 </div>
                 <div className="col-6">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Country
+                    {t("Country")}
                   </label>
                   <div className="input-group">
                     <NormalSelect
@@ -441,7 +445,7 @@ export class EmployeeInfoClass extends Component {
               <div className="row">
                 <div className="col-6">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Emergency Person
+                    {t("Emergency Person")}
                   </label>
                   <div className="input-group">
                     <NormalInput
@@ -454,7 +458,7 @@ export class EmployeeInfoClass extends Component {
                 </div>
                 <div className="col-6">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Emergency Phone
+                    {t("Emergency Phone")}
                   </label>
                   <div className="input-group">
                     <NormalInput
@@ -472,7 +476,7 @@ export class EmployeeInfoClass extends Component {
               <div className="row">
                 <div className="col-12">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Remarks
+                    {t("Remarks")}
                   </label>
                   <div className="input-group">
                     <NormalTextarea
@@ -527,7 +531,6 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export const EmployeeInfo = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EmployeeInfoClass);
+export const EmployeeInfo = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(EmployeeInfoClass)
+);

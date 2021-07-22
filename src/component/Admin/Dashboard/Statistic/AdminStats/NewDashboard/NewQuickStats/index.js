@@ -12,6 +12,7 @@ import Like from "assets/images/like.png";
 import Rise from "assets/images/rise.png";
 import TotalCollection from "assets/images/TotalCollection.png";
 import TreatmentDone from "assets/images/TreatmentDone.png";
+import { withTranslation } from "react-i18next";
 
 export class NewQuickStatsClass extends Component {
   state = {
@@ -70,7 +71,7 @@ export class NewQuickStatsClass extends Component {
 
   getCustomerProductandService = () => {
     let { customer, product_sold, service_sold } = this.state;
-    this.props.getCommonApi(`dashboardcust/`).then(res => {
+    this.props.getCommonApi(`dashboardcust/`).then((res) => {
       console.log(res, "custdashbordpart");
       customer = res.customer;
       product_sold = res.product_sold;
@@ -84,7 +85,7 @@ export class NewQuickStatsClass extends Component {
   };
   getVoucherandPrepaid = () => {
     let { voucher_sold, prepaid_sold } = this.state;
-    this.props.getCommonApi(`dashboardvoucher/`).then(res => {
+    this.props.getCommonApi(`dashboardvoucher/`).then((res) => {
       console.log(res, "voucherandprepaid");
       voucher_sold = res.voucher_sold;
       prepaid_sold = res.prepaid_sold;
@@ -96,7 +97,7 @@ export class NewQuickStatsClass extends Component {
   };
   getTreatmentandTotal = () => {
     let { treatment_done, total_collection } = this.state;
-    this.props.getCommonApi(`dashboardtd/`).then(res => {
+    this.props.getCommonApi(`dashboardtd/`).then((res) => {
       console.log(res, "treatment and total");
       treatment_done = res.treatment_done;
       total_collection = res.total_collection;
@@ -116,18 +117,18 @@ export class NewQuickStatsClass extends Component {
       treatment_done,
       total_collection,
     } = this.state;
-    let { tokenDetail } = this.props;
+    let { tokenDetail, t } = this.props;
     return (
       <div className="quickStats">
         <div className="palette">
           <div className="d-flex">
             <div className="color-detail col-md-7">
               <div className="color"></div>
-              <div className="detail">Daily value</div>
+              <div className="detail">{t("Daily value")}</div>
             </div>
             <div className="color-detail col-md-7">
               <div className="color not-available"></div>
-              <div className="detail">Monthly value</div>
+              <div className="detail">{t("Monthly value")}</div>
             </div>
           </div>
         </div>
@@ -174,14 +175,14 @@ export class NewQuickStatsClass extends Component {
                   <span>{product_sold.daily_product} / </span>
                   <span>{product_sold.monthly_product}</span>
                 </div>
-                <p className="label-title">Amount (RM)</p>
+                <p className="label-title">{t("Amount (RM)")}</p>
               </div>
               <div className="d-flex flex-column justify-content-between px-2 count-label">
                 <div>
                   <span>{product_sold.daily_product_ar} / </span>
                   <span>{product_sold.monthly_product_ar}</span>
                 </div>
-                <p className="label-title">AR Amount (RM)</p>
+                <p className="label-title">{t("AR Amount (RM)")}</p>
               </div>
             </div>
           </div>
@@ -206,7 +207,7 @@ export class NewQuickStatsClass extends Component {
                   <span>{voucher_sold.daily_voucher} / </span>
                   <span>{voucher_sold.monthly_voucher}</span>
                 </div>
-                <p className="label-title">Amount (RM)</p>
+                <p className="label-title">{t("Amount (RM)")}</p>
               </div>
             </div>
           </div>
@@ -231,14 +232,14 @@ export class NewQuickStatsClass extends Component {
                   <span>{service_sold.daily_service} / </span>
                   <span>{service_sold.monthly_service}</span>
                 </div>
-                <p className="label-title">Amount (RM)</p>
+                <p className="label-title">{t("Amount (RM)")}</p>
               </div>
               <div className="d-flex flex-column justify-content-between px-2 count-label">
                 <div>
                   <span>{service_sold.daily_service_ar} / </span>
                   <span>{service_sold.monthly_service_ar}</span>
                 </div>
-                <p className="label-title">AR Amount (RM)</p>
+                <p className="label-title">{t("AR Amount (RM)")}</p>
               </div>
             </div>
           </div>
@@ -263,14 +264,14 @@ export class NewQuickStatsClass extends Component {
                   <span>{prepaid_sold.daily_prepaid} / </span>
                   <span>{prepaid_sold.monthly_prepaid}</span>
                 </div>
-                <p className="label-title">Amount (RM)</p>
+                <p className="label-title">{t("Amount (RM)")}</p>
               </div>
               <div className="d-flex flex-column justify-content-between px-2 count-label">
                 <div>
                   <span>{prepaid_sold.daily_prepaid_ar} / </span>
                   <span>{prepaid_sold.monthly_prepaid_ar}</span>
                 </div>
-                <p className="label-title">AR Amount (RM)</p>
+                <p className="label-title">{t("AR Amount (RM)")}</p>
               </div>
             </div>
           </div>
@@ -295,7 +296,7 @@ export class NewQuickStatsClass extends Component {
                   <span>{treatment_done.daily_tdamt} / </span>
                   <span>{treatment_done.monthly_tdamt}</span>
                 </div>
-                <p className="label-title">Amount (RM)</p>
+                <p className="label-title">{t("Amount (RM)")}</p>
               </div>
             </div>
           </div>
@@ -320,14 +321,14 @@ export class NewQuickStatsClass extends Component {
                   <span>{total_collection.daily_sales} / </span>
                   <span>{total_collection.monthly_sales}</span>
                 </div>
-                <p className="label-title">Sales (RM)</p>
+                <p className="label-title">{t("Sales (RM)")}</p>
               </div>
               <div className="d-flex flex-column justify-content-between px-2 count-label">
                 <div>
                   <span>{total_collection.daily_nonsales} / </span>
                   <span>{total_collection.monthly_nonsales}</span>
                 </div>
-                <p className="label-title">Non Sales (RM)</p>
+                <p className="label-title">{t("Non Sales (RM)")}</p>
               </div>
             </div>
           </div>
@@ -337,10 +338,10 @@ export class NewQuickStatsClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   //tokenDetail: state.authStore.tokenDetails,
 });
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -350,7 +351,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const NewQuickStats = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NewQuickStatsClass);
+export const NewQuickStats = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(NewQuickStatsClass)
+);

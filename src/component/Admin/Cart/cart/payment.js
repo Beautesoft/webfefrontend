@@ -17,8 +17,10 @@ import Label from "reactstrap/lib/Label";
 import closeIcon from "assets/images/close.png";
 import deleteIcon from "assets/images/delete.jpg";
 import helpers from "../../../../service/Helper";
+import { withTranslation } from "react-i18next";
 const moment = require("moment");
-export class MakePaymentClass extends Component {
+
+class MakePaymentClass extends Component {
   state = {
     formFields: {
       name: "",
@@ -69,7 +71,7 @@ export class MakePaymentClass extends Component {
     selectPaymentGroup: "",
     selectPaymentGroupId: "",
     isSelectedPaymentType: "",
-    displayModelPaymentType:"",
+    displayModelPaymentType: "",
     txtUserPayAmount: 0,
     isOpenSubPayment: false,
   };
@@ -239,12 +241,8 @@ export class MakePaymentClass extends Component {
     this.setState({
       formFields,
     });
-    let {
-      balance,
-      selectedCards,
-      txtUserPayAmount,
-      isOpenSubPayment,
-    } = this.state;
+    let { balance, selectedCards, txtUserPayAmount, isOpenSubPayment } =
+      this.state;
     isOpenSubPayment = false;
     selectedCards.push({
       pay_typeid: value,
@@ -295,7 +293,7 @@ export class MakePaymentClass extends Component {
     this.setState({ isMakePaymentButtonClicked: "true" });
     let data = selectedCards;
     console.log("SubmitData", data);
-      let { id, cartId } = this.props;
+    let { id, cartId } = this.props;
     this.props
       .createPayment(
         `?cart_date=${dateFormat(
@@ -318,13 +316,8 @@ export class MakePaymentClass extends Component {
       return;
     }
 
-    let {
-      cardField,
-      selectedCards,
-      balance,
-      responseData,
-      txtUserPayAmount,
-    } = this.state;
+    let { cardField, selectedCards, balance, responseData, txtUserPayAmount } =
+      this.state;
     let userPayAmount = parseFloat(txtUserPayAmount);
     if (parseFloat(this.state.responseData.billable_amount) > 0) {
       if (userPayAmount == 0) {
@@ -446,13 +439,8 @@ export class MakePaymentClass extends Component {
       return;
     }
     const payTypeId = 23;
-    let {
-      cardField,
-      ewalletField,
-      balance,
-      selectedCards,
-      isOpenSubPayment,
-    } = this.state;
+    let { cardField, ewalletField, balance, selectedCards, isOpenSubPayment } =
+      this.state;
 
     selectedCards.push({
       pay_typeid: payTypeId,
@@ -559,13 +547,8 @@ export class MakePaymentClass extends Component {
     this.setBalanceToAllTextBoxes(balance);
   };
   addCreditNote = (selectedCreditNote) => {
-    let {
-      cardField,
-      ewalletField,
-      balance,
-      txtUserPayAmount,
-      selectedCards,
-    } = this.state;
+    let { cardField, ewalletField, balance, txtUserPayAmount, selectedCards } =
+      this.state;
     if (txtUserPayAmount == 0) {
       return;
     }
@@ -725,9 +708,10 @@ export class MakePaymentClass extends Component {
         this.setState({
           paytableData: [],
         });
-        let { paytableData, isSelectedPaymentType,displayModelPaymentType } = this.state;
+        let { paytableData, isSelectedPaymentType, displayModelPaymentType } =
+          this.state;
         isSelectedPaymentType = selPayTypeName.trim();
-        displayModelPaymentType=selPayTypeName.trim();
+        displayModelPaymentType = selPayTypeName.trim();
         for (let key of res.data) {
           paytableData.push({ label: key.pay_description, value: key.id });
         }
@@ -780,7 +764,11 @@ export class MakePaymentClass extends Component {
               isOpenSubPayment = true;
               isSelectedPaymentType = "Multiple";
             }
-            this.setState({ isOpenSubPayment, isSelectedPaymentType,displayModelPaymentType });
+            this.setState({
+              isOpenSubPayment,
+              isSelectedPaymentType,
+              displayModelPaymentType,
+            });
           }
         );
       });
@@ -817,15 +805,15 @@ export class MakePaymentClass extends Component {
     } = this.state;
     let { payTableDropDownValue } = this.state.formFields;
     let insideRadioButtonData;
-
+    let { t } = this.props;
     if (isSelectedPaymentType == "VOUCHER") {
       insideRadioButtonData = (
         <div>
           <table className="table table-bordered">
             <tr>
-              <td>Vocucher No</td>
-              <td>Value</td>
-              <td>Exp.Date</td>
+              <td>{t("Vocucher No")}</td>
+              <td>{t("Value")}</td>
+              <td>{t("Exp.Date")}</td>
             </tr>
             {this.state.voucherCustomerData.map((selectedVoucher, index) => (
               <tr
@@ -846,12 +834,12 @@ export class MakePaymentClass extends Component {
         <div>
           <table className="table table-striped">
             <tr>
-              <td>Category</td>
-              <td>Amount</td>
-              <td>Remaining</td>
-              <td>InvoiceNo</td>
-              <td>ExpDate</td>
-              <td>ConditionType</td>
+              <td>{t("Category")}</td>
+              <td>{t("Amount")}</td>
+              <td>{t("Remaining")}</td>
+              <td>{t("InvoiceNo")}</td>
+              <td>{t("ExpDate")}</td>
+              <td>{t("ConditionType")}</td>
             </tr>
             {this.state.prepaidCustomerData.map((selectedPrepaid, index) => (
               <tr
@@ -876,11 +864,11 @@ export class MakePaymentClass extends Component {
           {" "}
           <table className="table table-striped">
             <tr>
-              <td>Credit #</td>
-              <td>Date</td>
-              <td>Amount</td>
-              <td>Balance</td>
-              <td>Status</td>
+              <td>{t("Credit")} #</td>
+              <td>{t("Date")}</td>
+              <td>{t("Amount")}</td>
+              <td>{t("Balance")}</td>
+              <td>{t("Status")}</td>
             </tr>
             {this.state.creditNoteCustomerData.map((creditNote, index) => (
               <tr
@@ -904,7 +892,7 @@ export class MakePaymentClass extends Component {
           <div className="row">
             <div className="col-5">
               <div className="input-group">
-                Select Card
+                {t("Select Card")}
                 <NormalSelect
                   placeholder="Search type..."
                   options={paytableData}
@@ -922,7 +910,7 @@ export class MakePaymentClass extends Component {
 
             <div className="col-5">
               <div className="input-group">
-                Card No
+                {t("Card No")}
                 <NormalInput
                   value={cardField.pay_rem1}
                   name="pay_rem1"
@@ -932,7 +920,7 @@ export class MakePaymentClass extends Component {
             </div>
             <div className="col-5">
               <div className="input-group">
-                Name
+                {t("Name")}
                 <NormalInput
                   value={cardField.pay_rem2}
                   name="pay_rem2"
@@ -942,7 +930,7 @@ export class MakePaymentClass extends Component {
             </div>
             <div className="col-5">
               <div className="input-group">
-                Exp Month
+                {t("Exp Month")}
                 <NormalInput
                   value={cardField.pay_rem3}
                   name="pay_rem3"
@@ -952,7 +940,7 @@ export class MakePaymentClass extends Component {
             </div>
             <div className="col-5">
               <div className="input-group">
-                Exp Year
+                {t("Exp Year")}
                 <NormalInput
                   value={cardField.pay_rem4}
                   name="pay_rem4"
@@ -991,7 +979,7 @@ export class MakePaymentClass extends Component {
           <div className="row">
             <div className="col-5">
               <div className="input-group">
-                <Label className="col-12 fs-15">Choose Option</Label>
+                <Label className="col-12 fs-15">{t("Choose Option")}</Label>
                 <NormalSelect
                   placeholder="Search type..."
                   options={paytableData}
@@ -1015,15 +1003,11 @@ export class MakePaymentClass extends Component {
             src={helpers.getUrl() + "media/" + item.picturelocation}
             label={item.label}
             onClick={() => this.addNewPaymentData(item.value, item.label)}
-            style={{cursor:'pointer'}}
+            style={{ cursor: "pointer" }}
           />
           <br />
           <center>
-            <p
-              style={{ width: "100px",textAlign: 'center'}}
-            >
-              {item.label}
-            </p>
+            <p style={{ width: "100px", textAlign: "center" }}>{item.label}</p>
           </center>
         </div>
       );
@@ -1071,12 +1055,15 @@ export class MakePaymentClass extends Component {
               src={closeIcon}
               alt=""
             />
-            <center><p className="fs-18 f-600">{displayModelPaymentType}</p></center><br/>
+            <center>
+              <p className="fs-18 f-600">{displayModelPaymentType}</p>
+            </center>
+            <br />
             {insideRadioButtonData}
           </NormalModal>
           <div className="col-12 ">
             <div className="row ">
-              <Label className="col-2 fs-18">Enter Amount</Label>
+              <Label className="col-2 fs-18">{t("Enter Amount")}</Label>
               <div className="col-2">
                 <NormalInput
                   value={this.state.txtUserPayAmount}
@@ -1097,7 +1084,7 @@ export class MakePaymentClass extends Component {
             </div>
           </div>
           <div className="col-12 ">
-            <h4>Select Payment Method</h4>
+            <h4>{t("Select Payment Method")}</h4>
           </div>
           <div className="row col-12 paymentGroup">{payGroupDataContent}</div>
         </div>
@@ -1113,24 +1100,24 @@ export class MakePaymentClass extends Component {
 
               <div className="col-4 ">
                 <div className="p-2 ml-1 payment">
-                  <p>List of selection's</p>
+                  <p>{t("List of selection's")}</p>
 
                   <div className="row fs-14">
-                    <div className="col-7">Subtotal</div>
+                    <div className="col-7">{t("Subtotal")}</div>
                     <div className="col-5">
                       {tokenDetails.currency} {responseData.subtotal}
                     </div>
                     <div className="col-7">
-                      Discount ({tokenDetails.currency})
+                      {t("Discount")} ({tokenDetails.currency})
                     </div>
                     <div className="col-5">
                       {tokenDetails.currency} {responseData.discount}
                     </div>
-                    <div className="col-7">Transac amount</div>
+                    <div className="col-7">{t("Transac amount")}</div>
                     <div className="col-5">
                       {tokenDetails.currency} {responseData.trans_amt}
                     </div>
-                    <div className="col-7">Deposit</div>
+                    <div className="col-7">{t("Deposit")}</div>
                     <div className="col-5">
                       {tokenDetails.currency} {responseData.deposit_amt}
                     </div>
@@ -1139,13 +1126,13 @@ export class MakePaymentClass extends Component {
                       {tokenDetails.currency} {responseData.tax_amt}
                     </div>
                     <div className="col-12 fs-22 text-center mt-5">
-                      Billing Amount
+                      {t("Billing Amount")}
                     </div>
                     <div className="col-12 fs-22 f-700 text-center text-orenge">
                       {tokenDetails.currency} {responseData.billable_amount}
                     </div>
                     <div className="col-12 f-600 text-center mt-5">
-                      Balance Amount: {Number(balance).toFixed(2)}
+                      {t("Balance Amount")}: {Number(balance).toFixed(2)}
                     </div>
                   </div>
                 </div>
@@ -1203,7 +1190,6 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export const Payment = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MakePaymentClass);
+export const Payment = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(MakePaymentClass)
+);

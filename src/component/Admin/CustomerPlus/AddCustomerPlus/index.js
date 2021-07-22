@@ -16,6 +16,7 @@ import {
   NormalMultiSelect,
   NormalButton,
 } from "component/common";
+import { withTranslation } from "react-i18next";
 
 export class AddCustomerPlusClass extends Component {
   state = {
@@ -170,6 +171,7 @@ export class AddCustomerPlusClass extends Component {
   };
 
   renderFields = () => {
+    let { t } = this.props;
     let extraFields =
       this.state.fields.filter((e) => e.field_name == "cust_address").length > 0
         ? this.state.fields.filter((e) => e.field_name.match(/cust_address\w+/))
@@ -178,7 +180,7 @@ export class AddCustomerPlusClass extends Component {
       extraFields.length > 0
         ? (12 - extraFields[0].col_width) * extraFields.length
         : 0;
-        console.log(leftLength,"len")
+    console.log(leftLength, "len");
     let addressFileds = extraFields.map((e) => {
       return (
         <div className="input-group pb-2">
@@ -302,7 +304,7 @@ export class AddCustomerPlusClass extends Component {
                               onChange={this.handleChange}
                             />
                           ) : (
-                            "NO FILED RENDER DATA FOUND"
+                            t("NO FILED RENDER DATA FOUND")
                           )}
                         </div>
                         {e.mandatory
@@ -326,7 +328,7 @@ export class AddCustomerPlusClass extends Component {
         return (
           <div className={`col-md-${e.col_width} pb-md-4`}>
             <label className="text-left text-black common-label-text fs-17 p-0">
-              {e.display_field_name}
+              {t(e.display_field_name)}
             </label>
             <div className="input-group">
               {e.data_type == "text" ? (
@@ -399,15 +401,18 @@ export class AddCustomerPlusClass extends Component {
 
   render() {
     let { isLoading } = this.state;
+    let { t } = this.props;
     return (
       <div className="create-customer-section container-fluid">
         {/* <p className="list-heading pb-4"> {id ? "Edit" : "Add"} Customer</p> */}
         <div className="create-customerplus">
           <div className="head-label-nav">
-            <p className="category">Customer Plus</p>
+            <p className="category">{t("Customer Plus")}</p>
             <i className="icon-right mx-md-3"></i>
             <p className="sub-category">
-              {this.props.match.params.id ? "Edit" : "Add"} New Customer
+              {t(
+                (this.props.match.params.id ? "Edit" : "Add") + " New Customer"
+              )}
             </p>
           </div>
           <div className="customer-detail">
@@ -474,7 +479,6 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export const AddCustomerPlus = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddCustomerPlusClass);
+export const AddCustomerPlus = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(AddCustomerPlusClass)
+);

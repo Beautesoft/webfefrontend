@@ -30,6 +30,7 @@ import { Toast } from "service/toast";
 import { AppointmentForm } from "./AppointmentForm";
 import { history } from "helpers";
 import { data } from "component/common/Plugins/devExpressScheduler/data";
+import { withTranslation } from "react-i18next";
 
 export class NewSelectTreatmentClass extends Component {
   constructor(props) {
@@ -136,7 +137,7 @@ export class NewSelectTreatmentClass extends Component {
       });
       this.props.updateForm("treatmentList", selectedList);
     }
-    this.props.getCommonApi(`itemdept/`).then(key => {
+    this.props.getCommonApi(`itemdept/`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         for (let value of data) {
@@ -151,7 +152,7 @@ export class NewSelectTreatmentClass extends Component {
           basicApptDetail.branchId
         }&date=${dateFormat(new Date())}`
       )
-      .then(key => {
+      .then((key) => {
         let { status, data } = key;
         if (status === 200) {
           for (let value of data) {
@@ -160,7 +161,7 @@ export class NewSelectTreatmentClass extends Component {
           this.setState({ staffOption });
         }
       });
-    this.props.getCommonApi(`treatment/Duration/`).then(key => {
+    this.props.getCommonApi(`treatment/Duration/`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         for (let value of data) {
@@ -171,7 +172,7 @@ export class NewSelectTreatmentClass extends Component {
     });
     this.getStaffAvailability();
   }
-  timeToDateFormat = TimeValue => {
+  timeToDateFormat = (TimeValue) => {
     let time = String(TimeValue).split(":");
     let newTime = new Date(new Date().setHours(time[0], time[1], 0, 0));
     return newTime;
@@ -179,7 +180,7 @@ export class NewSelectTreatmentClass extends Component {
   handleRenderApptDetail = async (appt_id, copy) => {
     let { selectedList, InitAppointmentStatus } = this.state;
 
-    this.props.getCommonApi(`appointmentedit/${appt_id}/`).then(async key => {
+    this.props.getCommonApi(`appointmentedit/${appt_id}/`).then(async (key) => {
       let { status, data } = key;
       console.log(data, "renderappointmentdetail");
       if (status === 200) {
@@ -230,7 +231,7 @@ export class NewSelectTreatmentClass extends Component {
   };
   handleItemSettings = () => {
     let { settingData } = this.state;
-    this.props.getCommonApi(`userlist/`).then(key => {
+    this.props.getCommonApi(`userlist/`).then((key) => {
       let { status, data } = key;
       console.log(key, "settingsData appointmentCreate");
       if (status === 200) {
@@ -241,7 +242,7 @@ export class NewSelectTreatmentClass extends Component {
   };
   componentWillMount() {
     this.validator = new SimpleReactValidator({
-      element: message => (
+      element: (message) => (
         <span className="error-message text-danger validNo fs14">
           {message}
         </span>
@@ -255,7 +256,7 @@ export class NewSelectTreatmentClass extends Component {
       .getCommonApi(
         `staffsavailable/?Appt_date=${dateFormat(new Date(), "yyyy-mm-dd")}`
       )
-      .then(key => {
+      .then((key) => {
         let { status, data } = key;
         if (status === 200) {
           // for (let value of data) {
@@ -266,7 +267,7 @@ export class NewSelectTreatmentClass extends Component {
       });
   };
 
-  handleSearch = event => {
+  handleSearch = (event) => {
     event.persist();
     console.log(event.target.value, event.target, event, "dfhdfjghkjfghj");
     let { treatmentField } = this.state;
@@ -283,14 +284,14 @@ export class NewSelectTreatmentClass extends Component {
     this.debouncedFn();
   };
 
-  search = data => {
+  search = (data) => {
     let { page = 1, limit = 10, search = "" } = data;
     let { selectTreatmentId } = this.state;
     this.props
       .getCommonApi(
         `stocklist/?Item_Deptid=${selectTreatmentId}&search=${search}&page=${page}&limit=${limit}`
       )
-      .then(res => {
+      .then((res) => {
         console.log(res, "treatmentList treatment_parentcode");
         if (res.status === 200) {
           this.setState({
@@ -301,7 +302,7 @@ export class NewSelectTreatmentClass extends Component {
       });
   };
 
-  handlePagination = page => {
+  handlePagination = (page) => {
     this.search(page);
   };
 
@@ -326,7 +327,7 @@ export class NewSelectTreatmentClass extends Component {
       .getCommonApi(
         `stocklist/?Item_Deptid=${selectTreatmentId}&search=${search}&page=${page}&limit=${limit}`
       )
-      .then(res => {
+      .then((res) => {
         console.log(res);
         if (res.status === 200) {
           this.setState({
@@ -390,7 +391,7 @@ export class NewSelectTreatmentClass extends Component {
     await this.props.updateForm("treatmentList", selectedList);
   };
 
-  handleMultiSelect = data => {
+  handleMultiSelect = (data) => {
     let { formFields } = this.state;
     let list = [];
     for (let key of data) {
@@ -460,7 +461,7 @@ export class NewSelectTreatmentClass extends Component {
     await this.props.updateForm("treatmentList", selectedList);
   };
 
-  getHoursFromDate = date => {
+  getHoursFromDate = (date) => {
     let hour = date.getHours();
     let minute = date.getMinutes();
     let hours = hour > 9 ? hour : "0" + hour;
@@ -468,7 +469,7 @@ export class NewSelectTreatmentClass extends Component {
     return hours + ":" + minutes;
   };
 
-  stafflistvalidation = appointmentTreatmentList => {
+  stafflistvalidation = (appointmentTreatmentList) => {
     if (appointmentTreatmentList.length > 0) {
       for (let item of appointmentTreatmentList) {
         if (!item.emp_no || item.emp_no === "" || item.emp_no === null) {
@@ -542,7 +543,7 @@ export class NewSelectTreatmentClass extends Component {
 
         this.props
           .commonPatchApi(`appointmentedit/${appointmentId}/`, data)
-          .then(async res => {
+          .then(async (res) => {
             console.log(res, "cart check while update booking");
             if (res.status === 200) {
               this.handleCloseDialog();
@@ -560,7 +561,7 @@ export class NewSelectTreatmentClass extends Component {
                     "yyyy-mm-dd"
                   )}&cust_noid=${appointmentCustomerDetail.customerName}`
                 )
-                .then(res => {
+                .then((res) => {
                   history.push("/admin/cart");
                 });
             }
@@ -717,7 +718,7 @@ export class NewSelectTreatmentClass extends Component {
               `appointmentrecur/${appointmentId}/?type=${`all`} `,
               data
             )
-            .then(async res => {
+            .then(async (res) => {
               if (res.status === 200) {
                 this.handleCloseDialog();
                 this.handleSaveorUpdate();
@@ -726,7 +727,7 @@ export class NewSelectTreatmentClass extends Component {
         } else {
           this.props
             .commonPatchApi(`appointmentrecur/${appointmentId}/`, data)
-            .then(async res => {
+            .then(async (res) => {
               console.log(res, "type all clicked result");
               if (res.status === 200) {
                 this.handleCloseDialog();
@@ -772,7 +773,7 @@ export class NewSelectTreatmentClass extends Component {
           Treatment: appointmentTreatmentList,
         };
 
-        this.props.commonCreateApi(`appointment/`, data).then(async res => {
+        this.props.commonCreateApi(`appointment/`, data).then(async (res) => {
           if (res.status === 201) {
             this.handleCloseDialog();
             this.handleSaveorUpdate();
@@ -784,7 +785,7 @@ export class NewSelectTreatmentClass extends Component {
     }
   };
 
-  getDateTime = data => {
+  getDateTime = (data) => {
     let date = new Date(data);
     date = String(date).split(" ");
     let date1 = date[2] + "th " + date[1] + ", " + date[3];
@@ -805,7 +806,7 @@ export class NewSelectTreatmentClass extends Component {
     this.setState({ isOpenModal: false });
   };
 
-  handleSelectPackage = async data => {
+  handleSelectPackage = async (data) => {
     let { selectedList, PackageIndex, appointmentId } = this.state;
 
     if (PackageIndex === 0 && selectedList[0]["Item_CodeName"] === "") {
@@ -922,7 +923,7 @@ export class NewSelectTreatmentClass extends Component {
     this.setState({ isOpenModal: false });
   };
 
-  handleSelectTreatment = async data => {
+  handleSelectTreatment = async (data) => {
     let { selectedList, index, appointmentId } = this.state;
 
     if (index == 0 && selectedList.length == 1) {
@@ -990,14 +991,14 @@ export class NewSelectTreatmentClass extends Component {
     this.setState({ isOpenModal: false });
   };
 
-  timeToMins = time => {
+  timeToMins = (time) => {
     var b = time.split(":");
     return b[0] * 60 + +b[1];
   };
 
   // Convert minutes to a time in format hh:mm
   // Returned value is in range 00  to 24 hrs
-  timeFromMins = mins => {
+  timeFromMins = (mins) => {
     function z(n) {
       return (n < 10 ? "0" : "") + n;
     }
@@ -1023,7 +1024,7 @@ export class NewSelectTreatmentClass extends Component {
   //   };
   // };
 
-  handleAddtreatment = async index => {
+  handleAddtreatment = async (index) => {
     let { selectedList, formFields, appointmentId } = this.state;
 
     if (selectedList[index]["end_time"]) {
@@ -1073,7 +1074,7 @@ export class NewSelectTreatmentClass extends Component {
     }
   };
 
-  deleteTreatment = async index => {
+  deleteTreatment = async (index) => {
     let { selectedList } = this.state;
     selectedList.splice(index, 1);
     this.setState({ selectedList });
@@ -1081,7 +1082,7 @@ export class NewSelectTreatmentClass extends Component {
   };
 
   handleTreatementmodal = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isTreatementModal: !prevState.isTreatementModal,
     }));
   };
@@ -1114,12 +1115,12 @@ export class NewSelectTreatmentClass extends Component {
   };
   handleRecurringlistCheckbox = async ({ target: { value, name } }, item) => {
     let { recurringList } = this.state;
-    let listCheckbox = recurringList.find(acc => acc.id === item.id);
+    let listCheckbox = recurringList.find((acc) => acc.id === item.id);
     if (listCheckbox) {
       listCheckbox["selected"] = value;
       await this.setState({ ...this.state.recurringList, listCheckbox });
     }
-    let Checkbox = recurringList.filter(acc => acc.selected === true).length;
+    let Checkbox = recurringList.filter((acc) => acc.selected === true).length;
     if (Checkbox == this.state.recurringList.length) {
       await this.setState({ recurringSelectAll: true });
     } else {
@@ -1194,20 +1195,20 @@ export class NewSelectTreatmentClass extends Component {
       settingData,
       PasteAppointmentId,
     } = this.state;
-    let { customerDetail, selectedTreatmentList, customerId } = this.props;
+    let { customerDetail, selectedTreatmentList, customerId, t } = this.props;
     let { outlet, staff, rooms } = customerDetail;
     return (
       <>
         {PasteAppointmentId <= 0 ? (
           <AppointmentForm
-            onRef={ref => (this.child = ref)}
+            onRef={(ref) => (this.child = ref)}
             selectedCustomer={this.props.selectedCustomer}
             PasteAppointmentId={PasteAppointmentId}
           ></AppointmentForm>
         ) : null}
         {PasteAppointmentId > 0 ? (
           <AppointmentForm
-            onRef={ref => (this.child = ref)}
+            onRef={(ref) => (this.child = ref)}
             selectedCustomer={this.props.selectedCustomer}
             PasteAppointmentId={PasteAppointmentId}
           ></AppointmentForm>
@@ -1220,12 +1221,16 @@ export class NewSelectTreatmentClass extends Component {
                   <div className="treatment-section">
                     <div className="select-treatment select-list w-100">
                       <div className="row selected selected-header mb-4 w-100">
-                        <div className="col-1 p-0">Start</div>
-                        <div className="col-1 p-0">End</div>
-                        <div className="col-3 p-0 header-detail">Services</div>
+                        <div className="col-1 p-0">{t("Start")}</div>
+                        <div className="col-1 p-0">{t("End")}</div>
+                        <div className="col-3 p-0 header-detail">
+                          {t("Services")}
+                        </div>
 
-                        <div className="col-1 p-0 header-detail">Duration</div>
-                        <div className="col-2 p-0">Treatment staff</div>
+                        <div className="col-1 p-0 header-detail">
+                          {t("Duration")}
+                        </div>
+                        <div className="col-2 p-0">{t("Treatment staff")}</div>
                         <div className="col-1 p-0 d-flex justify-content-center">
                           <img
                             src={req_therapist}
@@ -1235,10 +1240,10 @@ export class NewSelectTreatmentClass extends Component {
                           />
                         </div>
                         <div className="col-1 p-0 header-detail d-flex justify-content-start">
-                          Recur. Days
+                          {t("Recur. Days")}
                         </div>
                         <div className="col-1 p-0 header-detail d-flex justify-content-center">
-                          Recur. Qty
+                          {t("Recur. Qty")}
                         </div>
                       </div>
                       {selectedList.length > 0 ? (
@@ -1249,7 +1254,7 @@ export class NewSelectTreatmentClass extends Component {
                                 {appointmentId ? (
                                   <NormalDateTime
                                     className={`cursor-pointer`}
-                                    onChange={e =>
+                                    onChange={(e) =>
                                       this.handleDatePick(e, index)
                                     }
                                     label="start_time"
@@ -1302,7 +1307,9 @@ export class NewSelectTreatmentClass extends Component {
                                         index: index,
                                       })
                                     }
-                                    onChange={e => this.handleChange(e, index)}
+                                    onChange={(e) =>
+                                      this.handleChange(e, index)
+                                    }
                                     className="customer-name p-0 px-2"
                                   />
                                 ) : null}
@@ -1333,7 +1340,9 @@ export class NewSelectTreatmentClass extends Component {
                                     value={item.Item_CodeName}
                                     name="Item_CodeName"
                                     onClick={() => {}}
-                                    onChange={e => this.handleChange(e, index)}
+                                    onChange={(e) =>
+                                      this.handleChange(e, index)
+                                    }
                                     className="customer-name p-0 px-2"
                                   />
                                 ) : null}
@@ -1357,7 +1366,7 @@ export class NewSelectTreatmentClass extends Component {
                                   options={duration}
                                   value={item.add_duration}
                                   name="add_duration"
-                                  onChange={e => this.handleChange(e, index)}
+                                  onChange={(e) => this.handleChange(e, index)}
                                   className="customer-name p-0"
                                 />
                               </div>
@@ -1367,14 +1376,14 @@ export class NewSelectTreatmentClass extends Component {
                                   options={staffOption}
                                   value={item.emp_no}
                                   name="emp_no"
-                                  onChange={e => this.handleChange(e, index)}
+                                  onChange={(e) => this.handleChange(e, index)}
                                   className="customer-name p-0"
                                 />
                               </div>
                               <div className="col-1 p-0 d-flex justify-content-center">
                                 {item.requesttherapist ? (
                                   <NormalCheckbox
-                                    onChange={e =>
+                                    onChange={(e) =>
                                       this.handleCheckbox(e, index)
                                     }
                                     value={item.requesttherapist}
@@ -1383,7 +1392,7 @@ export class NewSelectTreatmentClass extends Component {
                                   />
                                 ) : (
                                   <NormalCheckbox
-                                    onChange={e =>
+                                    onChange={(e) =>
                                       this.handleCheckbox(e, index)
                                     }
                                     value={item.requesttherapist}
@@ -1397,7 +1406,7 @@ export class NewSelectTreatmentClass extends Component {
                                   type="number"
                                   name="recur_days"
                                   value={item.recur_days ? item.recur_days : ""}
-                                  onChange={e => this.handleChange(e, index)}
+                                  onChange={(e) => this.handleChange(e, index)}
                                 />
                               </div>
                               <div className="col-1 p-0 d-flex justify-content-start">
@@ -1405,7 +1414,7 @@ export class NewSelectTreatmentClass extends Component {
                                   type="number"
                                   name="recur_qty"
                                   value={item.recur_qty ? item.recur_qty : ""}
-                                  onChange={e => this.handleChange(e, index)}
+                                  onChange={(e) => this.handleChange(e, index)}
                                 />
                               </div>
                               {selectedList.length === index + 1 ? (
@@ -1460,7 +1469,7 @@ export class NewSelectTreatmentClass extends Component {
                         })
                       ) : (
                         <div className="row selected text-center mb-4">
-                          No data
+                          {t("No data")}
                         </div>
                       )}
                       <div className="mt-5">
@@ -1559,14 +1568,14 @@ export class NewSelectTreatmentClass extends Component {
                       {recurringList && recurringList.length > 0 ? (
                         <div className="mt-5 mb-3">
                           <div>
-                            <p>Recurring Related Appointments</p>
+                            <p>{t("Recurring Related Appointments")}</p>
                           </div>
 
                           <div className="row selected selected-header mb-2">
                             <div className="col-1">
                               <NormalCheckbox
                                 label={`All`}
-                                onChange={e =>
+                                onChange={(e) =>
                                   this.handleRecurringSelectAllCheckbox(e)
                                 }
                                 value={recurringSelectAll}
@@ -1574,17 +1583,19 @@ export class NewSelectTreatmentClass extends Component {
                                 checked={recurringSelectAll}
                               />
                             </div>
-                            <div className="col-2 p-0">Date</div>
-                            <div className="col-1 p-0">Start</div>
-                            <div className="col-1 p-0">End</div>
+                            <div className="col-2 p-0">{t("Date")}</div>
+                            <div className="col-1 p-0">{t("Start")}</div>
+                            <div className="col-1 p-0">{t("End")}</div>
                             <div className="col-3 p-0 header-detail">
-                              Services
+                              {t("Services")}
                             </div>
 
                             <div className="col-1 p-0 header-detail">
-                              Duration
+                              {t("Duration")}
                             </div>
-                            <div className="col-2 p-0">Treatment staff</div>
+                            <div className="col-2 p-0">
+                              {t("Treatment staff")}
+                            </div>
                             <div className="col-1 p-0 d-flex justify-content-center">
                               <img
                                 src={req_therapist}
@@ -1600,7 +1611,7 @@ export class NewSelectTreatmentClass extends Component {
                                 <div className="row selected  mb-4" key={index}>
                                   <div className="col-1 text-center">
                                     <NormalCheckbox
-                                      onChange={e =>
+                                      onChange={(e) =>
                                         this.handleRecurringlistCheckbox(
                                           e,
                                           item
@@ -1630,7 +1641,7 @@ export class NewSelectTreatmentClass extends Component {
                                   </div>
                                   <div className="col-1 p-0 d-flex justify-content-center">
                                     <NormalCheckbox
-                                      onChange={e =>
+                                      onChange={(e) =>
                                         this.handleRecurringlistCheckbox(
                                           e,
                                           item
@@ -1646,7 +1657,9 @@ export class NewSelectTreatmentClass extends Component {
                               );
                             })
                           ) : (
-                            <div className="row text-center w-100">No data</div>
+                            <div className="row text-center w-100">
+                              {t("No data")}
+                            </div>
                           )}
                           <div className="d-flex justify-content-end">
                             <div className="mt-5">
@@ -1697,12 +1710,12 @@ export class NewSelectTreatmentClass extends Component {
             />
             <div className="customer-list container">
               <div className="col-12 pl-0 mb-3 fw-500 py-2">
-                <h5>Select Treatment</h5>
+                <h5>{t("Select Treatment")}</h5>
               </div>
               <div className="col-12">
                 <div className="row">
                   <div className="col-6">
-                    Category
+                    {t("Category")}
                     <NormalSelect
                       // placeholder="Enter here"
                       options={categoryList}
@@ -1713,7 +1726,7 @@ export class NewSelectTreatmentClass extends Component {
                     />
                   </div>
                   <div className="col-6">
-                    Service
+                    {t("Service")}
                     <input
                       // placeholder="Enter here"
                       // options={siteList}
@@ -1770,7 +1783,7 @@ export class NewSelectTreatmentClass extends Component {
                   ) : (
                     <td>
                       <div className="d-flex align-items-center justify-content-center">
-                        No data available
+                        {t("No data available")}
                       </div>
                     </td>
                   )}
@@ -1807,7 +1820,7 @@ export class NewSelectTreatmentClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   customerDetail: state.appointment.customerDetail,
   appointmentDetail: state.appointment.appointmentDetail,
   selectedTreatmentList: state.appointment.selectedTreatmentList,
@@ -1817,7 +1830,7 @@ const mapStateToProps = state => ({
   AppointmentCopy: state.appointment.AppointmentCopy,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       updateForm,
@@ -1830,7 +1843,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const NewSelectTreatment = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NewSelectTreatmentClass);
+export const NewSelectTreatment = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(NewSelectTreatmentClass)
+);

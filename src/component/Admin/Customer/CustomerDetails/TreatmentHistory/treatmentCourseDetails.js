@@ -1,106 +1,121 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import "./style.scss";
 // import { Appointments, TreatmentHistory, PurchaseHistory, PersonalDetails, Favourites } from './Details'
-import classnames from 'classnames';
+import classnames from "classnames";
+import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import {
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-} from 'reactstrap';
-import { NormalInput, NormalButton, TableWrapper, NormalTextarea, NormalModal } from 'component/common';
-import { FormGroup, Label, Input } from 'reactstrap';
-import closeIcon from 'assets/images/close.png';
+  NormalInput,
+  NormalButton,
+  TableWrapper,
+  NormalTextarea,
+  NormalModal,
+} from "component/common";
+import { FormGroup, Label, Input } from "reactstrap";
+import closeIcon from "assets/images/close.png";
+import { withTranslation } from "react-i18next";
 
-export class TreatmentCourseDetails extends Component {
+class TreatmentCourseDetailsClass extends Component {
   state = {
     formField: {
       reason: "",
-      adjustment: ""
+      adjustment: "",
     },
-    isOpenModal: false
-  }
+    isOpenModal: false,
+  };
 
   toggle = (tab) => {
     if (this.state.activeTab !== tab) {
       this.setState({
-        activeTab: tab
+        activeTab: tab,
       });
     }
-  }
+  };
 
   handleCloseDialog = () => {
     let { isOpenModal } = this.state;
     isOpenModal = false;
     this.setState({
-      isOpenModal
-    })
-  }
+      isOpenModal,
+    });
+  };
 
   render() {
-    let { treatmentList, headerDetails, cartList, formField, isOpenModal } = this.state;
+    let { treatmentList, headerDetails, cartList, formField, isOpenModal } =
+      this.state;
     let { reason, adjustment } = formField;
+    let { t } = this.props;
     return (
-
       <div className="treatment-account row">
         <div className="col-12 pb-3 treatment-table">
-          <p className="my-2 fs-16 font-600">Reverse treatment</p>
+          <p className="my-2 fs-16 font-600">{t("Reverse treatment")}</p>
           <div className="row header m-0 mt-2 fs-18">
-            <div className="col-2 text-center">No</div>
-            <div className="col-3">Treatment No</div>
-            <div className="col-5">Content</div>
-            <div className="col-2">Value</div>
+            <div className="col-2 text-center">{t("No")}</div>
+            <div className="col-3">{t("Treatment No")}</div>
+            <div className="col-5">{t("Content")}</div>
+            <div className="col-2">{t("Value")}</div>
+            {t("")}
           </div>
           <div className="row m-0 fs-14">
             <div className="col-2 text-center">...</div>
-            <div className="col-3">Reverse list</div>
-            <div className="col-5">HQRAFTOOCFD</div>
-            <div className="col-2"></div>
+            <div className="col-3">{t("Reverse list")}</div>
+            <div className="col-5">{t("HQRAFTOOCFD")}</div>
+            <div className="col-2">{t("")}</div>
+            {t("")}
           </div>
           <div className="row m-0 fs-18 font-600">
-            <div className="col-2 text-center">No</div>
-            <div className="col-3">Treatment #</div>
-            <div className="col-5">Description</div>
-            <div className="col-2">Price</div>
+            <div className="col-2 text-center">{t("No")}</div>
+            <div className="col-3">{t("Treatment")} #</div>
+            <div className="col-5">{t("Description")}</div>
+            <div className="col-2">{t("Price")}</div>
+            {t("")}
           </div>
           <div className="row m-0 fs-14">
             <div className="col-2 text-center">1.</div>
-            <div className="col-3">TRMTRAFT110254862</div>
+            <div className="col-3">{t("TRMTRAFT110254862")}</div>
             <div className="col-5">
               <p>T00025266-C x 360 Glow treatment...</p>
-              <p className="text-orenge">Total</p>
-              <p className="text-orenge">Total deposit of balance</p>
-              <p>Total credit Note to be received</p>
-              <p className="fs-18 font-600">Adjustment value</p>
-              <p>Penalty</p>
-              <p className="text-orenge">Total credit Note after adjustment</p>
+              <p className="text-orenge">{t("Total")}</p>
+              <p className="text-orenge">{t("Total deposit of balance")}</p>
+              <p>{t("Total credit Note to be received")}</p>
+              <p className="fs-18 font-600">{t("Adjustment value")}</p>
+              <p>{t("Penalty")}</p>
+              <p className="text-orenge">
+                {t("Total credit Note after adjustment")}
+              </p>
+              {t("")}
             </div>
             <div className="col-2">
               <p>$180.00</p>
               <p className="text-orenge">$180.00</p>
               <p className="text-orenge">$1440.00</p>
               <p>$180.00</p>
-              <br></br>
+              <br>{t("")}</br>
               <p>$20.00</p>
               <p className="text-orenge">$160.00</p>
+              {t("")}
             </div>
+            {t("")}
           </div>
+          {t("")}
         </div>
         <div className="col-6 mt-2 pb-3">
           <div className="row">
-            <div className="col-4 mt-2">Adjustment</div>
+            <div className="col-4 mt-2">{t("Adjustment")}</div>
             <div className="col-8 adjustment mt-2 mb-2 d-flex">
               <FormGroup className="" check>
                 <Label check>
-                  <Input type="radio" name="radio1" />{' '}
+                  <Input type="radio" name="radio1" />{" "}
                 </Label>
-              </FormGroup> {" + "}
+                {t("")}
+              </FormGroup>{" "}
+              {" + "}
               <FormGroup className="ml-2" check>
                 <Label check>
-                  <Input type="radio" name="radio1" />{' '}
+                  <Input type="radio" name="radio1" />{" "}
                 </Label>
-              </FormGroup> {" - "}
+                {t("")}
+              </FormGroup>{" "}
+              {" - "}
               <div className="input-group ml-3">
                 <NormalInput
                   placeholder="Enter here"
@@ -108,9 +123,11 @@ export class TreatmentCourseDetails extends Component {
                   name="adjustment"
                   onChange={this.props.handleChange}
                 />
+                {t("")}
               </div>
+              {t("")}
             </div>
-            <div className="col-4 mb-2">Reason</div>
+            <div className="col-4 mb-2">{t("Reason")}</div>
             <div className="col-8 mb-2 reason">
               <div className="input-group">
                 <NormalInput
@@ -119,9 +136,11 @@ export class TreatmentCourseDetails extends Component {
                   name="reason"
                   onChange={this.props.handleChange}
                 />
+                {t("")}
               </div>
+              {t("")}
             </div>
-            <div className="col-4">Remarks</div>
+            <div className="col-4">{t("Remarks")}</div>
             <div className="col-8 remark">
               <div className="input-group">
                 <NormalTextarea
@@ -130,10 +149,13 @@ export class TreatmentCourseDetails extends Component {
                   name="reason"
                   onChange={this.props.handleChange}
                 />
+                {t("")}
               </div>
-
+              {t("")}
             </div>
+            {t("")}
           </div>
+          {t("")}
         </div>
         <div className="col-6 mt-2 py-3">
           <div className="row">
@@ -146,6 +168,7 @@ export class TreatmentCourseDetails extends Component {
                 // outline={false}
                 onClick={() => this.setState({ isOpenModal: true })}
               />
+              {t("")}
             </div>
             <div className="col-9 mt-5 text-center">
               <NormalButton
@@ -154,10 +177,13 @@ export class TreatmentCourseDetails extends Component {
                 className="col-12 fs-15"
                 label="Undo"
                 outline={true}
-                onClick={() => { }}
+                onClick={() => {}}
               />
+              {t("")}
             </div>
+            {t("")}
           </div>
+          {t("")}
         </div>
         <div className="col-12 action-bar custom-border pt-4 d-flex text-center">
           <NormalButton
@@ -166,7 +192,7 @@ export class TreatmentCourseDetails extends Component {
             className="col-12 fs-15 mr-3"
             label="Cancel"
             // outline={false}
-            onClick={() => this.props.handleShowDetail('live')}
+            onClick={() => this.props.handleShowDetail("live")}
           />
           <NormalButton
             buttonClass={"print"}
@@ -176,18 +202,28 @@ export class TreatmentCourseDetails extends Component {
             // outline={false}
             onClick={() => this.setState({ isOpenEditDisc: false })}
           />
+          {t("")}
         </div>
 
-        <NormalModal className={"update-reverse"} style={{ minWidth: "605px" }} modal={isOpenModal} handleModal={this.handleCloseDialog}>
-          <img onClick={this.handleCloseDialog} className="close" src={closeIcon} alt="" />
+        <NormalModal
+          className={"update-reverse"}
+          style={{ minWidth: "605px" }}
+          modal={isOpenModal}
+          handleModal={this.handleCloseDialog}
+        >
+          <img
+            onClick={this.handleCloseDialog}
+            className="close"
+            src={closeIcon}
+            alt=""
+          />
           <div className="row mt-2 mb-5 mx-3">
-
             <div className="col-12 pl-0 mt-3 fs-20 f-700 py-2 text-center">
-              Credit Note reversed will be : $160.00
-              </div>
+              {t("Credit Note reversed will be")} : $160.00
+            </div>
             <div className="col-12 pl-0 mt-3 f-400 fs-20 py-2 text-center">
-              Confirm to reverse
-              </div>
+              {t("Confirm to reverse")}
+            </div>
             <div className="col-12 action-bar custom-border pt-4 d-flex text-center">
               <NormalButton
                 buttonClass={"cancel"}
@@ -205,11 +241,17 @@ export class TreatmentCourseDetails extends Component {
                 // outline={false}
                 onClick={() => this.handleCloseDialog()}
               />
+              {t("")}
             </div>
+            {t("")}
           </div>
+          {t("")}
         </NormalModal>
-
+        {t("")}
       </div>
-    )
+    );
   }
 }
+export const TreatmentCourseDetails = withTranslation()(
+  TreatmentCourseDetailsClass
+);

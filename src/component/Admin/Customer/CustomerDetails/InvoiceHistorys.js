@@ -29,7 +29,7 @@ export class InvoiceHistorysClass extends Component {
   }
 
   getCustomer = () => {
-    this.props.getCustomer(this.props.match.params.id).then(res => {
+    this.props.getCustomer(this.props.match.params.id).then((res) => {
       console.log(res, "asdasdfasdfasdf resssssss");
     });
   };
@@ -161,11 +161,11 @@ export class InvoiceHistorysClass extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   customerDetail: state.customer.customerDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCustomer,

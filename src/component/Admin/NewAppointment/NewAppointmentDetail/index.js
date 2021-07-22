@@ -16,6 +16,7 @@ import closeIcon from "assets/images/close.png";
 import _ from "lodash";
 import { dateFormat } from "service/helperFunctions";
 import { history } from "helpers";
+import { withTranslation } from "react-i18next";
 
 export class AppointmentDetailClass extends Component {
   state = {
@@ -46,7 +47,7 @@ export class AppointmentDetailClass extends Component {
 
   componentDidMount = async () => {
     let { formFields, staffOption } = this.state;
-    await this.props.getCommonApi("bookingstatus/").then(async res => {
+    await this.props.getCommonApi("bookingstatus/").then(async (res) => {
       let { status, data, sec_data } = res;
       if (status === 200) {
         await this.setState({ bookingList: data, secStatusList: sec_data });
@@ -56,7 +57,7 @@ export class AppointmentDetailClass extends Component {
       .getCommonApi(
         `appointment/Staffs/?Outlet=&date=${dateFormat(new Date())}`
       )
-      .then(key => {
+      .then((key) => {
         let { status, data } = key;
         if (status === 200) {
           for (let value of data) {
@@ -72,7 +73,7 @@ export class AppointmentDetailClass extends Component {
     let { appointmentDetail } = this.state;
     await this.props
       .getCommonApi(`appointment/${this.props.match.params.id}/`)
-      .then(async key => {
+      .then(async (key) => {
         let { status, data } = key;
         if (status === 200) {
           appointmentDetail = data;
@@ -144,7 +145,7 @@ export class AppointmentDetailClass extends Component {
     history.push(`/admin/newappointment`);
   };
 
-  handleSearch = async event => {
+  handleSearch = async (event) => {
     event.persist();
 
     if (!this.debouncedFn) {
@@ -161,9 +162,9 @@ export class AppointmentDetailClass extends Component {
     this.debouncedFn();
   };
 
-  search = searchString => {
+  search = (searchString) => {
     let { search } = this.state;
-    this.props.getCommonApi(`custappt/?search=${search}`).then(key => {
+    this.props.getCommonApi(`custappt/?search=${search}`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         // for (let value of data) {
@@ -181,7 +182,7 @@ export class AppointmentDetailClass extends Component {
         `appointment/${this.props.match.params.id}/UpdateDetail/`,
         formFields
       )
-      .then(res => {});
+      .then((res) => {});
   };
 
   render() {
@@ -203,13 +204,8 @@ export class AppointmentDetailClass extends Component {
       Payment,
       Customer_Request,
     } = appointmentDetail;
-    let {
-      Booking_status,
-      Date,
-      Outlet,
-      Secondary_Status,
-      Time,
-    } = Appointment_details;
+    let { Booking_status, Date, Outlet, Secondary_Status, Time } =
+      Appointment_details;
     let { Appointment_channel, Booked_by, Source } = Booking_details;
     let { New_Remark, Remark_Points } = Remark;
     let {
@@ -234,6 +230,7 @@ export class AppointmentDetailClass extends Component {
       cust_sex,
       member_type,
     } = customer_detail;
+    let { t } = this.props;
     return (
       <NormalModal
         className="w-100"
@@ -255,18 +252,18 @@ export class AppointmentDetailClass extends Component {
                 onClick={() => history.push(`/admin/newappointment`)}
               >
                 <i className="icon-left-arrow"></i>
-                <p>Back to appointments</p>
+                <p>{t("Back to appointments")}</p>
               </div>
-              <p className="head-label">Appointment details</p>
+              <p className="head-label">{t("Appointment details")}</p>
               <div className="appointment">
                 <table className="table">
                   <thead>
                     <tr>
-                      <th className="first-value">Date</th>
-                      <th>Time</th>
-                      <th>Outlet</th>
-                      <th>Booking Status</th>
-                      <th>Treatment</th>
+                      <th className="first-value">{t("Date")}</th>
+                      <th>{t("Time")}</th>
+                      <th>{t("Outlet")}</th>
+                      <th>{t("Booking Status")}</th>
+                      <th>{t("Treatment")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -301,20 +298,20 @@ export class AppointmentDetailClass extends Component {
                 </table>
               </div>
               <div className="status">
-                <p className="status-label">Payment </p>
+                <p className="status-label">{t("Payment")} </p>
                 <p className="status-detail">{Payment}</p>
               </div>
-              <p className="head-label">Treatment</p>
+              <p className="head-label">{t("Treatment")}</p>
               <div className="appointment">
                 <table className="table">
                   <thead>
                     <tr>
-                      <th className="first-value">Treatment</th>
-                      <th className="first-value">Start time</th>
-                      <th>End Time</th>
-                      <th>Room</th>
-                      <th>Therapist(s)</th>
-                      <th>Status</th>
+                      <th className="first-value">{t("Treatment")}</th>
+                      <th className="first-value">{t("Start time")}</th>
+                      <th>{t("End Time")}</th>
+                      <th>{t("Room")}</th>
+                      <th>{t("Therapist(s)")}</th>
+                      <th>{t("Status")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -340,7 +337,7 @@ export class AppointmentDetailClass extends Component {
                   </tbody>
                 </table>
               </div>
-              <p className="head-label">Remarks</p>
+              <p className="head-label">{t("Remarks")}</p>
               <div className="my-4">
                 <NormalTextarea
                   placeholder="Enter customer feedbacks..."
@@ -375,43 +372,43 @@ export class AppointmentDetailClass extends Component {
                 </div>
                 <div className="user-detail">
                   <div className="detail d-flex">
-                    <p className="status-label">Joined</p>
+                    <p className="status-label">{t("Joined")}</p>
                     <p className="spliter">:</p>
                     <p className="status-detail">{cust_joindate}</p>
                   </div>
 
                   <div className="detail d-flex">
-                    <p className="status-label">D.O.B</p>
+                    <p className="status-label">{t("D.O.B")}</p>
                     <p className="spliter">:</p>
                     <p className="status-detail">{cust_dob}</p>
                   </div>
 
                   <div className="detail d-flex">
-                    <p className="status-label">Gender</p>
+                    <p className="status-label">{t("Gender")}</p>
                     <p className="spliter">:</p>
                     <p className="status-detail">{cust_sex}</p>
                   </div>
 
                   <div className="detail d-flex">
-                    <p className="status-label">Phone</p>
+                    <p className="status-label">{t("Phone")}</p>
                     <p className="spliter">:</p>
                     <p className="status-detail">{cust_phone2}</p>
                   </div>
 
                   <div className="detail d-flex">
-                    <p className="status-label">Email</p>
+                    <p className="status-label">{t("Email")}</p>
                     <p className="spliter">:</p>
                     <p className="status-detail">{cust_email}</p>
                   </div>
 
                   <div className="detail d-flex">
-                    <p className="status-label">Address</p>
+                    <p className="status-label">{t("Address")}</p>
                     <p className="spliter">:</p>
                     <p className="status-detail">{cust_address}</p>
                   </div>
 
                   <div className="detail d-flex">
-                    <p className="status-label">Member type</p>
+                    <p className="status-label">{t("Member type")}</p>
                     <p className="spliter">:</p>
                     <p className="status-detail">{member_type}</p>
                   </div>
@@ -425,7 +422,7 @@ export class AppointmentDetailClass extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -435,7 +432,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const NewAppointmentDetail = connect(
-  null,
-  mapDispatchToProps
-)(AppointmentDetailClass);
+export const NewAppointmentDetail = withTranslation()(
+  connect(null, mapDispatchToProps)(AppointmentDetailClass)
+);

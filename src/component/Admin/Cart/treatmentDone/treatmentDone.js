@@ -27,6 +27,7 @@ import SimpleReactValidator from "simple-react-validator";
 // import { Treatment, Payment, EditCart } from './cart/index';
 import service from "assets/images/make-up-brush.png";
 // import Discount from './cart/discount';
+import { withTranslation } from "react-i18next";
 
 export class SelectStaffClass extends Component {
   state = {
@@ -842,24 +843,24 @@ export class SelectStaffClass extends Component {
       source_name,
       times,
     } = value;
-    let { tsStaff = {} } = this.props;
+    let { tsStaff = {}, t } = this.props;
     let { course, unit_amount, workpoint } = tsStaff;
     return (
       <div className="row new-cart treatment-done" id="treatment-done-sesiions">
         <div className="col-12">
-          <p className="fs-18 font-700 mb-3 title">Treatment Done</p>
+          <p className="fs-18 font-700 mb-3 title">{t("Treatment Done")}</p>
         </div>
         <div className="col-6 mb-2">
           <label className="text-left text-black common-label-text ">
-            Item
+            {t("Item")}
           </label>
           <div className="input-group mb-2">{Item}</div>
           <label className="text-left text-black common-label-text ">
-            Price
+            {t("Price")}
           </label>
           <div className="input-group mb-2">{Price}</div>
           <label className="text-left text-black common-label-text ">
-            Work Point
+            {t("Work Point")}
           </label>
 
           <div className="input-group">
@@ -875,7 +876,7 @@ export class SelectStaffClass extends Component {
         <div className="col-4 mb-2"></div>
         <div className="col-2 mb-2">
           <label className="text-left text-black common-label-text ">
-            Session
+            {t("Session")}
           </label>
 
           <h1>{this.props.session}</h1>
@@ -1137,7 +1138,7 @@ export class SelectStaffClass extends Component {
             <div className="row">
               <div className="col-4">
                 <label className="text-left text-black common-label-text ">
-                  Room
+                  {t("Room")}
                 </label>
 
                 <div className="input-group">
@@ -1154,7 +1155,7 @@ export class SelectStaffClass extends Component {
               </div>
               <div className="col-4">
                 <label className="text-left text-black common-label-text ">
-                  Source
+                  {t("Source")}
                 </label>
 
                 <div className="input-group">
@@ -1172,7 +1173,7 @@ export class SelectStaffClass extends Component {
 
               <div className="col-4">
                 <label className="text-left text-black common-label-text ">
-                  New Remark
+                  {t("New Remark")}
                 </label>
 
                 <div className="input-group">
@@ -1255,7 +1256,6 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export const SelectStaff = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SelectStaffClass);
+export const SelectStaff = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(SelectStaffClass)
+);

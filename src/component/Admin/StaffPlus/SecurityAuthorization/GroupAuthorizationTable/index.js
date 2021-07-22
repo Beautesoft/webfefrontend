@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { withTranslation } from "react-i18next";
 import "./style.scss";
 
-export class GroupAuthorizationTable extends Component {
+class GroupAuthorizationTableClass extends Component {
   render() {
     let {
       onChange,
@@ -15,7 +16,9 @@ export class GroupAuthorizationTable extends Component {
       if (disabled) return;
       let index1 = data.indexOf(data.find((element) => element.code == code));
       let index2 = data[index1].levels.indexOf(
-        data[index1].levels.find((element) => element.controlname == controlname)
+        data[index1].levels.find(
+          (element) => element.controlname == controlname
+        )
       );
       data[index1].levels[index2].controlstatus = !data
         .find((element) => element.code == code)
@@ -43,6 +46,8 @@ export class GroupAuthorizationTable extends Component {
       });
     }
 
+    let { t } = this.props;
+
     return (
       <div className="maintable table-container">
         <div className="maintable-content table-responsive">
@@ -50,12 +55,12 @@ export class GroupAuthorizationTable extends Component {
             <thead>
               <tr>
                 <th className="table-header-200">
-                  <div className="d-flex ml-3">Security Groups</div>
+                  <div className="d-flex ml-3">{t("Security Groups")}</div>
                 </th>
                 {columns.map((e) => (
                   <th className="table-header-150">
                     <div className="d-flex align-items-center justify-content-center">
-                      {e.securieties}
+                      {t(e.securieties)}
                     </div>
                   </th>
                 ))}
@@ -65,7 +70,7 @@ export class GroupAuthorizationTable extends Component {
               <tbody>
                 {rowHead.map((e, index1) => (
                   <tr key={e.controlname}>
-                    <td className={e.className}>{e.controldesc}</td>
+                    <td className={e.className}>{t(e.controldesc)}</td>
                     {columns.map((e2, index2) => (
                       <td>
                         {data
@@ -102,3 +107,7 @@ export class GroupAuthorizationTable extends Component {
     );
   }
 }
+
+export const GroupAuthorizationTable = withTranslation()(
+  GroupAuthorizationTableClass
+);

@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { dateFormat } from "service/helperFunctions";
 import SimpleReactValidator from "simple-react-validator";
+import { withTranslation } from "react-i18next";
 
 export class PrintModalClass extends Component {
   state = {
@@ -36,7 +37,7 @@ export class PrintModalClass extends Component {
   };
   componentWillMount() {
     this.validator = new SimpleReactValidator({
-      element: message => (
+      element: (message) => (
         <span className="error-message text-danger validNo fs14">
           {message}
         </span>
@@ -69,7 +70,7 @@ export class PrintModalClass extends Component {
   getStaffList = () => {
     this.setState({ staffList: [] });
     let { staffList } = this.state;
-    this.props.getCommonApi(`employeebranchwise`).then(key => {
+    this.props.getCommonApi(`employeebranchwise`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         for (let value of data) {
@@ -85,7 +86,7 @@ export class PrintModalClass extends Component {
   };
   getBookingandSecondaryStatus = () => {
     let { bookingList, secStatusList } = this.state;
-    this.props.getCommonApi("bookingstatus/").then(res => {
+    this.props.getCommonApi("bookingstatus/").then((res) => {
       let { status, data, sec_data } = res;
       if (status === 200) {
         for (let value of data) {
@@ -109,7 +110,7 @@ export class PrintModalClass extends Component {
   getSiteCode = () => {
     this.setState({ staffList: [] });
     let { siteCodeList } = this.state;
-    this.props.getCommonApi(`branchlist`).then(key => {
+    this.props.getCommonApi(`branchlist`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         for (let value of data) {
@@ -127,12 +128,12 @@ export class PrintModalClass extends Component {
     let { staffList, siteCodeList, bookingList, secStatusList } = this.state;
 
     if (name === "Staff") {
-      let listCheckbox = staffList.find(acc => acc.value === item.value);
+      let listCheckbox = staffList.find((acc) => acc.value === item.value);
       if (listCheckbox) {
         listCheckbox["selected"] = value;
         await this.setState({ ...this.state.staffList, listCheckbox });
       }
-      let Checkbox = staffList.filter(acc => acc.selected === true).length;
+      let Checkbox = staffList.filter((acc) => acc.selected === true).length;
       if (Checkbox == this.state.staffList.length) {
         await this.setState({ employeeSelectAll: true });
       } else {
@@ -140,12 +141,12 @@ export class PrintModalClass extends Component {
       }
     }
     if (name === "Site") {
-      let listCheckbox = siteCodeList.find(acc => acc.value === item.value);
+      let listCheckbox = siteCodeList.find((acc) => acc.value === item.value);
       if (listCheckbox) {
         listCheckbox["selected"] = value;
         await this.setState({ ...this.state.siteCodeList, listCheckbox });
       }
-      let Checkbox = siteCodeList.filter(acc => acc.selected === true).length;
+      let Checkbox = siteCodeList.filter((acc) => acc.selected === true).length;
       if (Checkbox == this.state.siteCodeList.length) {
         await this.setState({ siteSelectAll: true });
       } else {
@@ -153,12 +154,12 @@ export class PrintModalClass extends Component {
       }
     }
     if (name === "Booking") {
-      let listCheckbox = bookingList.find(acc => acc.value === item.value);
+      let listCheckbox = bookingList.find((acc) => acc.value === item.value);
       if (listCheckbox) {
         listCheckbox["selected"] = value;
         await this.setState({ ...this.state.bookingList, listCheckbox });
       }
-      let Checkbox = bookingList.filter(acc => acc.selected === true).length;
+      let Checkbox = bookingList.filter((acc) => acc.selected === true).length;
       if (Checkbox == this.state.bookingList.length) {
         await this.setState({ bookingSelectAll: true });
       } else {
@@ -166,12 +167,14 @@ export class PrintModalClass extends Component {
       }
     }
     if (name === "Sec_status") {
-      let listCheckbox = secStatusList.find(acc => acc.value === item.value);
+      let listCheckbox = secStatusList.find((acc) => acc.value === item.value);
       if (listCheckbox) {
         listCheckbox["selected"] = value;
         await this.setState({ ...this.state.secStatusList, listCheckbox });
       }
-      let Checkbox = secStatusList.filter(acc => acc.selected === true).length;
+      let Checkbox = secStatusList.filter(
+        (acc) => acc.selected === true
+      ).length;
       if (Checkbox == this.state.secStatusList.length) {
         await this.setState({ secStatusSelectAll: true });
       } else {
@@ -179,7 +182,7 @@ export class PrintModalClass extends Component {
       }
     }
   };
-  sendAppointmentListPrint = async printAs => {
+  sendAppointmentListPrint = async (printAs) => {
     let {
       staffList,
       siteCodeList,
@@ -252,7 +255,7 @@ export class PrintModalClass extends Component {
           formFields.Sec_status
         }`
       )
-      .then(key => {
+      .then((key) => {
         let { status, data } = key;
         if (status === 200) {
           this.handleDialog();
@@ -278,7 +281,7 @@ export class PrintModalClass extends Component {
     }
     await this.setState({ formFields });
   };
-  changeTab = async data => {
+  changeTab = async (data) => {
     await this.setState({ activeTab: data });
   };
 
@@ -338,7 +341,7 @@ export class PrintModalClass extends Component {
       bookingSelectAll,
       secStatusSelectAll,
     } = this.state;
-
+    let { t } = this.props;
     return (
       <NormalModal
         className={"printModal"}
@@ -360,7 +363,7 @@ export class PrintModalClass extends Component {
               }`}
               onClick={() => this.changeTab("Tab1")}
             >
-              Appointment Report
+              {t("Appointment Report")}
             </div>
           </div>
           {/* <div className="col-4 ml-2">
@@ -370,16 +373,16 @@ export class PrintModalClass extends Component {
               }`}
               onClick={() => this.changeTab("Tab2")}
             >
-              Products
+              {t("Products")}
             </div>
-          </div> */}
+         </div> */}
         </div>
         {activeTab === "Tab1" ? (
           <>
             <div className="d-flex flex-wrap justify-content-start p-3">
               <div className="col-md-6 col-6 mb-3">
                 <label className="text-left text-black common-label-text ">
-                  From Date{" "}
+                  {t("From Date")}
                   <span className="error-message text-danger validNo fs-18">
                     *
                   </span>
@@ -402,7 +405,7 @@ export class PrintModalClass extends Component {
               </div>
               <div className="col-md-6 col-6 mb-3">
                 <label className="text-left text-black common-label-text ">
-                  To Date{" "}
+                  {t("To Date")}
                   <span className="error-message text-danger validNo fs-18">
                     *
                   </span>
@@ -430,13 +433,13 @@ export class PrintModalClass extends Component {
                   <div className={`row`}>
                     <div>
                       <NormalCheckbox
-                        onChange={e => this.handleSelectAllCheckbox(e)}
+                        onChange={(e) => this.handleSelectAllCheckbox(e)}
                         value={employeeSelectAll}
                         name="employeeSelectAll"
                         checked={employeeSelectAll}
                       />
                     </div>
-                    <div>Employee Name</div>
+                    <div>{t("Employee Name")}</div>
                   </div>
 
                   <div className="row response-table fw-500 multiselectList-height fs-13">
@@ -451,7 +454,7 @@ export class PrintModalClass extends Component {
                           >
                             <div className="col-3 text-center">
                               <NormalCheckbox
-                                onChange={e => this.handleCheckbox(e, item)}
+                                onChange={(e) => this.handleCheckbox(e, item)}
                                 value={item.selected}
                                 name="Staff"
                                 checked={item.selected}
@@ -472,13 +475,13 @@ export class PrintModalClass extends Component {
                   <div className="row">
                     <div>
                       <NormalCheckbox
-                        onChange={e => this.handleSelectAllCheckbox(e)}
+                        onChange={(e) => this.handleSelectAllCheckbox(e)}
                         value={siteSelectAll}
                         name="siteSelectAll"
                         checked={siteSelectAll}
                       />
                     </div>
-                    <div>Site Code</div>
+                    <div>{t("Site Code")}</div>
                   </div>
                   <div className="row response-table fw-500 multiselectList-height fs-13">
                     {siteCodeList && siteCodeList.length > 0 ? (
@@ -492,7 +495,7 @@ export class PrintModalClass extends Component {
                           >
                             <div className="col-3 text-center">
                               <NormalCheckbox
-                                onChange={e => this.handleCheckbox(e, item)}
+                                onChange={(e) => this.handleCheckbox(e, item)}
                                 value={item.selected}
                                 name="Site"
                                 checked={item.selected}
@@ -513,13 +516,13 @@ export class PrintModalClass extends Component {
                   <div className="row">
                     <div>
                       <NormalCheckbox
-                        onChange={e => this.handleSelectAllCheckbox(e)}
+                        onChange={(e) => this.handleSelectAllCheckbox(e)}
                         value={bookingSelectAll}
                         name="bookingSelectAll"
                         checked={bookingSelectAll}
                       />
                     </div>
-                    <div>Booking Status</div>
+                    <div>{t("Booking Status")}</div>
                   </div>
                   <div className="row response-table fw-500 multiselectList-height fs-13">
                     {bookingList && bookingList.length > 0 ? (
@@ -533,7 +536,7 @@ export class PrintModalClass extends Component {
                           >
                             <div className="col-3 text-center">
                               <NormalCheckbox
-                                onChange={e => this.handleCheckbox(e, item)}
+                                onChange={(e) => this.handleCheckbox(e, item)}
                                 value={item.selected}
                                 name="Booking"
                                 checked={item.selected}
@@ -554,13 +557,13 @@ export class PrintModalClass extends Component {
                   <div className="row">
                     <div>
                       <NormalCheckbox
-                        onChange={e => this.handleSelectAllCheckbox(e)}
+                        onChange={(e) => this.handleSelectAllCheckbox(e)}
                         value={secStatusSelectAll}
                         name="secStatusSelectAll"
                         checked={secStatusSelectAll}
                       />
                     </div>
-                    <div>Secondary Status</div>
+                    <div>{t("Secondary Status")}</div>
                   </div>
                   <div className="row response-table fw-500 multiselectList-height fs-13">
                     {secStatusList && secStatusList.length > 0 ? (
@@ -574,7 +577,7 @@ export class PrintModalClass extends Component {
                           >
                             <div className="col-3 text-center">
                               <NormalCheckbox
-                                onChange={e => this.handleCheckbox(e, item)}
+                                onChange={(e) => this.handleCheckbox(e, item)}
                                 value={item.selected}
                                 name="Sec_status"
                                 checked={item.selected}
@@ -633,7 +636,7 @@ export class PrintModalClass extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -642,4 +645,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const PrintModal = connect(null, mapDispatchToProps)(PrintModalClass);
+export const PrintModal = withTranslation()(
+  connect(null, mapDispatchToProps)(PrintModalClass)
+);

@@ -16,8 +16,9 @@ import closeIcon from "assets/images/close.png";
 import "./style.scss";
 import { Toast } from "service/toast";
 import { StaffList } from "./StaffList";
+import { withTranslation } from "react-i18next";
 
-export class StaffSelectionPopupClass extends Component {
+class StaffSelectionPopupClass extends Component {
   state = {
     data_list: [
       // {
@@ -188,13 +189,13 @@ export class StaffSelectionPopupClass extends Component {
   componentDidMount() {
     this.getStaffSelectionList();
   }
-  getStafflist = data => {
+  getStafflist = (data) => {
     let { page, limit, selectedAddStaffType } = this.state;
     this.props
       .getCommonApi(
         `empcartlist/?sales_staff=${selectedAddStaffType}&page=${page}&limit=${limit}`
       )
-      .then(async key => {
+      .then(async (key) => {
         let { status, data } = key;
         console.log(key, "sdfgsdfgsdfgdfg sdfgsdfgsdfg");
         let { staffList } = this.state;
@@ -240,7 +241,7 @@ export class StaffSelectionPopupClass extends Component {
       .getCommonApi(
         `cartpopup/?cust_noid=${basicApptDetail.custId}&cart_id=${this.props.id}&is_staffs=1`
       )
-      .then(async key => {
+      .then(async (key) => {
         let { status, data } = key;
         if (status == "200") {
           console.log(key, "cartstaffselectionpopuplist");
@@ -283,7 +284,7 @@ export class StaffSelectionPopupClass extends Component {
       await this.setState({ data });
     }
   };
-  handleAccordion = async id => {
+  handleAccordion = async (id) => {
     await this.setState({
       activeRow: id,
     });
@@ -295,12 +296,12 @@ export class StaffSelectionPopupClass extends Component {
     console.log(elements);
   };
 
-  handleSelectedStaff = async item => {
+  handleSelectedStaff = async (item) => {
     this.handleEmployeePopup();
     let { selectedAddStaffIndex, selectedAddStaffType, data_list } = this.state;
     let data = this.state.data_list[selectedAddStaffIndex].data;
 
-    let filter = data.find(acc => acc.emp_id === item.id);
+    let filter = data.find((acc) => acc.emp_id === item.id);
     if (filter) {
       Toast({
         type: "error",
@@ -330,7 +331,7 @@ export class StaffSelectionPopupClass extends Component {
     }
   };
   handleEmployeePopup = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       staffListPopup: !prevState.staffListPopup,
     }));
   };
@@ -462,7 +463,7 @@ export class StaffSelectionPopupClass extends Component {
     let result = this.handlePostAction();
     if (result) {
       console.log(data_list, "savedataforstaffselection");
-      this.props.commonCreateApi(`cartpopup/staffs/`, data_list).then(key => {
+      this.props.commonCreateApi(`cartpopup/staffs/`, data_list).then((key) => {
         console.log(key, "resultset of staffselection");
         let { status, data } = key;
         if (status == 200) {
@@ -472,7 +473,7 @@ export class StaffSelectionPopupClass extends Component {
     }
   };
 
-  handleSalesStaffCalc = async index => {
+  handleSalesStaffCalc = async (index) => {
     let { data_list } = this.state;
     let salesStaffCount = 0;
     for (let line of data_list[index].data) {
@@ -494,7 +495,7 @@ export class StaffSelectionPopupClass extends Component {
     // ).toFixed(2);
 
     let data = data_list[index].data;
-    let salesLength = data.filter(acc => acc.sales === true).length;
+    let salesLength = data.filter((acc) => acc.sales === true).length;
     let i = 0;
     let j = 1;
     for (let dataLine of data_list[index].data) {
@@ -519,7 +520,7 @@ export class StaffSelectionPopupClass extends Component {
       i++;
     }
   };
-  handleWorkStaffCalc = async index => {
+  handleWorkStaffCalc = async (index) => {
     let { data_list } = this.state;
 
     let workStaffCount = 0;
@@ -557,7 +558,7 @@ export class StaffSelectionPopupClass extends Component {
     let data = data_list[index].data;
     let i = 0;
     let j = 1;
-    let workLength = data.filter(acc => acc.work === true).length;
+    let workLength = data.filter((acc) => acc.work === true).length;
     for (let line of data_list[index].data) {
       if (line.work) {
         if (j == workLength) {
@@ -608,7 +609,7 @@ export class StaffSelectionPopupClass extends Component {
     if (Number(Saleid) > 0 || Number(Workid) > 0) {
       await this.props
         .commonCreateApi(`cartpopup/staffsdelete/`, body)
-        .then(res => {
+        .then((res) => {
           let { status } = res;
           if (status == "200") {
             console.log(res, "staffselectionpoppupdeleteresponse");
@@ -638,12 +639,13 @@ export class StaffSelectionPopupClass extends Component {
   };
   render() {
     let { data_list, staffListPopup, staffList, meta, activeRow } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="container-fluid mb-4 mt-2 product-details">
           <div className="row">
             <div className="col-10">
-              <h4>Staff Selection</h4>
+              <h4>{t("Staff Selection")}</h4>
             </div>
             {data_list && data_list.length > 0 ? (
               <div className="col-2">
@@ -657,13 +659,13 @@ export class StaffSelectionPopupClass extends Component {
             ) : null}
           </div>
           <div className="row pl-3 pr-5 mt-2 fw-500 h6">
-            <div className="col">{`Item`}</div>
-            <div className="col">{`Qty`}</div>
-            <div className="col">{`Unit Price`}</div>
-            <div className="col">{`Disc $`}</div>
-            <div className="col">{`D/Price`}</div>
-            <div className="col">{`Amount`}</div>
-            <div className="col">{`Deposit`}</div>
+            <div className="col">{t(`Item`)}</div>
+            <div className="col">{t(`Qty`)}</div>
+            <div className="col">{t(`Unit Price`)}</div>
+            <div className="col">{t(`Disc $`)}</div>
+            <div className="col">{t(`D/Price`)}</div>
+            <div className="col">{t(`Amount`)}</div>
+            <div className="col">{t(`Deposit`)}</div>
           </div>
           <div className="row pl-5 pr-5 mt-4">
             {data_list &&
@@ -735,7 +737,7 @@ export class StaffSelectionPopupClass extends Component {
                                 colSpan="3"
                               >
                                 <div className="d-flex">
-                                  <div className="col">Sales staff</div>
+                                  <div className="col">{t("Sales staff")}</div>
 
                                   <div className="col">
                                     <NormalButton
@@ -755,7 +757,7 @@ export class StaffSelectionPopupClass extends Component {
                                 colSpan="3"
                               >
                                 <div className="d-flex">
-                                  <div className="col">Work staff</div>
+                                  <div className="col">{t("Work staff")}</div>
 
                                   <div className="col">
                                     <NormalButton
@@ -775,19 +777,19 @@ export class StaffSelectionPopupClass extends Component {
                                 scope="col"
                                 className="text-center border-top-0 border-bottom-0"
                               >
-                                Sales
+                                {t("Sales")}
                               </th>
                               <th
                                 scope="col"
                                 className="text-center border-top-0 border-bottom-0"
                               >
-                                Work
+                                {t("Work")}
                               </th>
                               <th
                                 scope="col"
                                 className="text-center border-right border-top-0 border-bottom-0"
                               >
-                                Staff
+                                {t("Staff")}
                               </th>
                               <th
                                 scope="col"
@@ -805,7 +807,7 @@ export class StaffSelectionPopupClass extends Component {
                                 scope="col"
                                 className="text-center border-right border-top-0 border-bottom-0"
                               >
-                                SP ({item.sales_point})
+                                {t("SP")} ({item.sales_point})
                               </th>
                               <th
                                 scope="col"
@@ -828,16 +830,16 @@ export class StaffSelectionPopupClass extends Component {
                                 scope="col"
                                 className="text-center border-top-0 border-bottom-0"
                               >
-                                WP ({item.work_point})
+                                {t("WP")} ({item.work_point})
                               </th>
-                              <th>Action</th>
+                              <th>{t("Action")}</th>
                             </tr>
                           </thead>
                           <tbody>
                             {data_list[index].data.length <= 0 ? (
                               <tr>
                                 <div className="d-flex justify-content-center">
-                                  No record found
+                                  {t("No record found")}
                                 </div>
                               </tr>
                             ) : null}
@@ -849,7 +851,7 @@ export class StaffSelectionPopupClass extends Component {
                                       type="checkbox"
                                       checked={data.sales}
                                       name="sales"
-                                      onChange={e =>
+                                      onChange={(e) =>
                                         this.handleStaffChange(e, index, index2)
                                       }
                                     />
@@ -859,7 +861,7 @@ export class StaffSelectionPopupClass extends Component {
                                       type="checkbox"
                                       checked={data.work}
                                       name="work"
-                                      onChange={e =>
+                                      onChange={(e) =>
                                         this.handleStaffChange(e, index, index2)
                                       }
                                     />
@@ -884,7 +886,7 @@ export class StaffSelectionPopupClass extends Component {
                                           ? data.sales_percentage
                                           : ""
                                       }
-                                      onChange={e =>
+                                      onChange={(e) =>
                                         this.handleStaffChange(e, index, index2)
                                       }
                                       disabled={data.sales ? false : true}
@@ -902,7 +904,7 @@ export class StaffSelectionPopupClass extends Component {
                                           ? data.sales_amount
                                           : ""
                                       }
-                                      onChange={e =>
+                                      onChange={(e) =>
                                         this.handleStaffChange(e, index, index2)
                                       }
                                       disabled={data.sales ? false : true}
@@ -916,7 +918,7 @@ export class StaffSelectionPopupClass extends Component {
                                       name="sp"
                                       type="number"
                                       value={data.sp}
-                                      onChange={e =>
+                                      onChange={(e) =>
                                         this.handleStaffChange(e, index, index2)
                                       }
                                       disabled={data.sales ? false : true}
@@ -934,7 +936,7 @@ export class StaffSelectionPopupClass extends Component {
                                           ? data.work_percentage
                                           : ""
                                       }
-                                      onChange={e =>
+                                      onChange={(e) =>
                                         this.handleStaffChange(e, index, index2)
                                       }
                                       disabled={data.work ? false : true}
@@ -952,7 +954,7 @@ export class StaffSelectionPopupClass extends Component {
                                           ? data.work_amount
                                           : ""
                                       }
-                                      onChange={e =>
+                                      onChange={(e) =>
                                         this.handleStaffChange(e, index, index2)
                                       }
                                       disabled={data.work ? false : true}
@@ -963,7 +965,7 @@ export class StaffSelectionPopupClass extends Component {
                                       name="wp"
                                       type="number"
                                       value={data.wp}
-                                      onChange={e =>
+                                      onChange={(e) =>
                                         this.handleStaffChange(e, index, index2)
                                       }
                                       disabled={data.work ? false : true}
@@ -972,7 +974,7 @@ export class StaffSelectionPopupClass extends Component {
                                   <th>
                                     <div
                                       className="col-12 p-0 fs-18 text-center cursor-pointer"
-                                      onClick={e =>
+                                      onClick={(e) =>
                                         this.handleDeleteStaff(e, index, index2)
                                       }
                                     >
@@ -991,7 +993,7 @@ export class StaffSelectionPopupClass extends Component {
               })}
           </div>
           {data_list && data_list.length <= 0 ? (
-            <div className="row pl-5 pr-5 mt-4">No Record Found</div>
+            <div className="row pl-5 pr-5 mt-4">{t("No Record Found")}</div>
           ) : null}
           <NormalModal
             className={"stock-memo-staff-listing"}
@@ -1010,7 +1012,7 @@ export class StaffSelectionPopupClass extends Component {
               meta={meta}
               handleNext={() => this.handleNext()}
               handleBack={() => this.handleBack()}
-              handleSelectedStaff={item => this.handleSelectedStaff(item)}
+              handleSelectedStaff={(item) => this.handleSelectedStaff(item)}
             />
           </NormalModal>
         </div>
@@ -1019,11 +1021,11 @@ export class StaffSelectionPopupClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   basicApptDetail: state.appointment.basicApptDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -1034,7 +1036,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const StaffSelectionPopup = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(StaffSelectionPopupClass);
+export const StaffSelectionPopup = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(StaffSelectionPopupClass)
+);

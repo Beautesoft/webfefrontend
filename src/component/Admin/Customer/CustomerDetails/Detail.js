@@ -1,107 +1,125 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import "./style.scss";
-import { Appointments, TreatmentHistory, PurchaseHistory, PersonalDetails, Favourites } from './Details'
-import classnames from 'classnames';
 import {
-    Nav,
-    NavItem,
-    NavLink,
-    TabContent,
-    TabPane,
-} from 'reactstrap';
+  Appointments,
+  TreatmentHistory,
+  PurchaseHistory,
+  PersonalDetails,
+  Favourites,
+} from "./Details";
+import classnames from "classnames";
+import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
+import { withTranslation } from "react-i18next";
 
-export class Details extends Component {
-    state = {
-        activeTab: '1',
-        isOpenTreatmentDone: false,
-        isActiveTab: "detail"
+class DetailsClass extends Component {
+  state = {
+    activeTab: "1",
+    isOpenTreatmentDone: false,
+    isActiveTab: "detail",
+  };
+
+  toggle = (tab) => {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab,
+      });
     }
+  };
 
-    toggle = (tab) => {
-        if (this.state.activeTab !== tab) {
-            this.setState({
-                activeTab: tab
-            });
-        }
-    }
+  render() {
+    let { t } = this.props;
+    return (
+      <div className="beautesoft-navlink">
+        <div className="filled-tabs">
+          <div className="tabs-block">
+            <Nav tabs>
+              <NavItem>
+                <NavLink
+                  className={classnames({
+                    active: this.state.activeTab === "1",
+                  })}
+                  onClick={() => {
+                    this.toggle("1");
+                  }}
+                >
+                  {t("Details")}
+                </NavLink>
+                {t("")}
+              </NavItem>
 
-    render() {
+              <NavItem>
+                <NavLink
+                  className={classnames({
+                    active: this.state.activeTab === "3",
+                  })}
+                  onClick={() => {
+                    this.toggle("3");
+                  }}
+                >
+                  {t("Products")}
+                </NavLink>
+                {t("")}
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  className={classnames({
+                    active: this.state.activeTab === "4",
+                  })}
+                  onClick={() => {
+                    this.toggle("4");
+                  }}
+                >
+                  {t("Packages")}
+                </NavLink>
+                {t("")}
+              </NavItem>
 
-        return (
+              <NavItem>
+                <NavLink
+                  className={classnames({
+                    active: this.state.activeTab === "5",
+                  })}
+                  onClick={() => {
+                    this.toggle("5");
+                  }}
+                >
+                  {t("Favourites")}
+                </NavLink>
+                {t("")}
+              </NavItem>
+              {t("")}
+            </Nav>
+            {t("")}
+          </div>
+          <TabContent activeTab={this.state.activeTab}>
+            <TabPane tabId="1">
+              {this.state.activeTab === "1" ? (
+                <PersonalDetails id={this.props.id} />
+              ) : (
+                ""
+              )}
+            </TabPane>
 
-            <div className="beautesoft-navlink">
-                <div className="filled-tabs">
-                    <div className="tabs-block">
-                        <Nav tabs>
-                            <NavItem>
-                                <NavLink
-                                    className={classnames({ active: this.state.activeTab === '1' })}
-                                    onClick={() => { this.toggle('1'); }}
-                                >
-                                    Details
-                                        </NavLink>
-                            </NavItem>
+            <TabPane tabId="2">
+              {this.state.activeTab === "2" ? <TreatmentHistory /> : ""}
+            </TabPane>
 
-                       
-                            <NavItem>
-                                <NavLink
-                                    className={classnames({ active: this.state.activeTab === '3' })}
-                                    onClick={() => { this.toggle('3'); }}
-                                >
-                                    Products
-                                        </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink
-                                    className={classnames({ active: this.state.activeTab === '4' })}
-                                    onClick={() => { this.toggle('4'); }}
-                                >
-                                    Packages
-                                        </NavLink>
-                            </NavItem>
-
-                            <NavItem>
-                                <NavLink
-                                    className={classnames({ active: this.state.activeTab === '5' })}
-                                    onClick={() => { this.toggle('5'); }}
-                                >
-                                    Favourites
-                                        </NavLink>
-                            </NavItem>
-
-                        </Nav>
-                    </div>
-                    <TabContent activeTab={this.state.activeTab}>
-                        <TabPane tabId="1">
-                            {this.state.activeTab === "1" ?
-                                <PersonalDetails id={this.props.id} />
-                                : ""}
-                        </TabPane>
-
-                        <TabPane tabId="2">
-                            {this.state.activeTab === "2" ?
-                                <TreatmentHistory />
-                                : ""}
-                        </TabPane>
-
-                        <TabPane tabId="3">
-                            {this.state.activeTab === "3" ?
-                                <PurchaseHistory />
-                                : ""}
-                        </TabPane>
-                        <TabPane tabId="4">
-                            {this.state.activeTab === "4" ?
-                                <Appointments />
-                                : ""}
-                        </TabPane>
-                        <TabPane tabId="5">
-                            {this.state.activeTab === "5" ?
-                                <Favourites />
-                                : ""}
-                        </TabPane>
-                    </TabContent>
-                </div>
-            </div>
-        )
-    }
+            <TabPane tabId="3">
+              {this.state.activeTab === "3" ? <PurchaseHistory /> : ""}
+            </TabPane>
+            <TabPane tabId="4">
+              {this.state.activeTab === "4" ? <Appointments /> : ""}
+            </TabPane>
+            <TabPane tabId="5">
+              {this.state.activeTab === "5" ? <Favourites /> : ""}
+            </TabPane>
+            {t("")}
+          </TabContent>
+          {t("")}
+        </div>
+        {t("")}
+      </div>
+    );
+  }
 }
+export const Details = withTranslation()(DetailsClass);

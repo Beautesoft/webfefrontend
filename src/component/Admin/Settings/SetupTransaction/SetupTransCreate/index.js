@@ -18,6 +18,7 @@ import { DragFileUpload } from "../../../../common";
 import { displayImg } from "service/helperFunctions";
 import { history } from "helpers";
 import axios from "axios";
+import { withTranslation } from "react-i18next";
 
 export class SetupTransCreateClass extends Component {
   state = {
@@ -39,7 +40,7 @@ export class SetupTransCreateClass extends Component {
   componentWillMount = () => {
     this.validator = new SimpleReactValidator({
       validators: {},
-      element: message => (
+      element: (message) => (
         <span className="error-message text-danger validNo fs14">
           {message}
         </span>
@@ -53,7 +54,7 @@ export class SetupTransCreateClass extends Component {
     });
 
     let { salonList, formFields } = this.state;
-    this.props.getLoginSaloon().then(res => {
+    this.props.getLoginSaloon().then((res) => {
       for (let key of res.data) {
         salonList.push({ value: key.id, label: key.itemsite_desc });
       }
@@ -63,7 +64,7 @@ export class SetupTransCreateClass extends Component {
     if (this.props.match.params.id && this.props.match.params.id > 0) {
       this.props
         .getCommonApi(`title/${this.props.match.params.id}/`)
-        .then(res => {
+        .then((res) => {
           if (res.status == 200) {
             debugger;
             //this.setState({ formFields: res.data });
@@ -86,7 +87,7 @@ export class SetupTransCreateClass extends Component {
               const url = res.data.logo_pic;
               const fileName = `myFile${Math.round(Math.random())}.jpg`;
 
-              fetch(url).then(async response => {
+              fetch(url).then(async (response) => {
                 const contentType = response.headers.get("content-type");
                 const blob = await response.blob();
                 const file = new File([blob], fileName, { type: "image/*" });
@@ -138,7 +139,7 @@ export class SetupTransCreateClass extends Component {
       if (this.props.match.params.id) {
         this.props
           .commonPatchApi(`title/${this.props.match.params.id}/`, formData)
-          .then(res => {
+          .then((res) => {
             console.log(res);
             if (res.status === 200) {
               this.props.history.push(
@@ -147,7 +148,7 @@ export class SetupTransCreateClass extends Component {
             }
           });
       } else {
-        this.props.commonCreateApi(`title/`, formData).then(res => {
+        this.props.commonCreateApi(`title/`, formData).then((res) => {
           console.log(res);
           if (res.status === 201) {
             this.props.history.push(`/admin/settings/setuptransaction`);
@@ -160,7 +161,7 @@ export class SetupTransCreateClass extends Component {
   };
 
   // upload imag to formfield
-  handleImageUpload = file => {
+  handleImageUpload = (file) => {
     debugger;
     let { formFields } = this.state;
     formFields["logo_pic"] = file;
@@ -183,6 +184,7 @@ export class SetupTransCreateClass extends Component {
       trans_footer3,
       trans_footer4,
     } = formFields;
+    let { t } = this.props;
     return (
       <div className="col-12">
         <div className="card row">
@@ -193,7 +195,7 @@ export class SetupTransCreateClass extends Component {
                 this.props.history.push(`/admin/settings/setuptransaction`)
               }
             >
-              Setup Transaction
+              {t("Setup Transaction")}
             </p>
             <i className="icon-right mx-md-3"></i>
             <p className="sub-category">
@@ -205,7 +207,7 @@ export class SetupTransCreateClass extends Component {
               <div className="col-md-6 col-12 mb-3">
                 <div>
                   <label className="text-left text-black common-label-text ">
-                    Title
+                    {t("Title")}
                     <span className="error-message text-danger validNo fs-18">
                       *
                     </span>
@@ -224,7 +226,7 @@ export class SetupTransCreateClass extends Component {
               <div className="col-md-6 col-12 mb-3">
                 <div>
                   <label className="text-left text-black common-label-text">
-                    Header 1
+                    {t("Header 1")}
                     <span className="error-message text-danger validNo fs-18">
                       *
                     </span>
@@ -243,7 +245,7 @@ export class SetupTransCreateClass extends Component {
               <div className="col-md-6 col-12 mb-3">
                 <div>
                   <label className="text-left text-black common-label-text">
-                    Header 2
+                    {t("Header 2")}
                     <span className="error-message text-danger validNo fs-18">
                       *
                     </span>
@@ -262,7 +264,7 @@ export class SetupTransCreateClass extends Component {
               <div className="col-md-6 col-12 mb-3">
                 <div>
                   <label className="text-left text-black common-label-text ">
-                    Footer 1
+                    {t("Footer 1")}
                     <span className="error-message text-danger validNo fs-18">
                       *
                     </span>
@@ -281,7 +283,7 @@ export class SetupTransCreateClass extends Component {
               <div className="col-md-6 col-12 mb-3">
                 <div>
                   <label className="text-left text-black common-label-text ">
-                    Footer 2
+                    {t("Footer 2")}
                     <span className="error-message text-danger validNo fs-18">
                       *
                     </span>
@@ -300,7 +302,7 @@ export class SetupTransCreateClass extends Component {
               <div className="col-md-6 col-12 mb-3">
                 <div>
                   <label className="text-left text-black common-label-text ">
-                    Footer 3
+                    {t("Footer 3")}
                     <span className="error-message text-danger validNo fs-18">
                       *
                     </span>
@@ -319,7 +321,7 @@ export class SetupTransCreateClass extends Component {
               <div className="col-md-6 col-12 mb-3">
                 <div>
                   <label className="text-left text-black common-label-text ">
-                    Footer 4
+                    {t("Footer 4")}
                     <span className="error-message text-danger validNo fs-18">
                       *
                     </span>
@@ -338,7 +340,7 @@ export class SetupTransCreateClass extends Component {
               <div className="col-md-6 col-12 mb-3">
                 <div>
                   <label className="text-left text-black common-label-text">
-                    GST Reg. No.
+                    {t("GST Reg. No.")}
                     <span className="error-message text-danger validNo fs-18">
                       *
                     </span>
@@ -357,7 +359,7 @@ export class SetupTransCreateClass extends Component {
               <div className="col-md-6 col-12 mb-3">
                 <div>
                   <label className="text-left text-black common-label-text">
-                    Site
+                    {t("Site")}
                     <span className="error-message text-danger validNo fs-18">
                       *
                     </span>
@@ -381,7 +383,7 @@ export class SetupTransCreateClass extends Component {
 
               <div className="col-md-6 col-12 mb-3">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Upload Logo
+                  {t("Upload Logo")}
                   <span className="error-message text-danger validNo fs-18">
                     *
                   </span>
@@ -401,7 +403,7 @@ export class SetupTransCreateClass extends Component {
                       </div>
                     ) : (
                       <div className="uploader-content text-center">
-                        <span>Upload Image</span>
+                        <span>{t("Upload Image")}</span>
                       </div>
                     )}
                   </DragFileUpload>
@@ -446,11 +448,11 @@ export class SetupTransCreateClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   customerDetail: state.customer.customerDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -461,7 +463,6 @@ const mapDispatchToProps = dispatch => {
     dispatch
   );
 };
-export const SetupTransCreate = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SetupTransCreateClass);
+export const SetupTransCreate = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(SetupTransCreateClass)
+);

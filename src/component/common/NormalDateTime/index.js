@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 // import { useSelector } from 'react-redux';
 import "moment/locale/it.js";
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
+import { useTranslation } from "react-i18next";
 
 export const NormalDateTime = ({
   onChange,
@@ -26,7 +26,7 @@ export const NormalDateTime = ({
     onChange(name, date);
     setStartDate(date);
   };
-
+  let { t } = useTranslation();
   return (
     <div className={`${className} date-picker`}>
       <DatePicker

@@ -16,6 +16,7 @@ import {
   commonCreateApi,
 } from "redux/actions/common";
 import SimpleReactValidator from "simple-react-validator";
+import { withTranslation } from "react-i18next";
 
 export class DiscountClass extends Component {
   state = {
@@ -33,7 +34,7 @@ export class DiscountClass extends Component {
     // this.getCart();
     console.log(this.props, "propsssssssssss");
     this.validator = new SimpleReactValidator({
-      element: message => (
+      element: (message) => (
         <span className="error-message text-danger validNo fs14">
           {message}
         </span>
@@ -48,7 +49,7 @@ export class DiscountClass extends Component {
     this.getDataFromStore(this.props.cartData);
   };
 
-  getDataFromStore = data => {
+  getDataFromStore = (data) => {
     let { discountFields } = this.state;
     console.log("fsdfgdfydfdfsg", data, this.props);
     discountFields["discount"] = data.discpercent;
@@ -63,7 +64,7 @@ export class DiscountClass extends Component {
   getDropdownData = () => {
     let { discountReasonList } = this.state;
 
-    this.props.getCommonApi(`paymentremarks/`).then(key => {
+    this.props.getCommonApi(`paymentremarks/`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         for (let value of data) {
@@ -74,7 +75,7 @@ export class DiscountClass extends Component {
     });
   };
 
-  getDateTime = data => {
+  getDateTime = (data) => {
     let date = new Date(data);
     date = String(date).split(" ");
     let date1 = date[2] + "th " + date[1] + ", " + date[3];
@@ -126,7 +127,7 @@ export class DiscountClass extends Component {
           `itemcart/${this.props.id}/?disc_add=1&disc_reset=0`,
           discountFields
         )
-        .then(key => {
+        .then((key) => {
           let { status, data } = key;
           this.props.handleRefresh();
         });
@@ -144,7 +145,7 @@ export class DiscountClass extends Component {
         `itemcart/${this.props.id}/?disc_add=0&disc_reset=1`,
         discountFields
       )
-      .then(key => {
+      .then((key) => {
         let { status, data } = key;
         this.props.handleRefresh();
       });
@@ -153,11 +154,12 @@ export class DiscountClass extends Component {
   render() {
     let { discountFields } = this.state;
     let { discountReasonList } = this.state;
+    let { t } = this.props;
     return (
       <div className="row discount">
         <div className="col-4">
           <label className="text-left text-black common-label-text ">
-            Discount %
+            {t("Discount %")}
           </label>
           <div className="input-group mb-2">
             <NormalInput
@@ -177,7 +179,7 @@ export class DiscountClass extends Component {
         </div>
         <div className="col-4">
           <label className="text-left text-black common-label-text ">
-            Discount amount
+            {t("Discount amount")}
           </label>
           <div className="input-group mb-2">
             <NormalInput
@@ -197,7 +199,7 @@ export class DiscountClass extends Component {
         </div>
         <div className="col-4">
           <label className="text-left text-black common-label-text ">
-            Discount reason
+            {t("Discount reason")}
           </label>
           <div className="input-group mb-2">
             <NormalSelect
@@ -218,7 +220,7 @@ export class DiscountClass extends Component {
         {discountFields.disc_reason == "182" ? (
           <div className="col-12">
             <label className="text-left text-black common-label-text ">
-              Discount reason
+              {t("Discount reason")}
             </label>
             <div className="input-group mb-2">
               <NormalTextarea
@@ -263,12 +265,12 @@ export class DiscountClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   selected_cstomer: state.common.selected_cstomer,
   basicApptDetail: state.appointment.basicApptDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       // getCustomer,
@@ -281,7 +283,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const Discount = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DiscountClass);
+export const Discount = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(DiscountClass)
+);

@@ -14,6 +14,7 @@ import {
 import closeIcon from "assets/images/close.png";
 import _ from "lodash";
 import { Toast } from "service/toast";
+import { withTranslation } from "react-i18next";
 
 export class ItemUsageUpdatePopupClass extends Component {
   state = {
@@ -52,7 +53,7 @@ export class ItemUsageUpdatePopupClass extends Component {
   componentDidMount = () => {
     this.getProductList({});
   };
-  getProductList = async data => {
+  getProductList = async (data) => {
     await this.setState({ productList: [] });
     let { productList, StockItemUsageList, isRetail, search } = this.state;
     let { page = 1, limit = 6 } = data;
@@ -60,7 +61,7 @@ export class ItemUsageUpdatePopupClass extends Component {
       .getCommonApi(
         `stockusageproduct/?is_retail=${isRetail}&search=${this.state.search}&page=${page}&limit=${limit}`
       )
-      .then(async key => {
+      .then(async (key) => {
         let { status, data } = key;
         console.log(data, "productlistresponsedata");
         if (status === 200) {
@@ -72,11 +73,11 @@ export class ItemUsageUpdatePopupClass extends Component {
       });
   };
 
-  handlePagination = page => {
+  handlePagination = (page) => {
     this.getProductList({ page: page });
   };
 
-  handlesearch = async event => {
+  handlesearch = async (event) => {
     event.persist();
 
     if (!this.debouncedFn) {
@@ -90,7 +91,7 @@ export class ItemUsageUpdatePopupClass extends Component {
     this.debouncedFn();
   };
 
-  handleSelectedProduct = async item => {
+  handleSelectedProduct = async (item) => {
     await this.setState({
       isOpenPriceModal: true,
       selectedProductItem: item,
@@ -98,7 +99,7 @@ export class ItemUsageUpdatePopupClass extends Component {
       uomprice: item.uomprice,
     });
   };
-  handleUOMSelection = async data => {
+  handleUOMSelection = async (data) => {
     await this.setState({
       item_uomid: "",
       item_uomdesc: "",
@@ -121,7 +122,7 @@ export class ItemUsageUpdatePopupClass extends Component {
     let { StockItemUsageList, productList } = this.state;
 
     let filterList = StockItemUsageList.find(
-      account => account.stock_id === item.id
+      (account) => account.stock_id === item.id
     );
     if (filterList) {
       filterList["stock_id"] = item.id;
@@ -148,10 +149,10 @@ export class ItemUsageUpdatePopupClass extends Component {
       isOpenPriceModal: false,
     });
   };
-  deleteSelectedProduct = async item => {
-    await this.setState(data => ({
+  deleteSelectedProduct = async (item) => {
+    await this.setState((data) => ({
       StockItemUsageList: data.StockItemUsageList.filter(
-        x => x.stock_id != item.stock_id
+        (x) => x.stock_id != item.stock_id
       ),
     }));
   };
@@ -207,6 +208,7 @@ export class ItemUsageUpdatePopupClass extends Component {
       isOpenPriceModal,
       uomprice,
     } = this.state;
+    let { t } = this.props;
     return (
       <NormalModal
         className={"select-category Treatment-usage"}
@@ -220,21 +222,23 @@ export class ItemUsageUpdatePopupClass extends Component {
           src={closeIcon}
           alt=""
         />
-        <div className="d-flex h4 justify-content-center p-1">Item Usage</div>
+        <div className="d-flex h4 justify-content-center p-1">
+          {t("Item Usage")}
+        </div>
         <div className="customer-list container">
           <div className="beautesoft-navlink customer-detail row">
             <div className="table-container table-responsive mt-3">
               <div className="d-flex mb-2">
                 <div className="col-sm-3">
                   <div className="d-flex justify-content-start mb-2">
-                    <p className="h5">Product</p>
+                    <p className="h5">{t("Product")}</p>
                   </div>
                 </div>
                 <div className="col-sm-9">
                   <div className="d-flex justify-content-end mb-2">
                     <div className="col-sm-2">
                       <NormalCheckbox
-                        onChange={e => this.handleRetailCheckbox(e)}
+                        onChange={(e) => this.handleRetailCheckbox(e)}
                         name="Salon"
                         checked={isRetail == 0 ? true : false}
                         label="show Salon"
@@ -242,7 +246,7 @@ export class ItemUsageUpdatePopupClass extends Component {
                     </div>
                     <div className="col-sm-2">
                       <NormalCheckbox
-                        onChange={e => this.handleRetailCheckbox(e)}
+                        onChange={(e) => this.handleRetailCheckbox(e)}
                         name="Retail"
                         checked={isRetail == 1 ? true : false}
                         label="show Retail"
@@ -281,7 +285,7 @@ export class ItemUsageUpdatePopupClass extends Component {
                     })
                   ) : (
                     <div className="d-flex align-items-center justify-content-center">
-                      No data available
+                      {t("No data available")}
                     </div>
                   )}
                   {productListMeta && (
@@ -306,12 +310,12 @@ export class ItemUsageUpdatePopupClass extends Component {
                 />
 
                 <div className=" mt-1 mb-5 mx-3">
-                  <div className="row h5 text-left mb-2">Select UOM</div>
+                  <div className="row h5 text-left mb-2">{t("Select UOM")}</div>
                   <div className="row title fs-16 mb-2 fw-500">
                     <div className="col-2">S.No</div>
-                    <div className="col-3 text-center">Type</div>
-                    <div className="col-3">Qty</div>
-                    <div className="col-2">Action</div>
+                    <div className="col-3 text-center">{t("Type")}</div>
+                    <div className="col-3">{t("Qty")}</div>
+                    <div className="col-2">{t("Action")}</div>
                   </div>
                   {uomprice && uomprice.length > 0 ? (
                     uomprice.map((data, index) => {
@@ -327,7 +331,7 @@ export class ItemUsageUpdatePopupClass extends Component {
                               name="qty"
                               value={data.qty}
                               //onChange={this.inputChange}
-                              onChange={e => this.inputQtyChange(e, index)}
+                              onChange={(e) => this.inputQtyChange(e, index)}
                             />
                           </div>
                           <div className="col-2">
@@ -346,7 +350,7 @@ export class ItemUsageUpdatePopupClass extends Component {
                     <tr className="w-100">
                       <td>
                         <div className="d-flex align-items-center justify-content-center">
-                          No data available
+                          {t("No data available")}
                         </div>
                       </td>
                     </tr>
@@ -357,7 +361,7 @@ export class ItemUsageUpdatePopupClass extends Component {
 
             <div className="table-container table-responsive mt-3">
               <div className="d-flex justify-content-start h5 mb-2">
-                Selected Product
+                {t("Selected Product")}
               </div>
               <TableWrapper
                 headerDetails={StockUsageListHeader}
@@ -419,7 +423,7 @@ export class ItemUsageUpdatePopupClass extends Component {
                   <tr className="w-100">
                     <td>
                       <div className="d-flex align-items-center justify-content-center">
-                        No data available
+                        {t("No data available")}
                       </div>
                     </td>
                   </tr>
@@ -462,11 +466,11 @@ export class ItemUsageUpdatePopupClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   // filter: state.dashboard
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       updateForm,
@@ -476,7 +480,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const ItemUsageUpdatePopup = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ItemUsageUpdatePopupClass);
+export const ItemUsageUpdatePopup = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(ItemUsageUpdatePopupClass)
+);

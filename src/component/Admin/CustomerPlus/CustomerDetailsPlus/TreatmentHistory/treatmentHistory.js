@@ -1,93 +1,126 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import "./style.scss";
 // import { Appointments, TreatmentHistory, PurchaseHistory, PersonalDetails, Favourites } from './Details'
-import classnames from 'classnames';
-import {
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-} from 'reactstrap';
-import { NormalInput, NormalButton, TableWrapper } from 'component/common';
+import classnames from "classnames";
+import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
+import { NormalInput, NormalButton, TableWrapper } from "component/common";
+import { withTranslation } from "react-i18next";
 
-export class treatmentHistoryPlus extends Component {
+class treatmentHistoryPlusClass extends Component {
   state = {
-    activeTab: '1',
+    activeTab: "1",
     isOpenTreatmentDone: false,
     isActiveTab: "detail",
     headerDetails: [
-      { label: 'Date', sortKey: false, width: "180px" },
-      { label: 'Transaction #', width: "32px" },
-      { label: 'Treatment #', sortKey: false, width: "75px" },
-      { label: 'Discription', sortKey: false, width: "55px" },
-      { label: 'Payment', sortKey: false, width: "70px" },
-      { label: 'Credit balance', sortKey: false, width: "72px" },
-      { label: 'Outstanding', sortKey: false, width: "72px" },
+      { label: "Date", sortKey: false, width: "180px" },
+      { label: "Transaction #", width: "32px" },
+      { label: "Treatment #", sortKey: false, width: "75px" },
+      { label: "Discription", sortKey: false, width: "55px" },
+      { label: "Payment", sortKey: false, width: "70px" },
+      { label: "Credit balance", sortKey: false, width: "72px" },
+      { label: "Outstanding", sortKey: false, width: "72px" },
     ],
-    cartList: [{},{},{},{}]
-  }
+    cartList: [{}, {}, {}, {}],
+  };
 
   toggle = (tab) => {
     if (this.state.activeTab !== tab) {
       this.setState({
-        activeTab: tab
+        activeTab: tab,
       });
     }
-  }
+  };
 
   render() {
     let { treatmentList, headerDetails, cartList } = this.state;
+    let { t } = this.props;
     return (
-
       <div className="treatment-account row">
         <div className="col-6 mt-3 mb-4">
           <div className="row">
-            <div className="col-5 mb-2"></div>
-            <div className="col-5 mb-2">
-             
-            </div>
-            <div className="col-5">Total treatment count </div>
-            <div className="col-5">4</div>
+            <div className="col-5 mb-2">{t("")}</div>
+            <div className="col-5 mb-2">{t("")}</div>
+            <div className="col-5">{t("Total treatment count")} </div>
+            <div className="col-5">{t("4")}</div>
+            {t("")}
           </div>
+          {t("")}
         </div>
         <div className="col-6 mt-3 mb-4">
           <div className="row">
-            <div className="col-6 mb-2">Credit balance</div>
+            <div className="col-6 mb-2">{t("Credit balance")}</div>
             <div className="col-6 mb-2">$4567</div>
-            
-            <div className="col-6">Outstanding balance</div>
+
+            <div className="col-6">{t("Outstanding balance")}</div>
             <div className="col-6">$500</div>
+            {t("")}
           </div>
+          {t("")}
         </div>
         <div className="col-12">
-
           <div className="table">
             <TableWrapper
               headerDetails={headerDetails}
               queryHandler={this.handlePagination}
-            // pageMeta={pageMeta}
-            // isEmpty={cartList.length === 0 ? true:false}
+              // pageMeta={pageMeta}
+              // isEmpty={cartList.length === 0 ? true:false}
             >
-              {cartList.length > 0 ? cartList.map((item, index) => {
-
-                return (
-                  <tr key={index}>
-
-                    <td className="position-relative status-type"><span className={``}></span><div className="d-flex align-items-center justify-content-center">{"12/12/2020"}</div></td>
-                    <td><div className="d-flex align-items-center justify-content-center">{"ASDFSAD34534"}</div></td>
-                    <td><div className="d-flex align-items-center justify-content-center">{"TRTTRA1134"}</div></td>
-                    <td><div className="d-flex align-items-center justify-content-center">{"Facial Fire"}</div></td>
-                    <td><div className="d-flex align-items-center justify-content-center">{"$1500"}</div></td>
-                    <td><div className="d-flex align-items-center justify-content-center">{"$1500"}</div></td>
-                    <td><div className="d-flex align-items-center justify-content-center">{"$1500"}</div></td>
-                  </tr>
-                )
-              }) : ""
-              }
-
+              {cartList.length > 0
+                ? cartList.map((item, index) => {
+                    return (
+                      <tr key={index}>
+                        <td className="position-relative status-type">
+                          <span className={``}>{t("")}</span>
+                          <div className="d-flex align-items-center justify-content-center">
+                            {"12/12/2020"}
+                          </div>
+                          {t("")}
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center justify-content-center">
+                            {"ASDFSAD34534"}
+                          </div>
+                          {t("")}
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center justify-content-center">
+                            {"TRTTRA1134"}
+                          </div>
+                          {t("")}
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center justify-content-center">
+                            {"Facial Fire"}
+                          </div>
+                          {t("")}
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center justify-content-center">
+                            {"$1500"}
+                          </div>
+                          {t("")}
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center justify-content-center">
+                            {"$1500"}
+                          </div>
+                          {t("")}
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center justify-content-center">
+                            {"$1500"}
+                          </div>
+                          {t("")}
+                        </td>
+                        {t("")}
+                      </tr>
+                    );
+                  })
+                : ""}
             </TableWrapper>
+            {t("")}
           </div>
+          {t("")}
         </div>
         <div className="col-12 text-center">
           <NormalButton
@@ -98,8 +131,13 @@ export class treatmentHistoryPlus extends Component {
             // outline={false}
             onClick={() => this.setState({ isOpenEditDisc: false })}
           />
+          {t("")}
         </div>
+        {t("")}
       </div>
-    )
+    );
   }
 }
+export const treatmentHistoryPlus = withTranslation()(
+  treatmentHistoryPlusClass
+);

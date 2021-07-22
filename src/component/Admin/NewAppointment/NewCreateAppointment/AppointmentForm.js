@@ -20,6 +20,7 @@ import _ from "lodash";
 import { AddWalkinCustomer } from "./NewWalkinCustomer";
 import { AppointmentLog } from "../CommonModal/Appointmentlog";
 import logicon from "assets/images/logicon.png";
+import { withTranslation } from "react-i18next";
 
 export class AppointmentFormClass extends Component {
   state = {
@@ -69,7 +70,7 @@ export class AppointmentFormClass extends Component {
 
   componentWillMount = () => {
     this.validator = new SimpleReactValidator({
-      element: message => (
+      element: (message) => (
         <span className="error-message text-danger validNo fs14">
           {message}
         </span>
@@ -100,7 +101,7 @@ export class AppointmentFormClass extends Component {
 
   componentDidMount = async () => {
     this.props.getCustomer("all/").then(() => {});
-    this.props.getCommonApi("bookingstatus/").then(res => {
+    this.props.getCommonApi("bookingstatus/").then((res) => {
       let { status, data, sec_data } = res;
       console.log(data);
       if (status === 200) {
@@ -125,7 +126,7 @@ export class AppointmentFormClass extends Component {
           this.state.formFields.ItemSite_Codeid
         }&date=${dateFormat(new Date())}`
       )
-      .then(key => {
+      .then((key) => {
         let { status, data } = key;
         if (status === 200) {
           for (let value of data) {
@@ -149,7 +150,7 @@ export class AppointmentFormClass extends Component {
 
   handleAppointmentDetailRender = (appt_id, copy) => {
     let { formFields } = this.state;
-    this.props.getCommonApi(`appointmentedit/${appt_id}/`).then(key => {
+    this.props.getCommonApi(`appointmentedit/${appt_id}/`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         if (data.appointment) {
@@ -183,7 +184,7 @@ export class AppointmentFormClass extends Component {
   getListData = () => {
     let { staffList, sourceList, siteList, channelList, roomList } = this.state;
 
-    this.props.getCommonApi(`source/`).then(key => {
+    this.props.getCommonApi(`source/`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         for (let value of data) {
@@ -193,7 +194,7 @@ export class AppointmentFormClass extends Component {
         console.log(sourceList, "jhksdfkjsdhfks");
       }
     });
-    this.props.getCommonApi(`treatment/Outlet/`).then(key => {
+    this.props.getCommonApi(`treatment/Outlet/`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         for (let value of data) {
@@ -203,7 +204,7 @@ export class AppointmentFormClass extends Component {
         console.log(siteList, "jhksdfkjsdhfks");
       }
     });
-    this.props.getCommonApi(`appttype/`).then(key => {
+    this.props.getCommonApi(`appttype/`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         for (let value of data) {
@@ -215,7 +216,7 @@ export class AppointmentFormClass extends Component {
     });
     this.props
       .getCommonApi(`room/?outlet=${this.state.formFields.ItemSite_Codeid}`)
-      .then(key => {
+      .then((key) => {
         let { status, data } = key;
         if (status === 200) {
           for (let value of data) {
@@ -247,7 +248,7 @@ export class AppointmentFormClass extends Component {
     console.log("sdfsdfsdfsd", formFields);
   };
 
-  handleClick = key => {
+  handleClick = (key) => {
     if (!this.state.visible) {
       document.addEventListener("click", this.handleOutsideClick, false);
     } else {
@@ -258,12 +259,12 @@ export class AppointmentFormClass extends Component {
       let { basicApptDetail } = this.props;
       this.search(basicApptDetail);
     }
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       visible: !prevState.visible,
     }));
   };
 
-  handleOutsideClick = e => {
+  handleOutsideClick = (e) => {
     if (this.node != null) {
       if (this.node.contains(e.target)) {
         return;
@@ -288,7 +289,7 @@ export class AppointmentFormClass extends Component {
       let { staffList } = this.state;
       this.props
         .getCommonApi(`appointment/Staffs/?Outlet=${value}`)
-        .then(key => {
+        .then((key) => {
           let { status, data } = key;
           if (status === 200) {
             for (let value of data) {
@@ -303,7 +304,7 @@ export class AppointmentFormClass extends Component {
       formFields["customerName"] = "";
       formFields["custName"] = "";
       this.setState({ formFields });
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         isWalkin: !prevState.isWalkin,
       }));
     }
@@ -338,7 +339,7 @@ export class AppointmentFormClass extends Component {
     history.push(`/admin/newappointment/create/select-treatment`);
   };
 
-  getTime = data => {
+  getTime = (data) => {
     let time = data.split(" ");
     let time1 = time[0].split(":");
     console.log(time, time1, "kghjhgdjfgsdf");
@@ -376,7 +377,7 @@ export class AppointmentFormClass extends Component {
     this.handleCustomerElement(multipleCustomerForm.noOfCustomer);
   };
 
-  handleSearch = async event => {
+  handleSearch = async (event) => {
     //    event.persist();
     let { formFields, visible } = this.state;
     formFields["custName"] = event.target.value;
@@ -393,7 +394,7 @@ export class AppointmentFormClass extends Component {
     this.debouncedFn();
   };
 
-  search = basicApptDetail => {
+  search = (basicApptDetail) => {
     let { formFields } = this.state;
     this.props
       .getCommonApi(
@@ -401,7 +402,7 @@ export class AppointmentFormClass extends Component {
           basicApptDetail.branchId ? basicApptDetail.branchId : ""
         }&search=${formFields.custName}`
       )
-      .then(key => {
+      .then((key) => {
         let { status, data } = key;
         if (status === 200) {
           // for (let value of data) {
@@ -412,7 +413,7 @@ export class AppointmentFormClass extends Component {
       });
   };
 
-  handleSelectCustomer = async data => {
+  handleSelectCustomer = async (data) => {
     let { formFields } = this.state;
     formFields["customerName"] = data.id;
     formFields["custName"] = data.cust_name;
@@ -422,20 +423,20 @@ export class AppointmentFormClass extends Component {
     this.handleClick();
   };
 
-  handleWalkInCustomer = data => {
+  handleWalkInCustomer = (data) => {
     let { formFields } = this.state;
     formFields["customerName"] = data.id;
     formFields["custName"] = data.cust_name;
     this.setState({ formFields });
     this.setState({ customerId: data.id });
     this.props.selectedCustomer(data.id);
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isWalkin: !prevState.isWalkin,
     }));
   };
 
   handleLogClick = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isAppointmentLogModal: !prevState.isAppointmentLogModal,
     }));
   };
@@ -462,14 +463,14 @@ export class AppointmentFormClass extends Component {
       isAppointmentLogModal,
       visible,
     } = this.state;
-    let { customerDetail, customerList, multipleCustomerForm } = this.props;
+    let { customerDetail, customerList, multipleCustomerForm, t } = this.props;
     let { noOfCustomer, treatment, room } = multipleCustomerForm;
     return (
       <>
         <div className="form-group mb-4 pb-2 appointment-form">
           <div className="d-flex">
             <div className="d-flex justify-content-start col-md-11 col-12 h5 p-0">
-              Appointment
+              {t("Appointment")}
             </div>
             {appointmentId && appointmentId > 0 ? (
               <div
@@ -483,7 +484,7 @@ export class AppointmentFormClass extends Component {
           <div className="row">
             <div className="col-md-3 mb-3">
               <label className="text-left text-black common-label-text ">
-                Date{" "}
+                {t("Date")}
                 <span className="error-message text-danger validNo fs-18">
                   *
                 </span>
@@ -507,7 +508,7 @@ export class AppointmentFormClass extends Component {
             <div className="col-md-3 mb-3">
               <div>
                 <label className="text-left text-black common-label-text ">
-                  Name{" "}
+                  {t("Name")}
                   <span className="error-message text-danger validNo fs-18">
                     *
                   </span>
@@ -541,7 +542,7 @@ export class AppointmentFormClass extends Component {
 
             <div className="col-md-3 mb-3">
               <label className="text-left text-black common-label-text ">
-                Booking status{" "}
+                {t("Booking status")}
                 <span className="error-message text-danger validNo fs-18">
                   *
                 </span>
@@ -566,7 +567,7 @@ export class AppointmentFormClass extends Component {
             <div className="col-md-3 mb-3">
               <div>
                 <label className="text-left text-black common-label-text ">
-                  Channel
+                  {t("Channel")}
                 </label>
               </div>
               <div className="input-group">
@@ -584,7 +585,7 @@ export class AppointmentFormClass extends Component {
 
             <div className="col-md-3 mb-3">
               <label className="text-left text-black common-label-text ">
-                Remark
+                {t("Remark")}
               </label>
 
               <div className="input-group">
@@ -613,7 +614,7 @@ export class AppointmentFormClass extends Component {
             <div className="col-md-3 mb-3">
               <div>
                 <label className="text-left text-black common-label-text ">
-                  Source Name
+                  {t("Source Name")}
                 </label>
               </div>
               <div className="input-group">
@@ -631,7 +632,7 @@ export class AppointmentFormClass extends Component {
             <div className="col-md-3 mb-3">
               <div>
                 <label className="text-left text-black common-label-text ">
-                  Room
+                  {t("Room")}
                 </label>
               </div>
               <div className="input-group">
@@ -649,7 +650,7 @@ export class AppointmentFormClass extends Component {
 
             <div className="col-md-3 col-12 mb-3">
               <label className="text-left text-black common-label-text ">
-                Secondary status
+                {t("Secondary status")}
               </label>
               <div className="input-group">
                 <NormalSelect
@@ -666,7 +667,7 @@ export class AppointmentFormClass extends Component {
             {formFields.remark_setting ? (
               <div className="col-md-3 mb-3">
                 <label className="text-left text-black common-label-text ">
-                  New Remark
+                  {t("New Remark")}
                 </label>
 
                 <div className="input-group">
@@ -684,7 +685,7 @@ export class AppointmentFormClass extends Component {
             {!appointmentId ? (
               <div className="col-md-1 col-12 mb-3">
                 <label className="text-left text-black common-label-text ">
-                  Walkin
+                  {t("Walkin")}
                 </label>
                 <div className="input-group">
                   <NormalCheckbox
@@ -700,11 +701,11 @@ export class AppointmentFormClass extends Component {
             {visible ? (
               <div className="customerSearch-block">
                 <div className="row mt-5 table table-header w-100 m-0 overflow-auto">
-                  <div className="col-4">Name</div>
-                  <div className="col-2">Phone</div>
-                  <div className="col-2">Cust Code</div>
-                  <div className="col-3">Email</div>
-                  <div className="col-1">NRIC</div>
+                  <div className="col-4">{t("Name")}</div>
+                  <div className="col-2">{t("Phone")}</div>
+                  <div className="col-2">{t("Cust Code")}</div>
+                  <div className="col-3">{t("Email")}</div>
+                  <div className="col-1">{t("NRIC")}</div>
                 </div>
                 <div className="response-table w-100 row">
                   {console.log(customerOption, "customer search result")}
@@ -726,7 +727,7 @@ export class AppointmentFormClass extends Component {
                     })
                   ) : (
                     <div className="text-center w-100">
-                      No Data are available
+                      {t("No Data are available")}
                     </div>
                   )}
                 </div>
@@ -757,7 +758,7 @@ export class AppointmentFormClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   customerDetail: state.appointment.customerDetail,
   customerList: state.common.customerList,
   multipleCustomerForm: state.appointment.multipleCustomerForm,
@@ -765,7 +766,7 @@ const mapStateToProps = state => ({
   appointmentCustomerDetail: state.appointment.appointmentCustomerDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       CreateAppointment,
@@ -777,7 +778,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const AppointmentForm = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AppointmentFormClass);
+export const AppointmentForm = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(AppointmentFormClass)
+);

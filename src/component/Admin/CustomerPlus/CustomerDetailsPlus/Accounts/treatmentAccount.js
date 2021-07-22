@@ -11,6 +11,7 @@ import {
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { withTranslation } from "react-i18next";
 
 export class TreatmentAccountClass extends Component {
   state = {
@@ -49,7 +50,7 @@ export class TreatmentAccountClass extends Component {
   }
 
   getFilter = () => {
-    this.props.getCommonApi("treatmentdone/Year/").then(key => {
+    this.props.getCommonApi("treatmentdone/Year/").then((key) => {
       let { status, data } = key;
       let { yearList } = this.state;
       for (let value of data) {
@@ -63,7 +64,7 @@ export class TreatmentAccountClass extends Component {
     let { year, accountHeader } = this.state;
     this.props
       .getCommonApi(`treatmentacclist/?cust_id=${this.props.id}&year=${year}`)
-      .then(key => {
+      .then((key) => {
         let { data, header_data } = key;
         let { accountList } = this.state;
         accountList = data;
@@ -72,7 +73,7 @@ export class TreatmentAccountClass extends Component {
       });
   };
 
-  toggle = tab => {
+  toggle = (tab) => {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab,
@@ -89,7 +90,7 @@ export class TreatmentAccountClass extends Component {
     this.getAccountData();
   };
 
-  handleOpenDetail = async data => {
+  handleOpenDetail = async (data) => {
     let { activeTab } = this.state;
     activeTab = "detail";
 
@@ -99,8 +100,8 @@ export class TreatmentAccountClass extends Component {
     this.getDetailList(data.id);
   };
 
-  getDetailList = id => {
-    this.props.getCommonApi(`treatmentacclist/${id}`).then(key => {
+  getDetailList = (id) => {
+    this.props.getCommonApi(`treatmentacclist/${id}`).then((key) => {
       let { data, header_data } = key;
       let { DetailList, accountHeader } = this.state;
       DetailList = data;
@@ -137,12 +138,13 @@ export class TreatmentAccountClass extends Component {
       credit_balance,
       outstanding_balance,
     } = accountHeader;
+    let { t } = this.props;
     return (
       <div className="treatment-account row">
         <div className="col-6 mt-3 mb-4">
           {activeTab !== "detail" ? (
             <div className="row">
-              <div className="col-5 mb-2">Treatment List</div>
+              <div className="col-5 mb-2">{t("Treatment List")}</div>
               <div className="col-5 mb-2">
                 <NormalSelect
                   options={yearList}
@@ -151,9 +153,11 @@ export class TreatmentAccountClass extends Component {
                   onChange={this.handleChange}
                   className="customer-name py-1"
                 />
+                {t("")}
               </div>
-              <div className="col-5">Total Treatment Count </div>
+              <div className="col-5">{t("Total Treatment Count")} </div>
               <div className="col-5">{treatment_count}</div>
+              {t("")}
             </div>
           ) : (
             ""
@@ -161,16 +165,18 @@ export class TreatmentAccountClass extends Component {
         </div>
         <div className="col-6 mt-3 mb-4">
           <div className="row">
-            <div className="col-6 mb-2">Credit Balance</div>
+            <div className="col-6 mb-2">{t("Credit Balance")}</div>
             <div className="col-6 mb-2">
               $ {activeTab !== "detail" ? balance : credit_balance}
             </div>
 
-            <div className="col-6">Outstanding Balance</div>
+            <div className="col-6">{t("Outstanding Balance")}</div>
             <div className="col-6">
               $ {activeTab !== "detail" ? outstanding : outstanding_balance}
             </div>
+            {t("")}
           </div>
+          {t("")}
         </div>
         <div className="col-12">
           <div className="table">
@@ -187,41 +193,49 @@ export class TreatmentAccountClass extends Component {
                             <div className="d-flex align-items-center justify-content-center">
                               {item.sa_date}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.transaction}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.treatment_parentcode}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.description}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.payment}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.balance}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.outstanding}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.balance_qty}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
@@ -232,8 +246,11 @@ export class TreatmentAccountClass extends Component {
                                 label="view"
                                 onClick={() => this.handleOpenDetail(item)}
                               />
+                              {t("")}
                             </div>
+                            {t("")}
                           </td>
+                          {t("")}
                         </tr>
                       );
                     })
@@ -252,32 +269,39 @@ export class TreatmentAccountClass extends Component {
                             <div className="d-flex align-items-center justify-content-center">
                               {item.sa_date}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.description}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.type}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.amount}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.balance}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.outstanding}
                             </div>
+                            {t("")}
                           </td>
+                          {t("")}
                         </tr>
                       );
                     })
@@ -285,6 +309,7 @@ export class TreatmentAccountClass extends Component {
               </TableWrapper>
             )}
           </div>
+          {t("")}
         </div>
         <div className="col-12 justify-center d-flex">
           {activeTab === "detail" ? (
@@ -304,13 +329,15 @@ export class TreatmentAccountClass extends Component {
             label="Print"
             onClick={() => this.setState({ isOpenEditDisc: false })}
           />
+          {t("")}
         </div>
+        {t("")}
       </div>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -323,7 +350,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const TreatmentAccount = connect(
-  null,
-  mapDispatchToProps
-)(TreatmentAccountClass);
+export const TreatmentAccount = withTranslation()(
+  connect(null, mapDispatchToProps)(TreatmentAccountClass)
+);

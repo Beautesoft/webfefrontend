@@ -1,1 +1,1 @@
-export {IssuedStaff} from './issuedStaff'
+export { IssuedStaff } from "./issuedStaff";

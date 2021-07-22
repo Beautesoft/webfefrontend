@@ -22,9 +22,7 @@ export class MGMDetails extends Component {
       fill: "black",
       width: "100%",
     };
-    let {
-      
-    } = this.props;
+    let {} = this.props;
     return (
       <div className="container">
         <div className="row pb-5">
@@ -33,9 +31,9 @@ export class MGMDetails extends Component {
             <Tree content="Customer 3">
               <Tree content="Customer 4" />
               <Tree content="Customer 5">
-                <Tree content="Customer 6"/>
-                <Tree content="Customer 7"/>
-                <Tree content="Customer 8"/>
+                <Tree content="Customer 6" />
+                <Tree content="Customer 7" />
+                <Tree content="Customer 8" />
               </Tree>
               <Tree content="Customer 9" />
             </Tree>

@@ -1,4 +1,4 @@
-export {Details} from './details'
-export {CustomerList} from './customerList'
-export {ProductSaleHistory} from './productSaleHistory'
-export {StaffDetails} from './staffList'
+export { Details } from "./details";
+export { CustomerList } from "./customerList";
+export { ProductSaleHistory } from "./productSaleHistory";
+export { StaffDetails } from "./staffList";

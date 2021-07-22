@@ -17,6 +17,7 @@ import {
 import SimpleReactValidator from "simple-react-validator";
 import { Toast } from "service/toast";
 import "./style.scss";
+import { withTranslation } from "react-i18next";
 
 export class ItemDiscountPopupClass extends Component {
   state = {
@@ -47,7 +48,7 @@ export class ItemDiscountPopupClass extends Component {
   };
   componentWillMount = () => {
     this.validator = new SimpleReactValidator({
-      element: message => (
+      element: (message) => (
         <span className="error-message text-danger validNo fs14">
           {message}
         </span>
@@ -85,7 +86,7 @@ export class ItemDiscountPopupClass extends Component {
   getDiscountReasons = () => {
     let { discount_reason_options } = this.state;
 
-    this.props.getCommonApi(`paymentremarks/`).then(key => {
+    this.props.getCommonApi(`paymentremarks/`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         for (let value of data) {
@@ -108,7 +109,7 @@ export class ItemDiscountPopupClass extends Component {
       total_after_discount,
       discount_reasons,
     } = this.state;
-    this.props.getCommonApi(`cartpopup/${this.props.cartId}/`).then(key => {
+    this.props.getCommonApi(`cartpopup/${this.props.cartId}/`).then((key) => {
       let { status, data } = key;
       console.log(data, "cartdiscountdatapopup");
       if (status == "200") {
@@ -251,7 +252,7 @@ export class ItemDiscountPopupClass extends Component {
           `itemcart/${this.props.cartId}/?disc_add=1&disc_reset=0`,
           body
         )
-        .then(key => {
+        .then((key) => {
           this.handleClear();
           this.getDiscountInfo();
           this.getDiscountReasons();
@@ -325,7 +326,7 @@ export class ItemDiscountPopupClass extends Component {
         `itemcart/${this.props.cartId}/?disc_add=0&disc_reset=1`,
         body
       )
-      .then(key => {
+      .then((key) => {
         this.handleClear();
         this.getDiscountInfo();
         this.getDiscountReasons();
@@ -350,7 +351,7 @@ export class ItemDiscountPopupClass extends Component {
 
           body
         )
-        .then(key => {
+        .then((key) => {
           let { status } = key;
           console.log(key, "response for submit");
           if (status == "200") {
@@ -375,12 +376,13 @@ export class ItemDiscountPopupClass extends Component {
       discount_price_txt,
       discType,
     } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="container-fluid mb-4">
           <div className="row pl-3">
             <div className="col-md-9 col-12">
-              <h6 className="text-secondary fs-18">Item Discount</h6>
+              <h6 className="text-secondary fs-18">{t("Item Discount")}</h6>
 
               <h4>{item_data.item_name}</h4>
             </div>
@@ -397,7 +399,7 @@ export class ItemDiscountPopupClass extends Component {
             <div className="row mb-3">
               <div className="col-md-4">
                 <label className="text-left text-black common-label-text fs-17 pb-2">
-                  Quantity
+                  {t("Quantity")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -412,7 +414,7 @@ export class ItemDiscountPopupClass extends Component {
               </div>
               <div className="col-md-4 col-12">
                 <label className="text-left text-black common-label-text fs-17 pb-2">
-                  Unit Price
+                  {t("Unit Price")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -428,7 +430,7 @@ export class ItemDiscountPopupClass extends Component {
 
               <div className="col-md-2 col-12">
                 <label className="text-left text-black common-label-text fs-17 pb-2">
-                  Discount
+                  {t("Discount")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -460,7 +462,7 @@ export class ItemDiscountPopupClass extends Component {
               <div className="col-md-2 col-12">
                 <div className="row">
                   <label className="text-left text-black common-label-text pb-2">
-                    Type
+                    {t("Type")}
                   </label>
                   <div className="input-group">
                     <NormalSelect
@@ -477,7 +479,7 @@ export class ItemDiscountPopupClass extends Component {
             <div className="row w-100 mb-3">
               <div className="col-md-4 col-12">
                 <label className="text-left text-black common-label-text fs-17 pb-2">
-                  Discount Reason
+                  {t("Discount Reason")}
                 </label>
                 <div className="input-group">
                   <NormalSelect
@@ -496,7 +498,7 @@ export class ItemDiscountPopupClass extends Component {
               {discountFields.disc_reason == "182" ? (
                 <div className="col-md-4 col-12">
                   <label className="text-left text-black common-label-text ">
-                    Discount reason
+                    {t("Discount reason")}
                   </label>
                   <div className="input-group mb-2">
                     <NormalTextarea
@@ -535,7 +537,7 @@ export class ItemDiscountPopupClass extends Component {
             <div className="row w-100 mt-4">
               <div className="col-12">
                 <label className="text-left text-black common-label-text fs-17 pb-2">
-                  Discount List
+                  {t("Discount List")}
                 </label>
                 <div className="col-md-12 col-12 w-100 bg-light p-3 border">
                   {discount_reasons &&
@@ -571,7 +573,7 @@ export class ItemDiscountPopupClass extends Component {
                       );
                     })}
                   {!discount_reasons || discount_reasons.length <= 0 ? (
-                    <div className="row">No record found</div>
+                    <div className="row">{t("No record found")}</div>
                   ) : null}
                 </div>
               </div>
@@ -579,7 +581,7 @@ export class ItemDiscountPopupClass extends Component {
             <div className="row w-100 mt-5">
               <div className="col-md-8 col-12">
                 <label className="text-left text-black common-label-text fs-17 pb-2">
-                  Unit Price After Discount
+                  {t("Unit Price After Discount")}
                 </label>
               </div>
               <div className="col-md-4 col-12 ">
@@ -591,7 +593,7 @@ export class ItemDiscountPopupClass extends Component {
             <div className="row w-100 mt-2">
               <div className="col-md-4 col-12">
                 <label className="text-left text-black common-label-text fs-17 pb-2">
-                  Total After Discount
+                  {t("Total After Discount")}
                 </label>
               </div>
               <div className="col-md-4 col-12">
@@ -607,7 +609,7 @@ export class ItemDiscountPopupClass extends Component {
             </div>
             <div className="row w-100 mt-4">
               <div className="col-md-8 col-12">
-                <h6>Deposit</h6>
+                <h6>{t("Deposit")}</h6>
               </div>
               <div className="col-md-4 col-12">
                 <label className="text-left text-black common-label-text fs-17 pb-2">
@@ -626,11 +628,11 @@ export class ItemDiscountPopupClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   basicApptDetail: state.appointment.basicApptDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -640,7 +642,6 @@ const mapDispatchToProps = dispatch => {
     dispatch
   );
 };
-export const ItemDiscountPopup = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ItemDiscountPopupClass);
+export const ItemDiscountPopup = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(ItemDiscountPopupClass)
+);

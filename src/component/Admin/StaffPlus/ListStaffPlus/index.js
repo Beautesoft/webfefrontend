@@ -23,15 +23,15 @@ export class ListStaffPlusClass extends React.Component {
       { label: "" },
     ],
     staffList: [],
-    filter: "",
+    filter: "all",
     locationOption: [],
     levelList: [],
     jobOption: [],
     pageMeta: {},
-    selectedMenu: "/",
+    selectedMenu: "/all",
     active: false,
     currentIndex: -1,
-    is_loading: false,
+    isLoading: false,
     isMounted: true,
   };
 
@@ -101,6 +101,9 @@ export class ListStaffPlusClass extends React.Component {
     console.log(filterOption);
     if (splitted.length == 2) {
       switch (splitted[1]) {
+        case "all":
+          filter = "all";
+          break;
         case "withSecurityAccount":
           filter = "is_login=True";
           break;
@@ -113,6 +116,8 @@ export class ListStaffPlusClass extends React.Component {
         case "inactive":
           filter = "emp_isactive=False";
           break;
+        default:
+          filter = "";
       }
     } else if (splitted.length == 3) {
       switch (splitted[1]) {
@@ -125,9 +130,11 @@ export class ListStaffPlusClass extends React.Component {
         case "operation":
           filter = `EMP_TYPEid=${splitted[2]}`;
           break;
+        default:
+          filter = "";
       }
     }
-    if (this.state.filter != filter || filter == "") {
+    if (this.state.filter != filter && filter !== "") {
       this.state.filter = filter;
       this.queryHandler({});
     }
@@ -145,11 +152,11 @@ export class ListStaffPlusClass extends React.Component {
 
   // api call for staff
   queryHandler = async (data) => {
-    this.updateState({ is_loading: true });
+    this.updateState({ isLoading: true });
     let { page = 1, limit = 10, search = "" } = data;
     await this.props.getStaffPlus(
       `?page=${page}&limit=${limit}${
-        this.state.filter == "" ? "" : `&${this.state.filter}`
+        this.state.filter === "all" ? "" : `&${this.state.filter}`
       }${search == "" ? "" : `&search=${search}`}`
     );
     let { staffDetails } = this.props;
@@ -159,7 +166,7 @@ export class ListStaffPlusClass extends React.Component {
     this.updateState({
       staffList,
       pageMeta,
-      is_loading: false,
+      isLoading: false,
     });
   };
 
@@ -212,14 +219,10 @@ export class ListStaffPlusClass extends React.Component {
       levelList,
       jobOption,
       staffList,
-      is_loading,
+      isLoading,
       selectedMenu,
     } = this.state;
     let { t } = this.props;
-
-    headerDetails = headerDetails.map((e) => {
-      return { ...e, label: t(e.label) };
-    });
 
     return (
       <div className="container-fluid">
@@ -229,7 +232,7 @@ export class ListStaffPlusClass extends React.Component {
               <NormalButton
                 normal={true}
                 className="col-12 fs-15 float-right"
-              label={t("Schedule")}
+                label="Schedule"
               />
             </Link>
           </div>
@@ -238,7 +241,7 @@ export class ListStaffPlusClass extends React.Component {
               <NormalButton
                 normal={true}
                 className="col-12 fs-15 float-right"
-                label={t("Authorization")}
+                label="Authorization"
               />
             </Link>
           </div>
@@ -247,65 +250,70 @@ export class ListStaffPlusClass extends React.Component {
               <NormalButton
                 normal={true}
                 className="col-12 fs-15 float-right"
-                label={t("Skill Listing")}
+                label="Skill Listing"
               />
             </Link>
           </div>
         </div>
         <div className="row">
-          <div className="col-sm-12 col-lg-3 mb-4">
+          <div
+            className="col-sm-12 col-lg-3 mb-4"
+            style={
+              this.state.isLoading
+                ? { pointerEvents: "none", opacity: 0.2 }
+                : {}
+            }
+          >
             <div className="col-md-4 p-0">
               <h4>{t("Filters")}</h4>
             </div>
-            {is_loading ? (
-              <div class="d-flex mt-5 align-items-center justify-content-center">
-                <div class="spinner-border" role="status">
-                  <span class="sr-only">Loading...</span>
-                </div>
-              </div>
-            ) : (
-              <Navigation
-                activeItemId={selectedMenu}
-                onSelect={({ itemId }) => this.handleFilterChange(itemId)}
-                items={[
-                  {
-                    title: t("Show All"),
-                    itemId: "/",
-                  },
-                  {
-                    title: t("Show Active"),
-                    itemId: "/active",
-                  },
-                  {
-                    title: t("Show Inactive"),
-                    itemId: "/inactive",
-                  },
-                  {
-                    title: t("By Emp Level"),
-                    itemId: "/emplvl",
-                    subNav: levelList,
-                  },
-                  {
-                    title: t("With Security Account"),
-                    itemId: "/withSecurityAccount",
-                  },
-                  {
-                    title: t("Without Security Account"),
-                    itemId: "/withoutSecurityAccount",
-                  },
-                  {
-                    title: t("By Site List"),
-                    itemId: "/sitelist",
-                    subNav: locationOption,
-                  },
-                  {
-                    title: t("By Operation"),
-                    itemId: "/operation",
-                    subNav: jobOption,
-                  },
-                ]}
-              />
-            )}
+            <Navigation
+              activeItemId={selectedMenu}
+              onSelect={({ itemId }) => this.handleFilterChange(itemId)}
+              items={[
+                {
+                  title: t("Show All"),
+                  itemId: "/all",
+                },
+                {
+                  title: t("Show Active"),
+                  itemId: "/active",
+                },
+                {
+                  title: t("Show Inactive"),
+                  itemId: "/inactive",
+                },
+                {
+                  title: t("By Emp Level"),
+                  itemId: "/emplvl",
+                  subNav: levelList.map((e) => {
+                    return { ...e, title: t(e.title) };
+                  }),
+                },
+                {
+                  title: t("With Security Account"),
+                  itemId: "/withSecurityAccount",
+                },
+                {
+                  title: t("Without Security Account"),
+                  itemId: "/withoutSecurityAccount",
+                },
+                {
+                  title: t("By Site List"),
+                  itemId: "/sitelist",
+                  subNav: locationOption.map((e) => {
+                    return { ...e, title: t(e.title) };
+                  }),
+                },
+                {
+                  title: t("By Operation"),
+                  itemId: "/operation",
+                  subNav: jobOption.map((e) => {
+                    return { ...e, title: t(e.title) };
+                  }),
+                },
+              ]}
+            />
           </div>
           <div className="staffList-container col-xl">
             <div className="row align-items-center">
@@ -317,7 +325,7 @@ export class ListStaffPlusClass extends React.Component {
                   <div className="w-100 col-8">
                     <InputSearch
                       className=""
-                      placeholder={t("Search Staff")}
+                      placeholder="Search Staff"
                       onEnter={this.handlesearch}
                     />
                   </div>
@@ -325,7 +333,7 @@ export class ListStaffPlusClass extends React.Component {
                     <NormalButton
                       mainbg={true}
                       className="col-12 fs-15 float-right"
-                      label={t("Add Staff")}
+                      label="Add Staff"
                       onClick={() =>
                         this.props.history.push("/admin/staffplus/add")
                       }
@@ -342,7 +350,7 @@ export class ListStaffPlusClass extends React.Component {
                     queryHandler={this.handlePagination}
                     pageMeta={pageMeta}
                   >
-                    {is_loading ? (
+                    {isLoading ? (
                       <tr>
                         <td colSpan="7">
                           <div class="d-flex mt-5 align-items-center justify-content-center">

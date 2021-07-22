@@ -15,6 +15,7 @@ import {
   commonPatchApi,
 } from "redux/actions/common";
 import { history } from "helpers";
+import { withTranslation } from "react-i18next";
 
 export class SmtpCreateClass extends Component {
   state = {
@@ -36,7 +37,7 @@ export class SmtpCreateClass extends Component {
   componentWillMount = () => {
     this.validator = new SimpleReactValidator({
       validators: {},
-      element: message => (
+      element: (message) => (
         <span className="error-message text-danger validNo fs14">
           {message}
         </span>
@@ -50,7 +51,7 @@ export class SmtpCreateClass extends Component {
     });
 
     let { salonList } = this.state;
-    this.props.getLoginSaloon().then(res => {
+    this.props.getLoginSaloon().then((res) => {
       for (let key of res.data) {
         salonList.push({ value: key.id, label: key.itemsite_desc });
       }
@@ -60,7 +61,7 @@ export class SmtpCreateClass extends Component {
     if (this.props.match.params.id && this.props.match.params.id > 0) {
       this.props
         .getCommonApi(`smtpsettings/${this.props.match.params.id}/`)
-        .then(res => {
+        .then((res) => {
           if (res.status == 200) {
             this.setState({ formFields: res.data });
             console.log(res, "smtpsettingeditclick");
@@ -96,14 +97,14 @@ export class SmtpCreateClass extends Component {
       if (this.props.match.params.id && this.props.match.params.id > 0) {
         this.props
           .commonPatchApi(`smtpsettings/${smtpSettingId}/`, data)
-          .then(async res => {
+          .then(async (res) => {
             console.log(res, "result of smtpsetingsupdate");
             if (res.status === 200) {
               this.props.history.push(`/admin/settings/smtpsettings`);
             }
           });
       } else {
-        this.props.commonCreateApi(`smtpsettings/`, data).then(async res => {
+        this.props.commonCreateApi(`smtpsettings/`, data).then(async (res) => {
           console.log(res, "result of smtpsetingssave");
           if (res.status === 201) {
             this.props.history.push(`/admin/settings/smtpsettings`);
@@ -117,6 +118,7 @@ export class SmtpCreateClass extends Component {
 
   render() {
     let { formFields, salonList, smtpSettingId } = this.state;
+    let { t } = this.props;
     return (
       <div className="col-12">
         <div className="card row">
@@ -127,7 +129,7 @@ export class SmtpCreateClass extends Component {
                 this.props.history.push(`/admin/settings/smtpsettings`)
               }
             >
-              SMTP Settings
+              {t("SMTP Settings")}
             </p>
             <i className="icon-right mx-md-3"></i>
             <p className="sub-category">
@@ -140,7 +142,7 @@ export class SmtpCreateClass extends Component {
                 <div className="col-md-12 col-12 mb-3">
                   <div>
                     <label className="text-left text-black common-label-text ">
-                      Sender Name
+                      {t("Sender Name")}
                       <span className="error-message text-danger validNo fs-18">
                         *
                       </span>
@@ -163,7 +165,7 @@ export class SmtpCreateClass extends Component {
                 <div className="col-md-12 col-12 mb-3">
                   <div>
                     <label className="text-left text-black common-label-text ">
-                      Sender Address
+                      {t("Sender Address")}
                       <span className="error-message text-danger validNo fs-18">
                         *
                       </span>
@@ -186,7 +188,7 @@ export class SmtpCreateClass extends Component {
                 <div className="col-md-12 col-12 mb-3">
                   <div>
                     <label className="text-left text-black common-label-text ">
-                      SMTP Host Server
+                      {t("SMTP Host Server")}
                       <span className="error-message text-danger validNo fs-18">
                         *
                       </span>
@@ -213,7 +215,7 @@ export class SmtpCreateClass extends Component {
                 <div className="col-md-12 col-12 mb-3">
                   <div>
                     <label className="text-left text-black common-label-text ">
-                      Port
+                      {t("Port")}
                       <span className="error-message text-danger validNo fs-18">
                         *
                       </span>
@@ -232,7 +234,7 @@ export class SmtpCreateClass extends Component {
                 <div className="col-md-12 col-12 mb-3">
                   <div>
                     <label className="text-left text-black common-label-text ">
-                      User ID
+                      {t("User ID")}
                       <span className="error-message text-danger validNo fs-18">
                         *
                       </span>
@@ -255,7 +257,7 @@ export class SmtpCreateClass extends Component {
                 <div className="col-md-12 col-12 mb-3">
                   <div>
                     <label className="text-left text-black common-label-text ">
-                      Password
+                      {t("Password")}
                       <span className="error-message text-danger validNo fs-18">
                         *
                       </span>
@@ -282,7 +284,7 @@ export class SmtpCreateClass extends Component {
                 <div className="col-md-12 col-12 mb-3 p-0">
                   <div>
                     <label className="text-left text-black common-label-text">
-                      Site
+                      {t("Site")}
                       <span className="error-message text-danger validNo fs-18">
                         *
                       </span>
@@ -312,7 +314,7 @@ export class SmtpCreateClass extends Component {
                   <div className="mb-3">
                     <div>
                       <label className="text-left text-black common-label-text">
-                        Content
+                        {t("Content")}
                         <span className="error-message text-danger validNo fs-18">
                           *
                         </span>
@@ -343,7 +345,7 @@ export class SmtpCreateClass extends Component {
                 <div className="col-md-12 col-12 mb-3">
                   <div>
                     <label className="text-left text-black common-label-text ">
-                      Subject{" "}
+                      {t("Subject")}
                       <span className="error-message text-danger validNo fs-18">
                         *
                       </span>
@@ -366,7 +368,7 @@ export class SmtpCreateClass extends Component {
                 <div className="col-md-12 col-12 mb-3">
                   <div>
                     <label className="text-left text-black common-label-text">
-                      Content{" "}
+                      {t("Content")}
                       <span className="error-message text-danger validNo fs-18">
                         *
                       </span>
@@ -425,11 +427,11 @@ export class SmtpCreateClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   customerDetail: state.customer.customerDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -440,7 +442,6 @@ const mapDispatchToProps = dispatch => {
     dispatch
   );
 };
-export const SmtpCreate = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SmtpCreateClass);
+export const SmtpCreate = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(SmtpCreateClass)
+);

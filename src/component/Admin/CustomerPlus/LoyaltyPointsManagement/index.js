@@ -13,8 +13,9 @@ import { RewardPolicyTable } from "./RewardPolicyTable";
 import { ManualReward } from "./ManualReward";
 import { ManualRedeem } from "./ManualRedeem";
 import _ from "lodash";
+import { withTranslation } from "react-i18next";
 
-export class LoyaltyPointsManagement extends React.Component {
+class LoyaltyPointsManagementClass extends React.Component {
   state = {
     currentMenu: "/",
     isMounted: true,
@@ -36,10 +37,11 @@ export class LoyaltyPointsManagement extends React.Component {
 
   render() {
     let { currentMenu } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="customer-list container-fluid">
-          <h3 className="head-label mb-5">Loyalty Program</h3>
+          <h3 className="head-label mb-5">{t("Loyalty Program")}</h3>
           <div className="row">
             <div className="col-md-2 mb-5">
               <Navigation
@@ -64,29 +66,37 @@ export class LoyaltyPointsManagement extends React.Component {
                   },
                 ]}
               />
+              {t("")}
             </div>
             <div className="col-md-10">
               <div className="container-fluid">
                 <div className="row align-items-center">
                   <div className="col-md-4">
-                    <h3 className="head-label">Customer Details</h3>
+                    <h3 className="head-label">{t("Customer Details")}</h3>
+                    {t("")}
                   </div>
+                  {t("")}
                 </div>
                 <div className="row mt-2 mb-5">
                   <div className="col-md-6  mt-2">
-                    <label className="label">Name</label>
+                    <label className="label">{t("Name")}</label>
                     <NormalInput disabled />
+                    {t("")}
                   </div>
                   <div className="col-md-6 mt-2">
-                    <label className="label">Code Referance</label>
+                    <label className="label">{t("Code Referance")}</label>
                     <NormalInput disabled />
+                    {t("")}
                   </div>
 
                   <div className="col-md-6  mt-2">
-                    <label className="label">Available Points</label>
+                    <label className="label">{t("Available Points")}</label>
                     <NormalInput disabled />
+                    {t("")}
                   </div>
+                  {t("")}
                 </div>
+                {t("")}
               </div>
 
               {currentMenu == "/" ? (
@@ -99,9 +109,15 @@ export class LoyaltyPointsManagement extends React.Component {
                 <ManualRedeem />
               )}
             </div>
+            {t("")}
           </div>
+          {t("")}
         </div>
+        {t("")}
       </>
     );
   }
 }
+export const LoyaltyPointsManagement = withTranslation()(
+  LoyaltyPointsManagementClass
+);

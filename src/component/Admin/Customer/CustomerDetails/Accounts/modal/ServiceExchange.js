@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import closeIcon from "assets/images/close.png";
 import { getCommonApi, commonCreateApi } from "redux/actions/common";
+import { withTranslation } from "react-i18next";
 
 export class ServiceExchangeClass extends Component {
   state = {
@@ -25,6 +26,7 @@ export class ServiceExchangeClass extends Component {
 
   render() {
     let { treatmentListHeader, meta, treatmentList } = this.state;
+    let { t } = this.props;
     return (
       <NormalModal
         className={"multiple-appointment select-category"}
@@ -39,7 +41,7 @@ export class ServiceExchangeClass extends Component {
           alt=""
         />
         <div className="d-flex h4 justify-content-center p-1">
-          Service Exchange
+          {t("Service Exchange")}
         </div>
         <div className="customer-list container">
           <div className="table-container table-responsive mt-3">
@@ -60,33 +62,40 @@ export class ServiceExchangeClass extends Component {
                         <div className="d-flex align-items-center justify-content-center">
                           {item.Item_Class}
                         </div>
+                        {t("")}
                       </td>
                       <td>
                         <div className="d-flex align-items-center justify-content-center">
                           {item.item_desc}
                         </div>
+                        {t("")}
                       </td>
                       <td>
                         <div className="d-flex align-items-center justify-content-center">
                           {item.add_duration}
                         </div>
+                        {t("")}
                       </td>
                       <td>
                         <div className="d-flex align-items-center justify-content-center">
                           {item.item_price}
                         </div>
+                        {t("")}
                       </td>
+                      {t("")}
                     </tr>
                   );
                 })
               ) : (
                 <td>
                   <div className="d-flex align-items-center justify-content-center">
-                    No data available
+                    {t("No data available")}
                   </div>
+                  {t("")}
                 </td>
               )}
             </TableWrapper>
+            {t("")}
           </div>
 
           <div className="row text-center justify-center w-100">
@@ -104,18 +113,21 @@ export class ServiceExchangeClass extends Component {
               label="Cancel"
               onClick={this.props.handleExchange}
             />
+            {t("")}
           </div>
+          {t("")}
         </div>
+        {t("")}
       </NormalModal>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   appointmentTreatmentList: state.appointment.appointmentTreatmentList,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -125,7 +137,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const ServiceExchange = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ServiceExchangeClass);
+export const ServiceExchange = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(ServiceExchangeClass)
+);

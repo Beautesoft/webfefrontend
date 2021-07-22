@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import { NormalModal } from "component/common";
 import closeIcon from "assets/images/close.png";
 import _ from "lodash";
+import { withTranslation } from "react-i18next";
 
 export class UpcomingAppointmentClass extends Component {
   state = {
@@ -33,14 +34,14 @@ export class UpcomingAppointmentClass extends Component {
     this.getUpcomingAppList({});
   };
 
-  getUpcomingAppList = data => {
+  getUpcomingAppList = (data) => {
     let { customerNumber } = this.state;
     let { page = 1, limit = 10, search = "" } = data;
     this.props
       .getCommonApi(
         `upcomingappointment/?cust_id=${customerNumber}&page=${page}&limit=${limit}`
       )
-      .then(res => {
+      .then((res) => {
         console.log(res, "dsfdfaafg");
         if (res.status === 200) {
           if (res.data) {
@@ -53,7 +54,7 @@ export class UpcomingAppointmentClass extends Component {
       });
   };
 
-  handlePagination = page => {
+  handlePagination = (page) => {
     this.getUpcomingAppList(page);
   };
   // handlesearch = (event) => {
@@ -73,7 +74,7 @@ export class UpcomingAppointmentClass extends Component {
   render() {
     let { headerDetails, upcomingAppList, meta, CustomerName, customerPhone } =
       this.state;
-    let { customerId } = this.props;
+    let { customerId, t } = this.props;
     return (
       <>
         <NormalModal
@@ -92,18 +93,18 @@ export class UpcomingAppointmentClass extends Component {
             <div className="tab-table-content">
               <div className="py-4">
                 <div className="col-12 p-2 text-center">
-                  <h5 className="fw-500">Upcoming Appointment</h5>
+                  <h5 className="fw-500">{t("Upcoming Appointment")}</h5>
                 </div>
                 <div className="d-flex flex-noWrap mb-2">
                   <div className="col-4">
                     <div className="col-12">
-                      Customer Name :{" "}
+                      {t("Customer Name")} :
                       <span className="fw-500 h6">{CustomerName}</span>
                     </div>
                   </div>
                   <div className="col-5">
                     <div className="col-12">
-                      Customer Phone :{" "}
+                      {t("Customer Phone")} :
                       <span className="fw-500 h6">{customerPhone}</span>
                     </div>
                   </div>
@@ -165,7 +166,7 @@ export class UpcomingAppointmentClass extends Component {
                       <tr>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
-                            No data available
+                            {t("No data available")}
                           </div>
                         </td>
                       </tr>
@@ -181,11 +182,11 @@ export class UpcomingAppointmentClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   // filter: state.dashboard
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       updateForm,
@@ -195,7 +196,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const UpcomingAppointment = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UpcomingAppointmentClass);
+export const UpcomingAppointment = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(UpcomingAppointmentClass)
+);

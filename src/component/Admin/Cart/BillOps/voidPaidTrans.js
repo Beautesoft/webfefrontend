@@ -26,8 +26,9 @@ import service from "assets/images/make-up-brush.png";
 // import Discount from './cart/discount';
 import { FormGroup, Label, Input } from "reactstrap";
 import closeIcon from "assets/images/close.png";
+import { withTranslation } from "react-i18next";
 
-export class VoidPaidTransClass extends Component {
+class VoidPaidTransClass extends Component {
   state = {
     tstaffList: [],
     cartData: {},
@@ -69,7 +70,7 @@ export class VoidPaidTransClass extends Component {
   componentWillMount = () => {
     // this.getCart();
     this.validator = new SimpleReactValidator({
-      element: message => (
+      element: (message) => (
         <span className="error-message text-danger validNo fs14">
           {message}
         </span>
@@ -88,7 +89,7 @@ export class VoidPaidTransClass extends Component {
     this.getCart();
   };
 
-  getCart = data => {
+  getCart = (data) => {
     let { page, limit, formFields, cartData, tstaffList } = this.state;
     let { custName, fromDate, toDate, transCode, custCode } = formFields;
     let { basicApptDetail } = this.props;
@@ -104,7 +105,7 @@ export class VoidPaidTransClass extends Component {
           basicApptDetail.custId
         }&cust_name=${custName}&page=${page}&limit=${limit}`
       )
-      .then(res => {
+      .then((res) => {
         console.log(res, "dsfdfaafg");
         cartData = res;
         tstaffList = res.data;
@@ -116,8 +117,8 @@ export class VoidPaidTransClass extends Component {
     let { basicApptDetail } = this.props;
     await this.props
       .getCommonApi(`voidcheck/?cust_id=${basicApptDetail.custId}`)
-      .then(res => {
-        if (res.status === 200 && res.data.length>0) {
+      .then((res) => {
+        if (res.status === 200 && res.data.length > 0) {
           this.setState({
             isOpenvoidCheckout: true,
             cartList: res.data,
@@ -128,7 +129,7 @@ export class VoidPaidTransClass extends Component {
   };
 
   getvoidReason = () => {
-    this.props.getCommonApi("voidreason/").then(key => {
+    this.props.getCommonApi("voidreason/").then((key) => {
       let { data } = key;
       let { reasonOption } = this.state;
       reasonOption = [];
@@ -143,12 +144,12 @@ export class VoidPaidTransClass extends Component {
     let { selectedData, cartData, tstaffList } = this.state;
     this.props
       .getCommonApi(`void/Details/?poshdr_id=${selectedData.id}`)
-      .then(res => {
+      .then((res) => {
         this.setState({ detailDataList: res.data });
       });
   };
 
-  handlePagination = async page => {
+  handlePagination = async (page) => {
     console.log(page, "dsfsdfsdfsdf");
     await this.setState({ page: page.page });
     this.getCart(page);
@@ -158,19 +159,19 @@ export class VoidPaidTransClass extends Component {
     let { selectedData } = this.state;
     this.props
       .commonCreateApi(`void/?poshdr_id=${selectedData.id}`)
-      .then(key => {
+      .then((key) => {
         this.handleCheckCart();
       });
   };
 
-  handleVoidCartSubmit = id => {
+  handleVoidCartSubmit = (id) => {
     let { selectedData, reason, cartList } = this.state;
     if (this.validator.allValid()) {
       this.props
         .commonCreateApi(
           `void/VoidReturn/?cart_id=${cartList[0].cart_id}&voidreason_id=${reason}`
         )
-        .then(async key => {
+        .then(async (key) => {
           await this.setState({
             completedData: key.data,
           });
@@ -250,21 +251,21 @@ export class VoidPaidTransClass extends Component {
   };
 
   // for share reciept
-  handleShare = id => {
+  handleShare = (id) => {
     let { completedData } = this.state;
     this.props
       .commonCreateApi(
         `receiptpdfsend/?sa_transacno=${completedData.sa_transacno}`
       )
-      .then(res => {});
+      .then((res) => {});
   };
 
-  handleVoidCancelCart = id => {
+  handleVoidCancelCart = (id) => {
     let { completedData, isOpenvoidCheckout, cartList } = this.state;
     let payload = {
       cart_id: cartList[0].cart_id,
     };
-    this.props.commonCreateApi(`voidcancel/`, payload).then(res => {
+    this.props.commonCreateApi(`voidcancel/`, payload).then((res) => {
       if (res.status === 200) {
         isOpenvoidCheckout = false;
         this.setState({
@@ -288,12 +289,13 @@ export class VoidPaidTransClass extends Component {
       isvoidCompleted,
     } = this.state;
     let { custName, fromDate, toDate, transCode, custCode } = formFields;
+    let { t } = this.props;
     return (
       <div className="row new-cart treatment-done top-up">
         <div className="col-3">
           <div className="d-flex">
             <label className="text-left w-100 text-black common-label-text mr-2">
-              From Date
+              {t("From Date")}
             </label>
             <div className="input-group">
               <NormalDateTime
@@ -307,10 +309,10 @@ export class VoidPaidTransClass extends Component {
               />
             </div>
           </div>
-          <br/>
+          <br />
           <div className="d-flex">
             <label className="text-left w-100 text-black common-label-text mr-2">
-              To Date
+              {t("To Date")}
             </label>
             <div className="input-group">
               <NormalDateTime
@@ -324,7 +326,8 @@ export class VoidPaidTransClass extends Component {
               />
             </div>
           </div>
-        </div><br/>
+        </div>
+        <br />
         {/* <div className="col-3">
                     <div className="d-flex">
                         <label className="text-left w-100 text-black common-label-text mr-2">
@@ -357,7 +360,7 @@ export class VoidPaidTransClass extends Component {
         <div className="col-3">
           <div className="d-flex">
             <label className="text-left w-100 text-black common-label-text mr-2">
-              Transaction Code
+              {t("Transaction Code")}
             </label>
             <div className="input-group">
               <NormalInput
@@ -472,9 +475,8 @@ export class VoidPaidTransClass extends Component {
             src={closeIcon}
             alt=""
           />
-          <p className="fs-18 f-600">Detail</p>
+          <p className="fs-18 f-600">{t("Detail")}</p>
           <div className="mt-10">
-         
             <TableWrapper
               headerDetails={detailHeaderDetails}
               queryHandler={this.handlePagination}
@@ -540,10 +542,10 @@ export class VoidPaidTransClass extends Component {
           handleModal={() => {}}
         >
           {/* <img onClick={this.handleDialog} className="close cursor-pointer" src={closeIcon} alt="" /> */}
-          <p className="fs-18 f-600">Void Checkout</p>
+          <p className="fs-18 f-600">{t("Void Checkout")}</p>
           <div className="mt-3">
             <label className="text-left w-100 text-black common-label-text mr-2">
-              Reason
+              {t("Reason")}
             </label>
             <div className="input-group">
               <NormalSelect
@@ -592,7 +594,7 @@ export class VoidPaidTransClass extends Component {
             src={closeIcon}
             alt=""
           />
-          <p className="fs-18 f-600">Void Checkout</p>
+          <p className="fs-18 f-600">{t("Void Checkout")}</p>
 
           <div className="row my-5">
             <div className="col-4 d-flex mt-5 justify-center">
@@ -632,12 +634,12 @@ export class VoidPaidTransClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   selected_cstomer: state.common.selected_cstomer,
   basicApptDetail: state.appointment.basicApptDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       // getCustomer,
@@ -651,7 +653,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const VoidPaidTrans = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(VoidPaidTransClass);
+export const VoidPaidTrans = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(VoidPaidTransClass)
+);

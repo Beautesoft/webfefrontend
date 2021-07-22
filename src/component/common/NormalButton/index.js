@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import { withTranslation } from "react-i18next";
 
-export class NormalButton extends Component {
+class NormalButtonClass extends Component {
   render() {
     const {
       className = "",
@@ -11,31 +12,36 @@ export class NormalButton extends Component {
       outline = false,
       mainbg = false,
       link = false,
-      normal=false,
-      success=false,
-      danger=false,
+      normal = false,
+      success = false,
+      danger = false,
       rightIcon = "",
-      buttonClass=""
+      buttonClass = "",
+      t,
     } = this.props;
 
     return (
       <div className={`${buttonClass}`}>
         <button
           id={id}
-          className={`btn cursor-pointer ${outline ? "outline-btn" : ""} ${danger ? "danger-btn":""} ${
-            mainbg ? "mainbg-btn" : ""
-            } ${normal ? "normal-btn" : ""} ${link ? "delete-btn" : ""} ${success ? "success-btn":""} ${className}`}
+          className={`btn cursor-pointer ${outline ? "outline-btn" : ""} ${
+            danger ? "danger-btn" : ""
+          } ${mainbg ? "mainbg-btn" : ""} ${normal ? "normal-btn" : ""} ${
+            link ? "delete-btn" : ""
+          } ${success ? "success-btn" : ""} ${className}`}
           onClick={onClick}
           disabled={disabled}
         >
-          {label}
+          {t(label)}
           {rightIcon !== "" ? (
             <span className={`btn-right-icon ${rightIcon}`}></span>
           ) : (
-              ""
-            )}
+            ""
+          )}
         </button>
       </div>
     );
   }
 }
+
+export const NormalButton = withTranslation()(NormalButtonClass);

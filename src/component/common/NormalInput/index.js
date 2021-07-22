@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import { withTranslation } from "react-i18next";
 
-export class NormalInput extends Component {
+class NormalInputClass extends Component {
   render() {
     let {
       className = "form-control",
@@ -14,6 +15,7 @@ export class NormalInput extends Component {
       onClick,
       onFocus = () => {},
       onBlur = () => {},
+      t,
     } = this.props;
 
     return (
@@ -30,12 +32,12 @@ export class NormalInput extends Component {
           disabled={disabled}
           value={value}
           min={0}
-          placeholder={placeholder}
+          placeholder={t(placeholder)}
           autoComplete="off"
           onFocus={onFocus}
           onBlur={onBlur}
           onClick={onClick ? onClick : () => {}}
-          onChange={e => {
+          onChange={(e) => {
             console.log(e);
             let body = {};
 
@@ -53,3 +55,5 @@ export class NormalInput extends Component {
     );
   }
 }
+
+export const NormalInput = withTranslation()(NormalInputClass);

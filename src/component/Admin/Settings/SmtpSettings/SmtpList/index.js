@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import _ from "lodash";
 import { history } from "helpers";
+import { withTranslation } from "react-i18next";
 
 export class SmtpListClass extends React.Component {
   state = {
@@ -28,21 +29,21 @@ export class SmtpListClass extends React.Component {
   }
 
   // popup open/close
-  handleClick = key => {
+  handleClick = (key) => {
     if (!this.state.active) {
       document.addEventListener("click", this.handleOutsideClick, false);
     } else {
       document.removeEventListener("click", this.handleOutsideClick, false);
     }
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       active: !prevState.active,
       currentIndex: key,
     }));
   };
 
   // while clicking popup close at outside click
-  handleOutsideClick = e => {
+  handleOutsideClick = (e) => {
     if (this.node != null) {
       if (this.node.contains(e.target)) {
         return;
@@ -52,11 +53,11 @@ export class SmtpListClass extends React.Component {
   };
 
   // api call for staff
-  queryHandler = data => {
+  queryHandler = (data) => {
     let { page = 1, limit = 10, search = "" } = data;
     this.props
       .getCommonApi(`smtpsettings/?page=${page}&limit=${limit}`)
-      .then(res => {
+      .then((res) => {
         console.log(res, "dsfdfaafg", res.data.dataList);
         let { SMTPList, pageMeta } = this.state;
         SMTPList = res.data.dataList;
@@ -69,13 +70,13 @@ export class SmtpListClass extends React.Component {
   };
 
   // pagination
-  handlePagination = page => {
+  handlePagination = (page) => {
     this.queryHandler(page);
   };
 
   // delete api call for staff
-  handleDeleteSMTPSetting = id => {
-    this.props.commonDeleteApi(`smtpsettings/${id}/`).then(res => {
+  handleDeleteSMTPSetting = (id) => {
+    this.props.commonDeleteApi(`smtpsettings/${id}/`).then((res) => {
       this.queryHandler({});
       this.handleClick();
     });
@@ -83,12 +84,13 @@ export class SmtpListClass extends React.Component {
 
   render() {
     let { headerDetails, SMTPList, pageMeta, currentIndex } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="row mb-3 mt-2">
           <div className="col-md-6">
             <div className="d-flex justify-content-start align-items-center pt-3">
-              List of SMTP Settings
+              {t("List of SMTP Settings")}
             </div>
           </div>
           <div className="col-md-6">
@@ -167,7 +169,7 @@ export class SmtpListClass extends React.Component {
                         </td>
                         <td
                           className="position-relative"
-                          ref={node => {
+                          ref={(node) => {
                             this.node = node;
                           }}
                           onClick={() => this.handleClick(index)}
@@ -187,7 +189,7 @@ export class SmtpListClass extends React.Component {
                                   }
                                 >
                                   <span className="icon-eye-grey px-3"></span>
-                                  View
+                                  {t("View")}
                                 </div>
                                 <div
                                   className="d-flex align-items-center fs-14"
@@ -197,7 +199,8 @@ export class SmtpListClass extends React.Component {
                                     )
                                   }
                                 >
-                                  <span className="icon-edit px-3"></span> Edit
+                                  <span className="icon-edit px-3"></span>{" "}
+                                  {t("Edit")}
                                 </div>
                                 <div
                                   className="d-flex align-items-center fs-14 pb-3"
@@ -206,7 +209,7 @@ export class SmtpListClass extends React.Component {
                                   }
                                 >
                                   <span className="icon-delete px-3"></span>
-                                  Delete
+                                  {t("Delete")}
                                 </div>
                               </div>
                             </>
@@ -228,11 +231,11 @@ export class SmtpListClass extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   // filter: state.dashboard
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -242,7 +245,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const SmtpList = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SmtpListClass);
+export const SmtpList = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(SmtpListClass)
+);

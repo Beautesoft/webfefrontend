@@ -10,6 +10,7 @@ import {
 import { Toast } from "service/toast";
 import _ from "lodash";
 import "./style.scss";
+import { withTranslation } from "react-i18next";
 
 export class ProductDetailsPopupClass extends Component {
   state = {
@@ -21,7 +22,7 @@ export class ProductDetailsPopupClass extends Component {
 
   componentDidMount() {
     let { hold_item_reasons_options } = this.state;
-    this.props.getCommonApi(`holditemsetup/`).then(key => {
+    this.props.getCommonApi(`holditemsetup/`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         for (let value of data) {
@@ -42,7 +43,7 @@ export class ProductDetailsPopupClass extends Component {
       .getCommonApi(
         `cartpopup/?cust_noid=${basicApptDetail.custId}&cart_id=${this.props.id}&is_product=1`
       )
-      .then(async key => {
+      .then(async (key) => {
         let { status, data } = key;
         if (status == "200") {
           console.log(key, "cartproductpopuplist");
@@ -99,7 +100,7 @@ export class ProductDetailsPopupClass extends Component {
     }
 
     console.log(sourceList, "productupdatelist");
-    this.props.commonCreateApi(`cartpopup/product/`, sourceList).then(key => {
+    this.props.commonCreateApi(`cartpopup/product/`, sourceList).then((key) => {
       let { status, data } = key;
       if (status == 200) {
         this.props.handleModal();
@@ -133,7 +134,7 @@ export class ProductDetailsPopupClass extends Component {
     }
   };
 
-  handleAccordion = async id => {
+  handleAccordion = async (id) => {
     let elements = document.getElementsByClassName("accordion");
     await this.setState({
       activeRow: id,
@@ -143,7 +144,7 @@ export class ProductDetailsPopupClass extends Component {
     }
     document.getElementById(id).classList.toggle("d-none");
   };
-  handlePriceandQuantityChange = index => {
+  handlePriceandQuantityChange = (index) => {
     let { data_list } = this.state;
     let total_disc =
       Number(data_list[index]["discount_amt"]).toFixed(2) +
@@ -185,12 +186,13 @@ export class ProductDetailsPopupClass extends Component {
 
   render() {
     let { data_list, hold_item_reasons_options, activeRow } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="container-fluid mb-4 mt-2 product-details">
           <div className="row">
             <div className="col-10">
-              <h4>Product Details</h4>
+              <h4>{t("Product Details")}</h4>
             </div>
             {data_list && data_list.length > 0 ? (
               <div className="col-2">
@@ -204,17 +206,17 @@ export class ProductDetailsPopupClass extends Component {
             ) : null}
           </div>
           <div className="row pl-3 pr-5 mt-2 fw-500 h6">
-            <div className="col">{`Item`}</div>
-            <div className="col">{`Qty`}</div>
-            <div className="col">{`Unit Price`}</div>
-            <div className="col">{`Disc $`}</div>
-            <div className="col">{`D/Price`}</div>
-            <div className="col">{`Amount`}</div>
-            <div className="col">{`Deposit`}</div>
-            <div className="col">{`Staff`}</div>
+            <div className="col">{t(`Item`)}</div>
+            <div className="col">{t(`Qty`)}</div>
+            <div className="col">{t(`Unit Price`)}</div>
+            <div className="col">{t(`Disc $`)}</div>
+            <div className="col">{t(`D/Price`)}</div>
+            <div className="col">{t(`Amount`)}</div>
+            <div className="col">{t(`Deposit`)}</div>
+            <div className="col">{t(`Staff`)}</div>
           </div>
           {data_list && data_list.length <= 0 ? (
-            <div className="row pl-5 pr-5 mt-4">No Record Found</div>
+            <div className="row pl-5 pr-5 mt-4">{t("No Record Found")}</div>
           ) : null}
 
           <div className="row pl-5 pr-5 mt-4">
@@ -243,7 +245,7 @@ export class ProductDetailsPopupClass extends Component {
                     <div className="row w-100 pl-3 mb-3">
                       <div className="col">
                         <label className="text-left text-black common-label-text fs-17 pb-2">
-                          Quantity
+                          {t("Quantity")}
                         </label>
                         <div className="input-group">
                           <NormalInput
@@ -251,22 +253,24 @@ export class ProductDetailsPopupClass extends Component {
                             value={item.quantity}
                             type="number"
                             name="quantity"
-                            onChange={e => this.handleChange(e, index)}
+                            onChange={(e) => this.handleChange(e, index)}
                           />
                         </div>
                       </div>
                       {!item.is_foc ? (
                         <div className="col">
                           <label className="text-left text-black common-label-text fs-17 pb-2">
-                            Deposit
+                            {t("Deposit")}
                           </label>
                           <div className="input-group">
                             <NormalInput
                               placeholder="Enter here"
                               value={item.deposit}
                               name="deposit"
-                              onChange={e => this.handleChange(e, index)}
-                              onBlur={e => this.validateDepositAmount(e, index)}
+                              onChange={(e) => this.handleChange(e, index)}
+                              onBlur={(e) =>
+                                this.validateDepositAmount(e, index)
+                              }
                             />
                           </div>
                         </div>
@@ -274,7 +278,7 @@ export class ProductDetailsPopupClass extends Component {
                       {!item.is_foc ? (
                         <div className="col">
                           <label className="text-left text-black common-label-text fs-17 pb-2">
-                            Unit Price
+                            {t("Unit Price")}
                           </label>
                           <div className="input-group">
                             <NormalInput
@@ -282,27 +286,27 @@ export class ProductDetailsPopupClass extends Component {
                               value={item.price}
                               type="number"
                               name="price"
-                              onChange={e => this.handleChange(e, index)}
+                              onChange={(e) => this.handleChange(e, index)}
                             />
                           </div>
                         </div>
                       ) : null}
                       <div className="col">
                         <label className="text-left text-black common-label-text fs-17 pb-2">
-                          Hold Reason
+                          {t("Hold Reason")}
                         </label>
                         <div className="input-group">
                           <NormalSelect
                             options={hold_item_reasons_options}
                             value={item.holdreason ? item.holdreason : 0}
                             name="holdreason"
-                            onChange={e => this.handleChange(e, index)}
+                            onChange={(e) => this.handleChange(e, index)}
                           />
                         </div>
                       </div>
                       <div className="col">
                         <label className="text-left text-black common-label-text fs-17 pb-2">
-                          Hold Quantity
+                          {t("Hold Quantity")}
                         </label>
                         <div className="input-group">
                           <NormalInput
@@ -310,7 +314,7 @@ export class ProductDetailsPopupClass extends Component {
                             value={item.holditemqty ? item.holditemqty : ""}
                             type="number"
                             name="holditemqty"
-                            onChange={e => this.handleChange(e, index)}
+                            onChange={(e) => this.handleChange(e, index)}
                           />
                         </div>
                       </div>
@@ -327,11 +331,11 @@ export class ProductDetailsPopupClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   basicApptDetail: state.appointment.basicApptDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -341,7 +345,6 @@ const mapDispatchToProps = dispatch => {
     dispatch
   );
 };
-export const ProductDetailsPopup = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProductDetailsPopupClass);
+export const ProductDetailsPopup = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(ProductDetailsPopupClass)
+);

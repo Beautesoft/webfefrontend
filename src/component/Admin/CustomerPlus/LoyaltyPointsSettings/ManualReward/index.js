@@ -3,6 +3,7 @@ import { NormalButton, NormalInput } from "component/common";
 import { InputSearch, TableWrapper } from "component/common";
 import { connect } from "react-redux";
 import _ from "lodash";
+import { withTranslation } from "react-i18next";
 
 class ManualRewardClass extends React.Component {
   state = {
@@ -52,12 +53,13 @@ class ManualRewardClass extends React.Component {
 
   render() {
     let { headerDetails, dataList, meta, rewardList } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="customer-list container-fluid">
           <div className="row align-items-center">
             <div className="col-md-4">
-              <h3 className="head-label">Manual Reward</h3>
+              <h3 className="head-label">{t("Manual Reward")}</h3>
             </div>
           </div>
           <div className="card-columns mt-5">
@@ -154,4 +156,4 @@ class ManualRewardClass extends React.Component {
   }
 }
 
-export const ManualReward = connect()(ManualRewardClass);
+export const ManualReward = withTranslation()(connect()(ManualRewardClass));

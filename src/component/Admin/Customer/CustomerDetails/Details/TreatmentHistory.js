@@ -49,13 +49,13 @@ export class TreatmentHistoryClass extends Component {
   }
 
   // api call for list
-  queryHandler = data => {
+  queryHandler = (data) => {
     let { page = 1, limit = 10, search = "" } = data;
     this.props
       .getCommonApi(
         `custapptupcoming/?cust_id=${this.props.id}&page=${page}&limit=${limit}`
       )
-      .then(res => {
+      .then((res) => {
         console.log(res, "customerappointmentupdatedupcominglist");
         let { data } = res;
         let { upcomingAppointment, pageMeta } = this.state;
@@ -76,7 +76,7 @@ export class TreatmentHistoryClass extends Component {
       });
   };
 
-  handleClick = key => {
+  handleClick = (key) => {
     let currentIndex;
     if (this.state.active == true) {
       this.setState({
@@ -91,7 +91,7 @@ export class TreatmentHistoryClass extends Component {
     }
   };
 
-  handlePagination = page => {
+  handlePagination = (page) => {
     this.queryHandler(page);
   };
 
@@ -181,11 +181,11 @@ export class TreatmentHistoryClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   // filter: state.dashboard
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,

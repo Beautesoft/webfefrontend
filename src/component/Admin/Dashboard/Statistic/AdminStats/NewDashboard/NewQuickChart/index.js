@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getCommonApi, commonCreateApi } from "redux/actions/common";
 import { NormalSelect } from "component/common";
+import { withTranslation } from "react-i18next";
 
 export class NewQuickChartClass extends Component {
   state = {
@@ -238,12 +239,14 @@ export class NewQuickChartClass extends Component {
 
   getDataByOrder = () => {
     let { transtype, data } = this.state;
-    this.props.getCommonApi(`dashboardchart/?select=${transtype}`).then(res => {
-      data = res.data;
-      this.setState({
-        data,
+    this.props
+      .getCommonApi(`dashboardchart/?select=${transtype}`)
+      .then((res) => {
+        data = res.data;
+        this.setState({
+          data,
+        });
       });
-    });
   };
 
   handleChange = async ({ target: { value, name } }) => {
@@ -258,6 +261,7 @@ export class NewQuickChartClass extends Component {
   };
   render() {
     const { chartOptions, data, transtype, transtypeOptions } = this.state;
+    let { t } = this.props;
     return (
       <div className="Line-chart">
         <div className="d-flex justify-content-end flex-row mt-5 mb-3">
@@ -288,14 +292,16 @@ export class NewQuickChartClass extends Component {
               );
             })
           ) : (
-            <div className="text-center w-100">No Data are available</div>
+            <div className="text-center w-100">
+              {t("No Data are available")}
+            </div>
           )}
         </div>
       </div>
     );
   }
 }
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -305,7 +311,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const NewQuickChart = connect(
-  null,
-  mapDispatchToProps
-)(NewQuickChartClass);
+export const NewQuickChart = withTranslation()(
+  connect(null, mapDispatchToProps)(NewQuickChartClass)
+);

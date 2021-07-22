@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { NormalButton, NormalSelect } from "component/common";
 import "./style.scss";
-export class PrintBill extends Component {
+import { withTranslation } from "react-i18next";
+
+class PrintBillClass extends Component {
   state = {
     headLabel: [
       { label: "Date", value: "02.06.2020" },
@@ -28,6 +30,7 @@ export class PrintBill extends Component {
   };
   render() {
     let { headLabel, billTable, paymentDetails } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="print-section container">
@@ -43,12 +46,14 @@ export class PrintBill extends Component {
                 ))}
             </div>
             <div className="receipt card">
-              <h3 className="bill-head">Customer Receipt</h3>
+              <h3 className="bill-head">{t("Customer Receipt")}</h3>
               <p className="receipt-detail">Tue, 02.06.2020 - 12.30pm </p>
-              <p className="receipt-detail">Receipt #123456</p>
-              <p className="receipt-detail">Service sales done by : JoanneF</p>
+              <p className="receipt-detail">{t("Receipt")} #123456</p>
+              <p className="receipt-detail">
+                {t("Service sales done by")} : JoanneF
+              </p>
               <div className="bill-detail">
-                <h4>Billing details</h4>
+                <h4>{t("Billing details")}</h4>
                 <table className="table">
                   <tbody>
                     {billTable &&
@@ -66,7 +71,7 @@ export class PrintBill extends Component {
                 </table>
               </div>
               <div className="payment-detail">
-                <h4>Payment details</h4>
+                <h4>{t("Payment details")}</h4>
                 {paymentDetails &&
                   paymentDetails.map((data, index) => (
                     <div className="d-flex payment" kay={index}>
@@ -91,3 +96,5 @@ export class PrintBill extends Component {
     );
   }
 }
+
+export const PrintBill = withTranslation()(PrintBillClass);

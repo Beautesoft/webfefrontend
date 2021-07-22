@@ -5,6 +5,7 @@ import "assets/scss/components/sidebar.scss";
 import { getTokenDetails } from "redux/actions/auth";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { withTranslation } from "react-i18next";
 
 export class SidebarClass extends Component {
   state = {
@@ -120,7 +121,7 @@ export class SidebarClass extends Component {
 
   render() {
     let { navLinks } = this.state;
-    let { menuOpen, handleSidenav, tokenDetail } = this.props;
+    let { menuOpen, handleSidenav, tokenDetail, t } = this.props;
     // console.log(this.props, "sidebare");
     return (
       <>
@@ -137,7 +138,7 @@ export class SidebarClass extends Component {
                       className="nav-link"
                     >
                       <div className="sidebar-menu">
-                        <span className="sidebar-menu-desc">{label}</span>
+                        <span className="sidebar-menu-desc">{t(label)}</span>
                       </div>
                     </NavLink>
                   </li>
@@ -170,7 +171,6 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export const Sidebar = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SidebarClass);
+export const Sidebar = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(SidebarClass)
+);

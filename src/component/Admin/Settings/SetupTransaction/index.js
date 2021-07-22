@@ -4,12 +4,13 @@ import classnames from "classnames";
 
 import { SetupTransList } from "./SetupTransList";
 import { SmtpList } from "../SmtpSettings/SmtpList";
+import { withTranslation } from "react-i18next";
 
-export class SetupTransaction extends Component {
+class SetupTransactionClass extends Component {
   state = {
     activeMenu: "setupTransaction",
   };
-  toggle = tab => {
+  toggle = (tab) => {
     if (this.state.activeMenu !== tab) {
       this.setState({
         activeMenu: tab,
@@ -18,6 +19,7 @@ export class SetupTransaction extends Component {
   };
   render() {
     let { activeMenu } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="smtp-Setting-section col-12">
@@ -37,7 +39,7 @@ export class SetupTransaction extends Component {
                           )
                         }
                       >
-                        SMTP Settings
+                        {t("SMTP Settings")}
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -51,7 +53,7 @@ export class SetupTransaction extends Component {
                           )
                         }
                       >
-                        Setup Transaction
+                        {t("Setup Transaction")}
                       </NavLink>
                     </NavItem>
                   </Nav>
@@ -75,3 +77,5 @@ export class SetupTransaction extends Component {
     );
   }
 }
+
+export const SetupTransaction = withTranslation()(SetupTransactionClass);

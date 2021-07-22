@@ -46,7 +46,7 @@ export class NewQuickTopSaleClass extends Component {
       .getCommonApi(
         `dashboardtopproduct/?select=${toplistcount}&order_by=${orderBy}`
       )
-      .then(res => {
+      .then((res) => {
         console.log(res, "custtopsalereport");
         top_product = res.top_product;
         top_service = res.top_service;
@@ -128,7 +128,7 @@ export class NewQuickTopSaleClass extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,

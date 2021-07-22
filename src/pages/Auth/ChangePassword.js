@@ -7,20 +7,21 @@ import { bindActionCreators } from "redux";
 import SimpleReactValidator from "simple-react-validator";
 
 import { resetPassword, getTokenVerify } from "redux/actions/auth";
+import { withTranslation } from "react-i18next";
 
 export class ChangePasswordClass extends Component {
   state = {
     formDetails: {
       newPassword: "",
-      reEnterPassword: ""
+      reEnterPassword: "",
     },
     newPasswordVisible: false,
-    reEnterPasswordVisible: false
+    reEnterPasswordVisible: false,
   };
 
-  toggle = key => {
-    this.setState(prevState => ({
-      [key]: !prevState[key]
+  toggle = (key) => {
+    this.setState((prevState) => ({
+      [key]: !prevState[key],
     }));
   };
 
@@ -39,10 +40,10 @@ export class ChangePasswordClass extends Component {
           message: "Given :attribute does not match",
           rule: function (val, params) {
             return val === params[0];
-          }
-        }
+          },
+        },
       },
-      element: message => (
+      element: (message) => (
         <span className="error-message font-md">{message}</span>
       ),
       autoForceUpdate: this,
@@ -59,21 +60,23 @@ export class ChangePasswordClass extends Component {
     formDetails[name] = value;
 
     this.setState({
-      formDetails
+      formDetails,
     });
   };
 
-  handleChangePsssword = event => {
+  handleChangePsssword = (event) => {
     event.preventDefault();
 
     if (this.validator.allValid()) {
       let { newPassword } = this.state.formDetails;
       let data = {
-        new_password : newPassword
-      }
-      this.props.resetPassword(`?emp_name=${this.props.match.params.name}`, data).then(() => {
-        this.props.history.push("/auth/login");
-      });
+        new_password: newPassword,
+      };
+      this.props
+        .resetPassword(`?emp_name=${this.props.match.params.name}`, data)
+        .then(() => {
+          this.props.history.push("/auth/login");
+        });
     } else {
       this.validator.showMessages();
     }
@@ -83,11 +86,14 @@ export class ChangePasswordClass extends Component {
     let { newPasswordVisible, reEnterPasswordVisible } = this.state;
 
     let { newPassword, reEnterPassword } = this.state.formDetails;
+    let { t } = this.props;
 
     return (
       <>
         <div id="changePassword" className="h-100 py-5">
-          <h1 className="text-left common-heading pb-5 fs-28">Reset Password</h1>
+          <h1 className="text-left common-heading pb-5 fs-28">
+            {t("Reset Password")}
+          </h1>
           <div className="form-group mb-4 pb-3">
             <div className="input-group">
               <NormalInput
@@ -100,9 +106,13 @@ export class ChangePasswordClass extends Component {
               <div className="input-group-addon right fs-14">
                 <span
                   onClick={() => this.toggle("newPasswordVisible")}
-                  className={`icon-${newPasswordVisible ? "eye" : "eye-blocked"} cursor-pointer fs-24`}
+                  className={`icon-${
+                    newPasswordVisible ? "eye" : "eye-blocked"
+                  } cursor-pointer fs-24`}
                 ></span>
+                {t(" ")}
               </div>
+              {t(" ")}
             </div>
             {this.validator.message(
               "password",
@@ -122,9 +132,13 @@ export class ChangePasswordClass extends Component {
               <div className="input-group-addon right fs-14">
                 <span
                   onClick={() => this.toggle("reEnterPasswordVisible")}
-                  className={`icon-${reEnterPasswordVisible ? "eye" : "eye-blocked"} cursor-pointer fs-24`}
+                  className={`icon-${
+                    reEnterPasswordVisible ? "eye" : "eye-blocked"
+                  } cursor-pointer fs-24`}
                 ></span>
+                {t(" ")}
               </div>
+              {t(" ")}
             </div>
             {this.validator.message(
               "Password",
@@ -139,19 +153,22 @@ export class ChangePasswordClass extends Component {
               mainbg={true}
               className="mr-2 col-12"
               label="continue"
-              />
+            />
+            {t(" ")}
           </div>
+          {t(" ")}
         </div>
+        {t(" ")}
       </>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       resetPassword,
-      getTokenVerify
+      getTokenVerify,
     },
     dispatch
   );
@@ -159,4 +176,6 @@ const mapDispatchToProps = dispatch => {
 
 let component = ChangePasswordClass;
 
-export const ChangePassword = connect(null, mapDispatchToProps)(component);
+export const ChangePassword = withTranslation()(
+  connect(null, mapDispatchToProps)(component)
+);

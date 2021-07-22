@@ -22,6 +22,7 @@ import { bindActionCreators } from "redux";
 import { DragFileUpload } from "../../../common";
 import { displayImg, dateFormat } from "service/helperFunctions";
 import { getSaloon } from "redux/actions/saloon";
+import { withTranslation } from "react-i18next";
 
 export class CreateSalonClass extends Component {
   state = {
@@ -60,7 +61,7 @@ export class CreateSalonClass extends Component {
           required: true,
         },
       },
-      element: message => (
+      element: (message) => (
         <span className="error-message text-danger validNo fs14">
           {message}
         </span>
@@ -69,7 +70,7 @@ export class CreateSalonClass extends Component {
     });
 
     // branch dropdown option api
-    this.props.getCommonApi("salon/").then(res => {
+    this.props.getCommonApi("salon/").then((res) => {
       let { locationOption } = this.state;
       for (let key of res.data) {
         locationOption.push({ value: key.id, label: key.description });
@@ -91,7 +92,7 @@ export class CreateSalonClass extends Component {
 
   // saloon api for saloon
   getSaloonDetail = async () => {
-    this.props.getBranch(`${this.props.match.params.id}/`).then(res => {
+    this.props.getBranch(`${this.props.match.params.id}/`).then((res) => {
       this.setDataFromStore();
       this.setSkillsDetail();
     });
@@ -130,7 +131,7 @@ export class CreateSalonClass extends Component {
   };
 
   // common dropdown options data from api
-  getDatafromStore = type => {
+  getDatafromStore = (type) => {
     let { branchList, skillsList } = this.props;
     let { locationOption, skillsOptions } = this.state;
     console.log("fdghfdjyujf", this.props);
@@ -168,7 +169,7 @@ export class CreateSalonClass extends Component {
   };
 
   // select image to formfield
-  handleImageUpload = file => {
+  handleImageUpload = (file) => {
     let { formFields } = this.state;
     formFields["images"] = file;
     this.setState({
@@ -207,14 +208,14 @@ export class CreateSalonClass extends Component {
       if (this.props.match.params.id) {
         this.props
           .updateSaloon(`${this.props.match.params.id}/`, formData)
-          .then(res => {
+          .then((res) => {
             console.log(res);
             if (res.status === 201) {
               this.props.history.push(`/admin/salons`);
             }
           });
       } else {
-        this.props.createBranch(formData).then(res => {
+        this.props.createBranch(formData).then((res) => {
           console.log(res);
           if (res.status === 201) {
             this.props.history.push(`/admin/salons`);
@@ -226,7 +227,7 @@ export class CreateSalonClass extends Component {
     }
   };
 
-  handleMultiSelect = data => {
+  handleMultiSelect = (data) => {
     let { formFields } = this.state;
     let list = [];
     for (let key of data) {
@@ -249,12 +250,8 @@ export class CreateSalonClass extends Component {
   };
 
   render() {
-    let {
-      formFields,
-      locationOption,
-      skillsOptions,
-      selectedSkills,
-    } = this.state;
+    let { formFields, locationOption, skillsOptions, selectedSkills } =
+      this.state;
 
     let {
       salonName,
@@ -266,16 +263,18 @@ export class CreateSalonClass extends Component {
       images,
       description,
     } = formFields;
+
+    let { t } = this.props;
     return (
       <div className="p-4 create-salon">
         {/* <p className="list-heading pb-4"> {id ? "Edit" : "Add"} Salon</p> */}
-        <h2>Add New Salons</h2>
+        <h2>{t("Add New Salons")}</h2>
         <div className="salon-detail">
           <div className="form-group mb-4 pb-2">
             <div className="row">
               <div className="col-6">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Salon Name
+                  {t("Salon Name")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -289,7 +288,7 @@ export class CreateSalonClass extends Component {
               </div>
               <div className="col-6">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Opening Date
+                  {t("Opening Date")}
                 </label>
                 <div className="input-group">
                   {/* <NormalDate
@@ -318,7 +317,7 @@ export class CreateSalonClass extends Component {
             <div className="row">
               <div className="col-6">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Branch / Location
+                  {t("Branch")} / Location
                 </label>
                 <div className="input-group">
                   <NormalSelect
@@ -332,7 +331,7 @@ export class CreateSalonClass extends Component {
               </div>
               <div className="col-6">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Services
+                  {t("Services")}
                 </label>
                 <div className="input-group">
                   {/* <NormalInput
@@ -379,7 +378,7 @@ export class CreateSalonClass extends Component {
             <div className="row">
               <div className="col-6">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Contact Number
+                  {t("Contact Number")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -397,7 +396,7 @@ export class CreateSalonClass extends Component {
               </div>
               <div className="col-6">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Email Address
+                  {t("Email Address")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -412,7 +411,7 @@ export class CreateSalonClass extends Component {
               </div>
               <div className="col-6">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Description
+                  {t("Description")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -429,7 +428,7 @@ export class CreateSalonClass extends Component {
 
           <div className="form-group mb-4 pb-2">
             <label className="text-left text-black common-label-text fs-17 pb-3">
-              Upload Salon Images
+              {t("Upload Salon Images")}
             </label>
             <div className="col-md-12 p-0">
               <DragFileUpload
@@ -441,7 +440,7 @@ export class CreateSalonClass extends Component {
                   <img src={displayImg(images)} alt="" />
                 ) : (
                   <div className="uploader-content text-center">
-                    <span>Upload Image</span>
+                    <span>{t("Upload Image")}</span>
                   </div>
                 )}
               </DragFileUpload>
@@ -477,13 +476,13 @@ export class CreateSalonClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   branchList: state.common.branchList,
   skillsList: state.common.skillsList,
   saloonDetail: state.saloon.saloonDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       CreateSaloon,
@@ -498,7 +497,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const CreateSalon = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CreateSalonClass);
+export const CreateSalon = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(CreateSalonClass)
+);

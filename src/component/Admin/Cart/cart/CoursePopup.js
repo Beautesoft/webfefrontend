@@ -18,6 +18,7 @@ import {
 import "./style.scss";
 import { Toast } from "service/toast";
 import SimpleReactValidator from "simple-react-validator";
+import { withTranslation } from "react-i18next";
 
 export class CoursePopupClass extends Component {
   state = {
@@ -66,7 +67,7 @@ export class CoursePopupClass extends Component {
     let { data_list, discount_reasons, is_total } = this.state;
     this.props
       .getCommonApi(`cartservicecourse/${this.props.cartId}/`)
-      .then(key => {
+      .then((key) => {
         let { status, data } = key;
         console.log(data, "cartcoursepopup");
         if (status == "200") {
@@ -99,7 +100,7 @@ export class CoursePopupClass extends Component {
       this.state;
     this.props
       .getCommonApi(`cartservicecourse/${this.props.cartId}/`)
-      .then(async key => {
+      .then(async (key) => {
         let { status, data } = key;
         console.log(key, "cartcoursepopupafterdiscount");
         if (status == "200") {
@@ -151,7 +152,7 @@ export class CoursePopupClass extends Component {
       disc_percent: null,
       auto_propation: proportion,
     };
-    this.props.commonCreateApi(`coursetmp/`, body).then(key => {
+    this.props.commonCreateApi(`coursetmp/`, body).then((key) => {
       let { status, data } = key;
       console.log(key, "Coursecountupdateresponse");
       if (status == "201" || status == "200") {
@@ -261,9 +262,9 @@ export class CoursePopupClass extends Component {
     }
   };
 
-  handleTextChangeAPI = body => {
+  handleTextChangeAPI = (body) => {
     let { data_list } = this.state;
-    this.props.commonCreateApi(`coursetmp/`, body).then(key => {
+    this.props.commonCreateApi(`coursetmp/`, body).then((key) => {
       let { status, data } = key;
       console.log(key, "Coursecountupdateresponse");
       if (status == "201" || status == "200") {
@@ -283,7 +284,7 @@ export class CoursePopupClass extends Component {
     };
     this.props
       .commonCreateApi(`cartservicecourse/reset/`, body)
-      .then(async key => {
+      .then(async (key) => {
         let { status, data } = key;
         console.log(key, "resetresponse");
         if (status == "200") {
@@ -383,7 +384,7 @@ export class CoursePopupClass extends Component {
       console.log(body, "Confirm button action input");
       this.props
         .commonPatchApi(`cartservicecourse/${this.props.cartId}/`, body)
-        .then(key => {
+        .then((key) => {
           let { status, data } = key;
           if (status == "200") {
             this.props.handleModal();
@@ -395,7 +396,7 @@ export class CoursePopupClass extends Component {
   getDiscountReasons = () => {
     let { discount_reason_options } = this.state;
 
-    this.props.getCommonApi(`paymentremarks/`).then(key => {
+    this.props.getCommonApi(`paymentremarks/`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         for (let value of data) {
@@ -489,7 +490,7 @@ export class CoursePopupClass extends Component {
           }`,
           body
         )
-        .then(key => {
+        .then((key) => {
           let { status, data } = key;
           console.log(key, "apply discount response");
           if (status == "200" || status == "201") {
@@ -524,7 +525,7 @@ export class CoursePopupClass extends Component {
         }`,
         body
       )
-      .then(key => {
+      .then((key) => {
         console.log(key, "handleresetDiscount");
         this.getCourseTableList();
       });
@@ -559,12 +560,13 @@ export class CoursePopupClass extends Component {
       discreason_txt,
       autoProportion,
     } = data_list;
+    let { t } = this.props;
     return (
       <>
         <div className="container-fluid mb-4">
           <div className="row pl-3">
             <div className="col-md-10 col-12">
-              <h4>Course Page</h4>
+              <h4>{t("Course Page")}</h4>
             </div>
 
             <div className="col-md-2 col-12">
@@ -581,7 +583,7 @@ export class CoursePopupClass extends Component {
             <div className="row mb-3">
               <div className="col-md-3 col-12">
                 <label className="text-left text-black common-label-text pb-2">
-                  Course
+                  {t("Course")}
                 </label>
                 <div className="input-group">
                   <NormalInput placeholder="" value={itemdesc} disabled />
@@ -590,7 +592,7 @@ export class CoursePopupClass extends Component {
 
               <div className="col-md col-12">
                 <label className="text-left text-black common-label-text  pb-2">
-                  No.of.Treatments
+                  {t("No.of.Treatments")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -605,7 +607,7 @@ export class CoursePopupClass extends Component {
               </div>
               <div className="col-md col-12">
                 <label className="text-left text-black common-label-text  pb-2">
-                  Free Sessions
+                  {t("Free Sessions")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -621,7 +623,7 @@ export class CoursePopupClass extends Component {
 
               <div className="col-md col-12">
                 <label className="text-left text-black common-label-text  pb-2">
-                  Quantity
+                  {t("Quantity")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -636,7 +638,7 @@ export class CoursePopupClass extends Component {
               </div>
               <div className="col-md col-12">
                 <label className="text-left text-black common-label-text pb-2">
-                  Unit Price
+                  {t("Unit Price")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -670,7 +672,7 @@ export class CoursePopupClass extends Component {
                 <div className="d-flex flex-wrap mb-2 border p-2">
                   <div className="col-md-2 col-12">
                     <label className="text-left text-black common-label-text pb-2">
-                      Discount
+                      {t("Discount")}
                     </label>
                     <div className="input-group">
                       <NormalInput
@@ -688,7 +690,7 @@ export class CoursePopupClass extends Component {
                   <div className="col-md-2 col-12">
                     <div className="row">
                       <label className="text-left text-black common-label-text pb-2">
-                        Type
+                        {t("Type")}
                       </label>
                       <div className="input-group">
                         <NormalSelect
@@ -705,7 +707,7 @@ export class CoursePopupClass extends Component {
 
                   <div className="col-md-4 col-12">
                     <label className="text-left text-black common-label-text pb-2">
-                      Disc. Reason
+                      {t("Disc. Reason")}
                     </label>
                     <div className="input-group">
                       <NormalSelect
@@ -720,7 +722,7 @@ export class CoursePopupClass extends Component {
                   {disc_reason == "182" ? (
                     <div className="col-md-4 col-12">
                       <label className="text-left text-black common-label-text ">
-                        Discount reason
+                        {t("Discount reason")}
                       </label>
                       <div className="input-group mb-2">
                         <NormalTextarea
@@ -749,7 +751,7 @@ export class CoursePopupClass extends Component {
                 </div>
                 <div className="d-flex flex-wrap mb-2 mt-2">
                   <div className="col-md-7 justify-content-start col-12 mr-5 mt-2">
-                    <label className="fw-500">Discount List</label>
+                    <label className="fw-500">{t("Discount List")}</label>
                   </div>
                   {discount_reasons && discount_reasons.length > 0 ? (
                     <div className="col-md-4 pt-2 col-12 justify-content-end">
@@ -789,7 +791,7 @@ export class CoursePopupClass extends Component {
                         );
                       })}
                     {!discount_reasons || discount_reasons.length <= 0 ? (
-                      <div className="row">No record found</div>
+                      <div className="row">{t("No record found")}</div>
                     ) : null}
                   </div>
                 </div>
@@ -802,7 +804,7 @@ export class CoursePopupClass extends Component {
                       label="Auto Proportion"
                       checked={autoProportion}
                       value={autoProportion}
-                      onChange={e => this.handleProportionChange(e)}
+                      onChange={(e) => this.handleProportionChange(e)}
                       disabled={
                         tmp_treatment && tmp_treatment.length > 0 ? false : true
                       }
@@ -810,7 +812,7 @@ export class CoursePopupClass extends Component {
                   </div>
                   <div className="col-md-6 col-12">
                     <label className="text-left text-black common-label-text pb-1 pt-1">
-                      Disc. Price
+                      {t("Disc. Price")}
                     </label>
                     <div className="input-group">
                       <NormalInput
@@ -825,7 +827,7 @@ export class CoursePopupClass extends Component {
 
                   <div className="col-md-6 col-12">
                     <label className="text-left text-black common-label-text pb-1 pt-1">
-                      Total Price
+                      {t("Total Price")}
                     </label>
                     <div className="input-group">
                       <NormalInput
@@ -854,7 +856,7 @@ export class CoursePopupClass extends Component {
 
                   <div className="col-md-6 col-12 pb-1 pt-1">
                     <label className="text-left text-black common-label-text">
-                      Deposit
+                      {t("Deposit")}
                     </label>
                     <div className="input-group">
                       <NormalInput
@@ -871,7 +873,7 @@ export class CoursePopupClass extends Component {
 
                   <div className="col-md-6 col-12 pb-1 pt-1">
                     <label className="text-left text-black common-label-text">
-                      Outstanding
+                      {t("Outstanding")}
                     </label>
                     <div className="input-group">
                       <NormalInput
@@ -937,9 +939,9 @@ export class CoursePopupClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -950,7 +952,6 @@ const mapDispatchToProps = dispatch => {
     dispatch
   );
 };
-export const CoursePopup = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CoursePopupClass);
+export const CoursePopup = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(CoursePopupClass)
+);

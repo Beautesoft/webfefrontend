@@ -3,6 +3,7 @@ import { NormalButton, NormalSelect } from "component/common";
 import { InputSearch, TableWrapper } from "component/common";
 import { connect } from "react-redux";
 import _ from "lodash";
+import { withTranslation } from "react-i18next";
 
 export class RewardPolicyTableClass extends React.Component {
   state = {
@@ -50,12 +51,14 @@ export class RewardPolicyTableClass extends React.Component {
 
   render() {
     let { headerDetails, dataList, meta, currentIndex } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="customer-list container-fluid">
           <div className="row align-items-center">
             <div className="col-md-4">
-              <h3 className="head-label">Redward Policy</h3>
+              <h3 className="head-label">{t("Redward Policy")}</h3>
+              {t("")}
             </div>
             <div className="col-md-8">
               <InputSearch
@@ -63,7 +66,9 @@ export class RewardPolicyTableClass extends React.Component {
                 placeholder="Search Policy"
                 onChange={this.handlesearch}
               />
+              {t("")}
             </div>
+            {t("")}
           </div>
           <div className="tab-table-content">
             <div className="py-4">
@@ -98,6 +103,7 @@ export class RewardPolicyTableClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_code}
                               </div>
+                              {t("")}
                             </td>
                             <td
                               className={
@@ -107,6 +113,7 @@ export class RewardPolicyTableClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_refer}
                               </div>
+                              {t("")}
                             </td>
                             <td
                               className={
@@ -116,6 +123,7 @@ export class RewardPolicyTableClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {""}
                               </div>
+                              {t("")}
                             </td>
                             <td
                               className={
@@ -125,6 +133,7 @@ export class RewardPolicyTableClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_name}
                               </div>
+                              {t("")}
                             </td>
                             <td
                               className={
@@ -134,6 +143,7 @@ export class RewardPolicyTableClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_phone2}
                               </div>
+                              {t("")}
                             </td>
                             <td
                               className={
@@ -143,6 +153,7 @@ export class RewardPolicyTableClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_dob}
                               </div>
+                              {t("")}
                             </td>
                             <td
                               className={
@@ -152,6 +163,7 @@ export class RewardPolicyTableClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {"123"}
                               </div>
+                              {t("")}
                             </td>
                             <td
                               className="position-relative"
@@ -163,7 +175,8 @@ export class RewardPolicyTableClass extends React.Component {
                               {currentIndex === index ? (
                                 <>
                                   <div className="d-flex align-items-center justify-content-center horizontal-more-active">
-                                    <i className="icon-more"></i>
+                                    <i className="icon-more">{t("")}</i>
+                                    {t("")}
                                   </div>
                                   <div className="option card">
                                     <div
@@ -174,29 +187,42 @@ export class RewardPolicyTableClass extends React.Component {
                                         )
                                       }
                                     >
-                                      <span className="icon-eye-grey px-3"></span>{" "}
-                                      Edit
+                                      <span className="icon-eye-grey px-3">
+                                        {t("")}
+                                      </span>
+                                      {t("Edit")}
                                     </div>
+                                    {t("")}
                                   </div>
+                                  {t("")}
                                 </>
                               ) : (
                                 <div className="d-flex align-items-center justify-content-center horizontal-more">
-                                  <i className="icon-more"></i>
+                                  <i className="icon-more">{t("")}</i>
+                                  {t("")}
                                 </div>
                               )}
                             </td>
+                            {t("")}
                           </tr>
                         );
                       })
                     : ""}
                 </TableWrapper>
+                {t("")}
               </div>
+              {t("")}
             </div>
+            {t("")}
           </div>
+          {t("")}
         </div>
+        {t("")}
       </>
     );
   }
 }
 
-export const RewardPolicyTable = connect()(RewardPolicyTableClass);
+export const RewardPolicyTable = withTranslation()(
+  connect()(RewardPolicyTableClass)
+);

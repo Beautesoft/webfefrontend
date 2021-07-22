@@ -8,6 +8,7 @@ import { getStaff, deleteStaff } from "redux/actions/staff";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import _ from "lodash";
+import { withTranslation } from "react-i18next";
 
 export class ListStaffClass extends React.Component {
   state = {
@@ -31,21 +32,21 @@ export class ListStaffClass extends React.Component {
   }
 
   // popup open/close
-  handleClick = key => {
+  handleClick = (key) => {
     if (!this.state.active) {
       document.addEventListener("click", this.handleOutsideClick, false);
     } else {
       document.removeEventListener("click", this.handleOutsideClick, false);
     }
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       active: !prevState.active,
       currentIndex: key,
     }));
   };
 
   // while clicking popup close at outside click
-  handleOutsideClick = e => {
+  handleOutsideClick = (e) => {
     if (this.node != null) {
       if (this.node.contains(e.target)) {
         return;
@@ -55,9 +56,9 @@ export class ListStaffClass extends React.Component {
   };
 
   // api call for staff
-  queryHandler = data => {
+  queryHandler = (data) => {
     let { page = 1, limit = 10, search = "" } = data;
-    this.props.getStaff(`?page=${page}&limit=${limit}`).then(res => {
+    this.props.getStaff(`?page=${page}&limit=${limit}`).then((res) => {
       // this.props.getStaff(`?page=${page}&limit=${limit}&search=${search}`).then((res) => {
       console.log(res, "dsfdfaafg", res.data.dataList);
       let { staffList, pageMeta } = this.state;
@@ -71,12 +72,12 @@ export class ListStaffClass extends React.Component {
   };
 
   // pagination
-  handlePagination = page => {
+  handlePagination = (page) => {
     this.queryHandler(page);
   };
 
   // seach change with api call
-  handlesearch = event => {
+  handlesearch = (event) => {
     event.persist();
 
     if (!this.debouncedFn) {
@@ -90,7 +91,7 @@ export class ListStaffClass extends React.Component {
   };
 
   // skills api call
-  getSkills = services => {
+  getSkills = (services) => {
     console.log(skills, "sdfoiuyujf");
     let skills = [];
     for (let key of services) {
@@ -101,17 +102,18 @@ export class ListStaffClass extends React.Component {
   };
 
   // delete api call for staff
-  handleDeleteStaff = id => {
-    this.props.deleteStaff(`${id}/`).then(res => {});
+  handleDeleteStaff = (id) => {
+    this.props.deleteStaff(`${id}/`).then((res) => {});
   };
 
   render() {
     let { headerDetails, staffList, pageMeta, currentIndex } = this.state;
+    let { t } = this.props;
     return (
       <div className="staffList-container">
         <div className="row align-items-center">
           <div className="col-md-4">
-            <h3>List of Staffs</h3>
+            <h3>{t("List of Staffs")}</h3>
           </div>
           <div className="col-md-8">
             <div className="d-flex justify-content-between">
@@ -145,11 +147,11 @@ export class ListStaffClass extends React.Component {
           </div>
         </div>
         {/* <div className="filter-by">
-                    <p className="head">Filter</p>
+                    <p className="head">{t("Filter")}</p>
                     <div className="row">
                         <div className="col-md-3">
                             <div>
-                                <label className="label">Service</label>
+                                <label className="label">{t("Service")}</label>
                                 <div className="input-group filter">
                                     <NormalSelect
                                         placeholder="Masseuse"
@@ -159,12 +161,12 @@ export class ListStaffClass extends React.Component {
                                         name="treatment"
                                         onChange={this.handleChange}
                                     />
-                                </div>
-                            </div>
-                        </div>
+                               </div>
+                           </div>
+                       </div>
                         <div className="col-md-3">
                             <div>
-                                <label className="label">Department</label>
+                                <label className="label">{t("Department")}</label>
                                 <div className="input-group filter">
                                     <NormalSelect
                                         placeholder="Select department"
@@ -174,12 +176,12 @@ export class ListStaffClass extends React.Component {
                                         name="treatment"
                                         onChange={this.handleChange}
                                     />
-                                </div>
-                            </div>
-                        </div>
+                               </div>
+                           </div>
+                       </div>
                         <div className="col-md-3">
                             <div>
-                                <label className="label">Contract duration</label>
+                                <label className="label">{t("Contract duration")}</label>
                                 <div className="input-group filter">
                                     <NormalSelect
                                         placeholder="Select duration"
@@ -189,12 +191,12 @@ export class ListStaffClass extends React.Component {
                                         name="treatment"
                                         onChange={this.handleChange}
                                     />
-                                </div>
-                            </div>
-                        </div>
+                               </div>
+                           </div>
+                       </div>
                         <div className="col-md-3">
                             <div>
-                                <label className="label">Rating</label>
+                                <label className="label">{t("Rating")}</label>
                                 <div className="input-group filter">
                                     <NormalSelect
                                         placeholder="Select rating"
@@ -204,11 +206,11 @@ export class ListStaffClass extends React.Component {
                                         name="treatment"
                                         onChange={this.handleChange}
                                     />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div> */}
         <div className="tab-table-content">
           <div className="py-4">
             <div className="table-container">
@@ -274,7 +276,7 @@ export class ListStaffClass extends React.Component {
                             </td>
                             <td
                               className="position-relative"
-                              ref={node => {
+                              ref={(node) => {
                                 this.node = node;
                               }}
                               onClick={() => this.handleClick(index)}
@@ -293,8 +295,8 @@ export class ListStaffClass extends React.Component {
                                         )
                                       }
                                     >
-                                      <span className="icon-eye-grey px-3"></span>{" "}
-                                      View{" "}
+                                      <span className="icon-eye-grey px-3"></span>
+                                      {t("View")}
                                     </div>
                                     <div
                                       className="d-flex align-items-center fs-14"
@@ -304,15 +306,15 @@ export class ListStaffClass extends React.Component {
                                         )
                                       }
                                     >
-                                      <span className="icon-edit px-3"></span>{" "}
-                                      Edit{" "}
+                                      <span className="icon-edit px-3"></span>
+                                      {t("Edit")}
                                     </div>
                                     <div
                                       className="d-flex align-items-center fs-14 pb-3"
                                       onClick={() => this.handleDeleteStaff(id)}
                                     >
-                                      <span className="icon-delete px-3"></span>{" "}
-                                      Delete{" "}
+                                      <span className="icon-delete px-3"></span>
+                                      {t("Delete")}
                                     </div>
                                   </div>
                                 </>
@@ -331,11 +333,11 @@ export class ListStaffClass extends React.Component {
               <div className="palette">
                 <div className="color-detail">
                   <div className="color"></div>
-                  <div className="detail">Available today</div>
+                  <div className="detail">{t("Available today")}</div>
                 </div>
                 <div className="color-detail">
                   <div className="color not-available"></div>
-                  <div className="detail">Not Available today</div>
+                  <div className="detail">{t("Not Available today")}</div>
                 </div>
               </div>
             </div>
@@ -346,11 +348,11 @@ export class ListStaffClass extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   // filter: state.dashboard
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getStaff,
@@ -360,7 +362,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const ListStaff = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ListStaffClass);
+export const ListStaff = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(ListStaffClass)
+);

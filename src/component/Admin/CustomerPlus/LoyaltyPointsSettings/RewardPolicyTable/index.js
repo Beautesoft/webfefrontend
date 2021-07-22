@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getRewardPlolicySettings } from "redux/actions/customerPlus";
 import _ from "lodash";
+import { withTranslation } from "react-i18next";
 
 export class RewardPolicyTableClass extends React.Component {
   state = {
@@ -72,12 +73,13 @@ export class RewardPolicyTableClass extends React.Component {
 
   render() {
     let { headerDetails, dataList, meta, currentIndex, isLoading } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="customer-list container-fluid">
           <div className="row align-items-center">
             <div className="col-md-4">
-              <h3 className="head-label">Redward Policy</h3>
+              <h3 className="head-label">{t("Redward Policy")}</h3>
             </div>
             <div className="col-md-8">
               <div className="d-flex">
@@ -214,8 +216,8 @@ export class RewardPolicyTableClass extends React.Component {
                                           )
                                         }
                                       >
-                                        <span className="icon-eye-grey px-3"></span>{" "}
-                                        Edit
+                                        <span className="icon-eye-grey px-3"></span>
+                                        {t("Edit")}
                                       </div>
                                     </div>
                                   </>
@@ -253,7 +255,6 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export const RewardPolicyTable = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RewardPolicyTableClass);
+export const RewardPolicyTable = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(RewardPolicyTableClass)
+);

@@ -1,9 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 export class StaffDetails extends Component {
-    render() {
-        return (
-             <>
-             </>
-        );
-    }
+  render() {
+    return <></>;
+  }
 }

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import { withTranslation } from "react-i18next";
 
-export class TopTenList extends Component {
+class TopTenListClass extends Component {
   render() {
-    let { topTenList, Title } = this.props;
+    let { topTenList, Title, t } = this.props;
 
     return (
       <div className="row TopTen">
@@ -24,10 +25,12 @@ export class TopTenList extends Component {
               );
             })
           ) : (
-            <div className="col-12">No data</div>
+            <div className="col-12">{t("No data")}</div>
           )}
         </div>
       </div>
     );
   }
 }
+
+export const TopTenList = withTranslation()(TopTenListClass);

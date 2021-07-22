@@ -10,7 +10,6 @@
 
 //     const [loader, changeLoader] = useState(false);
 
-
 //     return (
 //         <Dropzone
 //             disabled={disabled}
@@ -121,7 +120,6 @@
 //     })
 // }
 
-
 // const checkFileValidation = (files, validationType) => {
 
 //     return files.every((file) => {
@@ -150,70 +148,87 @@
 
 // }
 
+import React, { Component } from "react";
+import { withTranslation } from "react-i18next";
 
+class DragFileUploadClass extends Component {
+  state = {
+    fileArray: [],
+    imageArray: [],
+  };
 
-import React, { Component } from 'react';
-
-export class DragFileUpload extends Component {
-
-    state = {
-        fileArray: [],
-        imageArray: []
+  uploadImageFiles = (e) => {
+    let { fileArray, imageArray } = this.state;
+    if (fileArray.length < 5) {
+      fileArray.push(URL.createObjectURL(e.target.files[0]));
+      imageArray.push(e.target.files[0]);
+      this.setState({ fileArray, imageArray });
     }
-   
-    uploadImageFiles = (e) => {
-        let { fileArray, imageArray } = this.state;
-        if (fileArray.length < 5) {
-            fileArray.push(URL.createObjectURL(e.target.files[0]))
-            imageArray.push(e.target.files[0])
-            this.setState({ fileArray, imageArray })
-        }
-    }
+  };
 
-    handlefile = (e) => {
-        
-        let img = new FormData()
-        img.append('images', e.target.files[0])
-        this.props.handleFileUpload(e.target.files[0]);
-        // console.log(e.target.files[0], "sdkflodsjfpsjdf ===", img)
-    }
+  handlefile = (e) => {
+    let img = new FormData();
+    img.append("images", e.target.files[0]);
+    this.props.handleFileUpload(e.target.files[0]);
+    // console.log(e.target.files[0], "sdkflodsjfpsjdf ===", img)
+  };
 
-    removepostImage = (e, name) => {
-        let { fileArray } = this.state;
-        let index = fileArray.indexOf(name);
-        if (index === 0) {
-            fileArray.shift();
-        } else {
-            fileArray.pop();
-        }
-        this.setState({
-            fileArray
-        })
+  removepostImage = (e, name) => {
+    let { fileArray } = this.state;
+    let index = fileArray.indexOf(name);
+    if (index === 0) {
+      fileArray.shift();
+    } else {
+      fileArray.pop();
     }
+    this.setState({
+      fileArray,
+    });
+  };
 
-    render() {
-        let { fileArray } = this.state
-        console.log(fileArray)
-        return (
-           <>
-                <div className="d-flex flex-wrap image-upload">
-                    <div className="p-0" onChange={this.uploadImageFiles}>
-                        {/* <input type="file" className="px-2 cursor-pointer custom-file-input" accept="image/*,video/*"  /> */}
-                        <label htmlFor="imageUpload" className="btn upload-btn cursor-pointer">Upload Image</label>
-                        <input onChange={this.handlefile} type="file" id="imageUpload" accept="image/*" className="d-none"></input>
-                    </div>
-                    {(fileArray || []).map(url => (
-                        <>
-                            <div className="position-relative image-folder">
-                                <img src={url} alt="..." className="image-upload position-relative" />
-                                <div className="close-icon">
-                                    <span className="icon-close fs-10" onClick={(e) => this.removepostImage(e, url)}></span>
-                                </div>
-                            </div>
-                        </>
-                    ))}
+  render() {
+    let { fileArray } = this.state;
+    let {t} = this.props;
+    console.log(fileArray);
+    return (
+      <>
+        <div className="d-flex flex-wrap image-upload">
+          <div className="p-0" onChange={this.uploadImageFiles}>
+            {/* <input type="file" className="px-2 cursor-pointer custom-file-input" accept="image/*,video/*"  /> */}
+            <label
+              htmlFor="imageUpload"
+              className="btn upload-btn cursor-pointer"
+            >
+              {t("Upload Image")}
+            </label>
+            <input
+              onChange={this.handlefile}
+              type="file"
+              id="imageUpload"
+              accept="image/*"
+              className="d-none"
+            ></input>
+          </div>
+          {(fileArray || []).map((url) => (
+            <>
+              <div className="position-relative image-folder">
+                <img
+                  src={url}
+                  alt="..."
+                  className="image-upload position-relative"
+                />
+                <div className="close-icon">
+                  <span
+                    className="icon-close fs-10"
+                    onClick={(e) => this.removepostImage(e, url)}
+                  ></span>
                 </div>
+              </div>
             </>
-        )
-    }
+          ))}
+        </div>
+      </>
+    );
+  }
 }
+export const DragFileUpload = withTranslation()(DragFileUploadClass);

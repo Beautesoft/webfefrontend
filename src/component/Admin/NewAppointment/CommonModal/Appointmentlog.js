@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import { NormalModal } from "component/common";
 import closeIcon from "assets/images/close.png";
 import _ from "lodash";
+import { withTranslation } from "react-i18next";
 
 export class AppointmentLogClass extends Component {
   state = {
@@ -34,7 +35,7 @@ export class AppointmentLogClass extends Component {
     });
     this.getAppointmentLogList({});
   };
-  getAppointmentLogList = data => {
+  getAppointmentLogList = (data) => {
     debugger;
     let { appointmentId } = this.state;
     let { page = 1, limit = 10 } = data;
@@ -42,7 +43,7 @@ export class AppointmentLogClass extends Component {
       .getCommonApi(
         `appointmentlog/?appt_id=${appointmentId}&page=${page}&limit=${limit}`
       )
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           console.log(res);
           if (res.data) {
@@ -55,12 +56,13 @@ export class AppointmentLogClass extends Component {
       });
   };
 
-  handlePagination = page => {
+  handlePagination = (page) => {
     this.getAppointmentLogList(page);
   };
 
   render() {
     let { headerDetails, LogList, meta } = this.state;
+    let { t } = this.props;
     return (
       <>
         <NormalModal
@@ -79,7 +81,7 @@ export class AppointmentLogClass extends Component {
             <div className="tab-table-content">
               <div className="py-2">
                 <div className="col-12 p-2 text-center">
-                  <h5 className="fw-500">Appointment Log</h5>
+                  <h5 className="fw-500">{t("Appointment Log")}</h5>
                 </div>
                 <div className="table-container">
                   <TableWrapper
@@ -171,7 +173,7 @@ export class AppointmentLogClass extends Component {
                       <tr>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
-                            No data available
+                            {t("No data available")}
                           </div>
                         </td>
                       </tr>
@@ -187,11 +189,11 @@ export class AppointmentLogClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   // filter: state.dashboard
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -200,7 +202,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const AppointmentLog = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AppointmentLogClass);
+export const AppointmentLog = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(AppointmentLogClass)
+);

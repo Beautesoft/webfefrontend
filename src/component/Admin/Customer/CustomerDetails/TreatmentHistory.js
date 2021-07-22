@@ -1,78 +1,82 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import "./style.scss";
 // import { Appointments, TreatmentHistory, PurchaseHistory, PersonalDetails, Favourites } from './Details'
 // import { Treatmentaccount } from './account';
-import classnames from 'classnames';
+import classnames from "classnames";
+import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import {
-    Nav,
-    NavItem,
-    NavLink,
-    TabContent,
-    TabPane,
-} from 'reactstrap';
-import { TreatmentCourse, Diagnosis, treatmentHistory } from './TreatmentHistory/index.js'
+  TreatmentCourse,
+  Diagnosis,
+  treatmentHistory,
+} from "./TreatmentHistory/index.js";
+import { withTranslation } from "react-i18next";
 
-export class TreatmentHistory extends Component {
-    state = {
-        activeTab: '1',
-        isOpenTreatmentDone: false,
-        isActiveTab: "detail"
+class TreatmentHistoryClass extends Component {
+  state = {
+    activeTab: "1",
+    isOpenTreatmentDone: false,
+    isActiveTab: "detail",
+  };
+
+  toggle = (tab) => {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab,
+      });
     }
+  };
 
-    toggle = (tab) => {
-        if (this.state.activeTab !== tab) {
-            this.setState({
-                activeTab: tab
-            });
-        }
-    }
+  render() {
+    let { t } = this.props;
+    return (
+      <div className="beautesoft-navlink">
+        <div className="filled-tabs">
+          <div className="tabs-block">
+            <Nav tabs>
+              <NavItem>
+                <NavLink
+                  className={classnames({
+                    active: this.state.activeTab === "1",
+                  })}
+                  onClick={() => {
+                    this.toggle("1");
+                  }}
+                >
+                  {t("Treatment History")}
+                </NavLink>
+                {t("")}
+              </NavItem>
 
-    render() {
-
-        return (
-
-            <div className="beautesoft-navlink">
-                <div className="filled-tabs">
-                    <div className="tabs-block">
-                        <Nav tabs>
-                            <NavItem>
-                                <NavLink
-                                    className={classnames({ active: this.state.activeTab === '1' })}
-                                    onClick={() => { this.toggle('1'); }}
-                                >
-                                    Treatment History
-                                </NavLink>
-                            </NavItem>
-
-                            {/* <NavItem>
+              {/* <NavItem>
                                 <NavLink
                                     className={classnames({ active: this.state.activeTab === '2' })}
                                     onClick={() => { this.toggle('2'); }}
                                 >
-                                    Diagnosis
+                                    {t("Diagnosis")}
                                 </NavLink>
-                            </NavItem>
+                            {t("")}</NavItem>
 
                             <NavItem>
                                 <NavLink
                                     className={classnames({ active: this.state.activeTab === '3' })}
                                     onClick={() => { this.toggle('3'); }}
                                 >
-                                    Treatment History
+                                    {t("Treatment History")}
                                 </NavLink>
-                            </NavItem> */}
-                           
+                            {t("")}</NavItem> */}
+            </Nav>
+            {t("")}
+          </div>
+          <TabContent activeTab={this.state.activeTab}>
+            <TabPane tabId="1">
+              {this.state.activeTab === "1" ? (
+                <TreatmentCourse id={this.props.id} />
+              ) : (
+                ""
+              )}
+            </TabPane>
 
-                        </Nav>
-                    </div>
-                    <TabContent activeTab={this.state.activeTab}>
-                        <TabPane tabId="1">
-                            {this.state.activeTab === "1" ?
-                                <TreatmentCourse id={this.props.id} />
-                                : ""}
-                        </TabPane>
-
-                        {/* <TabPane tabId="2">
+            {/* <TabPane tabId="2">
                             {this.state.activeTab === "2" ?
                                 // <TreatmentHistory />
                                 <Diagnosis id={this.props.id} />
@@ -85,9 +89,12 @@ export class TreatmentHistory extends Component {
                                 <treatmentHistory id={this.props.id} />
                                 : ""}
                         </TabPane> */}
-                    </TabContent>
-                </div>
-            </div>
-        )
-    }
+          </TabContent>
+          {t("")}
+        </div>
+        {t("")}
+      </div>
+    );
+  }
 }
+export const TreatmentHistory = withTranslation()(TreatmentHistoryClass);

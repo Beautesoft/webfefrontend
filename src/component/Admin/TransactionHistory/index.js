@@ -9,6 +9,7 @@ import { history } from "helpers";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getCommonApi, commonCreateApi } from "redux/actions/common";
+import { withTranslation } from "react-i18next";
 
 export class TransactionHistoryClass extends Component {
   state = {
@@ -61,7 +62,7 @@ export class TransactionHistoryClass extends Component {
           toDate !== "" ? dateFormat(toDate, "yyyy-mm-dd") : ""
         }&transac_no=${transCode}&cust_code=${custCode}&cust_name=${custName}&page=${page}&limit=${limit}`
       )
-      .then(async res => {
+      .then(async (res) => {
         console.log(res, "dsfdfaafg");
         await this.setState({ billingList: [] });
         billingList = res.data.dataList;
@@ -69,13 +70,13 @@ export class TransactionHistoryClass extends Component {
         this.setState({ billingList, pageMeta });
       });
   };
-  handlePrint = id => {
+  handlePrint = (id) => {
     let { billingList, pageMeta, formField, page, limit } = this.state;
     let { fromDate, toDate, transCode, custCode, custName } = formField;
-    this.props.getCommonApi(`receiptpdf/?sa_transacno=${id}`).then(res => {});
+    this.props.getCommonApi(`receiptpdf/?sa_transacno=${id}`).then((res) => {});
   };
 
-  handlePagination = async pageNo => {
+  handlePagination = async (pageNo) => {
     let { page } = this.state;
     page = pageNo.page;
     await this.setState({
@@ -84,32 +85,32 @@ export class TransactionHistoryClass extends Component {
     // this.getBilling();
   };
 
-  handleShare = id => {
+  handleShare = (id) => {
     this.props
       .commonCreateApi(`receiptpdfsend/?sa_transacno=${id}`)
-      .then(res => {});
+      .then((res) => {});
   };
 
-  handleInvoice = id => {
+  handleInvoice = (id) => {
     this.props
       .getCommonApi(`customerreceiptprint/?sa_transacno=${id}`)
-      .then(res => {});
+      .then((res) => {});
   };
 
-  handleClick = key => {
+  handleClick = (key) => {
     if (!this.state.active) {
       document.addEventListener("click", this.handleOutsideClick, false);
     } else {
       document.removeEventListener("click", this.handleOutsideClick, false);
     }
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       active: !prevState.active,
       currentIndex: key,
     }));
   };
 
-  handleOutsideClick = e => {
+  handleOutsideClick = (e) => {
     if (this.node != null) {
       if (this.node.contains(e.target)) {
         return;
@@ -140,26 +141,21 @@ export class TransactionHistoryClass extends Component {
 
   render() {
     let { headerDetails, pageMeta, billingList, formField } = this.state;
-    let {
-      fromDate,
-      toDate,
-      transCode,
-      custCode,
-      custName,
-      transtype,
-    } = formField;
+    let { fromDate, toDate, transCode, custCode, custName, transtype } =
+      formField;
+    let { t } = this.props;
     return (
       <>
         <div className="billing-section">
           <div className="row m-0 filter">
             <div className="col-md-12 d-flex align-items-center">
-              <p className="label-head mb-4">Transaction History</p>
+              <p className="label-head mb-4">{t("Transaction History")}</p>
             </div>
 
             <div className="col-3">
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text mr-2">
-                  From Date
+                  {t("From Date")}
                 </label>
                 <div className="input-group">
                   <NormalDateTime
@@ -175,7 +171,7 @@ export class TransactionHistoryClass extends Component {
               </div>
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text mr-2">
-                  To Date
+                  {t("To Date")}
                 </label>
                 <div className="input-group">
                   <NormalDateTime
@@ -193,7 +189,7 @@ export class TransactionHistoryClass extends Component {
             <div className="col-3">
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text mr-2">
-                  Customer Name
+                  {t("Customer Name")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -206,7 +202,7 @@ export class TransactionHistoryClass extends Component {
               </div>
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text mr-2">
-                  Customer Code
+                  {t("Customer Code")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -222,7 +218,7 @@ export class TransactionHistoryClass extends Component {
             <div className="col-3">
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text mr-2">
-                  Transaction Code
+                  {t("Transaction Code")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -235,7 +231,7 @@ export class TransactionHistoryClass extends Component {
               </div>
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text">
-                  Invoice Type
+                  {t("Invoice Type")}
                 </label>
                 <div className="input-group">
                   <NormalSelect
@@ -361,7 +357,7 @@ export class TransactionHistoryClass extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -371,7 +367,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const TransactionHistory = connect(
-  null,
-  mapDispatchToProps
-)(TransactionHistoryClass);
+export const TransactionHistory = withTranslation()(
+  connect(null, mapDispatchToProps)(TransactionHistoryClass)
+);

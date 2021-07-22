@@ -12,8 +12,9 @@ import {
 import classnames from "classnames";
 import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import { useParams } from "react-router-dom";
+import { withTranslation } from "react-i18next";
 
-export class Details extends Component {
+class DetailsClass extends Component {
   state = {
     activeTab: "1",
     isOpenTreatmentDone: false,
@@ -28,7 +29,7 @@ export class Details extends Component {
         this.setState({ activeTab: menu });
   }
 
-  toggle = tab => {
+  toggle = (tab) => {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab,
@@ -170,3 +171,4 @@ export class Details extends Component {
     );
   }
 }
+export const Details = withTranslation()(DetailsClass);

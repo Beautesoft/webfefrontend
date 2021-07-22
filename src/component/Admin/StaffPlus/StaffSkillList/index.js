@@ -9,6 +9,7 @@ import { getCommonApi, getJobtitle } from "redux/actions/common";
 import { getSkillList } from "redux/actions/staffPlus";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { withTranslation } from "react-i18next";
 import _ from "lodash";
 import "./styles.scss";
 
@@ -99,20 +100,20 @@ export class StaffSkillListClass extends React.Component {
       skillList,
       isLoading,
     } = this.state;
-
+    let { t } = this.props;
     return (
       <div className="container-fluid">
         <div className="row">
           <div className="staffList-container col-xl">
             <div className="row align-items-center">
               <div className="col-md-4">
-                <h3>Staff Skill Listing</h3>
+                <h3>{t("Staff Skill Listing")}</h3>
               </div>
             </div>
             <div className="row mt-4">
               <div className="col-6 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Employee Type
+                  {t("Employee Type")}
                 </label>
                 <div className="input-group">
                   <NormalSelect
@@ -127,7 +128,7 @@ export class StaffSkillListClass extends React.Component {
             <div className="row mt-4">
               <div className="col-6 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Skill Type
+                  {t("Skill Type")}
                 </label>
                 <div className="input-group">
                   <NormalSelect
@@ -168,7 +169,7 @@ export class StaffSkillListClass extends React.Component {
                   </div>
                 ) : data.length == 0 ? (
                   <div class="d-flex mt-5 align-items-center justify-content-center">
-                    No Data
+                    {t("No Data")}
                   </div>
                 ) : (
                   <div className="table-container">
@@ -254,7 +255,6 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export const StaffSkillList = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(StaffSkillListClass);
+export const StaffSkillList = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(StaffSkillListClass)
+);

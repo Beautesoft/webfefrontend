@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { GroupAuthorizationTable } from "./GroupAuthorizationTable";
 import { IndividualAuthorizationTable } from "./IndividualAuthorizationTable";
+import { withTranslation } from "react-i18next";
 
 export class SecurityAuthorizationClass extends Component {
   state = {
@@ -109,11 +110,12 @@ export class SecurityAuthorizationClass extends Component {
 
   render() {
     let { groupData, groupColumns, individualData } = this.state;
+    let { t } = this.props;
     return (
       <div className="px-5 container-fluid">
         <div className="row align-items-center">
           <div className="col-md-12 mt-4">
-            <h3>Group Authorization</h3>
+            <h3>{t("Group Authorization")}</h3>
           </div>
         </div>
         <div className="tab-table-content">
@@ -130,14 +132,14 @@ export class SecurityAuthorizationClass extends Component {
         </div>
         <div className="row align-items-center">
           <div className="col-md-12 mt-4 mb-4 ">
-            <h3>Individual Authorization</h3>
+            <h3>{t("Individual Authorization")}</h3>
           </div>
         </div>
         <div className="form-group mb-4 pb-2">
           <div className="row">
             <div className="col-12">
               <label className="text-left text-black common-label-text fs-17 pb-3">
-                Employee
+                {t("Employee")}
               </label>
               <div className="input-group">
                 <NormalSelect />
@@ -149,7 +151,7 @@ export class SecurityAuthorizationClass extends Component {
           <div className="row">
             <div className="col-12">
               <label className="text-left text-black common-label-text fs-17 pb-3">
-                Security Group
+                {t("Security Group")}
               </label>
               <div className="input-group">
                 <NormalSelect />
@@ -215,7 +217,6 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export const SecurityAuthorization = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SecurityAuthorizationClass);
+export const SecurityAuthorization = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(SecurityAuthorizationClass)
+);

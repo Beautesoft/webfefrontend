@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { FormGroup, Label, Input } from 'reactstrap';
+import { FormGroup, Label, Input } from "reactstrap";
+import { withTranslation } from "react-i18next";
 
-export class NormalRadio extends Component {
+class NormalRadioClass extends Component {
   render() {
     let {
       className = "form-control",
@@ -12,7 +13,8 @@ export class NormalRadio extends Component {
       disabled = false,
       type = "text",
       iconname = "",
-      onClick
+      onClick,
+      t,
     } = this.props;
 
     return (
@@ -24,11 +26,12 @@ export class NormalRadio extends Component {
           )} */}
         <FormGroup className={className} check={value}>
           <Label check={value}>
-            <Input type="radio" name={name} />{' '}
-           {label}
+            <Input type="radio" name={name} /> {t(label)}
           </Label>
         </FormGroup>
       </>
     );
   }
 }
+
+export const NormalRadio = withTranslation()(NormalRadioClass);

@@ -20,6 +20,7 @@ import {
 } from "redux/actions/common";
 import SimpleReactValidator from "simple-react-validator";
 import { FormGroup, Label, Input } from "reactstrap";
+import { withTranslation } from "react-i18next";
 
 export class EditDiscountClass extends Component {
   state = {
@@ -55,7 +56,7 @@ export class EditDiscountClass extends Component {
   componentWillMount = () => {
     // this.getCart();
     this.validator = new SimpleReactValidator({
-      element: message => (
+      element: (message) => (
         <span className="error-message text-danger validNo fs14">
           {message}
         </span>
@@ -77,7 +78,7 @@ export class EditDiscountClass extends Component {
           "yyyy-mm-dd"
         )}&cust_noid=${basicApptDetail.custId}&cart_id=${this.props.id}`
       )
-      .then(key => {
+      .then((key) => {
         let { status, data } = key;
         console.log("demooooooo", key);
         cartList = data;
@@ -137,7 +138,7 @@ export class EditDiscountClass extends Component {
       });
   };
 
-  handleApplyAuto = id => {
+  handleApplyAuto = (id) => {
     let { discountFields } = this.state;
     let { basicApptDetail } = this.props;
     this.props.commonPatchApi(`itemcart/${id}/`).then(() => {
@@ -152,7 +153,7 @@ export class EditDiscountClass extends Component {
     this.handleApplyAuto(id);
   };
 
-  getDateTime = data => {
+  getDateTime = (data) => {
     let date = new Date(data);
     date = String(date).split(" ");
     let date1 = date[2] + "th " + date[1] + ", " + date[3];
@@ -201,7 +202,7 @@ export class EditDiscountClass extends Component {
   getDropdownData = () => {
     let { discountReasonList } = this.state;
 
-    this.props.getCommonApi(`paymentremarks/`).then(key => {
+    this.props.getCommonApi(`paymentremarks/`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         for (let value of data) {
@@ -260,12 +261,14 @@ export class EditDiscountClass extends Component {
       isOpenCustomer,
       discountReasonList,
     } = this.state;
-    let { basicApptDetail } = this.props;
+    let { basicApptDetail, t } = this.props;
     return (
       <div className="row new-cart">
         <div className={`col-12 cart-item`}>
           <div className={`item-list`}>
-            <p className="fs-18 font-700 mb-3 title">Transaction Discount</p>
+            <p className="fs-18 font-700 mb-3 title">
+              {t("Transaction Discount")}
+            </p>
 
             <div className="table">
               <TableWrapper
@@ -331,7 +334,7 @@ export class EditDiscountClass extends Component {
                                   <Input
                                     type="checkbox"
                                     defaultChecked={item.auto}
-                                    onChange={e =>
+                                    onChange={(e) =>
                                       this.handleChangeAuto(e, index, item.id)
                                     }
                                   />
@@ -352,7 +355,7 @@ export class EditDiscountClass extends Component {
             <div className="col-5">
               <div className="row">
                 <div className="col-4">
-                  <p>Total Amount</p>
+                  <p>{t("Total Amount")}</p>
                 </div>
                 <div className="col-1"></div>
                 <div className="col-6">
@@ -361,7 +364,7 @@ export class EditDiscountClass extends Component {
               </div>
               <div className="row">
                 <div className="col-4">
-                  <p>Other Disc</p>
+                  <p>{t("Other Disc")}</p>
                 </div>
                 <div className="col-1">-</div>
                 <div className="col-6">
@@ -370,7 +373,7 @@ export class EditDiscountClass extends Component {
               </div>
               <div className="row ">
                 <div className="col-4">
-                  <p>Balance</p>
+                  <p>{t("Balance")}</p>
                 </div>
                 <div className="col-1"></div>
                 <div className="col-4">
@@ -387,7 +390,7 @@ export class EditDiscountClass extends Component {
                   />
                 </div>
                 <div className="col-4">
-                  <p>Transaction Disc</p>
+                  <p>{t("Transaction Disc")}</p>
                 </div>
                 <div className="col-1">-</div>
                 <div className="col-6">
@@ -396,14 +399,14 @@ export class EditDiscountClass extends Component {
               </div>
               <div className="row">
                 <div className="col-4">
-                  <p>Net Amount</p>
+                  <p>{t("Net Amount")}</p>
                 </div>
                 <div className="col-1"></div>
                 <div className="col-6">
                   <p>$ {cartData.net_amount}</p>
                 </div>
                 <div className="col-4 pr-0">
-                  <p>Deposit Amount</p>
+                  <p>{t("Deposit Amount")}</p>
                 </div>
                 <div className="col-1"></div>
                 <div className="col-6">
@@ -412,12 +415,12 @@ export class EditDiscountClass extends Component {
               </div>
             </div>
             <div className="col-7 discount-section">
-              <p>Transaction Discount</p>
+              <p>{t("Transaction Discount")}</p>
               <div className="row">
                 <div className="col-6 mb-3">
                   <div>
                     <label className="text-left text-black common-label-text ">
-                      Discount %
+                      {t("Discount %")}
                     </label>
                   </div>
                   <div className="input-group">
@@ -434,7 +437,7 @@ export class EditDiscountClass extends Component {
                 <div className="col-6 mb-3">
                   <div>
                     <label className="text-left text-black common-label-text ">
-                      Discount reason
+                      {t("Discount reason")}
                     </label>
                   </div>
                   <div className="input-group">
@@ -456,7 +459,7 @@ export class EditDiscountClass extends Component {
                 {discountFields.disc_reason == "182" ? (
                   <div className="col-12 mb-3">
                     <label className="text-left text-black common-label-text ">
-                      Discount reason
+                      {t("Discount reason")}
                     </label>
                     <div className="input-group mb-2">
                       <NormalTextarea
@@ -481,7 +484,7 @@ export class EditDiscountClass extends Component {
                 <div className="col-6 mb-3">
                   <div>
                     <label className="text-left text-black common-label-text ">
-                      Discount amount
+                      {t("Discount amount")}
                     </label>
                   </div>
                   <div className="input-group">
@@ -499,7 +502,7 @@ export class EditDiscountClass extends Component {
                 <div className="col-6 mb-3">
                   <div>
                     <label className="text-left text-black common-label-text ">
-                      Net Amount
+                      {t("Net Amount")}
                     </label>
                   </div>
                   <div className="input-group">
@@ -543,12 +546,12 @@ export class EditDiscountClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   selected_cstomer: state.common.selected_cstomer,
   basicApptDetail: state.appointment.basicApptDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       // getCustomer,
@@ -561,7 +564,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const EditDiscount = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditDiscountClass);
+export const EditDiscount = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(EditDiscountClass)
+);

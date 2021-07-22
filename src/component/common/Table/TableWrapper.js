@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { Pagination } from "../index";
 import PropTypes from "prop-types";
 import { scrollTop, appendQuery } from "service/helperFunctions";
+import { withTranslation } from "react-i18next";
 import "assets/scss/components/table.scss";
 
-export class TableWrapper extends Component {
+class TableWrapperClass extends Component {
   state = {
     currentSortKeyDetails: null,
   };
@@ -27,7 +28,7 @@ export class TableWrapper extends Component {
     return <p className="text-center">{placeHolder}</p>;
   };
 
-  handlePagination = page => {
+  handlePagination = (page) => {
     let { queryHandler, scrollProps = "" } = this.props;
     console.log(page, "dsfsdfsdfsdf");
     queryHandler({ page: page });
@@ -39,7 +40,7 @@ export class TableWrapper extends Component {
     // });
   };
 
-  handleFilter = sortKey => {
+  handleFilter = (sortKey) => {
     console.log("queryHandler ===", sortKey);
     let { queryAppend = true } = this.props;
     if (!sortKey) {
@@ -101,6 +102,7 @@ export class TableWrapper extends Component {
       className = "",
       overFlow = true,
       clickFunc,
+      t,
     } = this.props;
     let { sortKey: currentSortKey, orderBy = "" } =
       this.state.currentSortKeyDetails || {};
@@ -142,10 +144,10 @@ export class TableWrapper extends Component {
                           className={`d-flex align-items-center justify-content-center text-center ${
                             sortKey && "cursor-pointer"
                           } ${divClass}`}
-                          onClick={e => this.handleFilter(sortKey)}
+                          onClick={(e) => this.handleFilter(sortKey)}
                           onDoubleClick={dblclickFunc}
                         >
-                          {label}
+                          {t(label)}
                           {element && element()}
                           {sortKey ? (
                             <div
@@ -191,9 +193,11 @@ export class TableWrapper extends Component {
   }
 }
 
-TableWrapper.propTypes = {
+TableWrapperClass.propTypes = {
   placeHolder: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   isEmpty: PropTypes.bool,
   headerDetails: PropTypes.array.isRequired,
   pageMeta: PropTypes.object,
 };
+
+export const TableWrapper = withTranslation()(TableWrapperClass);

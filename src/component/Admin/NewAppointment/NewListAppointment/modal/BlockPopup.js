@@ -23,6 +23,7 @@ import { dateFormat } from "service/helperFunctions";
 import SimpleReactValidator from "simple-react-validator";
 import logicon from "assets/images/logicon.png";
 import { AppointmentLog } from "../../CommonModal/Appointmentlog";
+import { withTranslation } from "react-i18next";
 
 export class BlockPopupClass extends Component {
   state = {
@@ -66,7 +67,7 @@ export class BlockPopupClass extends Component {
   };
   componentWillMount() {
     this.validator = new SimpleReactValidator({
-      element: message => (
+      element: (message) => (
         <span className="error-message text-danger validNo fs14">
           {message}
         </span>
@@ -88,7 +89,7 @@ export class BlockPopupClass extends Component {
     this.setState({ filterDate: this.props.filterDate });
 
     let { duration } = this.state;
-    this.props.getCommonApi(`treatment/Duration/`).then(key => {
+    this.props.getCommonApi(`treatment/Duration/`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         for (let value of data) {
@@ -97,7 +98,7 @@ export class BlockPopupClass extends Component {
         this.setState({ duration });
       }
     });
-    this.props.getCommonApi("blockreason/").then(res => {
+    this.props.getCommonApi("blockreason/").then((res) => {
       let { reasonList } = this.state;
       let { status, data } = res;
       if (status === 200) {
@@ -115,19 +116,19 @@ export class BlockPopupClass extends Component {
     }
   }
 
-  getDateformat = inputdate => {
+  getDateformat = (inputdate) => {
     let appt_Date = inputdate;
     let date = appt_Date.split("/");
     let finaldate = date[2] + "-" + date[1] + "-" + date[0];
     return finaldate;
   };
 
-  getBlockedDetail = async data => {
+  getBlockedDetail = async (data) => {
     await this.setState({ appointmentId: data });
     let { appointmentId, formFields, selected } = this.state;
     this.props
       .getCommonApi(`appointmentblock/${appointmentId}/`)
-      .then(async key => {
+      .then(async (key) => {
         let { status, data } = key;
         if (status === 200) {
           formFields["startDate"] = this.getDateformat(data.start_date);
@@ -149,7 +150,7 @@ export class BlockPopupClass extends Component {
       .getCommonApi(
         `appointmentsort/?date=${dateFormat(filterDate, "yyyy-mm-dd")}`
       )
-      .then(async key => {
+      .then(async (key) => {
         let { status, data } = key;
         if (status === 200) {
           for (let value of data) {
@@ -195,13 +196,17 @@ export class BlockPopupClass extends Component {
   handleCheckbox = async ({ target: { value, name } }, item) => {
     let { selectedList, staffSortlist } = this.state;
 
-    let stafflistCheckbox = staffSortlist.find(acc => acc.value === item.value);
+    let stafflistCheckbox = staffSortlist.find(
+      (acc) => acc.value === item.value
+    );
     if (stafflistCheckbox) {
       stafflistCheckbox["selected"] = value;
       await this.setState({ ...this.state.staffSortlist, stafflistCheckbox });
     }
 
-    let filterList = selectedList.find(account => account.value === item.value);
+    let filterList = selectedList.find(
+      (account) => account.value === item.value
+    );
     if (filterList) {
       filterList["value"] = item.value;
       filterList["label"] = item.label;
@@ -209,8 +214,8 @@ export class BlockPopupClass extends Component {
       if (value) {
         await this.setState({ ...this.state.selectedList, filterList });
       } else {
-        await this.setState(data => ({
-          selectedList: data.selectedList.filter(x => x.value != item.value),
+        await this.setState((data) => ({
+          selectedList: data.selectedList.filter((x) => x.value != item.value),
         }));
       }
     } else {
@@ -228,14 +233,14 @@ export class BlockPopupClass extends Component {
       await this.setState({ selectAll: false });
     }
   };
-  timeToMins = time => {
+  timeToMins = (time) => {
     var b = time.split(":");
     return b[0] * 60 + +b[1];
   };
 
   // Convert minutes to a time in format hh:mm
   // Returned value is in range 00  to 24 hrs
-  timeFromMins = mins => {
+  timeFromMins = (mins) => {
     function z(n) {
       return (n < 10 ? "0" : "") + n;
     }
@@ -244,7 +249,7 @@ export class BlockPopupClass extends Component {
     return z(h) + ":" + z(m);
   };
 
-  getHoursFromDate = date => {
+  getHoursFromDate = (date) => {
     let hour = date.getHours();
     let minute = date.getMinutes();
     let hours = hour > 9 ? hour : "0" + hour;
@@ -308,7 +313,7 @@ export class BlockPopupClass extends Component {
 
         this.props
           .commonCreateApi(`appointmentblock/`, data)
-          .then(async res => {
+          .then(async (res) => {
             if (res.status === 201) {
               this.handleDialog();
               this.props.handleChange();
@@ -341,7 +346,7 @@ export class BlockPopupClass extends Component {
       console.log(data, "Blockupdatedata");
       this.props
         .commonPatchApi(`appointmentblock/${appointmentId}/`, data)
-        .then(async res => {
+        .then(async (res) => {
           if (res.status === 200) {
             this.handleDialog();
             this.props.handleChange();
@@ -375,7 +380,7 @@ export class BlockPopupClass extends Component {
 
   handleLogClick = () => {
     debugger;
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isAppointmentLogModal: !prevState.isAppointmentLogModal,
     }));
   };
@@ -391,6 +396,7 @@ export class BlockPopupClass extends Component {
       appointmentId,
       isAppointmentLogModal,
     } = this.state;
+    let { t } = this.props;
     return (
       <NormalModal
         className={`select-category Block-popup`}
@@ -409,7 +415,7 @@ export class BlockPopupClass extends Component {
 
         <div className="d-flex px-3">
           <div className="d-flex justify-content-start col-9 h4">
-            Block Schedule{" "}
+            {t("Block Schedule")}
           </div>
           {appointmentId && appointmentId > 0 ? (
             <div
@@ -424,7 +430,7 @@ export class BlockPopupClass extends Component {
         <div className="d-flex flex-wrap justify-content-start p-3">
           <div className="col-md-6 col-12 mb-3">
             <label className="text-left text-black common-label-text ">
-              Start Date{" "}
+              {t("Start Date")}
               <span className="error-message text-danger validNo fs-18">*</span>
             </label>
             <div className="input-group">
@@ -459,7 +465,7 @@ export class BlockPopupClass extends Component {
           </div>
           <div className="col-md-6 col-12 mb-3">
             <label className="text-left text-black common-label-text ">
-              End Date{" "}
+              {t("End Date")}
               <span className="error-message text-danger validNo fs-18">*</span>
             </label>
             <div className="">
@@ -496,7 +502,7 @@ export class BlockPopupClass extends Component {
             <div className="row">
               <div className="col-md-6 col-12">
                 <label className="text-left text-black common-label-text ">
-                  Select Time
+                  {t("Select Time")}
                 </label>
                 <div className="input-group">
                   <NormalDateTime
@@ -513,7 +519,7 @@ export class BlockPopupClass extends Component {
               <div className="col-md-6 col-12">
                 {" "}
                 <label className="text-left text-black common-label-text ">
-                  Start Time
+                  {t("Start Time")}
                   <span className="error-message text-danger validNo fs-18">
                     *
                   </span>
@@ -538,7 +544,6 @@ export class BlockPopupClass extends Component {
           <div className="col-md-6 col-12 mb-3">
             <div className="row">
               <div className="col-md-6 col-12">
-                {" "}
                 <label className="text-left text-black common-label-text ">
                   Duration
                   <span className="error-message text-danger validNo fs-18">
@@ -550,7 +555,7 @@ export class BlockPopupClass extends Component {
                     options={duration}
                     value={formFields.duration}
                     name="duration"
-                    onChange={e => this.handleDurationChange(e)}
+                    onChange={(e) => this.handleDurationChange(e)}
                     className="customer-name status py-1 col-12"
                   />
                 </div>
@@ -561,9 +566,8 @@ export class BlockPopupClass extends Component {
                 )}
               </div>
               <div className="col-md-6 col-12">
-                {" "}
                 <label className="text-left text-black common-label-text ">
-                  End Time
+                  {t("End Time")}
                   <span className="error-message text-danger validNo fs-18">
                     *
                   </span>
@@ -587,7 +591,7 @@ export class BlockPopupClass extends Component {
           </div>
           <div className="col-md-6 col-12 mb-3">
             <label className="text-left text-black common-label-text ">
-              Reason{" "}
+              {t("Reason")}
               <span className="error-message text-danger validNo fs-18">*</span>
             </label>
             <div className="input-group">
@@ -603,7 +607,7 @@ export class BlockPopupClass extends Component {
           </div>
           <div className="col-md-6 col-12 mb-3">
             <label className="text-left text-black common-label-text ">
-              Description
+              {t("Description")}
             </label>
             <div className="input-group">
               <NormalTextarea
@@ -620,12 +624,12 @@ export class BlockPopupClass extends Component {
           <div className="col-12 mt-1 mb-2 mx-3">
             <div className="row table-header m-0 fw-500">
               <div className="col-3">
-                Select All{" "}
+                {t("Select All")}
                 <span>
                   {" "}
                   {appointmentId && appointmentId > 0 ? (
                     <NormalCheckbox
-                      onChange={e => this.handleSelectAllCheckbox(e)}
+                      onChange={(e) => this.handleSelectAllCheckbox(e)}
                       value={selectAll}
                       name="selectAll"
                       checked={selectAll}
@@ -633,7 +637,7 @@ export class BlockPopupClass extends Component {
                     />
                   ) : (
                     <NormalCheckbox
-                      onChange={e => this.handleSelectAllCheckbox(e)}
+                      onChange={(e) => this.handleSelectAllCheckbox(e)}
                       value={selectAll}
                       name="selectAll"
                       checked={selectAll}
@@ -641,8 +645,8 @@ export class BlockPopupClass extends Component {
                   )}
                 </span>
               </div>
-              <div className="col-3">Employee Code</div>
-              <div className="col-6">Display Name</div>
+              <div className="col-3">{t("Employee Code")}</div>
+              <div className="col-6">{t("Display Name")}</div>
             </div>
             <div className="response-table w-100 fw-500 multiselectList-height">
               {staffSortlist && staffSortlist.length > 0 ? (
@@ -657,7 +661,7 @@ export class BlockPopupClass extends Component {
                       <div className="col-3 text-center">
                         {appointmentId && appointmentId > 0 ? (
                           <NormalCheckbox
-                            onChange={e => this.handleCheckbox(e, item)}
+                            onChange={(e) => this.handleCheckbox(e, item)}
                             value={item.selected}
                             name="selected"
                             checked={item.selected}
@@ -665,7 +669,7 @@ export class BlockPopupClass extends Component {
                           />
                         ) : (
                           <NormalCheckbox
-                            onChange={e => this.handleCheckbox(e, item)}
+                            onChange={(e) => this.handleCheckbox(e, item)}
                             value={item.selected}
                             name="selected"
                             checked={item.selected}
@@ -683,19 +687,19 @@ export class BlockPopupClass extends Component {
             </div>
             <div className="row">
               <div className="col-3">
-                Active
+                {t("Active")}
                 <span>
                   {" "}
                   {appointmentId && appointmentId > 0 ? (
                     <NormalCheckbox
-                      onChange={e => this.handleActiveCheckbox(e)}
+                      onChange={(e) => this.handleActiveCheckbox(e)}
                       value={formFields.active}
                       name="active"
                       checked={formFields.active}
                     />
                   ) : (
                     <NormalCheckbox
-                      onChange={e => this.handleActiveCheckbox(e)}
+                      onChange={(e) => this.handleActiveCheckbox(e)}
                       value={formFields.active}
                       name="active"
                       checked={formFields.active}
@@ -752,11 +756,11 @@ export class BlockPopupClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   basicApptDetail: state.appointment.basicApptDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCustomer,
@@ -768,7 +772,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const BlockPopup = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BlockPopupClass);
+export const BlockPopup = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(BlockPopupClass)
+);

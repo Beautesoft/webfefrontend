@@ -6,6 +6,7 @@ import { Toast } from "service/toast";
 import { commonCreateApi } from "redux/actions/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { withTranslation } from "react-i18next";
 
 export class AddWalkinCustomerClass extends Component {
   state = {
@@ -15,7 +16,7 @@ export class AddWalkinCustomerClass extends Component {
   componentWillMount() {
     this.validator = new SimpleReactValidator({
       validators: {},
-      element: message => (
+      element: (message) => (
         <span className="error-message text-danger validNo fs14">
           {message}
         </span>
@@ -48,7 +49,7 @@ export class AddWalkinCustomerClass extends Component {
         cust_maillist: null,
         cust_refer: walkInUser.newCustreference,
       };
-      this.props.commonCreateApi(`customer/`, data).then(async res => {
+      this.props.commonCreateApi(`customer/`, data).then(async (res) => {
         if (res.status === 201) {
           console.log(res, "Walkincustomer");
           this.setState({ walkInUser: {} });
@@ -64,13 +65,13 @@ export class AddWalkinCustomerClass extends Component {
 
   render() {
     let { walkInUser } = this.state;
-
+    let { t } = this.props;
     let { newCustname, newCust_phone, newCustreference } = walkInUser;
     return (
       <>
         <div className="col-3 mb-3">
           <label className="text-left text-black common-label-text ">
-            Name
+            {t("Name")}
             <span className="error-message text-danger validNo fs-18">*</span>
           </label>
           <div className="input-group">
@@ -85,7 +86,7 @@ export class AddWalkinCustomerClass extends Component {
         </div>
         <div className="col-3 mb-3">
           <label className="text-left text-black common-label-text ">
-            Phone
+            {t("Phone")}
             <span className="error-message text-danger validNo fs-18">*</span>
           </label>
           <div className="input-group">
@@ -100,7 +101,7 @@ export class AddWalkinCustomerClass extends Component {
         </div>
         <div className="col-3 mb-3">
           <label className="text-left text-black common-label-text ">
-            Reference
+            {t("Reference")}
           </label>
           <div className="input-group">
             <NormalInput
@@ -124,7 +125,7 @@ export class AddWalkinCustomerClass extends Component {
     );
   }
 }
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       commonCreateApi,
@@ -133,7 +134,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const AddWalkinCustomer = connect(
-  null,
-  mapDispatchToProps
-)(AddWalkinCustomerClass);
+export const AddWalkinCustomer = withTranslation()(
+  connect(null, mapDispatchToProps)(AddWalkinCustomerClass)
+);

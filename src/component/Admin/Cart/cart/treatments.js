@@ -20,8 +20,9 @@ import img from "assets/images/service1.png";
 import { dateFormat } from "service/helperFunctions";
 import closeIcon from "assets/images/close.png";
 import { Toast } from "service/toast";
+import { withTranslation } from "react-i18next";
 
-export class TreatmentClass extends Component {
+class TreatmentClass extends Component {
   state = {
     activeTab: "treatment",
     formFields: {
@@ -247,43 +248,36 @@ export class TreatmentClass extends Component {
       });
     }
     */
-    if(data.item_div==="1")
-    {
+    if (data.item_div === "1") {
       this.setState({
         isOpenPriceModal: true,
-        serviceDetail:data,
-        serviceName: data.item_desc
+        serviceDetail: data,
+        serviceName: data.item_desc,
       });
-    }
-    else if(data.item_div==="3")
-    {
+    } else if (data.item_div === "3") {
       this.setState({
         isServicePopModal: true,
-        serviceDetail:data,
-        serviceName: data.item_desc
+        serviceDetail: data,
+        serviceName: data.item_desc,
       });
-    }
-    else{
+    } else {
       this.handleAddCart(data);
     }
   };
 
   handleAddCart = (data, price, id, qty, index) => {
-      if(this.state.holdCheckbox){
-      if(this.state.holdSelectedReason=="")
-      {
-        alert("Please select HOLD Reason")
+    if (this.state.holdCheckbox) {
+      if (this.state.holdSelectedReason == "") {
+        alert("Please select HOLD Reason");
         return;
       }
     }
-    if(this.state.focCheckbox){
-      if(this.state.focSelectedReason=="")
-      {
-        alert("Please select FOC Reason")
+    if (this.state.focCheckbox) {
+      if (this.state.focSelectedReason == "") {
+        alert("Please select FOC Reason");
         return;
-      }
-      else{
-        this.handleAddFOC(data,price,id,qty);
+      } else {
+        this.handleAddFOC(data, price, id, qty);
         return;
       }
     }
@@ -300,7 +294,7 @@ export class TreatmentClass extends Component {
       focreason: this.state.focSelectedReason,
       holdreason: this.state.holdSelectedReason,
       holditemqty: Number(this.state.formHoldQty),
-      item_uom: id==0?'':id,
+      item_uom: id == 0 ? "" : id,
     };
 
     if (id) {
@@ -322,8 +316,8 @@ export class TreatmentClass extends Component {
               activeTab: "treatment",
               isOpenPriceModal: false,
               isServicePopModal: false,
-              focCheckbox:false,
-              holdCheckbox:false,
+              focCheckbox: false,
+              holdCheckbox: false,
               holdSelectedReason: "",
               focSelectedReason: "",
               formQty: 1,
@@ -339,8 +333,8 @@ export class TreatmentClass extends Component {
                 activeTab: "treatment",
                 isOpenPriceModal: false,
                 isServicePopModal: false,
-                focCheckbox:false,
-                holdCheckbox:false,
+                focCheckbox: false,
+                holdCheckbox: false,
                 holdSelectedReason: "",
                 focSelectedReason: "",
                 formQty: 1,
@@ -351,43 +345,35 @@ export class TreatmentClass extends Component {
       });
   };
 
-  handleFocImageClick(data){
-    if(data.item_div==="1")
-    {
+  handleFocImageClick(data) {
+    if (data.item_div === "1") {
       this.setState({
         isOpenPriceModal: true,
-        serviceDetail:data,
-        focCheckbox:true
+        serviceDetail: data,
+        focCheckbox: true,
       });
-    }
-    else if(data.item_div==="3")
-    {
+    } else if (data.item_div === "3") {
       this.setState({
         isServicePopModal: true,
-        serviceDetail:data,
-        focCheckbox:true
+        serviceDetail: data,
+        focCheckbox: true,
       });
-    }
-    else{
+    } else {
       this.handleAddFOC(data);
     }
   }
-  handleDetailAddCartClick(data){
-    if(data.item_div==="1")
-    {
+  handleDetailAddCartClick(data) {
+    if (data.item_div === "1") {
       this.setState({
         isOpenPriceModal: true,
-        serviceDetail:data
+        serviceDetail: data,
       });
-    }
-    else if(data.item_div==="3")
-    {
+    } else if (data.item_div === "3") {
       this.setState({
         isServicePopModal: true,
-        serviceDetail:data
+        serviceDetail: data,
       });
-    }
-    else{
+    } else {
       this.handleAddCart(data);
     }
   }
@@ -399,12 +385,12 @@ export class TreatmentClass extends Component {
       cart_date: dateFormat(new Date(), "yyyy-mm-dd"),
       itemcodeid: data.id,
       price: Number(price ? price : data.item_price).toFixed(2),
-      quantity: qty && qty > 1 ? qty : 1,    
+      quantity: qty && qty > 1 ? qty : 1,
       is_foc: this.state.focCheckbox,
       focreason: this.state.focSelectedReason,
       holdreason: this.state.holdSelectedReason,
       holditemqty: Number(this.state.formHoldQty),
-      item_uom: id==0?'':id,
+      item_uom: id == 0 ? "" : id,
     };
     if (id) {
       obj["item_uom"] = id;
@@ -428,13 +414,12 @@ export class TreatmentClass extends Component {
                 activeTab: "treatment",
                 isOpenPriceModal: false,
                 isServicePopModal: false,
-                focCheckbox:false,
-                holdCheckbox:false,
+                focCheckbox: false,
+                holdCheckbox: false,
                 holdSelectedReason: "",
                 focSelectedReason: "",
                 formQty: 1,
                 formHoldQty: 0,
-
               });
             });
         } else {
@@ -449,8 +434,8 @@ export class TreatmentClass extends Component {
                 activeTab: "treatment",
                 isOpenPriceModal: false,
                 isServicePopModal: false,
-                focCheckbox:false,
-                holdCheckbox:false,
+                focCheckbox: false,
+                holdCheckbox: false,
                 holdSelectedReason: "",
                 focSelectedReason: "",
                 formQty: 1,
@@ -508,8 +493,8 @@ export class TreatmentClass extends Component {
       isOpenPriceModal: false,
       formQty: 1,
       formHoldQty: 0,
-      focCheckbox:false,
-      holdCheckbox:false,
+      focCheckbox: false,
+      holdCheckbox: false,
       holdSelectedReason: "",
       focSelectedReason: "",
     });
@@ -519,8 +504,8 @@ export class TreatmentClass extends Component {
       isServicePopModal: false,
       formQty: 1,
       formHoldQty: 0,
-      focCheckbox:false,
-      holdCheckbox:false,
+      focCheckbox: false,
+      holdCheckbox: false,
       holdSelectedReason: "",
       focSelectedReason: "",
     });
@@ -556,11 +541,10 @@ export class TreatmentClass extends Component {
   };
   handleHoldQtyChange = async ({ target: { value, name } }, index) => {
     let { formQty, formHoldQty } = this.state;
-    if(value>=1){
-      this.setState({holdCheckbox:true})
-    }
-    else{
-      this.setState({holdCheckbox:false,holdSelectedReason:""})
+    if (value >= 1) {
+      this.setState({ holdCheckbox: true });
+    } else {
+      this.setState({ holdCheckbox: false, holdSelectedReason: "" });
     }
     if (formQty >= value) {
       formHoldQty = value;
@@ -623,7 +607,6 @@ export class TreatmentClass extends Component {
     });
   };
 
-  
   render() {
     let {
       activeTab,
@@ -645,7 +628,7 @@ export class TreatmentClass extends Component {
       holdReasonList,
     } = this.state;
     let { dataList = [], meta = {} } = itemList;
-    let { selectedCart, tokenDetails } = this.props;
+    let { selectedCart, tokenDetails, t } = this.props;
     let { pagination } = meta;
 
     return (
@@ -810,27 +793,27 @@ export class TreatmentClass extends Component {
         </div>
         <div className="row m-0 py-2 treatment-menu">
           {
-          /* Cart Menus  */
-          menuItems.length > 0
-            ? menuItems.map((data, index) => {
-                console.log("dsfgsdfgdfgdfgsdf", data);
-                return (
-                  <div className=" fs-12 ml-2 mb-2" key={index}>
-                    <div
-                      className={`menus ${
-                        activeMenu === data.id ? "active" : ""
-                      }`}
-                      onClick={() => this.handleMenu(data.id, data.label)}
-                    >
-                      {data.label}
+            /* Cart Menus  */
+            menuItems.length > 0
+              ? menuItems.map((data, index) => {
+                  console.log("dsfgsdfgdfgdfgsdf", data);
+                  return (
+                    <div className=" fs-12 ml-2 mb-2" key={index}>
+                      <div
+                        className={`menus ${
+                          activeMenu === data.id ? "active" : ""
+                        }`}
+                        onClick={() => this.handleMenu(data.id, data.label)}
+                      >
+                        {data.label}
+                      </div>
                     </div>
-                  </div>
-                );
-              })
-            : ""
+                  );
+                })
+              : ""
           }
 
-        {/* Two Drop Downs */}
+          {/* Two Drop Downs */}
           <div className="input-group col-4 pl-2 range-filter">
             <NormalSelect
               // placeholder="Enter here"
@@ -858,25 +841,25 @@ export class TreatmentClass extends Component {
           )}
         </div>
 
-        
         {activeTab === "treatment" ? (
           <div className="services m-0 row">
             {dataList.length > 0
               ? dataList.map((data, index) => {
                   return (
-                   
                     <div className="col-3 fs-12 p-2" key={data.id}>
                       <div className="service-tab p-0">
                         <div className="service-ttl px-2 fw-700 fs-14">
                           {data.item_desc}
                         </div>
-    
+
                         <div className="price px-2 py-1">
-                        
-                            <div>
+                          <div>
                             <div className="non-retail">
-                              {tokenDetails.foc == "1" && 
-                              <span className="foc-icon" onClick={() => this.handleFocImageClick(data)}>
+                              {tokenDetails.foc == "1" && (
+                                <span
+                                  className="foc-icon"
+                                  onClick={() => this.handleFocImageClick(data)}
+                                >
                                   <svg
                                     width="32"
                                     height="32"
@@ -897,22 +880,25 @@ export class TreatmentClass extends Component {
                                       fill="#023F88"
                                     />
                                   </svg>
-                              </span>
-                          }
-
+                                </span>
+                              )}
                             </div>
-                            </div>
+                          </div>
                         </div>
-                        {activeMenu === "RETAIL" || activeMenu === "SERVICE" || activeMenu === 8 ? (
+                        {activeMenu === "RETAIL" ||
+                        activeMenu === "SERVICE" ||
+                        activeMenu === 8 ? (
                           <div
-                            className="cursor-pointer" style={{backgroundColor: "lightblue"}}
+                            className="cursor-pointer"
+                            style={{ backgroundColor: "lightblue" }}
                             onClick={() => this.handleSelectPrice(data, index)}
                           >
                             <img src={data.Stock_PIC} alt="" />
                           </div>
                         ) : (
                           <div
-                            className="cursor-pointer" style={{backgroundColor: "lightgreen"}}
+                            className="cursor-pointer"
+                            style={{ backgroundColor: "lightgreen" }}
                             onClick={() => this.handleAddCart(data)}
                           >
                             <img src={data.Stock_PIC} alt="" />
@@ -957,7 +943,7 @@ export class TreatmentClass extends Component {
           ""
         )}
 
-        { /* Detail Section */ }
+        {/* Detail Section */}
 
         {activeTab === "treatmentDetail" ? (
           <div className="services m-0 row">
@@ -968,12 +954,12 @@ export class TreatmentClass extends Component {
                   onClick={() => this.setState({ activeTab: "treatment" })}
                 >
                   {activeMenuName !== "" ? activeMenuName : ""}
-                </span>{" "}
-                <span>{rangeName !== "" ? " > " + rangeName : ""}</span> {">"}{" "}
+                </span>
+                <span>{rangeName !== "" ? " > " + rangeName : ""}</span> {">"}
                 <span>{serviceName ? serviceName : ""}</span>
               </p>
             </div>
-     
+
             <div className="row m-4">
               <div className="col-6">
                 <img src={serviceDetail.Stock_PIC} alt="" width="200"></img>
@@ -981,7 +967,6 @@ export class TreatmentClass extends Component {
               <div className="col-6">
                 <p className="healine fs-18">{serviceDetail.item_desc}</p>
                 <p className="description fs-16 my-2">
-                  {" "}
                   $ {serviceDetail.item_name}
                 </p>
                 {tokenDetails.foc == "1" ? (
@@ -1009,7 +994,7 @@ export class TreatmentClass extends Component {
                   ""
                 )}
                 <p className="healine my-2">
-                  <span>Price :</span>
+                  <span>{t("Price")} :</span>
                   <span>$ {serviceDetail.item_price}</span>
                 </p>
               </div>
@@ -1035,7 +1020,7 @@ export class TreatmentClass extends Component {
           ""
         )}
 
-        { /* Retail Model */ }
+        {/* Retail Model */}
         <NormalModal
           className={"retail-price-modal"}
           style={{ minWidth: "1020px" }}
@@ -1051,19 +1036,23 @@ export class TreatmentClass extends Component {
 
           <div className=" mt-2 mb-5 mx-3">
             <div className="col-12 pl-0 mb-3 fs-18 py-2">
-              Select Product UOM For {serviceDetail.item_name}
+              {t("Select Product UOM For")} {serviceDetail.item_name}
             </div>
             <div className="row title fs-16 mb-2 f-600">
               <div className="col-1" style={{ width: "20px" }}>
-                S.No
+                {t("S.No")}
               </div>
-              <div className="col-1">IOH</div>
-              <div className="col-1">UOM</div>
-              <div className="col-1">Price</div>
-              <div className="col-1">Qty</div>
-              <div className="col-1">HoldQty</div>
-              {this.state.holdCheckbox && (<div className="col-2">HoldReason</div>)}
-              {this.state.focCheckbox && (<div className="col-1">FOCReason</div>)}
+              <div className="col-1">{t("IOH")}</div>
+              <div className="col-1">{t("UOM")}</div>
+              <div className="col-1">{t("Price")}</div>
+              <div className="col-1">{t("Qty")}</div>
+              <div className="col-1">{t("HoldQty")}</div>
+              {this.state.holdCheckbox && (
+                <div className="col-2">{t("HoldReason")}</div>
+              )}
+              {this.state.focCheckbox && (
+                <div className="col-1">{t("FOCReason")}</div>
+              )}
             </div>
             {serviceDetail.uomprice && serviceDetail.uomprice.length > 0
               ? serviceDetail.uomprice.map((data, index) => {
@@ -1133,7 +1122,6 @@ export class TreatmentClass extends Component {
                           />
                         </div>
                       )}
-
                     </div>
                   );
                 })
@@ -1161,9 +1149,11 @@ export class TreatmentClass extends Component {
               {serviceDetail.item_name}
             </div>
             <div className="row title fs-16 mb-2 f-600">
-              <div className="col-2">Price</div>
-              <div className="col-2">Qty</div>
-              {this.state.focCheckbox && (  <div className="col-2">FOC Reason</div> )} 
+              <div className="col-2">{t("Price")}</div>
+              <div className="col-2">{t("Qty")}</div>
+              {this.state.focCheckbox && (
+                <div className="col-2">{t("FOC Reason")}</div>
+              )}
             </div>
 
             <div className="row mb-1 fs-14">
@@ -1195,13 +1185,19 @@ export class TreatmentClass extends Component {
                   mainbg={true}
                   className="col-12 px-4 fs-15 "
                   label="Cart"
-                  onClick={() => this.handleAddCart(serviceDetail,serviceDetail.item_price,0,Number(this.state.formQty))}
+                  onClick={() =>
+                    this.handleAddCart(
+                      serviceDetail,
+                      serviceDetail.item_price,
+                      0,
+                      Number(this.state.formQty)
+                    )
+                  }
                 />
               </div>
             </div>
           </div>
         </NormalModal>
-      
       </div>
     );
   }
@@ -1224,8 +1220,6 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export const Treatment = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TreatmentClass);
-
+export const Treatment = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(TreatmentClass)
+);

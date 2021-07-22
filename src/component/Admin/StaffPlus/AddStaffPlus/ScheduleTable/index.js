@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import { withTranslation } from "react-i18next";
 
-export class ScheduleTable extends Component {
+class ScheduleTableClass extends Component {
   render() {
     let {
       onChange,
@@ -15,6 +16,7 @@ export class ScheduleTable extends Component {
       },
       optionList = [],
       disabled = false,
+      t,
     } = this.props;
 
     const handleOnClick = (name) => {
@@ -63,8 +65,10 @@ export class ScheduleTable extends Component {
                       cursor: "pointer",
                     }}
                   >
-                    {optionList.find((val) => val.value == data[keyName])
-                      ?.shortDesc ?? "None"}
+                    {t(
+                      optionList.find((val) => val.value == data[keyName])
+                        ?.shortDesc ?? "None"
+                    )}
                     <div id={keyName} class="dropdown-content">
                       {optionList.map((val) => {
                         return (
@@ -74,7 +78,7 @@ export class ScheduleTable extends Component {
                               handOnOptionClick(keyName, val.value)
                             }
                           >
-                            {val.label}
+                            {t(val.label)}
                           </label>
                         );
                       })}
@@ -98,7 +102,7 @@ export class ScheduleTable extends Component {
                       backgroundColor: `${e.color}`,
                     }}
                   />
-                  {e.shortDesc} - {e.label}
+                  {t(e.shortDesc)} - {t(e.label)}
                 </div>
               </div>
             );
@@ -108,3 +112,5 @@ export class ScheduleTable extends Component {
     );
   }
 }
+
+export const ScheduleTable = withTranslation()(ScheduleTableClass);

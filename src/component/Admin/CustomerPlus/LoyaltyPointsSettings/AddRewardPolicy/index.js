@@ -1,26 +1,33 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { NormalInput, NormalSelect, NormalButton } from "component/common";
+import { withTranslation } from "react-i18next";
 
-export class AddRewardPolicy extends React.Component {
+class AddRewardPolicyClass extends React.Component {
   state = {};
   render() {
+    let { t } = this.props;
     return (
       <div className="container-fuild">
         <div className="head-label-nav">
-          <p className="category">CustomerPlus</p>
+          <p className="category">{t("CustomerPlus")}</p>
           <i className="icon-right mx-md-3"></i>
-          <p className="sub-category">Loyalty Points Management</p>
+          <p className="sub-category">{t("Loyalty Points Management")}</p>
           <i className="icon-right mx-md-3"></i>
           <p className="sub-category">
-            {this.props.match.params.id ? "Edit" : "New"} Reward Policy
+            {t(
+              (this.props.match.params.id ? "Edit" : "New") + " Reward Policy"
+            )}
           </p>
         </div>
         <div className="container-lg mt-5">
           <div className="row align-items-center">
             <div className="col-md-12 mb-4">
               <h3>
-                {this.props.match.params.id ? "Edit" : "New"} Reward Policy
+                {t(
+                  (this.props.match.params.id ? "Edit" : "New") +
+                    " Reward Policy"
+                )}
               </h3>
             </div>
           </div>
@@ -28,13 +35,13 @@ export class AddRewardPolicy extends React.Component {
             <div className="row">
               <div className="col-md-6 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Code
+                  {t("Code")}
                 </label>
                 <NormalInput />
               </div>{" "}
               <div className="col-md-6 ">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Currency Value
+                  {t("Currency Value")}
                 </label>
                 <NormalInput />
               </div>
@@ -45,13 +52,13 @@ export class AddRewardPolicy extends React.Component {
             <div className="row">
               <div className="col-md-6 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Custoemr Class
+                  {t("Custoemr Class")}
                 </label>
                 <NormalSelect />
               </div>
               <div className="col-md-6 ">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Point Value
+                  {t("Point Value")}
                 </label>
                 <NormalInput />
               </div>
@@ -62,7 +69,7 @@ export class AddRewardPolicy extends React.Component {
             <div className="row">
               <div className="col-md-6 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  Item Type
+                  {t("Item Type")}
                 </label>
                 <NormalSelect />
               </div>
@@ -77,7 +84,7 @@ export class AddRewardPolicy extends React.Component {
                   for="name"
                   className="text-left text-black common-label-text fs-17 pb-3 ml-2"
                 >
-                  Is Currently Active
+                  {t("Is Currently Active")}
                 </label>
               </div>
             </div>
@@ -107,3 +114,4 @@ export class AddRewardPolicy extends React.Component {
     );
   }
 }
+export const AddRewardPolicy = withTranslation()(AddRewardPolicyClass);

@@ -6,6 +6,7 @@ import { commonCreateApi, getCommonApi } from "redux/actions/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { dateFormat } from "service/helperFunctions";
+import { withTranslation } from "react-i18next";
 
 export class StaffSortingClass extends Component {
   state = {
@@ -31,7 +32,7 @@ export class StaffSortingClass extends Component {
       .getCommonApi(
         `appointmentsort/?date=${dateFormat(filterDate, "yyyy-mm-dd")}`
       )
-      .then(key => {
+      .then((key) => {
         let { status, data } = key;
         if (status === 200) {
           for (let value of data) {
@@ -41,7 +42,7 @@ export class StaffSortingClass extends Component {
         }
       });
   };
-  currentselection = async item => {
+  currentselection = async (item) => {
     let { currentSelection, isSelected } = this.state;
     currentSelection["value"] = item.value;
     currentSelection["label"] = item.label;
@@ -54,7 +55,7 @@ export class StaffSortingClass extends Component {
   };
   removefromsort = async (item, index) => {
     var array = [...this.state.selectedList]; // make a separate copy of the array
-    let filterList = array.find(account => account.value === item.value);
+    let filterList = array.find((account) => account.value === item.value);
     if (filterList) {
       array.splice(index, 1);
       await this.setState({ selectedList: array });
@@ -65,7 +66,7 @@ export class StaffSortingClass extends Component {
 
     if (currentSelection && currentSelection.value) {
       let filterList = selectedList.find(
-        account => account.value === currentSelection.value
+        (account) => account.value === currentSelection.value
       );
       if (filterList) {
         filterList["value"] = currentSelection.value;
@@ -109,7 +110,7 @@ export class StaffSortingClass extends Component {
     await this.setState({ SortedEmployee });
     if (SortedEmployee.length > 0) {
       let data = { emp_ids: SortedEmployee };
-      this.props.commonCreateApi(`appointmentsort/`, data).then(async res => {
+      this.props.commonCreateApi(`appointmentsort/`, data).then(async (res) => {
         if (res.status === 201) {
           this.props.handleChange();
           this.handleDialog();
@@ -120,7 +121,7 @@ export class StaffSortingClass extends Component {
     }
   };
   render() {
-    let { isOpenModal } = this.props;
+    let { isOpenModal, t } = this.props;
     let { selectedList, isSelected, staffSortlist } = this.state;
 
     return (
@@ -137,12 +138,12 @@ export class StaffSortingClass extends Component {
           alt=""
         />
         <div className="row pl-2">
-          <h4 className="text-left">Staff Sorting</h4>
+          <h4 className="text-left">{t("Staff Sorting")}</h4>
         </div>
         <div className="d-flex justify-content-center p-3">
           <div className="col-md-5 col-11 mt-2 mb-5 mx-3">
             <div className="row mt-4 table-header w-100 m-0">
-              <div className="col-12 text-center">Employee List</div>
+              <div className="col-12 text-center">{t("Employee List")}</div>
             </div>
             <div className="response-table w-100">
               {staffSortlist && staffSortlist.length > 0 ? (
@@ -207,7 +208,7 @@ export class StaffSortingClass extends Component {
           </div>
           <div className="col-md-5 col-11 mt-2 mb-5 mx-3">
             <div className="col-12 mt-4 table-header w-100 m-0">
-              <div className="col-9 text-center">Employee Order</div>
+              <div className="col-9 text-center">{t("Employee Order")}</div>
               <div className="col-3"></div>
             </div>
             <div className="response-table w-100">
@@ -229,7 +230,7 @@ export class StaffSortingClass extends Component {
                   );
                 })
               ) : (
-                <div className="text-center w-100">No Data</div>
+                <div className="text-center w-100">{t("No Data")}</div>
               )}
             </div>
           </div>
@@ -261,7 +262,7 @@ export class StaffSortingClass extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       commonCreateApi,
@@ -271,7 +272,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const StaffSorting = connect(
-  null,
-  mapDispatchToProps
-)(StaffSortingClass);
+export const StaffSorting = withTranslation()(
+  connect(null, mapDispatchToProps)(StaffSortingClass)
+);

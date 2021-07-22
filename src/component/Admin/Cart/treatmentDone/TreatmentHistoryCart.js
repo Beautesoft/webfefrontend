@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import _ from "lodash";
 import { TreatmentUsagePopup } from "./TreatmentUsagePopup";
+import { withTranslation } from "react-i18next";
 
 export class ListTreatmentHistoryCartClass extends Component {
   state = {
@@ -34,7 +35,7 @@ export class ListTreatmentHistoryCartClass extends Component {
     await this.setState({
       customerNumber: this.props.customerNumber,
     });
-    this.props.getCommonApi("treatmentdone/Year/").then(key => {
+    this.props.getCommonApi("treatmentdone/Year/").then((key) => {
       let { status, data } = key;
       let { yearList } = this.state;
       for (let value of data) {
@@ -46,7 +47,7 @@ export class ListTreatmentHistoryCartClass extends Component {
     this.getTreatmentHistoryList({});
   };
 
-  getTreatmentHistoryList = data => {
+  getTreatmentHistoryList = (data) => {
     let { customerNumber, selectedYear, TreatmentHistory } = this.state;
     if (customerNumber > 0) {
       let { page = 1, limit = 10, search = "" } = data;
@@ -54,7 +55,7 @@ export class ListTreatmentHistoryCartClass extends Component {
         .getCommonApi(
           `treatmenthistory/?year=${selectedYear}&cust_id=${customerNumber}&page=${page}&limit=${limit}`
         )
-        .then(async res => {
+        .then(async (res) => {
           await this.setState({ treatmentList: [], meta: {} });
           let { data, status } = res;
           if (status === 200) {
@@ -78,18 +79,18 @@ export class ListTreatmentHistoryCartClass extends Component {
     this.getTreatmentHistoryList({});
   };
 
-  handlePagination = page => {
+  handlePagination = (page) => {
     this.getTreatmentHistoryList(page);
   };
 
   treatmentUsagePopupclose = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isTreatmentUsagePopup: !prevState.isTreatmentUsagePopup,
     }));
   };
-  treatmentUsagePopup = data => {
+  treatmentUsagePopup = (data) => {
     if (data.status == "Done") {
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         TreatmentHistoryId: data.id,
         isTreatmentUsagePopup: !prevState.isTreatmentUsagePopup,
       }));
@@ -106,12 +107,15 @@ export class ListTreatmentHistoryCartClass extends Component {
       isTreatmentUsagePopup,
       TreatmentHistoryId,
     } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="row treatment-done-new p-3">
           <div className="col-10 header">
             <div className="d-flex select-year">
-              <div className="pl-0 mb-2 name fs-16 py-2">Select Year</div>
+              <div className="pl-0 mb-2 name fs-16 py-2">
+                {t("Select Year")}
+              </div>
               <div className="input-group">
                 <NormalSelect
                   // placeholder="Enter here"
@@ -207,7 +211,7 @@ export class ListTreatmentHistoryCartClass extends Component {
               <tr>
                 <td>
                   <div className="d-flex align-items-center justify-content-center">
-                    No data available
+                    {t("No data available")}
                   </div>
                 </td>
               </tr>
@@ -227,11 +231,11 @@ export class ListTreatmentHistoryCartClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   // filter: state.dashboard
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       updateForm,
@@ -241,7 +245,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const TreatmentHistoryCart = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ListTreatmentHistoryCartClass);
+export const TreatmentHistoryCart = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(ListTreatmentHistoryCartClass)
+);

@@ -3,12 +3,13 @@ import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import classnames from "classnames";
 import { SmtpList } from "./SmtpList";
 import { SetupTransList } from "../SetupTransaction/SetupTransList";
+import { withTranslation } from "react-i18next";
 
-export class SmtpSettings extends Component {
+class SmtpSettingsClass extends Component {
   state = {
     activeMenu: "smtpSettings",
   };
-  toggle = tab => {
+  toggle = (tab) => {
     if (this.state.activeMenu !== tab) {
       this.setState({
         activeMenu: tab,
@@ -17,6 +18,7 @@ export class SmtpSettings extends Component {
   };
   render() {
     let { activeMenu } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="smtp-Setting-section col-12">
@@ -36,7 +38,7 @@ export class SmtpSettings extends Component {
                           )
                         }
                       >
-                        SMTP Settings
+                        {t("SMTP Settings")}
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -50,7 +52,7 @@ export class SmtpSettings extends Component {
                           )
                         }
                       >
-                        Setup Transaction
+                        {t("Setup Transaction")}
                       </NavLink>
                     </NavItem>
                   </Nav>
@@ -74,3 +76,5 @@ export class SmtpSettings extends Component {
     );
   }
 }
+
+export const SmtpSettings = withTranslation()(SmtpSettingsClass);

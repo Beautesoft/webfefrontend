@@ -4,8 +4,9 @@ import { RedeemPolicyTable } from "./RedeemPolicyTable";
 import { RewardPolicyTable } from "./RewardPolicyTable";
 import { ManualReward } from "./ManualReward";
 import { ManualRedeem } from "./ManualRedeem";
+import { withTranslation } from "react-i18next";
 
-export class LoyaltyPointsManagementSettings extends React.Component {
+class LoyaltyPointsManagementSettingsClass extends React.Component {
   state = {
     currentMenu: "/",
     isMounted: true,
@@ -27,10 +28,11 @@ export class LoyaltyPointsManagementSettings extends React.Component {
 
   render() {
     let { currentMenu } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="customer-list container-fluid">
-          <h3 className="head-label mb-5">Loyalty Program</h3>
+          <h3 className="head-label mb-5">{t("Loyalty Program")}</h3>
           <div className="row">
             <div className="col-md-2 mb-5">
               <Navigation
@@ -73,3 +75,6 @@ export class LoyaltyPointsManagementSettings extends React.Component {
     );
   }
 }
+export const LoyaltyPointsManagementSettings = withTranslation()(
+  LoyaltyPointsManagementSettingsClass
+);

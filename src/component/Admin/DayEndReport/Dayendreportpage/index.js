@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import { getCommonApi } from "redux/actions/common";
 import { NormalButton, NormalDate, TableWrapper } from "component/common";
 import { dateFormat } from "service/helperFunctions";
+import { withTranslation } from "react-i18next";
 
 export class DayendreportpageClass extends React.Component {
   state = {
@@ -67,7 +68,7 @@ export class DayendreportpageClass extends React.Component {
           "yyyy-mm-dd"
         )}&type=list`
       )
-      .then(async key => {
+      .then(async (key) => {
         let {
           status,
           sales_collec,
@@ -99,7 +100,7 @@ export class DayendreportpageClass extends React.Component {
           "yyyy-mm-dd"
         )}&type=pdf`
       )
-      .then(key => {
+      .then((key) => {
         let { status, data } = key;
         if (status === 200) {
           window.open(data);
@@ -114,7 +115,7 @@ export class DayendreportpageClass extends React.Component {
           "yyyy-mm-dd"
         )}&type=email`
       )
-      .then(key => {
+      .then((key) => {
         if (key.status === 200) {
           Toast({ type: "success", message: key.message });
         } else {
@@ -143,10 +144,12 @@ export class DayendreportpageClass extends React.Component {
       dept_sales,
     } = this.state;
 
+    let { t } = this.props;
+
     return (
       <div className="dayendreportpage">
         <div className="row mb-3">
-          <div className="col-sm-1 text-right">Date</div>
+          <div className="col-sm-1 text-right">{t("Date")}</div>
           <div className="col-sm-2">
             <NormalDate
               value={new Date(DayDate)}
@@ -169,7 +172,7 @@ export class DayendreportpageClass extends React.Component {
           <div className="col-12 mt-4">
             <div className="w-100">
               <div className="d-flex justify-content-center align-items-center fw-500 h5 mb-2 day-end-title">
-                Day End Report for&nbsp;
+                {t("Day End Report for")}&nbsp;
                 {reportDate !== "" ? dateFormat(reportDate, "dd-mm-yyyy") : ""}
               </div>
             </div>
@@ -211,7 +214,7 @@ export class DayendreportpageClass extends React.Component {
                     <tr>
                       <td>
                         <div className="d-flex align-items-center justify-content-center">
-                          No data available
+                          {t("No data available")}
                         </div>
                       </td>
                     </tr>
@@ -273,7 +276,7 @@ export class DayendreportpageClass extends React.Component {
                     <tr>
                       <td>
                         <div className="d-flex align-items-center justify-content-center">
-                          No data available
+                          {t("No data available")}
                         </div>
                       </td>
                     </tr>
@@ -282,7 +285,7 @@ export class DayendreportpageClass extends React.Component {
                     <tr>
                       <td>
                         <div className="d-flex align-items-center justify-content-end fw-500">
-                          Total
+                          {t("Total")}
                         </div>
                       </td>
                       <td>
@@ -324,7 +327,7 @@ export class DayendreportpageClass extends React.Component {
                     <tr>
                       <td>
                         <div className="d-flex align-items-center justify-content-center">
-                          No data available
+                          {t("No data available")}
                         </div>
                       </td>
                     </tr>
@@ -333,7 +336,7 @@ export class DayendreportpageClass extends React.Component {
                     <tr className="day-end-footer fw-500">
                       <td>
                         <div className="d-flex align-items-center justify-content-end">
-                          Total
+                          {t("Total")}
                         </div>
                       </td>
                       <td>
@@ -381,7 +384,7 @@ export class DayendreportpageClass extends React.Component {
                     <tr>
                       <td>
                         <div className="d-flex align-items-center justify-content-center">
-                          No data available
+                          {t("No data available")}
                         </div>
                       </td>
                     </tr>
@@ -390,7 +393,7 @@ export class DayendreportpageClass extends React.Component {
                     <tr>
                       <td>
                         <div className="d-flex align-items-center justify-content-end fw-500">
-                          Total
+                          {t("Total")}
                         </div>
                       </td>
                       <td>
@@ -436,7 +439,7 @@ export class DayendreportpageClass extends React.Component {
                     <tr>
                       <td>
                         <div className="d-flex align-items-center justify-content-center">
-                          No data available
+                          {t("No data available")}
                         </div>
                       </td>
                     </tr>
@@ -445,7 +448,7 @@ export class DayendreportpageClass extends React.Component {
                     <tr>
                       <td>
                         <div className="d-flex align-items-center justify-content-end fw-500">
-                          Total
+                          {t("Total")}
                         </div>
                       </td>
                       <td>
@@ -489,7 +492,7 @@ export class DayendreportpageClass extends React.Component {
                     <tr>
                       <td>
                         <div className="d-flex align-items-center justify-content-center w-100">
-                          No data available
+                          {t("No data available")}
                         </div>
                       </td>
                     </tr>
@@ -500,7 +503,7 @@ export class DayendreportpageClass extends React.Component {
                       <td></td>
                       <td>
                         <div className="d-flex align-items-center justify-content-end fw-500">
-                          Total
+                          {t("Total")}
                         </div>
                       </td>
                       <td>
@@ -536,7 +539,7 @@ export class DayendreportpageClass extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -545,7 +548,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const Dayendreportpage = connect(
-  null,
-  mapDispatchToProps
-)(DayendreportpageClass);
+export const Dayendreportpage = withTranslation()(
+  connect(null, mapDispatchToProps)(DayendreportpageClass)
+);

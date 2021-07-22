@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import _ from "lodash";
 import { history } from "helpers";
+import { withTranslation } from "react-i18next";
 
 export class SetupTransListClass extends React.Component {
   state = {
@@ -28,21 +29,21 @@ export class SetupTransListClass extends React.Component {
   }
 
   // popup open/close
-  handleClick = key => {
+  handleClick = (key) => {
     if (!this.state.active) {
       document.addEventListener("click", this.handleOutsideClick, false);
     } else {
       document.removeEventListener("click", this.handleOutsideClick, false);
     }
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       active: !prevState.active,
       currentIndex: key,
     }));
   };
 
   // while clicking popup close at outside click
-  handleOutsideClick = e => {
+  handleOutsideClick = (e) => {
     if (this.node != null) {
       if (this.node.contains(e.target)) {
         return;
@@ -52,28 +53,30 @@ export class SetupTransListClass extends React.Component {
   };
 
   // api call for list
-  queryHandler = data => {
+  queryHandler = (data) => {
     let { page = 1, limit = 10, search = "" } = data;
-    this.props.getCommonApi(`title/?page=${page}&limit=${limit}`).then(res => {
-      console.log(res, "dsfdfaafg", res.data.dataList);
-      let { setupTransList, pageMeta } = this.state;
-      setupTransList = res.data.dataList;
-      pageMeta = res.data.meta.pagination;
-      this.setState({
-        setupTransList,
-        pageMeta,
+    this.props
+      .getCommonApi(`title/?page=${page}&limit=${limit}`)
+      .then((res) => {
+        console.log(res, "dsfdfaafg", res.data.dataList);
+        let { setupTransList, pageMeta } = this.state;
+        setupTransList = res.data.dataList;
+        pageMeta = res.data.meta.pagination;
+        this.setState({
+          setupTransList,
+          pageMeta,
+        });
       });
-    });
   };
 
   // pagination
-  handlePagination = page => {
+  handlePagination = (page) => {
     this.queryHandler(page);
   };
 
   // delete api call for staff
-  handleDeleteSetupTransaction = id => {
-    this.props.commonDeleteApi(`title/${id}/`).then(res => {
+  handleDeleteSetupTransaction = (id) => {
+    this.props.commonDeleteApi(`title/${id}/`).then((res) => {
       this.queryHandler({});
       this.handleClick();
     });
@@ -81,12 +84,13 @@ export class SetupTransListClass extends React.Component {
 
   render() {
     let { headerDetails, setupTransList, pageMeta, currentIndex } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="row mb-3 mt-2">
           <div className="col-md-6">
             <div className="d-flex justify-content-start align-items-center pt-3">
-              List of Setup Transaction
+              {t("List of Setup Transaction")}
             </div>
           </div>
           <div className="col-md-6">
@@ -169,7 +173,7 @@ export class SetupTransListClass extends React.Component {
                         </td>
                         <td
                           className="position-relative"
-                          ref={node => {
+                          ref={(node) => {
                             this.node = node;
                           }}
                           onClick={() => this.handleClick(index)}
@@ -189,7 +193,7 @@ export class SetupTransListClass extends React.Component {
                                   }
                                 >
                                   <span className="icon-eye-grey px-3"></span>
-                                  View
+                                  {t("View")}
                                 </div>
                                 <div
                                   className="d-flex align-items-center fs-14"
@@ -199,7 +203,8 @@ export class SetupTransListClass extends React.Component {
                                     )
                                   }
                                 >
-                                  <span className="icon-edit px-3"></span> Edit
+                                  <span className="icon-edit px-3"></span>{" "}
+                                  {t("Edit")}
                                 </div>
                                 <div
                                   className="d-flex align-items-center fs-14 pb-3"
@@ -208,7 +213,7 @@ export class SetupTransListClass extends React.Component {
                                   }
                                 >
                                   <span className="icon-delete px-3"></span>
-                                  Delete
+                                  {t("Delete")}
                                 </div>
                               </div>
                             </>
@@ -230,11 +235,11 @@ export class SetupTransListClass extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   // filter: state.dashboard
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -244,7 +249,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const SetupTransList = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SetupTransListClass);
+export const SetupTransList = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(SetupTransListClass)
+);

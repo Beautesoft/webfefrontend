@@ -20,6 +20,7 @@ import closeIcon from "assets/images/close.png";
 import { ItemUsageUpdatePopup } from "./ItemUsageUpdatePopup";
 import { Toast } from "service/toast";
 import { TreatmentUsageDetail } from "./TreatmentUsageDetail";
+import { withTranslation } from "react-i18next";
 
 export class TreatmentUsagePopupClass extends Component {
   state = {
@@ -69,13 +70,13 @@ export class TreatmentUsagePopupClass extends Component {
     this.getTreatmentUsageList(this.props.TreatmentHistoryId);
   };
 
-  getTreatmentUsageList = data => {
+  getTreatmentUsageList = (data) => {
     let { TreatmentUsageList } = this.state;
     this.setState({
       TreatmentHistoryId: data,
     });
     if (data > 0) {
-      this.props.getCommonApi(`stockusage/${data}/`).then(async res => {
+      this.props.getCommonApi(`stockusage/${data}/`).then(async (res) => {
         await this.setState({ treatmentUsageList: [] });
         let { data, status } = res;
 
@@ -113,13 +114,13 @@ export class TreatmentUsagePopupClass extends Component {
       });
     }
   };
-  toggle = tab => {
+  toggle = (tab) => {
     if (tab == "3") {
       this.setState({ EditableRemark: true });
     } else if (tab == "1") {
       let { TreatmentUsageList } = this.state;
       let filterEditableRemark = TreatmentUsageList.find(
-        account => account.Treatmentid === 0
+        (account) => account.Treatmentid === 0
       );
       if (filterEditableRemark) {
         this.setState({ EditableRemark: true });
@@ -139,17 +140,17 @@ export class TreatmentUsagePopupClass extends Component {
   itemUsageUpdatePopup = () => {
     let { TreatmentUsageList } = this.state;
     if (TreatmentUsageList && TreatmentUsageList.length > 0) {
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         isItemUsageUpdatePopup: !prevState.isItemUsageUpdatePopup,
       }));
     } else {
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         isNewItemUsage: !prevState.isNewItemUsage,
       }));
     }
   };
   handleCloseItemUsagePopup = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isItemUsageUpdatePopup: !prevState.isItemUsageUpdatePopup,
     }));
   };
@@ -157,7 +158,7 @@ export class TreatmentUsagePopupClass extends Component {
   remarkHandle = ({ target: { name, value } }) => {
     this.setState({ [name]: value });
   };
-  includeNewItems = async data => {
+  includeNewItems = async (data) => {
     await this.setState({
       isNewItemUsage: false,
       isItemUsageUpdatePopup: false,
@@ -199,7 +200,7 @@ export class TreatmentUsagePopupClass extends Component {
           `stockusage/?treat_id=${TreatmentHistoryId}&treat_remarks=${remarks}`,
           data
         )
-        .then(async res => {
+        .then(async (res) => {
           if (res.status === 201) {
             this.setState({ TreatmentUsageList: [], TreatmentHistoryId: 0 });
             this.props.treatmentUsagePopupclose();
@@ -209,16 +210,16 @@ export class TreatmentUsagePopupClass extends Component {
       Toast({ type: "error", message: "Please Add New Product and then try!" });
     }
   };
-  deleteSelectedItem = async item => {
+  deleteSelectedItem = async (item) => {
     if (item.Treatmentid === 0) {
-      await this.setState(data => ({
+      await this.setState((data) => ({
         TreatmentUsageList: data.TreatmentUsageList.filter(
-          x => x.stock_id != item.stock_id
+          (x) => x.stock_id != item.stock_id
         ),
       }));
       let { TreatmentUsageList } = this.state;
       let filterEditableRemark = TreatmentUsageList.find(
-        account => account.Treatmentid === 0
+        (account) => account.Treatmentid === 0
       );
       if (filterEditableRemark) {
         this.setState({
@@ -235,11 +236,11 @@ export class TreatmentUsagePopupClass extends Component {
         .commonPatchApi(
           `stockusage/${item.stock_id}/?treat_id=${TreatmentHistoryId}`
         )
-        .then(async res => {
+        .then(async (res) => {
           if (res.status === 200) {
-            await this.setState(data => ({
+            await this.setState((data) => ({
               TreatmentUsageList: data.TreatmentUsageList.filter(
-                x => x.stock_id != item.stock_id
+                (x) => x.stock_id != item.stock_id
               ),
             }));
           }
@@ -265,6 +266,7 @@ export class TreatmentUsagePopupClass extends Component {
       ExchangeStaffListHeader,
       isNewItemUsage,
     } = this.state;
+    let { t } = this.props;
     return (
       <NormalModal
         className={"select-category"}
@@ -279,7 +281,7 @@ export class TreatmentUsagePopupClass extends Component {
           alt=""
         />
         <div className="d-flex h4 justify-content-center p-1">
-          Treatment Usage
+          {t("Treatment Usage")}
         </div>
         <div className="customer-list container">
           <div className="d-flex justify-content-left">
@@ -300,7 +302,7 @@ export class TreatmentUsagePopupClass extends Component {
           </div>
           <div className="d-flex justify-content-left">
             <div className="col-2">
-              <div className="text-left">Treatment Remarks</div>
+              <div className="text-left">{t("Treatment Remarks")}</div>
             </div>
             <div className="col-8">
               <div className="text-left fs-15 fw-500">
@@ -334,7 +336,7 @@ export class TreatmentUsagePopupClass extends Component {
                         this.toggle("3");
                       }}
                     >
-                      Detail
+                      {t("Detail")}
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -346,7 +348,7 @@ export class TreatmentUsagePopupClass extends Component {
                         this.toggle("1");
                       }}
                     >
-                      Stock Usage
+                      {t("Stock Usage")}
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -358,7 +360,7 @@ export class TreatmentUsagePopupClass extends Component {
                         this.toggle("4");
                       }}
                     >
-                      Staff
+                      {t("Staff")}
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -370,7 +372,7 @@ export class TreatmentUsagePopupClass extends Component {
                         this.toggle("2");
                       }}
                     >
-                      Exchange Treatment
+                      {t("Exchange Treatment")}
                     </NavLink>
                   </NavItem>
                 </Nav>
@@ -446,7 +448,7 @@ export class TreatmentUsagePopupClass extends Component {
                             <tr className="w-100">
                               <td>
                                 <div className="d-flex align-items-center justify-content-center">
-                                  No data available
+                                  {t("No data available")}
                                 </div>
                               </td>
                             </tr>
@@ -483,8 +485,8 @@ export class TreatmentUsagePopupClass extends Component {
                             <div className="col-12">
                               <div>
                                 <p>
-                                  Do you want to add default product for this
-                                  treatment ?
+                                  {t(`Do you want to add default product for this
+                                  treatment ?`)}
                                 </p>
                               </div>
                             </div>
@@ -497,20 +499,22 @@ export class TreatmentUsagePopupClass extends Component {
                                     }
                                     className={`btn outline-btn mx-2 fs-14  text-capitalize`}
                                   >
-                                    Yes
+                                    {t("Yes")}
                                   </button>
                                 </div>
                                 <div className="col-3">
                                   <button
                                     onClick={() =>
-                                      this.setState(prevState => ({
-                                        isNewItemUsage: !prevState.isNewItemUsage,
-                                        isItemUsageUpdatePopup: !prevState.isItemUsageUpdatePopup,
+                                      this.setState((prevState) => ({
+                                        isNewItemUsage:
+                                          !prevState.isNewItemUsage,
+                                        isItemUsageUpdatePopup:
+                                          !prevState.isItemUsageUpdatePopup,
                                       }))
                                     }
                                     className={`btn outline-btn mx-2 fs-14  text-capitalize`}
                                   >
-                                    No
+                                    {t("No")}
                                   </button>
                                 </div>
                               </div>
@@ -577,7 +581,7 @@ export class TreatmentUsagePopupClass extends Component {
                           <tr className="w-100">
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
-                                No data available
+                                {t("No data available")}
                               </div>
                             </td>
                           </tr>
@@ -629,7 +633,7 @@ export class TreatmentUsagePopupClass extends Component {
                           <tr className="w-100">
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
-                                No data available
+                                {t("No data available")}
                               </div>
                             </td>
                           </tr>
@@ -646,7 +650,7 @@ export class TreatmentUsagePopupClass extends Component {
           <ItemUsageUpdatePopup
             isItemUsageUpdatePopup={isItemUsageUpdatePopup}
             itemUsageUpdatePopup={this.handleCloseItemUsagePopup}
-            newItemlist={StockItemUsageList =>
+            newItemlist={(StockItemUsageList) =>
               this.includeNewItems(StockItemUsageList)
             }
           />
@@ -656,11 +660,11 @@ export class TreatmentUsagePopupClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   // filter: state.dashboard
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       updateForm,
@@ -672,7 +676,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const TreatmentUsagePopup = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TreatmentUsagePopupClass);
+export const TreatmentUsagePopup = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(TreatmentUsagePopupClass)
+);

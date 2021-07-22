@@ -8,7 +8,7 @@ import { bindActionCreators } from "redux";
 export class NewListAppointmentClass extends React.Component {
   state = { isCalander: false, selectedDate: null };
 
-  handleOpen = async date => {
+  handleOpen = async (date) => {
     let { isCalander, selectedDate } = this.state;
     isCalander = true;
     selectedDate = date;
@@ -29,11 +29,11 @@ export class NewListAppointmentClass extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   basicApptDetail: state.appointment.basicApptDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCustomer,

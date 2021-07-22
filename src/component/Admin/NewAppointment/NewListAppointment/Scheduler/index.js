@@ -82,7 +82,7 @@ export class SchedulerClass extends Component {
 
   componentWillMount = () => {
     this.validator = new SimpleReactValidator({
-      element: message => (
+      element: (message) => (
         <span className="error-message text-danger validNo fs14">
           {message}
         </span>
@@ -106,7 +106,7 @@ export class SchedulerClass extends Component {
   handleAppointmentOpen = (id, e) => {
     console.log(e, id, "hgjsydfisuyfsdfm ==== handleAppointmentOpen");
   };
-  getHoursFromDate = date => {
+  getHoursFromDate = (date) => {
     let hour = date.getHours();
     let minute = date.getMinutes();
     let hours = hour > 9 ? hour : "0" + hour;
@@ -193,7 +193,7 @@ export class SchedulerClass extends Component {
       await this.setState({
         selectedId: id,
       });
-      await this.props.commonDeleteApi(`appointment/${id}/`).then(res => {});
+      await this.props.commonDeleteApi(`appointment/${id}/`).then((res) => {});
     }
   };
 
@@ -226,7 +226,7 @@ export class SchedulerClass extends Component {
               filterDate
             )}&check=${filterType}&page=${page}&limit=${limit}&search=${searchtext}&type=${groupByType}`
           )
-          .then(async key => {
+          .then(async (key) => {
             let { status, data, event } = key;
 
             if (status === 200) {
@@ -240,7 +240,7 @@ export class SchedulerClass extends Component {
               if (event) {
                 for (let cell of event) {
                   let filterList = events.find(
-                    Appoint =>
+                    (Appoint) =>
                       Appoint.linkcode === cell.linkcode &&
                       Appoint.id === cell.id &&
                       Appoint.cust_id === cell.cust_id &&
@@ -310,13 +310,13 @@ export class SchedulerClass extends Component {
     });
   };
 
-  groupByAppointment = async groupBy => {
+  groupByAppointment = async (groupBy) => {
     await this.setState({
       groupByType: groupBy,
     });
     this.getAppointmentWithStaff();
   };
-  timeToMins = time => {
+  timeToMins = (time) => {
     var b = time.split(":");
     return b[0] * 60 + +b[1];
   };
@@ -353,7 +353,7 @@ export class SchedulerClass extends Component {
             showPane={this.state.showPane}
             showCurrentTimeIndicator={this.state.showCurrentTimeIndicator}
             shadeUntilCurrentTime={this.state.shadeUntilCurrentTime}
-            />
+          />
           <div className="scheduler-container pr-0">
             <NewSchedulerModal
               staffList={staffList}
@@ -370,7 +370,7 @@ export class SchedulerClass extends Component {
               handleNext={this.handleNext}
               staffSortlist={staffSortlist}
               getAppointmentWithStaff={this.getAppointmentWithStaff}
-              groupByAppointment={groupBy => this.groupByAppointment(groupBy)}
+              groupByAppointment={(groupBy) => this.groupByAppointment(groupBy)}
             />
           </div>
           <NewCreateAppointment
@@ -384,13 +384,13 @@ export class SchedulerClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   customerDetail: state.appointment.customerDetail,
   customerList: state.common.customerList,
   multipleCustomerForm: state.appointment.multipleCustomerForm,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCustomer,

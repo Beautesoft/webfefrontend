@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { withTranslation } from "react-i18next";
 import "./style.scss";
 
-export class IndividualAuthorizationTable extends Component {
+class IndividualAuthorizationTableClass extends Component {
   render() {
     let {
       onFEChange,
@@ -12,15 +13,17 @@ export class IndividualAuthorizationTable extends Component {
     } = this.props;
 
     const FEHandleOnChange = (index1, index2) => {
-      FEData[index1].values[index2].value = !FEData[index1].values[index2]
-        .value;
+      FEData[index1].values[index2].value =
+        !FEData[index1].values[index2].value;
       if (onFEChange) onFEChange(FEData);
     };
     const BEHandleOnChange = (index1, index2) => {
-      BEData[index1].values[index2].value = !BEData[index1].values[index2]
-        .value;
+      BEData[index1].values[index2].value =
+        !BEData[index1].values[index2].value;
       if (onBEChange) onBEChange(BEData);
     };
+
+    let { t } = this.props;
 
     return (
       <div className="maintable table-container">
@@ -29,16 +32,16 @@ export class IndividualAuthorizationTable extends Component {
             <thead>
               <tr>
                 <th className="table-header-80">
-                  <div className="d-flex ml-3">FE Authorizaion</div>
+                  <div className="d-flex ml-3">{t("FE Authorizaion")}</div>
                 </th>
                 <th>
                   <div className="d-flex align-items-center justify-content-center">
-                    Yes
+                    {t("Yes")}
                   </div>
                 </th>
                 <th>
                   <div className="d-flex align-items-center justify-content-center">
-                    No
+                    {t("No")}
                   </div>
                 </th>
               </tr>
@@ -48,13 +51,13 @@ export class IndividualAuthorizationTable extends Component {
                 <>
                   <tr>
                     <td className={e.className} colspan="3">
-                      {e.label}
+                      {t(e.label)}
                     </td>
                   </tr>
                   {e.values.map((e, index2) => (
                     <tr>
                       <td>
-                        <div className="ml-5">{e.label}</div>
+                        <div className="ml-5">{t(e.label)}</div>
                       </td>
                       <td>
                         <div className="d-flex align-items-center justify-content-center">
@@ -62,7 +65,6 @@ export class IndividualAuthorizationTable extends Component {
                             className="w-100"
                             type="radio"
                             name={e.label}
-                            value={true}
                             checked={e.value}
                             onChange={() => FEHandleOnChange(index1, index2)}
                           />
@@ -74,7 +76,6 @@ export class IndividualAuthorizationTable extends Component {
                             className="w-100"
                             type="radio"
                             name={e.label}
-                            value={false}
                             checked={!e.value}
                             onChange={() => FEHandleOnChange(index1, index2)}
                           />
@@ -155,3 +156,7 @@ export class IndividualAuthorizationTable extends Component {
     );
   }
 }
+
+export const IndividualAuthorizationTable = withTranslation()(
+  IndividualAuthorizationTableClass
+);

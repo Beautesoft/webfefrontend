@@ -19,6 +19,7 @@ import {
 import { ScheduleTable } from "./SheduleTable";
 import { CalenderTable } from "./CalenderTable";
 import { BigCalander } from "./BigCalander";
+import { withTranslation } from "react-i18next";
 
 class StaffScheduleClass extends React.Component {
   state = {
@@ -367,7 +368,7 @@ class StaffScheduleClass extends React.Component {
       fullScheduleMonth,
       pageMeta,
     } = this.state;
-
+    let { t } = this.props;
     let { ws, altws, cal_data, staff_data } = formFields;
 
     const handleMenuSelection = (value) => {
@@ -394,11 +395,11 @@ class StaffScheduleClass extends React.Component {
               onSelect={({ itemId }) => handleMenuSelection(itemId)}
               items={[
                 {
-                  title: "Individual Schedule",
+                  title: t("Individual Schedule"),
                   itemId: "/indi",
                 },
                 {
-                  title: "Full Schedule",
+                  title: t("Full Schedule"),
                   itemId: "/full",
                 },
               ]}
@@ -417,8 +418,10 @@ class StaffScheduleClass extends React.Component {
               <div className="row align-items-center">
                 <div className="col-md-8 mb-4">
                   <h3>
-                    {currentMenu == "/indi" ? "Individual" : "Full"} Staff
-                    Schedule
+                    {t(
+                      (currentMenu == "/indi" ? "Individual" : "Full") +
+                        " Schedule"
+                    )}
                   </h3>
                 </div>
               </div>
@@ -428,7 +431,7 @@ class StaffScheduleClass extends React.Component {
                     <div className="row">
                       <div className="col-12">
                         <label className="text-left text-black common-label-text fs-17 pb-3">
-                          Employee Type
+                          {t("Employee Type")}
                         </label>
                         <div className="input-group">
                           <NormalSelect
@@ -444,7 +447,7 @@ class StaffScheduleClass extends React.Component {
                     <div className="row">
                       <div className="col-12">
                         <label className="text-left text-black common-label-text fs-17 pb-3">
-                          Staff
+                          {t("Staff")}
                         </label>
                         <div className="input-group">
                           <NormalSelect
@@ -460,7 +463,7 @@ class StaffScheduleClass extends React.Component {
                     <div className="row">
                       <div className="col-12">
                         <label className="text-left text-black common-label-text fs-17 pb-3">
-                          Site List
+                          {t("Site List")}
                         </label>
                         <div className="input-group">
                           <NormalSelect
@@ -476,7 +479,7 @@ class StaffScheduleClass extends React.Component {
                     <div className="row">
                       <div className="col-12">
                         <label className="text-left text-black common-label-text fs-17 pb-3">
-                          Work Schedule
+                          {t("Work Schedule")}
                         </label>
                         <ScheduleTable
                           data={ws}
@@ -519,7 +522,7 @@ class StaffScheduleClass extends React.Component {
                     <div className="row">
                       <div className="col-md-4 mb-4">
                         <label className="text-left text-black common-label-text fs-17 pb-3">
-                          Start Year and Month
+                          {t("Start Year and Month")}
                         </label>
                         <div className="input-group">
                           <NormalInput
@@ -532,7 +535,7 @@ class StaffScheduleClass extends React.Component {
                       </div>
                       <div className="col-md-4 mb-4">
                         <label className="text-left text-black common-label-text fs-17 pb-3">
-                          End Year and Month
+                          {t("End Year and Month")}
                         </label>
                         <div className="input-group">
                           <NormalInput
@@ -546,7 +549,7 @@ class StaffScheduleClass extends React.Component {
                       </div>
                       <div className="col-md-6 mb-4">
                         <label className="text-left text-black common-label-text fs-17 pb-3">
-                          Selected Year and Month
+                          {t("Selected Year and Month")}
                         </label>
                         <div className="input-group">
                           <NormalInput
@@ -597,7 +600,7 @@ class StaffScheduleClass extends React.Component {
                     <div className="row">
                       <div className="col-12 mb-4">
                         <label className="text-left text-black common-label-text fs-17 pb-3">
-                          Site
+                          {t("Site")}
                         </label>
                         <div className="input-group">
                           <NormalSelect
@@ -615,7 +618,7 @@ class StaffScheduleClass extends React.Component {
                     <div className="row">
                       <div className="col-4 mb-4">
                         <label className="text-left text-black common-label-text fs-17 pb-3">
-                          Year and Month
+                          {t("Year and Month")}
                         </label>
                         <div className="input-group">
                           <NormalInput
@@ -659,7 +662,7 @@ class StaffScheduleClass extends React.Component {
                             backgroundColor: `${e.color}`,
                           }}
                         />
-                        {e.shortDesc} - {e.label}
+                        {t(e.shortDesc)} - {t(e.label)}
                       </div>
                     </div>
                   );
@@ -694,7 +697,6 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export const StaffSchedule = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(StaffScheduleClass);
+export const StaffSchedule = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(StaffScheduleClass)
+);

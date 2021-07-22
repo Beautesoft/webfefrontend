@@ -3,6 +3,7 @@ import { NormalButton, NormalInput } from "component/common";
 import { InputSearch, TableWrapper } from "component/common";
 import { connect } from "react-redux";
 import _ from "lodash";
+import { withTranslation } from "react-i18next";
 
 class ManualRewardClass extends React.Component {
   state = {
@@ -52,13 +53,16 @@ class ManualRewardClass extends React.Component {
 
   render() {
     let { headerDetails, dataList, meta, rewardList } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="customer-list container-fluid">
           <div className="row align-items-center">
             <div className="col-md-4">
-              <h3 className="head-label">Manual Reward</h3>
+              <h3 className="head-label">{t("Manual Reward")}</h3>
+              {t("")}
             </div>
+            {t("")}
           </div>
           <div className="card-columns mt-5">
             {rewardList.map((e) => (
@@ -66,7 +70,9 @@ class ManualRewardClass extends React.Component {
                 <blockquote class="blockquote mb-0">
                   <h6>{e.label}</h6>
                   <footer class="blockquote-footer">{e.points}</footer>
+                  {t("")}
                 </blockquote>
+                {t("")}
               </div>
             ))}
           </div>
@@ -103,6 +109,7 @@ class ManualRewardClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_code}
                               </div>
+                              {t("")}
                             </td>
                             <td
                               className={
@@ -112,6 +119,7 @@ class ManualRewardClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_refer}
                               </div>
+                              {t("")}
                             </td>
                             <td
                               className={
@@ -121,6 +129,7 @@ class ManualRewardClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {""}
                               </div>
+                              {t("")}
                             </td>
                             <td
                               className={
@@ -130,6 +139,7 @@ class ManualRewardClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_name}
                               </div>
+                              {t("")}
                             </td>
                             <td
                               className={
@@ -139,19 +149,26 @@ class ManualRewardClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_phone2}
                               </div>
+                              {t("")}
                             </td>
+                            {t("")}
                           </tr>
                         );
                       })
                     : ""}
                 </TableWrapper>
+                {t("")}
               </div>
+              {t("")}
             </div>
+            {t("")}
           </div>
+          {t("")}
         </div>
+        {t("")}
       </>
     );
   }
 }
 
-export const ManualReward = connect()(ManualRewardClass);
+export const ManualReward = withTranslation()(connect()(ManualRewardClass));

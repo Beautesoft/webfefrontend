@@ -5,17 +5,18 @@ import { bindActionCreators } from "redux";
 import { getCommonApi, commonCreateApi } from "redux/actions/common";
 import user from "assets/images/user-image.png";
 import { getTokenDetails } from "redux/actions/auth";
+import { withTranslation } from "react-i18next";
 
 export class NewStaffStatsClass extends Component {
   state = { staffList: [], limit: 8, page: 1, meta: {} };
   componentDidMount = () => {
     this.getStafflist({});
   };
-  getStafflist = data => {
+  getStafflist = (data) => {
     let { page, limit } = this.state;
     this.props
       .getCommonApi(`attendancestaff/?page=${page}&limit=${limit}`)
-      .then(async key => {
+      .then(async (key) => {
         let { status, data } = key;
         console.log(key, "sdfgsdfgsdfgdfg sdfgsdfgsdfg");
         let { staffList } = this.state;
@@ -58,17 +59,17 @@ export class NewStaffStatsClass extends Component {
 
   render() {
     let { staffList, meta } = this.state;
-    let { tokenDetail } = this.props;
+    let { tokenDetail, t } = this.props;
     return (
       <div className="staffStats pb-5">
         <div className="row pb-4">
           <div className="color-detail col-md-7 fs-18 fw-500">
-            Hello {tokenDetail.username},
+            {t("Hello")} {tokenDetail.username},
           </div>
         </div>
         <div className="row pb-4">
           <div className="color-detail col-md-7 fs-18 fw-500">
-            Staffs in attendance today
+            {t("Staffs in attendance today")}
           </div>
         </div>
         <div className="d-flex">
@@ -112,7 +113,7 @@ export class NewStaffStatsClass extends Component {
               })
             ) : (
               <div className="mx-1 staff-list cursor-pointer">
-                No staffs in attendance
+                {t("No staffs in attendance")}
               </div>
             )}
           </div>
@@ -144,10 +145,10 @@ export class NewStaffStatsClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   tokenDetail: state.authStore.tokenDetails,
 });
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -158,7 +159,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const NewStaffStats = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NewStaffStatsClass);
+export const NewStaffStats = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(NewStaffStatsClass)
+);

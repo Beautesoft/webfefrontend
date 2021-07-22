@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { history } from "helpers";
 import { getCommonApi, commonCreateApi } from "redux/actions/common";
+import { withTranslation } from "react-i18next";
 // import logo from 'assets/images/logo.png'
 
 export class TransactionReceiptClass extends Component {
@@ -18,7 +19,7 @@ export class TransactionReceiptClass extends Component {
       .getCommonApi(
         `customerreceiptprint/?sa_transacno=${this.props.match.params.id}`
       )
-      .then(res => {
+      .then((res) => {
         this.setState({ responseData: res });
       });
     this.handlePrint();
@@ -28,7 +29,7 @@ export class TransactionReceiptClass extends Component {
   handlePrint = () => {
     this.props
       .getCommonApi(`receiptpdf/?sa_transacno=${this.props.match.params.id}`)
-      .then(res => {
+      .then((res) => {
         this.setState({ downloadlLink: res.data });
       });
   };
@@ -39,7 +40,7 @@ export class TransactionReceiptClass extends Component {
       .commonCreateApi(
         `receiptpdfsend/?sa_transacno=${this.props.match.params.id}`
       )
-      .then(res => {
+      .then((res) => {
         this.setState({ responseData: res });
       });
   };
@@ -50,7 +51,7 @@ export class TransactionReceiptClass extends Component {
       .commonCreateApi(
         `receiptpdfsendsms/?sa_transacno=${this.props.match.params.id}`
       )
-      .then(res => {
+      .then((res) => {
         this.setState({ responseData: res });
       });
   };
@@ -66,6 +67,7 @@ export class TransactionReceiptClass extends Component {
       company_hdr = {},
       taud_sub = {},
     } = responseData;
+    let { t } = this.props;
     return (
       <>
         <div className="print-section container">
@@ -97,13 +99,13 @@ export class TransactionReceiptClass extends Component {
                 <div className="row ">
                   <div className="col-6">
                     <div className="row">
-                      <div className="col-3 f-600">Code:</div>
+                      <div className="col-3 f-600">{t("Code")}:</div>
                       <div className="col-9">
                         : {hdr_data ? hdr_data.sa_custno : ""}
                       </div>
                     </div>
                     <div className="row">
-                      <div className="col-3  f-600">Name:</div>
+                      <div className="col-3  f-600">{t("Name")}:</div>
                       <div className="col-9">
                         : {hdr_data ? hdr_data.sa_custname : ""}
                       </div>
@@ -111,29 +113,29 @@ export class TransactionReceiptClass extends Component {
                     {/* <div className="row">
                                         <div className="col-3  f-600">Member:</div>
                                         <div className="col-9">: {hdr_data ? hdr_data.member : ""}</div>
-                                    </div> */}
+                                   </div> */}
                   </div>
                   <div className="col-6">
                     <div className="row">
-                      <div className="col-3  f-600">Trans:</div>
+                      <div className="col-3  f-600">{t("Trans")}:</div>
                       <div className="col-9">
                         : {hdr_data ? hdr_data.trans : ""}
                       </div>
                     </div>
                     <div className="row">
-                      <div className="col-3  f-600">Date:</div>
+                      <div className="col-3  f-600">{t("Date")}:</div>
                       <div className="col-9">
                         : {hdr_data ? hdr_data.sa_date : ""}
                       </div>
                     </div>
                     <div className="row">
-                      <div className="col-3  f-600">Time:</div>
+                      <div className="col-3  f-600">{t("Time")}:</div>
                       <div className="col-9">
                         : {hdr_data ? hdr_data.sa_time : ""}
                       </div>
                     </div>
                     <div className="row">
-                      <div className="col-3  f-600">Issued</div>
+                      <div className="col-3  f-600">{t("Issued")}</div>
                       <div className="col-9">
                         : {hdr_data ? hdr_data.issued : ""}
                       </div>
@@ -143,13 +145,13 @@ export class TransactionReceiptClass extends Component {
               </div>
               <div className="bill-detail mt-4 py-1">
                 <div className="row m-0 table-header  f-600">
-                  <div className="col-1">No.</div>
-                  <div className="col-3 text-left">Description</div>
-                  <div className="col-1">Qty</div>
-                  <div className="col-2">Net price</div>
-                  <div className="col-1">Paid</div>
-                  <div className="col-2">Balance</div>
-                  <div className="col-2">Sold/Service By</div>
+                  <div className="col-1">{t("No.")}</div>
+                  <div className="col-3 text-left">{t("Description")}</div>
+                  <div className="col-1">{t("Qty")}</div>
+                  <div className="col-2">{t("Net price")}</div>
+                  <div className="col-1">{t("Paid")}</div>
+                  <div className="col-2">{t("Balance")}</div>
+                  <div className="col-2">{t("Sold/Service By")}</div>
                 </div>
                 {dtl_data.length > 0
                   ? dtl_data.map((item, index) => {
@@ -182,9 +184,9 @@ export class TransactionReceiptClass extends Component {
                 <div className="row m-0">
                   <div className="col-7">
                     <div className="row payment-header">
-                      <div className="col-4">No</div>
-                      <div className="col-4">Type</div>
-                      <div className="col-4">Amount</div>
+                      <div className="col-4">{t("No")}</div>
+                      <div className="col-4">{t("Type")}</div>
+                      <div className="col-4">{t("Amount")}</div>
                     </div>
                     {taud_data.length > 0
                       ? taud_data.map((item, index) => {
@@ -199,25 +201,25 @@ export class TransactionReceiptClass extends Component {
                       : ""}
                     <div className="row payment-footer">
                       <div className="col-4 fs-11">{taud_sub.gst_label}</div>
-                      <div className="col-4">Total</div>
+                      <div className="col-4">{t("Total")}</div>
                       <div className="col-4">{taud_sub.total}</div>
                     </div>
                   </div>
                   <div className="col-5 text-right">
                     <div className="row">
-                      <div className="col-6">Sub Total :</div>
+                      <div className="col-6">{t("Sub Total")} :</div>
                       <div className="col-6">{sub_data.sub_total}</div>
                     </div>
                     <div className="row">
-                      <div className="col-6">GST :</div>
+                      <div className="col-6">{t("GST")} :</div>
                       <div className="col-6">{taud_sub.gst}</div>
                     </div>
                     <div className="row">
-                      <div className="col-6">Rounding :</div>
+                      <div className="col-6">{t("Rounding")} :</div>
                       <div className="col-6">{taud_sub.rounding}</div>
                     </div>
                     <div className="row">
-                      <div className="col-6">Grand Total :</div>
+                      <div className="col-6">{t("Grand Total")} :</div>
                       <div className="col-6">{taud_sub.grand_tot}</div>
                     </div>
                   </div>
@@ -225,7 +227,9 @@ export class TransactionReceiptClass extends Component {
                 {/* used payment list */}
               </div>
               <div className="invoice-footer mt-5">
-                <p className="">Remark: {footer.remark}</p>
+                <p className="">
+                  {t("Remark")}: {footer.remark}
+                </p>
 
                 {footer.footer1 ? <p>1. {footer.footer1}</p> : ""}
                 {footer.footer2 ? <p>2. {footer.footer2}</p> : ""}
@@ -235,7 +239,7 @@ export class TransactionReceiptClass extends Component {
                   <div className="col-8"></div>
                   <div className="col-4">
                     <div className="customer-signature  f-600">
-                      Customer Signature
+                      {t("Customer Signature")}
                     </div>
                   </div>
                 </div>
@@ -273,11 +277,11 @@ export class TransactionReceiptClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   appointmentDetail: state.appointment.appointmentDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -287,7 +291,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const TransactionReceipt = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TransactionReceiptClass);
+export const TransactionReceipt = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(TransactionReceiptClass)
+);

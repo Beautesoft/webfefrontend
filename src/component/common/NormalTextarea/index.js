@@ -1,40 +1,43 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
+import { withTranslation } from "react-i18next";
 
-export class NormalTextarea extends Component {
-    render() {
-        let {
-            className = "form-control",
-            placeholder = "",
-            onChange,
-            value = "",
-            name,
-            disabled = false,
-            type = 'text' } = this.props;
+class NormalTextareaClass extends Component {
+  render() {
+    let {
+      className = "form-control",
+      placeholder = "",
+      onChange,
+      value = "",
+      name,
+      disabled = false,
+      type = "text",
+      t,
+    } = this.props;
 
-        return (
-            <>
-                <textarea
-                    className={className}
-                    name={name}
-                    disabled={disabled}
-                    value={value}
-                    placeholder={placeholder}
-                    onChange={e => {
+    return (
+      <>
+        <textarea
+          className={className}
+          name={name}
+          disabled={disabled}
+          value={value}
+          placeholder={t(placeholder)}
+          onChange={(e) => {
+            let body = {};
 
-                        let body = {}
+            body = {
+              target: {
+                name: e.target.name,
+                value: e.target.value,
+              },
+            };
 
-                        body = {
-                            target: {
-                                name: e.target.name,
-                                value: e.target.value
-                            }
-                        }
-
-                        onChange(body)
-
-                    }}
-                ></textarea>
-            </>
-        )
-    }
+            onChange(body);
+          }}
+        ></textarea>
+      </>
+    );
+  }
 }
+
+export const NormalTextarea = withTranslation()(NormalTextareaClass);

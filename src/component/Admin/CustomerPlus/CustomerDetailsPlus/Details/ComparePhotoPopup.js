@@ -4,6 +4,7 @@ import CanvasDraw from "react-canvas-draw";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Webcam from "react-webcam";
+import { withTranslation } from "react-i18next";
 
 export class ComparePhotoPopupClass extends Component {
   state = {
@@ -32,13 +33,14 @@ export class ComparePhotoPopupClass extends Component {
 
   render() {
     let { remarks } = this.state;
-    let { dataList } = this.props;
+    let { dataList, t } = this.props;
     return (
       <>
         <div className="container-fluid mb-4 mt-2 product-details">
           <div className="row">
             <div className="col-6">
-              <h4>Compare Photo</h4>
+              <h4>{t("Compare Photo")}</h4>
+              {t("")}
             </div>
             <div className="col-6">
               <NormalButton
@@ -47,7 +49,9 @@ export class ComparePhotoPopupClass extends Component {
                 label="Done"
                 onClick={() => this.handleSubmit()}
               />
+              {t("")}
             </div>
+            {t("")}
           </div>
           <div className="row pl-5 pr-5 mt-4">
             {dataList
@@ -55,10 +59,11 @@ export class ComparePhotoPopupClass extends Component {
                   <div className="col-md-6 mb-4">
                     <div className="col-12 mb-4">
                       <img src={data.image} height="100%" width={"100%"} />
+                      {t("")}
                     </div>
                     <div className="col-12">
                       <label className="text-left text-black common-label-text fs-17 pb-2">
-                        Remarks
+                        {t("Remarks")}
                       </label>
                       <NormalInput
                         placeholder="Enter remarks"
@@ -66,13 +71,15 @@ export class ComparePhotoPopupClass extends Component {
                         name="remarks"
                         disabled
                       />
+                      {t("")}
                     </div>
+                    {t("")}
                   </div>
                 ))
               : null}
             <div className="col-12 mb-4">
               <label className="text-left text-black common-label-text fs-17 pb-2">
-                Remarks
+                {t("Remarks")}
               </label>
               <div className="input-group">
                 <NormalInput
@@ -81,10 +88,15 @@ export class ComparePhotoPopupClass extends Component {
                   name="remarks"
                   onChange={this.handleChange}
                 />
+                {t("")}
               </div>
+              {t("")}
             </div>
+            {t("")}
           </div>
+          {t("")}
         </div>
+        {t("")}
       </>
     );
   }
@@ -96,7 +108,6 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({}, dispatch);
 };
 
-export const ComparePhotoPopup = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ComparePhotoPopupClass);
+export const ComparePhotoPopup = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(ComparePhotoPopupClass)
+);

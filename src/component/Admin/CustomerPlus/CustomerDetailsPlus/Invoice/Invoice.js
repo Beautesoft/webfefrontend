@@ -8,6 +8,7 @@ import { history } from "helpers";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getCommonApi, commonCreateApi } from "redux/actions/common";
+import { withTranslation } from "react-i18next";
 
 export class InvoiceHistoryClass extends Component {
   state = {
@@ -96,7 +97,7 @@ export class InvoiceHistoryClass extends Component {
           this.props.id
         }`
       )
-      .then(async res => {
+      .then(async (res) => {
         console.log(res, "dsfdfaafg");
         await this.setState({ billingList: [] });
         billingList = res.data.dataList;
@@ -104,13 +105,13 @@ export class InvoiceHistoryClass extends Component {
         this.setState({ billingList, pageMeta });
       });
   };
-  handlePrint = id => {
+  handlePrint = (id) => {
     let { billingList, pageMeta, formField, page, limit } = this.state;
     let { fromDate, toDate, transCode, custCode, custName } = formField;
-    this.props.getCommonApi(`receiptpdf/?sa_transacno=${id}`).then(res => {});
+    this.props.getCommonApi(`receiptpdf/?sa_transacno=${id}`).then((res) => {});
   };
 
-  handlePagination = async pageNo => {
+  handlePagination = async (pageNo) => {
     let { page } = this.state;
     page = pageNo.page;
     await this.setState({
@@ -119,32 +120,32 @@ export class InvoiceHistoryClass extends Component {
     this.getTransactions();
   };
 
-  handleShare = id => {
+  handleShare = (id) => {
     this.props
       .commonCreateApi(`receiptpdfsend/?sa_transacno=${id}`)
-      .then(res => {});
+      .then((res) => {});
   };
 
-  handleInvoice = id => {
+  handleInvoice = (id) => {
     this.props
       .getCommonApi(`customerreceiptprint/?sa_transacno=${id}`)
-      .then(res => {});
+      .then((res) => {});
   };
 
-  handleClick = key => {
+  handleClick = (key) => {
     if (!this.state.active) {
       document.addEventListener("click", this.handleOutsideClick, false);
     } else {
       document.removeEventListener("click", this.handleOutsideClick, false);
     }
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       active: !prevState.active,
       currentIndex: key,
     }));
   };
 
-  handleOutsideClick = e => {
+  handleOutsideClick = (e) => {
     if (this.node != null) {
       if (this.node.contains(e.target)) {
         return;
@@ -177,6 +178,7 @@ export class InvoiceHistoryClass extends Component {
       this.state;
     let { fromDate, toDate, transCode, custCode, custName, transtype } =
       formField;
+    let { t } = this.props;
     return (
       <>
         <div className="invoice-History mt-1">
@@ -184,7 +186,7 @@ export class InvoiceHistoryClass extends Component {
             <div className="col-4">
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text">
-                  From Date
+                  {t("From Date")}
                 </label>
                 <div className="input-group">
                   <NormalDateTime
@@ -196,11 +198,13 @@ export class InvoiceHistoryClass extends Component {
                     type="date"
                     maxDate={new Date(toDate)}
                   />
+                  {t("")}
                 </div>
+                {t("")}
               </div>
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text">
-                  To Date
+                  {t("To Date")}
                 </label>
                 <div className="input-group">
                   <NormalDateTime
@@ -214,14 +218,17 @@ export class InvoiceHistoryClass extends Component {
                     type="date"
                     minDate={new Date(fromDate)}
                   />
+                  {t("")}
                 </div>
+                {t("")}
               </div>
+              {t("")}
             </div>
 
             <div className="col-4">
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text mr-2">
-                  Transaction Code
+                  {t("Transaction Code")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -229,11 +236,13 @@ export class InvoiceHistoryClass extends Component {
                     name="transCode"
                     onChange={this.handleChange}
                   />
+                  {t("")}
                 </div>
+                {t("")}
               </div>
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text">
-                  Transaction Type
+                  {t("Transaction Type")}
                 </label>
                 <div className="input-group">
                   <NormalSelect
@@ -244,8 +253,11 @@ export class InvoiceHistoryClass extends Component {
                     name="transtype"
                     onChange={this.handleChange}
                   />
+                  {t("")}
                 </div>
+                {t("")}
               </div>
+              {t("")}
             </div>
 
             <div className="col-3">
@@ -257,7 +269,9 @@ export class InvoiceHistoryClass extends Component {
                 outline={false}
                 onClick={this.handleSearch}
               />
+              {t("")}
             </div>
+            {t("")}
           </div>
 
           <div className="billing-table">
@@ -290,46 +304,55 @@ export class InvoiceHistoryClass extends Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {sa_custno}
                               </div>
+                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {sa_custname}
                               </div>
+                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {sa_date}
                               </div>
+                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {sa_totamt}
                               </div>
+                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {sa_transacno_ref}
                               </div>
+                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {void_refno}
                               </div>
+                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {sa_staffname}
                               </div>
+                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {sa_status}
                               </div>
+                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {sa_transacno_type}
                               </div>
+                              {t("")}
                             </td>
                             <td className="position-relative">
                               <NormalButton
@@ -344,22 +367,29 @@ export class InvoiceHistoryClass extends Component {
                                   )
                                 }
                               />
+                              {t("")}
                             </td>
+                            {t("")}
                           </tr>
                         );
                       })
                     : null}
                 </TableWrapper>
+                {t("")}
               </div>
+              {t("")}
             </div>
+            {t("")}
           </div>
+          {t("")}
         </div>
+        {t("")}
       </>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -369,4 +399,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const Invoice = connect(null, mapDispatchToProps)(InvoiceHistoryClass);
+export const Invoice = withTranslation()(
+  connect(null, mapDispatchToProps)(InvoiceHistoryClass)
+);

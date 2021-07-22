@@ -22,6 +22,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { FormGroup, Label, Input } from "reactstrap";
 import { ScheduleTable } from "./ScheduleTable";
+import { withTranslation } from "react-i18next";
 
 export class AddStaffClass extends Component {
   state = {
@@ -349,14 +350,16 @@ export class AddStaffClass extends Component {
       max_disc,
       work_schedule,
     } = formFields;
+
+    let { t } = this.props;
     return (
       <div className="px-5 container create-staff">
         {/* <p className="list-heading pb-4"> {id ? "Edit" : "Add"} Staff</p> */}
         <div className="head-label-nav">
-          <p className="category">StaffPlus</p>
+          <p className="category">{t("StaffPlus")}</p>
           <i className="icon-right mx-md-3"></i>
           <p className="sub-category">
-            {this.props.match.params.id ? "Edit" : "New"} Staff
+            {t(`${this.props.match.params.id ? "Edit" : "New"} Staff`)}
           </p>
         </div>
         {is_loading ? (
@@ -371,7 +374,7 @@ export class AddStaffClass extends Component {
               <div className="row">
                 <div className="col-6">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Upload Staff Photo
+                    {t("Upload Staff Photo")}
                   </label>
                   <div className="col-md-12 p-0">
                     <DragFileUpload
@@ -417,14 +420,14 @@ export class AddStaffClass extends Component {
                         checked={emp_isactive}
                         name="emp_isactive"
                       />{" "}
-                      Active
+                      {t("Active")}
                     </Label>
                   </FormGroup>
                 </div>
 
                 <div className="col-12 mb-4">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Employee Name
+                    {t("Employee Name")}
                   </label>
                   <div className="input-group">
                     <NormalInput
@@ -435,14 +438,14 @@ export class AddStaffClass extends Component {
                     />
                   </div>
                   {this.validator.message(
-                    "staff name",
+                    t("staff name"),
                     display_name,
-                    "required"
+                    t("required")
                   )}
                 </div>
                 <div className="col-12 mb-4">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    NRIC/WP
+                    {t("NRIC/WP")}
                   </label>
                   <div className="input-group">
                     <NormalInput
@@ -455,7 +458,7 @@ export class AddStaffClass extends Component {
                 </div>
                 <div className="col-12 mb-4">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    User Name
+                    {t("User Name")}
                   </label>
                   <div className="input-group">
                     <NormalInput
@@ -465,11 +468,15 @@ export class AddStaffClass extends Component {
                       onChange={this.handleChange}
                     />
                   </div>
-                  {this.validator.message("display_name", emp_name, "required")}
+                  {this.validator.message(
+                    t("display name"),
+                    emp_name,
+                    t("required")
+                  )}
                 </div>
                 <div className="col-6 mb-4">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Employee Type
+                    {t("Employee Type")}
                   </label>
                   <div className="input-group">
                     <NormalSelect
@@ -480,14 +487,14 @@ export class AddStaffClass extends Component {
                     />
                   </div>
                   {this.validator.message(
-                    "employee type",
+                    t("employee type"),
                     EMP_TYPEid,
-                    "required"
+                    t("required")
                   )}
                 </div>
                 <div className="col-6 mb-4">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Discount Limit
+                    {t("Discount Limit")}
                   </label>
                   <div className="input-group">
                     <NormalInput
@@ -499,14 +506,14 @@ export class AddStaffClass extends Component {
                     />
                   </div>
                   {this.validator.message(
-                    "discount limit",
+                    t("discount limit"),
                     max_disc,
-                    "required"
+                    t("required")
                   )}
                 </div>
                 <div className="col-6 mb-4">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Join Date
+                    {t("Join Date")}
                   </label>
                   <div className="input-group">
                     <NormalDateTime
@@ -520,14 +527,14 @@ export class AddStaffClass extends Component {
                     />
                   </div>
                   {this.validator.message(
-                    "join date",
+                    t("join date"),
                     emp_joindate,
-                    "required"
+                    t("required")
                   )}
                 </div>
                 <div className="col-6 mb-4">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    Site List
+                    {t("Site List")}
                   </label>
                   <div className="input-group">
                     <NormalSelect
@@ -547,7 +554,7 @@ export class AddStaffClass extends Component {
                         checked={is_login}
                         name="is_login"
                       />
-                      Security AC
+                      {t("Security AC")}
                     </Label>
                   </FormGroup>
                 </div>
@@ -555,7 +562,7 @@ export class AddStaffClass extends Component {
                   <div>
                     <div className="col-12 mb-4">
                       <label className="text-left text-black common-label-text fs-17 pb-3">
-                        Password
+                        {t("Password")}
                       </label>
                       <div className="input-group">
                         <NormalInput
@@ -568,7 +575,7 @@ export class AddStaffClass extends Component {
                     </div>
                     <div className="col-12 mb-4">
                       <label className="text-left text-black common-label-text fs-17 pb-3">
-                        Employee Level
+                        {t("Employee Level")}
                       </label>
                       <div className="input-group">
                         <NormalSelect
@@ -579,16 +586,16 @@ export class AddStaffClass extends Component {
                         />
                       </div>
                       {this.validator.message(
-                        "employee level",
+                        t("employee level"),
                         LEVEL_ItmIDid,
-                        "required"
+                        t("required")
                       )}
                     </div>
                   </div>
                 ) : null}
                 <div className="col-12 mb-4">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    To Show At
+                    {t("To Show At")}
                   </label>
                   <FormGroup check>
                     <Label check>
@@ -598,7 +605,7 @@ export class AddStaffClass extends Component {
                         checked={show_in_sales}
                         name="show_in_sales"
                       />
-                      Sales
+                      {t("Sales")}
                     </Label>
                   </FormGroup>
                   <FormGroup check>
@@ -609,7 +616,7 @@ export class AddStaffClass extends Component {
                         checked={show_in_trmt}
                         name="show_in_trmt"
                       />
-                      Treatment
+                      {t("Treatment")}
                     </Label>
                   </FormGroup>
                   <FormGroup check>
@@ -620,7 +627,7 @@ export class AddStaffClass extends Component {
                         checked={show_in_appt}
                         name="show_in_appt"
                       />
-                      Appointment
+                      {t("Appointment")}
                     </Label>
                   </FormGroup>
                 </div>
@@ -630,7 +637,7 @@ export class AddStaffClass extends Component {
                 <div className="row">
                   <div className="col-12">
                     <label className="text-left text-black common-label-text fs-17 pb-3">
-                      Work Schedule
+                      {t("Work Schedule")}
                     </label>
                     <ScheduleTable
                       data={work_schedule}
@@ -695,7 +702,6 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export const AddStaffPlus = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddStaffClass);
+export const AddStaffPlus = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(AddStaffClass)
+);

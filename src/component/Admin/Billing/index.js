@@ -21,6 +21,7 @@ import {
   commonPatchApi,
 } from "redux/actions/common";
 import closeIcon from "assets/images/close.png";
+import { withTranslation } from "react-i18next";
 
 export class BillingClass extends Component {
   state = {
@@ -62,33 +63,33 @@ export class BillingClass extends Component {
     this.getBilling();
   }
 
-    getBilling = () => {
-      let { billingList, pageMeta, formField, page, limit } = this.state;
-      let { fromDate, toDate, transCode, custCode, custName } = formField;
-      this.props
-        .getCommonApi(
-          `billing/?from_date=${
-            fromDate !== "" ? dateFormat(fromDate, "yyyy-mm-dd") : ""
-          }&to_date=${
-            toDate !== "" ? dateFormat(toDate, "yyyy-mm-dd") : ""
-          }&transac_no=${transCode}&cust_code=${custCode}&cust_name=${custName}&page=${page}&limit=${limit}`
-        )
-        .then(async res => {
-          console.log(res, "dsfdfaafg");
-          await this.setState({ billingList: [] });
-          billingList = res.data.dataList;
-          pageMeta = res.data.meta.pagination;
-          this.setState({ billingList, pageMeta });
-        });
-    };
-
-  handlePrint = id => {
+  getBilling = () => {
     let { billingList, pageMeta, formField, page, limit } = this.state;
     let { fromDate, toDate, transCode, custCode, custName } = formField;
-    this.props.getCommonApi(`receiptpdf/?sa_transacno=${id}`).then(res => {});
+    this.props
+      .getCommonApi(
+        `billing/?from_date=${
+          fromDate !== "" ? dateFormat(fromDate, "yyyy-mm-dd") : ""
+        }&to_date=${
+          toDate !== "" ? dateFormat(toDate, "yyyy-mm-dd") : ""
+        }&transac_no=${transCode}&cust_code=${custCode}&cust_name=${custName}&page=${page}&limit=${limit}`
+      )
+      .then(async (res) => {
+        console.log(res, "dsfdfaafg");
+        await this.setState({ billingList: [] });
+        billingList = res.data.dataList;
+        pageMeta = res.data.meta.pagination;
+        this.setState({ billingList, pageMeta });
+      });
   };
 
-  handlePagination = async pageNo => {
+  handlePrint = (id) => {
+    let { billingList, pageMeta, formField, page, limit } = this.state;
+    let { fromDate, toDate, transCode, custCode, custName } = formField;
+    this.props.getCommonApi(`receiptpdf/?sa_transacno=${id}`).then((res) => {});
+  };
+
+  handlePagination = async (pageNo) => {
     console.log(pageNo, "dsfsdfsdfsdf");
     let { page } = this.state;
     page = pageNo.page;
@@ -98,32 +99,32 @@ export class BillingClass extends Component {
     this.getBilling();
   };
 
-  handleShare = id => {
+  handleShare = (id) => {
     this.props
       .commonCreateApi(`receiptpdfsend/?sa_transacno=${id}`)
-      .then(res => {});
+      .then((res) => {});
   };
 
-  handleInvoice = id => {
+  handleInvoice = (id) => {
     this.props
       .getCommonApi(`customerreceiptprint/?sa_transacno=${id}`)
-      .then(res => {});
+      .then((res) => {});
   };
 
-  handleClick = key => {
+  handleClick = (key) => {
     if (!this.state.active) {
       document.addEventListener("click", this.handleOutsideClick, false);
     } else {
       document.removeEventListener("click", this.handleOutsideClick, false);
     }
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       active: !prevState.active,
       currentIndex: key,
     }));
   };
 
-  handleOutsideClick = e => {
+  handleOutsideClick = (e) => {
     if (this.node != null) {
       if (this.node.contains(e.target)) {
         return;
@@ -166,12 +167,13 @@ export class BillingClass extends Component {
       isOpenvoidCheckout,
     } = this.state;
     let { fromDate, toDate, transCode, custCode, custName } = formField;
+    let { t } = this.props;
     return (
       <>
         <div className="billing-section">
           <div className="row m-0 filter">
             <div className="col-md-8 d-flex align-items-center">
-              <p className="label-head my-2">Billing history</p>
+              <p className="label-head my-2">{t("Billing history")}</p>
               <i className="icon-download ml-4"></i>
             </div>
 
@@ -195,10 +197,10 @@ export class BillingClass extends Component {
                   {currentIndex === "filter" && (
                     <>
                       <div className="filter-category">
-                        <p className="subcategory">Available today</p>
-                        <p className="subcategory">Unavailable today</p>
-                        <p className="subcategory">Morning shift</p>
-                        <p className="subcategory">Evening shift</p>
+                        <p className="subcategory">{t("Available today")}</p>
+                        <p className="subcategory">{t("Unavailable today")}</p>
+                        <p className="subcategory">{t("Morning shift")}</p>
+                        <p className="subcategory">{t("Evening shift")}</p>
                       </div>
                     </>
                   )}
@@ -209,7 +211,7 @@ export class BillingClass extends Component {
             <div className="col-3">
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text mr-2">
-                  From Date
+                  {t("From Date")}
                 </label>
                 <div className="input-group">
                   <NormalDateTime
@@ -225,7 +227,7 @@ export class BillingClass extends Component {
               </div>
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text mr-2">
-                  To Date
+                  {t("To Date")}
                 </label>
                 <div className="input-group">
                   <NormalDateTime
@@ -243,7 +245,7 @@ export class BillingClass extends Component {
             <div className="col-3">
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text mr-2">
-                  Customer Name
+                  {t("Customer Name")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -256,7 +258,7 @@ export class BillingClass extends Component {
               </div>
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text mr-2">
-                  Customer Code
+                  {t("Customer Code")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -272,7 +274,7 @@ export class BillingClass extends Component {
             <div className="col-3">
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text mr-2">
-                  Transaction Code
+                  {t("Transaction Code")}
                 </label>
                 <div className="input-group">
                   <NormalInput
@@ -397,7 +399,7 @@ export class BillingClass extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       // getCustomer,
@@ -411,4 +413,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const Billing = connect(null, mapDispatchToProps)(BillingClass);
+export const Billing = withTranslation()(
+  connect(null, mapDispatchToProps)(BillingClass)
+);

@@ -22,6 +22,7 @@ import { StockMemoStaffList } from "./StockMemoStaffList";
 import { dateFormat } from "service/helperFunctions";
 import { history } from "helpers";
 import { createLogger } from "redux-logger";
+import { withTranslation } from "react-i18next";
 
 export class CreateNewInventoryClass extends Component {
   state = {
@@ -41,7 +42,7 @@ export class CreateNewInventoryClass extends Component {
 
   componentWillMount = () => {
     this.validator = new SimpleReactValidator({
-      element: message => (
+      element: (message) => (
         <span className="error-message font-md">{message}</span>
       ),
       autoForceUpdate: this,
@@ -56,16 +57,16 @@ export class CreateNewInventoryClass extends Component {
     });
   };
   handleStockItemUsagePopup = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isStockItemUsagePopup: !prevState.isStockItemUsagePopup,
     }));
   };
   handleStockItemUsageEmployeePopup = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isStockItemUsageEmployeePopup: !prevState.isStockItemUsageEmployeePopup,
     }));
   };
-  includeNewItems = async data => {
+  includeNewItems = async (data) => {
     this.handleStockItemUsagePopup();
     let { formFields } = this.state;
     formFields["qty"] = data.qty;
@@ -82,7 +83,7 @@ export class CreateNewInventoryClass extends Component {
     await this.setState({ formFields });
   };
 
-  handleSelectedStaff = async data => {
+  handleSelectedStaff = async (data) => {
     this.handleStockItemUsageEmployeePopup();
     let { formFields } = this.state;
     formFields["emp_id"] = data.id;
@@ -104,7 +105,7 @@ export class CreateNewInventoryClass extends Component {
         uom: formFields.uom,
         memo_remarks: formFields.memo_remarks,
       };
-      this.props.commonCreateApi(`stockusagememo/`, data).then(async res => {
+      this.props.commonCreateApi(`stockusagememo/`, data).then(async (res) => {
         if (res.status === 201) {
           this.props.handleCreateNewSave();
         }
@@ -116,11 +117,9 @@ export class CreateNewInventoryClass extends Component {
   };
 
   render() {
-    let {
-      formFields,
-      isStockItemUsagePopup,
-      isStockItemUsageEmployeePopup,
-    } = this.state;
+    let { formFields, isStockItemUsagePopup, isStockItemUsageEmployeePopup } =
+      this.state;
+    let { t } = this.props;
     return (
       <NormalModal
         className={"select-category"}
@@ -134,12 +133,14 @@ export class CreateNewInventoryClass extends Component {
           src={closeIcon}
           alt=""
         />
-        <div className="d-flex h4 justify-content-center p-3">Stock Usage</div>
+        <div className="d-flex h4 justify-content-center p-3">
+          {t("Stock Usage")}
+        </div>
         <div className="row p-3">
           <div className="col-4 mb-3">
             <div>
               <label className="text-left text-black common-label-text ">
-                Item Name
+                {t("Item Name")}
                 <span className="error-message text-danger validNo fs-16">
                   *
                 </span>
@@ -161,7 +162,7 @@ export class CreateNewInventoryClass extends Component {
 
           <div className="col-4 mb-3">
             <label className="text-left text-black common-label-text ">
-              Qty
+              {t("Qty")}
               <span className="error-message text-danger validNo fs-16">*</span>
             </label>
             <div className="input-group">
@@ -181,7 +182,7 @@ export class CreateNewInventoryClass extends Component {
           <div className="col-4 mb-3">
             <div>
               <label className="text-left text-black common-label-text ">
-                UOM
+                {t("UOM")}
                 <span className="error-message text-danger validNo fs-16">
                   *
                 </span>
@@ -201,7 +202,7 @@ export class CreateNewInventoryClass extends Component {
           <div className="col-4 mb-3">
             <div>
               <label className="text-left text-black common-label-text ">
-                Staff Name
+                {t("Staff Name")}
                 <span className="error-message text-danger validNo fs-16">
                   *
                 </span>
@@ -222,7 +223,7 @@ export class CreateNewInventoryClass extends Component {
           </div>
           <div className="col-4 mb-3">
             <label className="text-left text-black common-label-text ">
-              Date
+              {t("Date")}
             </label>
             <div className="">
               <NormalDate
@@ -237,7 +238,7 @@ export class CreateNewInventoryClass extends Component {
           <div className="col-4 mb-3">
             <div>
               <label className="text-left text-black common-label-text ">
-                Remark
+                {t("Remark")}
               </label>
             </div>
             <div className="input-group">
@@ -271,7 +272,7 @@ export class CreateNewInventoryClass extends Component {
             <StockItemUsagePopup
               isStockItemUsagePopup={isStockItemUsagePopup}
               handleStockItemUsagePopup={this.handleStockItemUsagePopup}
-              newItem={StockItemUsageList =>
+              newItem={(StockItemUsageList) =>
                 this.includeNewItems(StockItemUsageList)
               }
             />
@@ -282,7 +283,7 @@ export class CreateNewInventoryClass extends Component {
               handleStockItemUsageEmployeePopup={
                 this.handleStockItemUsageEmployeePopup
               }
-              handleSelectedStaff={data => this.handleSelectedStaff(data)}
+              handleSelectedStaff={(data) => this.handleSelectedStaff(data)}
             />
           ) : null}
         </div>
@@ -291,11 +292,11 @@ export class CreateNewInventoryClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   // filter: state.dashboard
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -306,7 +307,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const CreateNewInventory = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CreateNewInventoryClass);
+export const CreateNewInventory = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(CreateNewInventoryClass)
+);

@@ -1,1 +1,1 @@
-export {TreatmentPackage} from './TreatmentPackage'
+export { TreatmentPackage } from "./TreatmentPackage";

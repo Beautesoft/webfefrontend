@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import { getCommonApi } from "redux/actions/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { withTranslation } from "react-i18next";
 
-export class StaffListClass extends Component {
+class StaffListClass extends Component {
   componentDidMount = () => {};
 
   render() {
-    let { staffList, meta } = this.props;
+    let { staffList, meta, t } = this.props;
     return (
       <div>
         <div className="staff-listing d-flex">
@@ -46,7 +47,7 @@ export class StaffListClass extends Component {
               );
             })
           ) : (
-            <div className="mx-1 staff-list cursor-pointer">No data</div>
+            <div className="mx-1 staff-list cursor-pointer">{t("No data")}</div>
           )}
 
           <div
@@ -76,9 +77,9 @@ export class StaffListClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -87,7 +88,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const StaffList = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(StaffListClass);
+export const StaffList = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(StaffListClass)
+);

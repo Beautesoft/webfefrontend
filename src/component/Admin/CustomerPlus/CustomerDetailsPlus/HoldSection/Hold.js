@@ -19,6 +19,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { history } from "helpers";
 import { CreateHoldItem } from "redux/actions/customer";
+import { withTranslation } from "react-i18next";
 
 export class HoldSectionClass extends Component {
   state = {
@@ -43,7 +44,7 @@ export class HoldSectionClass extends Component {
     isPrint: false,
   };
 
-  toggle = tab => {
+  toggle = (tab) => {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab,
@@ -60,16 +61,18 @@ export class HoldSectionClass extends Component {
 
   getAccountData = () => {
     let { accountHeader } = this.state;
-    this.props.getCommonApi(`holditem/?cust_id=${this.props.id}`).then(key => {
-      let { data, header_data } = key;
-      let { accountList } = this.state;
-      accountList = data;
-      accountHeader = header_data;
-      this.setState({ accountList, accountHeader });
-    });
+    this.props
+      .getCommonApi(`holditem/?cust_id=${this.props.id}`)
+      .then((key) => {
+        let { data, header_data } = key;
+        let { accountList } = this.state;
+        accountList = data;
+        accountHeader = header_data;
+        this.setState({ accountList, accountHeader });
+      });
   };
 
-  handleissuedstaff = async item => {
+  handleissuedstaff = async (item) => {
     await this.setState({
       holdItem: item,
     });
@@ -98,9 +101,9 @@ export class HoldSectionClass extends Component {
     });
   };
 
-  issuedlisttableupdate = holdData => {
+  issuedlisttableupdate = (holdData) => {
     let { accountList } = this.state;
-    let filterList = accountList.find(account => account.id === holdData.id);
+    let filterList = accountList.find((account) => account.id === holdData.id);
     filterList["qty_issued"] = holdData.issueQty;
     filterList["staff_issued"] = holdData.emp_name;
     filterList["emp_id"] = holdData.emp_id;
@@ -108,9 +111,9 @@ export class HoldSectionClass extends Component {
     this.setState({ ...this.state.accountList, filterList });
   };
 
-  issuedlistupdate = holdData => {
+  issuedlistupdate = (holdData) => {
     let { formData } = this.state;
-    let filterList = formData.find(account => account.id === holdData.id);
+    let filterList = formData.find((account) => account.id === holdData.id);
     if (filterList) {
       filterList["id"] = holdData.id;
       filterList["issued_qty"] = holdData.issueQty;
@@ -134,7 +137,7 @@ export class HoldSectionClass extends Component {
   onSubmit = async () => {
     let { formData } = this.state;
     if (formData.length > 0) {
-      await this.props.CreateHoldItem(formData).then(async res => {
+      await this.props.CreateHoldItem(formData).then(async (res) => {
         if (res.status === 200) {
           Toast({ type: "success", message: res.message });
           this.setState({
@@ -164,6 +167,7 @@ export class HoldSectionClass extends Component {
       downloadlLink,
       isPrint,
     } = this.state;
+    let { t } = this.props;
     return (
       <div className="treatment-account row mt-3">
         <div className="col-12">
@@ -181,37 +185,45 @@ export class HoldSectionClass extends Component {
                             <div className="d-flex align-items-center justify-content-center">
                               {item.sa_date}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.sa_transacno_ref}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.hi_itemdesc}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.itemno}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.holditemqty}
                             </div>
+                            {t("")}
                           </td>
                           <td onClick={() => this.handleissuedstaff(item)}>
                             <div className="d-flex align-items-center justify-content-center cursor-pointer">
                               {item.qty_issued}
                             </div>
+                            {t("")}
                           </td>
                           <td onClick={() => this.handleissuedstaff(item)}>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.staff_issued}
                             </div>
+                            {t("")}
                           </td>
+                          {t("")}
                         </tr>
                       );
                     })
@@ -221,6 +233,7 @@ export class HoldSectionClass extends Component {
               ""
             )}
           </div>
+          {t("")}
         </div>
         <div className="col-12 d-flex justify-center">
           <div className="col-4">
@@ -228,10 +241,11 @@ export class HoldSectionClass extends Component {
               onClick={() => this.onSubmit()}
               className={`btn outline-btn mx-2 fs-14  text-capitalize`}
             >
-              {" "}
-              Issued{" "}
+              {t("Issued")}
             </button>
+            {t("")}
           </div>
+          {t("")}
         </div>
         <div className="col-12 d-flex justify-center">
           {isIssued ? (
@@ -251,7 +265,6 @@ export class HoldSectionClass extends Component {
         <div className="col-12 d-flex justify-center">
           {isWarning ? (
             <>
-              {" "}
               <NormalModal
                 style={{ minWidth: "280px" }}
                 modal={isWarning}
@@ -261,10 +274,12 @@ export class HoldSectionClass extends Component {
                   <div className="col-12">
                     <div>
                       <p>
-                        Product have outstanding, Are you sure you want to
-                        issued ?
+                        {t(`Product have outstanding, Are you sure you want to
+                        issued ?`)}
                       </p>
+                      {t("")}
                     </div>
+                    {t("")}
                   </div>
                   <div className="col-12 p-3">
                     <div className="row">
@@ -273,23 +288,28 @@ export class HoldSectionClass extends Component {
                           onClick={() => this.proceedtoissuedstaff()}
                           className={`btn outline-btn mx-2 fs-14  text-capitalize`}
                         >
-                          {" "}
-                          Yes{" "}
+                          {t("Yes")}
                         </button>
+                        {t("")}
                       </div>
                       <div className="col-3">
                         <button
                           onClick={() => this.denyissuedstaff()}
                           className={`btn outline-btn mx-2 fs-14  text-capitalize`}
                         >
-                          {" "}
-                          No{" "}
+                          {t("No")}
                         </button>
+                        {t("")}
                       </div>
+                      {t("")}
                     </div>
+                    {t("")}
                   </div>
+                  {t("")}
                 </div>
-              </NormalModal>{" "}
+                {t("")}
+              </NormalModal>
+              {t("")}
             </>
           ) : (
             ""
@@ -298,7 +318,6 @@ export class HoldSectionClass extends Component {
         <div className="col-12 d-flex justify-center">
           {isPrint ? (
             <>
-              {" "}
               <NormalModal
                 style={{ minWidth: "280px" }}
                 modal={isPrint}
@@ -307,8 +326,10 @@ export class HoldSectionClass extends Component {
                 <div className="row new-cart issued-staff p-3">
                   <div className="col-12">
                     <div>
-                      <p>Do you want to print ?</p>
+                      <p>{t("Do you want to print ?")}</p>
+                      {t("")}
                     </div>
+                    {t("")}
                   </div>
                   <div className="col-12 p-3">
                     <div className="row">
@@ -317,34 +338,40 @@ export class HoldSectionClass extends Component {
                           onClick={() => this.handlePrint()}
                           className={`btn outline-btn mx-2 fs-14  text-capitalize`}
                         >
-                          {" "}
-                          Yes{" "}
+                          {t("Yes")}
                         </button>
+                        {t("")}
                       </div>
                       <div className="col-3">
                         <button
                           onClick={() => this.setState({ isPrint: false })}
                           className={`btn outline-btn mx-2 fs-14  text-capitalize`}
                         >
-                          {" "}
-                          No{" "}
+                          {t("No")}
                         </button>
+                        {t("")}
                       </div>
+                      {t("")}
                     </div>
+                    {t("")}
                   </div>
+                  {t("")}
                 </div>
-              </NormalModal>{" "}
+                {t("")}
+              </NormalModal>
+              {t("")}
             </>
           ) : (
             ""
           )}
         </div>
+        {t("")}
       </div>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -358,4 +385,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const Hold = connect(null, mapDispatchToProps)(HoldSectionClass);
+export const Hold = withTranslation()(
+  connect(null, mapDispatchToProps)(HoldSectionClass)
+);

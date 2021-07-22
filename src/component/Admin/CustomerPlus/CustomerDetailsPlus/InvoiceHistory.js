@@ -6,15 +6,16 @@ import classnames from "classnames";
 import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 
 import { Invoice } from "./Invoice/index";
+import { withTranslation } from "react-i18next";
 
-export class InvoiceHistory extends Component {
+class InvoiceHistoryClass extends Component {
   state = {
     activeTab: "1",
     isOpenTreatmentDone: false,
     isActiveTab: "detail",
   };
 
-  toggle = tab => {
+  toggle = (tab) => {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab,
@@ -23,6 +24,7 @@ export class InvoiceHistory extends Component {
   };
 
   render() {
+    let { t } = this.props;
     return (
       <div className="beautesoft-navlink customer-detail">
         <div className="filled-tabs">
@@ -37,10 +39,13 @@ export class InvoiceHistory extends Component {
                     this.toggle("1");
                   }}
                 >
-                  Invoice History
+                  {t("Invoice History")}
                 </NavLink>
+                {t("")}
               </NavItem>
+              {t("")}
             </Nav>
+            {t("")}
           </div>
           <TabContent activeTab={this.state.activeTab}>
             <TabPane tabId="1">
@@ -50,9 +55,13 @@ export class InvoiceHistory extends Component {
                 ""
               )}
             </TabPane>
+            {t("")}
           </TabContent>
+          {t("")}
         </div>
+        {t("")}
       </div>
     );
   }
 }
+export const InvoiceHistory = withTranslation()(InvoiceHistoryClass);

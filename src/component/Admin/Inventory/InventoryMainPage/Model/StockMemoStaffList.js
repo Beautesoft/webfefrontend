@@ -4,17 +4,18 @@ import { getCommonApi } from "redux/actions/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import closeIcon from "assets/images/close.png";
+import { withTranslation } from "react-i18next";
 
 export class StockMemoStaffListClass extends Component {
   state = { staffList: [], limit: 6, page: 1 };
   componentDidMount = () => {
     this.getStafflist({});
   };
-  getStafflist = data => {
+  getStafflist = (data) => {
     let { page, limit } = this.state;
     this.props
       .getCommonApi(`empcartlist/?sales_staff=2&page=${page}&limit=${limit}`)
-      .then(async key => {
+      .then(async (key) => {
         let { status, data } = key;
         console.log(data, "sdfgsdfgsdfgdfg sdfgsdfgsdfg");
         let { staffList } = this.state;
@@ -49,6 +50,7 @@ export class StockMemoStaffListClass extends Component {
 
   render() {
     let { staffList } = this.state;
+    let { t } = this.props;
     return (
       <NormalModal
         className={"stock-memo-staff-listing"}
@@ -63,7 +65,7 @@ export class StockMemoStaffListClass extends Component {
           alt=""
         />
         <div className="d-flex h4 justify-content-center p-1 mb-3">
-          Staff List
+          {t("Staff List")}
         </div>
         <div>
           <div className="staff-listing d-flex">
@@ -102,7 +104,9 @@ export class StockMemoStaffListClass extends Component {
                 );
               })
             ) : (
-              <div className="mx-1 staff-list cursor-pointer">No data</div>
+              <div className="mx-1 staff-list cursor-pointer">
+                {t("No data")}
+              </div>
             )}
 
             <div
@@ -140,9 +144,9 @@ export class StockMemoStaffListClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -151,7 +155,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const StockMemoStaffList = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(StockMemoStaffListClass);
+export const StockMemoStaffList = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(StockMemoStaffListClass)
+);

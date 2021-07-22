@@ -3,10 +3,10 @@ import { NormalInput, NormalButton, NormalSelect } from "component/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getCommonApi, commonCreateApi } from "redux/actions/common";
-
 import "./style.scss";
+import { withTranslation } from "react-i18next";
 
-export class itemStatusPopupClass extends Component {
+class itemStatusPopupClass extends Component {
   state = {
     data_list: [],
     item_status_options: [],
@@ -17,7 +17,7 @@ export class itemStatusPopupClass extends Component {
   componentDidMount() {
     let { item_status_options, focReasonList } = this.state;
 
-    this.props.getCommonApi(`focreason/`).then(key => {
+    this.props.getCommonApi(`focreason/`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         for (let value of data) {
@@ -29,7 +29,7 @@ export class itemStatusPopupClass extends Component {
         this.setState({ focReasonList });
       }
     });
-    this.props.getCommonApi(`itemstatus/`).then(key => {
+    this.props.getCommonApi(`itemstatus/`).then((key) => {
       let { status, data } = key;
       if (status === 200) {
         for (let value of data) {
@@ -50,7 +50,7 @@ export class itemStatusPopupClass extends Component {
       .getCommonApi(
         `cartpopup/?cust_noid=${basicApptDetail.custId}&cart_id=${this.props.id}&is_status=1`
       )
-      .then(async key => {
+      .then(async (key) => {
         let { status, data } = key;
         if (status == "200") {
           console.log(key, "cartstatuspopuplist");
@@ -78,7 +78,7 @@ export class itemStatusPopupClass extends Component {
       });
     }
 
-    this.props.commonCreateApi(`cartpopup/`, sourceList).then(key => {
+    this.props.commonCreateApi(`cartpopup/`, sourceList).then((key) => {
       let { status, data } = key;
       if (status == 200) {
         this.props.handleModal();
@@ -97,7 +97,7 @@ export class itemStatusPopupClass extends Component {
     this.setState({ data_list });
   };
 
-  handleAccordion = id => {
+  handleAccordion = (id) => {
     let elements = document.getElementsByClassName("accordion");
     for (let i = 0; i < elements.length; i++) {
       elements[i].classList.add("d-none");
@@ -108,12 +108,13 @@ export class itemStatusPopupClass extends Component {
 
   render() {
     let { data_list, item_status_options, focReasonList } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="container-fluid mb-4 mt-2 product-details">
           <div className="row">
             <div className="col-10">
-              <h4>Item Status</h4>
+              <h4>{t("Item Status")}</h4>
             </div>
             {data_list && data_list.length > 0 ? (
               <div className="col-2">
@@ -127,7 +128,7 @@ export class itemStatusPopupClass extends Component {
             ) : null}
           </div>
           {data_list && data_list.length <= 0 ? (
-            <div className="row pl-5 pr-5 mt-4">No Record Found</div>
+            <div className="row pl-5 pr-5 mt-4">{t("No Record Found")}</div>
           ) : null}
           <div className="row pl-5 pr-5 mt-4">
             {data_list &&
@@ -163,14 +164,14 @@ export class itemStatusPopupClass extends Component {
                       <div className="row w-100 pl-3 mb-3">
                         <div className="col-4">
                           <label className="text-left text-black common-label-text fs-17 pb-2">
-                            Item Status
+                            {t("Item Status")}
                           </label>
                           <div className="input-group">
                             <NormalSelect
                               options={item_status_options}
                               value={item.itemstatus ? item.itemstatus : 0}
                               name="itemstatus"
-                              onChange={e => this.handleChange(e, index)}
+                              onChange={(e) => this.handleChange(e, index)}
                             />
                           </div>
                         </div>
@@ -178,14 +179,14 @@ export class itemStatusPopupClass extends Component {
                           <>
                             <div className="col-4">
                               <label className="text-left text-black common-label-text fs-17 pb-2">
-                                FOC Reason
+                                {t("FOC Reason")}
                               </label>
                               <div className="input-group">
                                 <NormalSelect
                                   options={focReasonList}
                                   value={item.focreason ? item.focreason : 0}
                                   name="focreason"
-                                  onChange={e => this.handleChange(e, index)}
+                                  onChange={(e) => this.handleChange(e, index)}
                                 />
                               </div>
                             </div>
@@ -196,11 +197,13 @@ export class itemStatusPopupClass extends Component {
                                     type="checkbox"
                                     checked={item.is_foc}
                                     name="is_foc"
-                                    onChange={e => this.handleChange(e, index)}
+                                    onChange={(e) =>
+                                      this.handleChange(e, index)
+                                    }
                                   />
                                 </div>
                                 <label className="text-left text-black common-label-text fs-17 mt-1">
-                                  FOC
+                                  {t("FOC")}
                                 </label>
                               </div>
                             </div>
@@ -218,11 +221,11 @@ export class itemStatusPopupClass extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   basicApptDetail: state.appointment.basicApptDetail,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -232,7 +235,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const ItemStatusPopup = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(itemStatusPopupClass);
+export const ItemStatusPopup = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(itemStatusPopupClass)
+);

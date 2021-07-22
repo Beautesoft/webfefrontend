@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { getRedeemPlolicySettings } from "redux/actions/customerPlus";
 import { connect } from "react-redux";
 import _ from "lodash";
+import { withTranslation } from "react-i18next";
 
 export class RedeemPolicyTableClass extends React.Component {
   state = {
@@ -71,12 +72,13 @@ export class RedeemPolicyTableClass extends React.Component {
 
   render() {
     let { headerDetails, dataList, meta, currentIndex, isLoading } = this.state;
+    let { t } = this.props;
     return (
       <>
         <div className="customer-list container-fluid">
           <div className="row align-items-center">
             <div className="col-md-4">
-              <h3 className="head-label">Redeem Policy</h3>
+              <h3 className="head-label">{t("Redeem Policy")}</h3>
             </div>
             <div className="col-md-8">
               <div className="d-flex">
@@ -201,8 +203,8 @@ export class RedeemPolicyTableClass extends React.Component {
                                           )
                                         }
                                       >
-                                        <span className="icon-eye-grey px-3"></span>{" "}
-                                        Edit
+                                        <span className="icon-eye-grey px-3"></span>
+                                        {t("Edit")}
                                       </div>
                                     </div>
                                   </>
@@ -240,7 +242,6 @@ const mapDispatchToProps = (dispatch) => {
   );
 };
 
-export const RedeemPolicyTable = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RedeemPolicyTableClass);
+export const RedeemPolicyTable = withTranslation()(
+  connect(mapStateToProps, mapDispatchToProps)(RedeemPolicyTableClass)
+);

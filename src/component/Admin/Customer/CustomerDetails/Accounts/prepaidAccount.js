@@ -12,6 +12,7 @@ import {
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { withTranslation } from "react-i18next";
 
 export class PrepaidAccountClass extends Component {
   state = {
@@ -47,7 +48,7 @@ export class PrepaidAccountClass extends Component {
     DetailList: [],
   };
 
-  toggle = tab => {
+  toggle = (tab) => {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab,
@@ -59,11 +60,11 @@ export class PrepaidAccountClass extends Component {
     this.getAccountData("");
   }
 
-  getAccountData = api => {
+  getAccountData = (api) => {
     let { show, accountHeader } = this.state;
     this.props
       .getCommonApi(`prepaidacclist/?cust_id=${this.props.id}${api}`)
-      .then(key => {
+      .then((key) => {
         let { data, header_data } = key;
         let { accountList } = this.state;
         accountList = data;
@@ -72,7 +73,7 @@ export class PrepaidAccountClass extends Component {
       });
   };
 
-  handleChange = async type => {
+  handleChange = async (type) => {
     let { show } = this.state;
     show = type;
     await this.setState({
@@ -85,7 +86,7 @@ export class PrepaidAccountClass extends Component {
     }
   };
 
-  handleOpenDetail = async data => {
+  handleOpenDetail = async (data) => {
     let { activeTab } = this.state;
     activeTab = "detail";
 
@@ -95,8 +96,8 @@ export class PrepaidAccountClass extends Component {
     this.getDetailList(data.id);
   };
 
-  getDetailList = id => {
-    this.props.getCommonApi(`prepaidacclist/${id}`).then(key => {
+  getDetailList = (id) => {
+    this.props.getCommonApi(`prepaidacclist/${id}`).then((key) => {
       let { data, header_data } = key;
       let { DetailList, accountHeader } = this.state;
       DetailList = data;
@@ -132,11 +133,12 @@ export class PrepaidAccountClass extends Component {
       balance_alltype,
       totalprepaid_count,
     } = accountHeader;
+    let { t } = this.props;
     return (
       <div className="treatment-account row">
         <div className="col-6 mt-3 mb-4">
           <div className="row">
-            <div className="col-5 mb-2">Total Prepaid Count</div>
+            <div className="col-5 mb-2">{t("Total Prepaid Count")}</div>
             <div className="col-5 mb-2">{totalprepaid_count}</div>
             <div className="row m-0">
               <div className="col-12 mb-2">
@@ -147,10 +149,12 @@ export class PrepaidAccountClass extends Component {
                       onChange={() => this.handleChange("active")}
                       type="radio"
                       name="radio1"
-                    />{" "}
-                    Show active prepaid only
+                    />
+                    {t("Show active prepaid only")}
                   </Label>
+                  {t("")}
                 </FormGroup>
+                {t("")}
               </div>
               <div className="col-12">
                 <FormGroup check>
@@ -160,25 +164,32 @@ export class PrepaidAccountClass extends Component {
                       onChange={() => this.handleChange("all")}
                       type="radio"
                       name="radio1"
-                    />{" "}
-                    Show all prepaid
+                    />
+                    {t("Show all prepaid")}
                   </Label>
+                  {t("")}
                 </FormGroup>
+                {t("")}
               </div>
+              {t("")}
             </div>
+            {t("")}
           </div>
+          {t("")}
         </div>
         <div className="col-6 mt-3 mb-4">
           <div className="row">
-            <div className="col-6 mb-2">Balance of Product Type</div>
+            <div className="col-6 mb-2">{t("Balance of Product Type")}</div>
             <div className="col-6 mb-2">$ {balance_producttype}</div>
 
-            <div className="col-6">Balance of Service Type</div>
+            <div className="col-6">{t("Balance of Service Type")}</div>
             <div className="col-6">$ {balance_servicetype}</div>
 
-            <div className="col-6">Balance of All Types</div>
+            <div className="col-6">{t("Balance of All Types")}</div>
             <div className="col-6">$ {balance_alltype}</div>
+            {t("")}
           </div>
+          {t("")}
         </div>
         <div className="col-12">
           <div className="table">
@@ -197,46 +208,55 @@ export class PrepaidAccountClass extends Component {
                             <div className="d-flex align-items-center justify-content-center">
                               {item.prepaid}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.pp_desc}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.last_update}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.sa_date}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.type}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.exp_date}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.exp_status}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.pp_total}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.remain}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
@@ -247,8 +267,11 @@ export class PrepaidAccountClass extends Component {
                                 label="view"
                                 onClick={() => this.handleOpenDetail(item)}
                               />
+                              {t("")}
                             </div>
+                            {t("")}
                           </td>
+                          {t("")}
                         </tr>
                       );
                     })
@@ -267,47 +290,57 @@ export class PrepaidAccountClass extends Component {
                             <div className="d-flex align-items-center justify-content-center">
                               {item.prepaid_ref}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.transaction_ref}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.voucher}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.item_no}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.item_name}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.use_amt}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.topup_amt}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.balance}
                             </div>
+                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.topup_no}
                             </div>
+                            {t("")}
                           </td>
+                          {t("")}
                         </tr>
                       );
                     })
@@ -315,6 +348,7 @@ export class PrepaidAccountClass extends Component {
               </TableWrapper>
             )}
           </div>
+          {t("")}
         </div>
         <div className="col-12 d-flex justify-center">
           {activeTab === "detail" ? (
@@ -336,13 +370,15 @@ export class PrepaidAccountClass extends Component {
             // outline={false}
             onClick={() => this.setState({ isOpenEditDisc: false })}
           />
+          {t("")}
         </div>
+        {t("")}
       </div>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
@@ -355,7 +391,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export const PrepaidAccount = connect(
-  null,
-  mapDispatchToProps
-)(PrepaidAccountClass);
+export const PrepaidAccount = withTranslation()(
+  connect(null, mapDispatchToProps)(PrepaidAccountClass)
+);
