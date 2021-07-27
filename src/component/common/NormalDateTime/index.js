@@ -15,7 +15,7 @@ export const NormalDateTime = ({
   value,
   className,
   showYearDropdown = false,
-  dateFormat,
+  dateFormat = 'dd/MM/yyyy',
   timeIntervals = 5,
   showIcon = true,
   showMonthYearPicker,
