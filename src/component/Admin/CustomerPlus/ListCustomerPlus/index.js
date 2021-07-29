@@ -14,13 +14,13 @@ import { withTranslation } from "react-i18next";
 export class ListCustomerPlusClass extends React.Component {
   state = {
     headerDetails: [
-      { label: "Customer Code", sortKey: "customerCode" },
-      { label: "Referance Code", sortKey: "referenceCode", enabled: true },
-      { label: "Salutation", sortKey: "salutation", enabled: true },
-      { label: "Customer Name", sortKey: "customerName", enabled: true },
-      { label: "Mobile Phone", sortKey: "mobilePhone", enabled: true },
-      { label: "Birthday", sortKey: "birthday", enabled: true },
-      { label: "Customer Class", sortKey: "customerClass", enabled: true },
+      { label: "Customer Code", sortKey: "cust_code" },
+      { label: "Referance Code", sortKey: "cust_refer", enabled: true },
+      { label: "Salutation", sortKey: "cust_title", enabled: true },
+      { label: "Customer Name", sortKey: "cust_name", enabled: true },
+      { label: "Mobile Phone", sortKey: "cust_phone2", enabled: true },
+      { label: "Birthday", sortKey: "cust_dob,", enabled: true },
+      { label: "Customer Class", sortKey: "cust_title", enabled: true },
       { label: "" },
     ],
     customerList: [],
@@ -188,6 +188,7 @@ export class ListCustomerPlusClass extends React.Component {
                           cust_phone2,
                           cust_dob,
                           class_name,
+                          cust_title,
                         } = item;
                         let date = new Date(cust_dob);
                         cust_dob = date.toLocaleDateString();
@@ -217,7 +218,7 @@ export class ListCustomerPlusClass extends React.Component {
                               }
                             >
                               <div className="d-flex align-items-center justify-content-center">
-                                {""}
+                                {cust_title}
                               </div>
                             </td>
                             <td
