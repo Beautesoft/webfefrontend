@@ -787,7 +787,7 @@ export class SelectStaffClass extends Component {
       sessionTableDetails.forEach((sessionTable, index) => {
         if (sessionTable.values.includes(e.value)) {
           total +=
-            sessionTableDetails[index].sessions /
+            parseFloat(`${sessionTableDetails[index].sessions}`) /
             sessionTableDetails[index].values.length;
         }
       });
