@@ -185,45 +185,37 @@ export class HoldSectionClass extends Component {
                             <div className="d-flex align-items-center justify-content-center">
                               {item.sa_date}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.sa_transacno_ref}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.hi_itemdesc}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.itemno}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.holditemqty}
                             </div>
-                            {t("")}
                           </td>
                           <td onClick={() => this.handleissuedstaff(item)}>
                             <div className="d-flex align-items-center justify-content-center cursor-pointer">
                               {item.qty_issued}
                             </div>
-                            {t("")}
                           </td>
                           <td onClick={() => this.handleissuedstaff(item)}>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.staff_issued}
                             </div>
-                            {t("")}
                           </td>
-                          {t("")}
                         </tr>
                       );
                     })
@@ -233,7 +225,6 @@ export class HoldSectionClass extends Component {
               ""
             )}
           </div>
-          {t("")}
         </div>
         <div className="col-12 d-flex justify-center">
           <div className="col-4">
@@ -243,9 +234,7 @@ export class HoldSectionClass extends Component {
             >
               {t("Issued")}
             </button>
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="col-12 d-flex justify-center">
           {isIssued ? (
@@ -277,9 +266,7 @@ export class HoldSectionClass extends Component {
                         {t(`Product have outstanding, Are you sure you want to
                         issued ?`)}
                       </p>
-                      {t("")}
                     </div>
-                    {t("")}
                   </div>
                   <div className="col-12 p-3">
                     <div className="row">
@@ -290,7 +277,6 @@ export class HoldSectionClass extends Component {
                         >
                           {t("Yes")}
                         </button>
-                        {t("")}
                       </div>
                       <div className="col-3">
                         <button
@@ -299,17 +285,11 @@ export class HoldSectionClass extends Component {
                         >
                           {t("No")}
                         </button>
-                        {t("")}
                       </div>
-                      {t("")}
                     </div>
-                    {t("")}
                   </div>
-                  {t("")}
                 </div>
-                {t("")}
               </NormalModal>
-              {t("")}
             </>
           ) : (
             ""
@@ -327,9 +307,7 @@ export class HoldSectionClass extends Component {
                   <div className="col-12">
                     <div>
                       <p>{t("Do you want to print ?")}</p>
-                      {t("")}
                     </div>
-                    {t("")}
                   </div>
                   <div className="col-12 p-3">
                     <div className="row">
@@ -340,7 +318,6 @@ export class HoldSectionClass extends Component {
                         >
                           {t("Yes")}
                         </button>
-                        {t("")}
                       </div>
                       <div className="col-3">
                         <button
@@ -349,23 +326,16 @@ export class HoldSectionClass extends Component {
                         >
                           {t("No")}
                         </button>
-                        {t("")}
                       </div>
-                      {t("")}
                     </div>
-                    {t("")}
                   </div>
-                  {t("")}
                 </div>
-                {t("")}
               </NormalModal>
-              {t("")}
             </>
           ) : (
             ""
           )}
         </div>
-        {t("")}
       </div>
     );
   }

@@ -53,12 +53,10 @@ class CourseClass extends Component {
                 onChange={() => {}}
                 className="custome-name px-3 p-0"
               />
-              {t("")}
             </div>
             {/* <div className="col-5">{t("Total treatment count")} </div>
             <div className="col-5">{t("4")}</div> */}
           </div>
-          {t("")}
         </div>
         <div className="col-6 mt-3 mb-4">
           <div className="row">
@@ -68,7 +66,6 @@ class CourseClass extends Component {
             <div className="col-6">{t("Outstanding balance")}</div>
             <div className="col-6">$500</div> */}
           </div>
-          {t("")}
         </div>
         <div className="col-12">
           <div className="table">
@@ -89,67 +86,56 @@ class CourseClass extends Component {
                           <div className="d-flex align-items-center justify-content-center">
                             {"12/12/2020"}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {"CNRAFT11..."}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {"RCPRAFT11..."}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {"Biohairjet..."}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {"N"}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {"N/A"}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {"$0.00"}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {"Take"}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {"03"}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {"$210.00"}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {"$210.00"}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
@@ -166,21 +152,15 @@ class CourseClass extends Component {
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                               />
-                              {t("")}
                             </svg>
-                            {t("")}
                           </div>
-                          {t("")}
                         </td>
-                        {t("")}
                       </tr>
                     );
                   })
                 : ""}
             </TableWrapper>
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="col-12 action-bar mb-3 d-flex text-center">
           <NormalButton
@@ -207,7 +187,6 @@ class CourseClass extends Component {
             // outline={false}
             onClick={() => this.setState({ isOpenEditDisc: false })}
           />
-          {t("")}
         </div>
         <div className="col-12 text-center">
           <NormalButton
@@ -218,9 +197,7 @@ class CourseClass extends Component {
             // outline={false}
             onClick={() => this.setState({ isOpenEditDisc: false })}
           />
-          {t("")}
         </div>
-        {t("")}
       </div>
     );
   }

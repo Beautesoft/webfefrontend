@@ -192,7 +192,6 @@ export class IssuedStaffClass extends Component {
         <div className="row new-cart issued-staff">
           <div className="col-12">
             <p className="fs-18 font-700 mb-3 title">{t("Select Staff")}</p>
-            {t("")}
           </div>
 
           <div className="col-12 mb-2 form-group">
@@ -209,13 +208,9 @@ export class IssuedStaffClass extends Component {
                     onChange={this.handleChange}
                     disabled={true}
                   />
-                  {t("")}
                 </div>
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
           <div className="col-12 mb-2 form-group">
             <div className="row">
@@ -231,13 +226,9 @@ export class IssuedStaffClass extends Component {
                     onChange={this.handleChange}
                     disabled={true}
                   />
-                  {t("")}
                 </div>
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
 
           <div className="col-12 mb-2 form-group">
@@ -252,13 +243,9 @@ export class IssuedStaffClass extends Component {
                     name="issueQty"
                     onChange={this.handleChange}
                   />
-                  {t("")}
                 </div>
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
           <div className={`col-12 cart-item emp-image`}>
             <div className={`staff-listing d-flex emp-list`}>
@@ -279,9 +266,7 @@ export class IssuedStaffClass extends Component {
                     stroke-linecap="round"
                     stroke-linejoin="round"
                   />
-                  {t("")}
                 </svg>
-                {t("")}
               </div>
               {staffList.length > 0
                 ? staffList.map((staff) => {
@@ -293,7 +278,6 @@ export class IssuedStaffClass extends Component {
                       >
                         <img className="img emp" src={staff.emp_pic} alt="" />
                         <p>{staff.emp_name}</p>
-                        {t("")}
                       </div>
                     );
                   })
@@ -315,13 +299,9 @@ export class IssuedStaffClass extends Component {
                     stroke-linecap="round"
                     stroke-linejoin="round"
                   />
-                  {t("")}
                 </svg>
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
           <div className="col-12 cart-item">
             <div className="item-list">
@@ -341,23 +321,16 @@ export class IssuedStaffClass extends Component {
                               onChange={this.handleChange}
                               disabled={true}
                             />
-                            {t("")}
                           </div>
-                          {t("")}
                         </div>
-                        {t("")}
                       </td>
-                      {t("")}
                     </tr>
                   ) : (
                     ""
                   )}
                 </TableWrapper>
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
           <div className="col-12 pt-4 action-bar">
             <div className="row">
@@ -370,9 +343,8 @@ export class IssuedStaffClass extends Component {
                   outline={false}
                   onClick={this.handleClearLine}
                 />
-                {t("")}
               </div>
-              <div className="col-4 d-flex">{t("")}</div>
+              <div className="col-4 d-flex"></div>
               <div className="col-4 d-flex text-right">
                 <NormalButton
                   buttonClass={"mx-2"}
@@ -382,15 +354,10 @@ export class IssuedStaffClass extends Component {
                   outline={false}
                   onClick={(event) => this.handleissuedconfirm(event)}
                 />
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
-        {t("")}
       </NormalModal>
     );
   }

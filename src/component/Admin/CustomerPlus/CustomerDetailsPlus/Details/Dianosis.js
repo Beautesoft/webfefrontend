@@ -172,7 +172,6 @@ export class DianosisClass extends React.Component {
             <div className="col-md-12 col-lg-2 mb-4">
               <div className="col-md-12 mb-4">
                 <h3 className="head-label">{t("Dianosis")}</h3>
-                {t("")}
               </div>
               <Navigation
                 activeItemId={currentMenu}
@@ -192,7 +191,6 @@ export class DianosisClass extends React.Component {
                   },
                 ]}
               />
-              {t("")}
             </div>
             {currentMenu == "/" ? (
               <div className="col-md-12 col-lg-10">
@@ -204,7 +202,6 @@ export class DianosisClass extends React.Component {
                         placeholder="Search Photo"
                         onChange={this.handlePhotosearch}
                       />
-                      {t("")}
                     </div>
                     <div className="col-sm-12 col-md-6 p-0">
                       <NormalButton
@@ -213,11 +210,8 @@ export class DianosisClass extends React.Component {
                         label="Add Photo"
                         onClick={() => this.setState({ isAddPhotoOpen: true })}
                       />
-                      {t("")}
                     </div>
-                    {t("")}
                   </div>
-                  {t("")}
                 </div>
                 <div className="table-responsive">
                   <div className="table-container">
@@ -247,7 +241,6 @@ export class DianosisClass extends React.Component {
                                   <div className="d-flex align-items-center justify-content-center">
                                     {date}
                                   </div>
-                                  {t("")}
                                 </td>
                                 <td
                                   className={
@@ -259,7 +252,6 @@ export class DianosisClass extends React.Component {
                                   <div className="d-flex align-items-center justify-content-center">
                                     {code}
                                   </div>
-                                  {t("")}
                                 </td>
                                 <td
                                   className={
@@ -271,7 +263,6 @@ export class DianosisClass extends React.Component {
                                   <div className="d-flex align-items-center justify-content-center">
                                     {remarks}
                                   </div>
-                                  {t("")}
                                 </td>
                                 <td
                                   className={
@@ -294,9 +285,7 @@ export class DianosisClass extends React.Component {
                                         console.log(this.state.compareList);
                                       }}
                                     />
-                                    {t("")}
                                   </div>
-                                  {t("")}
                                 </td>
                                 <td
                                   className={
@@ -315,24 +304,16 @@ export class DianosisClass extends React.Component {
                                         })
                                       }
                                     >
-                                      <span className="icon-eye-grey">
-                                        {t("")}
-                                      </span>
-                                      {t("")}
+                                      <span className="icon-eye-grey"></span>
                                     </div>
-                                    {t("")}
                                   </div>
-                                  {t("")}
                                 </td>
-                                {t("")}
                               </tr>
                             );
                           })
                         : ""}
                     </TableWrapper>
-                    {t("")}
                   </div>
-                  {t("")}
                 </div>
                 {compareList.length > 0 ? (
                   <div className="w-100 col-4 p-0">
@@ -344,7 +325,6 @@ export class DianosisClass extends React.Component {
                         this.setState({ isCompareOpen: true });
                       }}
                     />
-                    {t("")}
                   </div>
                 ) : null}
               </div>
@@ -358,11 +338,8 @@ export class DianosisClass extends React.Component {
                         placeholder="Search History"
                         onChange={this.handleHistorySearch}
                       />
-                      {t("")}
                     </div>
-                    {t("")}
                   </div>
-                  {t("")}
                 </div>
                 <div className="table-responsive">
                   <div className="table-container">
@@ -391,7 +368,6 @@ export class DianosisClass extends React.Component {
                                   <div className="d-flex align-items-center justify-content-center">
                                     {date}
                                   </div>
-                                  {t("")}
                                 </td>
                                 <td
                                   className={
@@ -403,7 +379,6 @@ export class DianosisClass extends React.Component {
                                   <div className="d-flex align-items-center justify-content-center">
                                     {remarks}
                                   </div>
-                                  {t("")}
                                 </td>
                                 <td
                                   className={
@@ -416,11 +391,9 @@ export class DianosisClass extends React.Component {
                                     {images.map((image) => (
                                       <>
                                         {image.id} <br />
-                                        {t("")}
                                       </>
                                     ))}
                                   </div>
-                                  {t("")}
                                 </td>
                                 <td
                                   className={
@@ -433,11 +406,9 @@ export class DianosisClass extends React.Component {
                                     {images.map((image) => (
                                       <>
                                         {image.date} <br />
-                                        {t("")}
                                       </>
                                     ))}
                                   </div>
-                                  {t("")}
                                 </td>
                                 <td
                                   className={
@@ -457,26 +428,17 @@ export class DianosisClass extends React.Component {
                                         })
                                       }
                                     >
-                                      <span className="icon-eye-grey">
-                                        {t("")}
-                                      </span>
-                                      {t("")}
+                                      <span className="icon-eye-grey"></span>
                                     </div>
-                                    {t("")}
                                   </div>
-                                  {t("")}
                                 </td>
-                                {t("")}
                               </tr>
                             );
                           })
                         : ""}
                     </TableWrapper>
-                    {t("")}
                   </div>
-                  {t("")}
                 </div>
-                {t("")}
               </div>
             ) : (
               <div className="col-md-12 col-lg-10">
@@ -488,11 +450,8 @@ export class DianosisClass extends React.Component {
                         placeholder="Search Visit"
                         onChange={this.handleVisitSearch}
                       />
-                      {t("")}
                     </div>
-                    {t("")}
                   </div>
-                  {t("")}
                 </div>
                 <div className="table-responsive">
                   <div className="table-container">
@@ -521,7 +480,6 @@ export class DianosisClass extends React.Component {
                                   <div className="d-flex align-items-center justify-content-center">
                                     {date}
                                   </div>
-                                  {t("")}
                                 </td>
                                 <td
                                   className={
@@ -533,7 +491,6 @@ export class DianosisClass extends React.Component {
                                   <div className="d-flex align-items-center justify-content-center">
                                     {remarks}
                                   </div>
-                                  {t("")}
                                 </td>
                                 <td
                                   className={
@@ -546,11 +503,9 @@ export class DianosisClass extends React.Component {
                                     {images.map((image) => (
                                       <>
                                         {image.id} <br />
-                                        {t("")}
                                       </>
                                     ))}
                                   </div>
-                                  {t("")}
                                 </td>
                                 <td
                                   className={
@@ -563,11 +518,9 @@ export class DianosisClass extends React.Component {
                                     {images.map((image) => (
                                       <>
                                         {image.date} <br />
-                                        {t("")}
                                       </>
                                     ))}
                                   </div>
-                                  {t("")}
                                 </td>
                                 <td
                                   className={
@@ -587,26 +540,17 @@ export class DianosisClass extends React.Component {
                                         })
                                       }
                                     >
-                                      <span className="icon-eye-grey">
-                                        {t("")}
-                                      </span>
-                                      {t("")}
+                                      <span className="icon-eye-grey"></span>
                                     </div>
-                                    {t("")}
                                   </div>
-                                  {t("")}
                                 </td>
-                                {t("")}
                               </tr>
                             );
                           })
                         : ""}
                     </TableWrapper>
-                    {t("")}
                   </div>
-                  {t("")}
                 </div>
-                {t("")}
               </div>
             )}
           </div>
@@ -626,7 +570,6 @@ export class DianosisClass extends React.Component {
               image={currentData?.image}
               remarks={currentData?.remarks}
             />
-            {t("")}
           </NormalModal>
           <NormalModal
             style={{ minWidth: "80%" }}
@@ -647,11 +590,8 @@ export class DianosisClass extends React.Component {
               }
               remarks={currentMenu == "/" ? null : selectedRemark}
             />
-            {t("")}
           </NormalModal>
-          {t("")}
         </div>
-        {t("")}
       </>
     );
   }

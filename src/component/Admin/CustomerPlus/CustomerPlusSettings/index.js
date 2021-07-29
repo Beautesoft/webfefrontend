@@ -60,7 +60,6 @@ export class SettingsClass extends React.Component {
       <div className="container-fluid">
         <div className="col-md-12 mb-4 p-0">
           <h3 className="head-label">{t("Customer Plus Settings")}</h3>
-          {t("")}
         </div>
         <div className="row align-items-center mb-4">
           <div className="col">
@@ -71,7 +70,6 @@ export class SettingsClass extends React.Component {
                   placeholder="Search Field"
                   onChange={this.handlesearch}
                 />
-                {t("")}
               </div>
 
               <div className="w-100 col-4 p-0">
@@ -81,13 +79,9 @@ export class SettingsClass extends React.Component {
                   label="Save"
                   onClick={this.handleSubmit}
                 />
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="table-responsive">
           <div className="table-container">
@@ -104,13 +98,9 @@ export class SettingsClass extends React.Component {
                     <div class="d-flex mt-5 align-items-center justify-content-center">
                       <div class="spinner-border" role="status">
                         <span class="sr-only">Loading...</span>
-                        {t("")}
                       </div>
-                      {t("")}
                     </div>
-                    {t("")}
                   </td>
-                  {t("")}
                 </tr>
               ) : dataList ? (
                 dataList.map((item, index) => {
@@ -132,7 +122,6 @@ export class SettingsClass extends React.Component {
                         <div className="d-flex align-items-center justify-content-center">
                           {display_field_name}
                         </div>
-                        {t("")}
                       </td>
                       <td
                         className={
@@ -148,9 +137,7 @@ export class SettingsClass extends React.Component {
                               this.updateState({ dataList });
                             }}
                           />
-                          {t("")}
                         </div>
-                        {t("")}
                       </td>
                       <td
                         className={
@@ -167,9 +154,7 @@ export class SettingsClass extends React.Component {
                               this.updateState({ dataList });
                             }}
                           />
-                          {t("")}
                         </div>
-                        {t("")}
                       </td>
                       <td
                         className={
@@ -186,9 +171,7 @@ export class SettingsClass extends React.Component {
                               this.updateState({ dataList });
                             }}
                           />
-                          {t("")}
                         </div>
-                        {t("")}
                       </td>
                       <td
                         className={
@@ -205,11 +188,8 @@ export class SettingsClass extends React.Component {
                               this.updateState({ dataList });
                             }}
                           />
-                          {t("")}
                         </div>
-                        {t("")}
                       </td>
-                      {t("")}
                     </tr>
                   );
                 })
@@ -217,11 +197,8 @@ export class SettingsClass extends React.Component {
                 ""
               )}
             </TableWrapper>
-            {t("")}
           </div>
-          {t("")}
         </div>
-        {t("")}
       </div>
     );
   }

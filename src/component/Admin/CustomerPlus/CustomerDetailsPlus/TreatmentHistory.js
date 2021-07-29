@@ -44,7 +44,6 @@ class TreatmentHistoryClass extends Component {
                 >
                   {t("Treatment History")}
                 </NavLink>
-                {t("")}
               </NavItem>
 
               {/* <NavItem>
@@ -54,7 +53,7 @@ class TreatmentHistoryClass extends Component {
                                 >
                                     {t("Diagnosis")}
                                 </NavLink>
-                            {t("")}</NavItem>
+                            </NavItem>
 
                             <NavItem>
                                 <NavLink
@@ -63,9 +62,8 @@ class TreatmentHistoryClass extends Component {
                                 >
                                     {t("Treatment History")}
                                 </NavLink>
-                            {t("")}</NavItem> */}
+                            </NavItem> */}
             </Nav>
-            {t("")}
           </div>
           <TabContent activeTab={this.state.activeTab}>
             <TabPane tabId="1">
@@ -90,9 +88,7 @@ class TreatmentHistoryClass extends Component {
                                 : ""}
                         </TabPane> */}
           </TabContent>
-          {t("")}
         </div>
-        {t("")}
       </div>
     );
   }

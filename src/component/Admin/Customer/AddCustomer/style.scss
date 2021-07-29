@@ -1,4 +1,4 @@
-@import '../../../../assets/scss/abstracts/abstracts-dir.scss';
+@import "../../../../assets/scss/abstracts/abstracts-dir.scss";
 
 .create-customer-section {
   background-color: $white;
@@ -17,14 +17,14 @@
         height: 57px;
       }
     }
-    .btn{
+    .btn {
       font-family: Muli-Regular;
     }
-    .icon-calendar{
-      color: #B3B3B3;
+    .icon-calendar {
+      color: #b3b3b3;
       top: 16px;
     }
-    
+
     .customer-detail {
       margin: 30px 50px;
       .form-group {
@@ -33,7 +33,7 @@
             height: 57px;
           }
         }
-        .select-icon{
+        .select-icon {
           top: 27px;
         }
       }
@@ -48,7 +48,7 @@
           padding: 15px;
         }
       }
-      .icon-calendar{
+      .icon-calendar {
         z-index: 2;
         right: 15px;
         margin-right: 0;
@@ -56,7 +56,7 @@
         font-size: 25px;
         // top: 0px;
       }
-      .danger-btn{
+      .danger-btn {
         width: 100%;
       }
     }

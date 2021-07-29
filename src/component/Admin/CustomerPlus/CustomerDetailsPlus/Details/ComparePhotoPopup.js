@@ -40,7 +40,6 @@ export class ComparePhotoPopupClass extends Component {
           <div className="row">
             <div className="col-6">
               <h4>{t("Compare Photo")}</h4>
-              {t("")}
             </div>
             <div className="col-6">
               <NormalButton
@@ -49,9 +48,7 @@ export class ComparePhotoPopupClass extends Component {
                 label="Done"
                 onClick={() => this.handleSubmit()}
               />
-              {t("")}
             </div>
-            {t("")}
           </div>
           <div className="row pl-5 pr-5 mt-4">
             {dataList
@@ -59,7 +56,6 @@ export class ComparePhotoPopupClass extends Component {
                   <div className="col-md-6 mb-4">
                     <div className="col-12 mb-4">
                       <img src={data.image} height="100%" width={"100%"} />
-                      {t("")}
                     </div>
                     <div className="col-12">
                       <label className="text-left text-black common-label-text fs-17 pb-2">
@@ -71,9 +67,7 @@ export class ComparePhotoPopupClass extends Component {
                         name="remarks"
                         disabled
                       />
-                      {t("")}
                     </div>
-                    {t("")}
                   </div>
                 ))
               : null}
@@ -88,15 +82,10 @@ export class ComparePhotoPopupClass extends Component {
                   name="remarks"
                   onChange={this.handleChange}
                 />
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
-        {t("")}
       </>
     );
   }

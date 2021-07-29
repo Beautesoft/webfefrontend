@@ -219,9 +219,7 @@ export class ItemDetailClass extends Component {
               <div className="col-md-6">
                 <div className="detail-view text-center">
                   <img width="230" src={servicesDetail.Stock_PIC} alt="" />
-                  {t("")}
                 </div>
-                {t("")}
               </div>
               <div className="col-md-5">
                 <div className="product-left">
@@ -237,13 +235,9 @@ export class ItemDetailClass extends Component {
                         {" "}
                         $ {servicesDetail.item_price}
                       </span>
-                      {t("")}
                     </p>
-                    {t("")}
                   </div>
-                  {t("")}
                 </div>
-                {t("")}
               </div>
               <div className="col-12">
                 <div>
@@ -258,17 +252,13 @@ export class ItemDetailClass extends Component {
                       )
                     }
                   />
-                  {t("")}
                 </div>
-                {t("")}
               </div>
-              {t("")}
             </div>
           ) : (
             ""
           )}
         </div>
-        {t("")}
       </>
     );
   }

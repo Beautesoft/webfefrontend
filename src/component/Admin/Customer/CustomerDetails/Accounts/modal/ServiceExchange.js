@@ -62,27 +62,22 @@ export class ServiceExchangeClass extends Component {
                         <div className="d-flex align-items-center justify-content-center">
                           {item.Item_Class}
                         </div>
-                        {t("")}
                       </td>
                       <td>
                         <div className="d-flex align-items-center justify-content-center">
                           {item.item_desc}
                         </div>
-                        {t("")}
                       </td>
                       <td>
                         <div className="d-flex align-items-center justify-content-center">
                           {item.add_duration}
                         </div>
-                        {t("")}
                       </td>
                       <td>
                         <div className="d-flex align-items-center justify-content-center">
                           {item.item_price}
                         </div>
-                        {t("")}
                       </td>
-                      {t("")}
                     </tr>
                   );
                 })
@@ -91,11 +86,9 @@ export class ServiceExchangeClass extends Component {
                   <div className="d-flex align-items-center justify-content-center">
                     {t("No data available")}
                   </div>
-                  {t("")}
                 </td>
               )}
             </TableWrapper>
-            {t("")}
           </div>
 
           <div className="row text-center justify-center w-100">
@@ -113,11 +106,8 @@ export class ServiceExchangeClass extends Component {
               label="Cancel"
               onClick={this.props.handleExchange}
             />
-            {t("")}
           </div>
-          {t("")}
         </div>
-        {t("")}
       </NormalModal>
     );
   }

@@ -198,9 +198,7 @@ export class InvoiceHistoryClass extends Component {
                     type="date"
                     maxDate={new Date(toDate)}
                   />
-                  {t("")}
                 </div>
-                {t("")}
               </div>
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text">
@@ -218,11 +216,8 @@ export class InvoiceHistoryClass extends Component {
                     type="date"
                     minDate={new Date(fromDate)}
                   />
-                  {t("")}
                 </div>
-                {t("")}
               </div>
-              {t("")}
             </div>
 
             <div className="col-4">
@@ -236,9 +231,7 @@ export class InvoiceHistoryClass extends Component {
                     name="transCode"
                     onChange={this.handleChange}
                   />
-                  {t("")}
                 </div>
-                {t("")}
               </div>
               <div className="d-flex mb-2">
                 <label className="text-left w-100 text-black common-label-text">
@@ -253,11 +246,8 @@ export class InvoiceHistoryClass extends Component {
                     name="transtype"
                     onChange={this.handleChange}
                   />
-                  {t("")}
                 </div>
-                {t("")}
               </div>
-              {t("")}
             </div>
 
             <div className="col-3">
@@ -269,9 +259,7 @@ export class InvoiceHistoryClass extends Component {
                 outline={false}
                 onClick={this.handleSearch}
               />
-              {t("")}
             </div>
-            {t("")}
           </div>
 
           <div className="billing-table">
@@ -304,55 +292,46 @@ export class InvoiceHistoryClass extends Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {sa_custno}
                               </div>
-                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {sa_custname}
                               </div>
-                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {sa_date}
                               </div>
-                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {sa_totamt}
                               </div>
-                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {sa_transacno_ref}
                               </div>
-                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {void_refno}
                               </div>
-                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {sa_staffname}
                               </div>
-                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {sa_status}
                               </div>
-                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {sa_transacno_type}
                               </div>
-                              {t("")}
                             </td>
                             <td className="position-relative">
                               <NormalButton
@@ -367,23 +346,16 @@ export class InvoiceHistoryClass extends Component {
                                   )
                                 }
                               />
-                              {t("")}
                             </td>
-                            {t("")}
                           </tr>
                         );
                       })
                     : null}
                 </TableWrapper>
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
-        {t("")}
       </>
     );
   }

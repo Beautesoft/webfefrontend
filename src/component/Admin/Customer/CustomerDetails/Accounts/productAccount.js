@@ -124,9 +124,7 @@ export class ProductAccountClass extends Component {
           <div className="row">
             <div className="col-5 mb-2">{t("Qty Hold")}</div>
             <div className="col-5 mb-2">{totalholdqty}</div>
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="col-6 mt-3">
           <div className="row">
@@ -134,18 +132,14 @@ export class ProductAccountClass extends Component {
             <div className="col-6 mb-2">
               ${activeTab !== "detail" ? balance : credit_balance}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
         {activeTab !== "detail" ? (
           <div className="col-6 mt-3 mb-4">
             <div className="row">
               <div className="col-5">{t("Total Product Count")} </div>
               <div className="col-5">{totalproduct_count}</div>
-              {t("")}
             </div>
-            {t("")}
           </div>
         ) : (
           ""
@@ -156,9 +150,7 @@ export class ProductAccountClass extends Component {
             <div className="col-6">
               ${activeTab !== "detail" ? outstanding : outstanding_balance}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="col-12">
           <div className="table">
@@ -177,38 +169,32 @@ export class ProductAccountClass extends Component {
                             <div className="d-flex align-items-center justify-content-center">
                               {item.sa_date}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.transaction}
                             </div>
-                            {t("")}
                           </td>
-                          {/* <td><div className="d-flex align-items-center justify-content-center">{item.package_code}</div>{t("")}</td> */}
+                          {/* <td><div className="d-flex align-items-center justify-content-center">{item.package_code}</div></td> */}
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.item_description}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.balance}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.outstanding}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.item_status}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
@@ -219,11 +205,8 @@ export class ProductAccountClass extends Component {
                                 label="view"
                                 onClick={() => this.handleOpenDetail(item)}
                               />
-                              {t("")}
                             </div>
-                            {t("")}
                           </td>
-                          {t("")}
                         </tr>
                       );
                     })
@@ -242,39 +225,32 @@ export class ProductAccountClass extends Component {
                             <div className="d-flex align-items-center justify-content-center">
                               {item.sa_date}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.description}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.type}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.payment}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.balance}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.outstanding}
                             </div>
-                            {t("")}
                           </td>
-                          {t("")}
                         </tr>
                       );
                     })
@@ -282,7 +258,6 @@ export class ProductAccountClass extends Component {
               </TableWrapper>
             )}
           </div>
-          {t("")}
         </div>
         <div className="col-12 d-flex justify-center">
           {activeTab === "detail" ? (
@@ -304,9 +279,7 @@ export class ProductAccountClass extends Component {
             // outline={false}
             onClick={() => this.setState({ isOpenEditDisc: false })}
           />
-          {t("")}
         </div>
-        {t("")}
       </div>
     );
   }

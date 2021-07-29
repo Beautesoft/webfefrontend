@@ -339,11 +339,11 @@ export class ServicesItemClass extends Component {
                                 className=""
                                 placeholder='Search here..'
                                 onChange={this.handleSearch} />
-                        {t("")}</div> */}
+                        </div> */}
             {/* <div className="d-flex align-items-center nav-icon">
-                            <div className="mr-3"><i className="icon-barcode">{t("")}</i>{t("")}</div>
-                            <div className="p-0 filter-icon"><img src={filter} alt="" />{t("")}</div>
-                        {t("")}</div> */}
+                            <div className="mr-3"><i className="icon-barcode"></i></div>
+                            <div className="p-0 filter-icon"><img src={filter} alt="" /></div>
+                        </div> */}
           </div>
           <div className="d-flex list flex-wrap justify-content position-relative">
             {list.length > 0 &&
@@ -390,13 +390,9 @@ export class ServicesItemClass extends Component {
                             d="M3.996 11.456H9.42V12.476H5.22V15.152H9.18V16.172H5.22V20H3.996V11.456ZM14.3243 20.096C13.5163 20.096 12.8123 19.92 12.2123 19.568C11.6203 19.208 11.1603 18.7 10.8323 18.044C10.5123 17.388 10.3523 16.616 10.3523 15.728C10.3523 14.832 10.5123 14.056 10.8323 13.4C11.1523 12.744 11.6123 12.24 12.2123 11.888C12.8123 11.536 13.5163 11.36 14.3243 11.36C15.1403 11.36 15.8443 11.536 16.4362 11.888C17.0363 12.24 17.4963 12.744 17.8163 13.4C18.1363 14.056 18.2963 14.828 18.2963 15.716C18.2963 16.612 18.1363 17.388 17.8163 18.044C17.4963 18.7 17.0363 19.208 16.4362 19.568C15.8363 19.92 15.1323 20.096 14.3243 20.096ZM14.3243 19.088C15.1803 19.088 15.8443 18.796 16.3163 18.212C16.7963 17.628 17.0363 16.796 17.0363 15.716C17.0363 14.644 16.7963 13.82 16.3163 13.244C15.8443 12.66 15.1803 12.368 14.3243 12.368C13.4683 12.368 12.8043 12.66 12.3323 13.244C11.8603 13.82 11.6243 14.644 11.6243 15.716C11.6243 16.796 11.8603 17.628 12.3323 18.212C12.8123 18.796 13.4763 19.088 14.3243 19.088ZM23.7598 20.096C22.9358 20.096 22.2158 19.92 21.5998 19.568C20.9918 19.208 20.5238 18.7 20.1958 18.044C19.8678 17.388 19.7038 16.612 19.7038 15.716C19.7038 14.828 19.8678 14.056 20.1958 13.4C20.5238 12.744 20.9918 12.24 21.5998 11.888C22.2158 11.536 22.9358 11.36 23.7598 11.36C24.3438 11.36 24.8838 11.452 25.3798 11.636C25.8838 11.812 26.3078 12.072 26.6518 12.416L26.2198 13.328C25.8198 13 25.4238 12.764 25.0318 12.62C24.6478 12.468 24.2278 12.392 23.7718 12.392C22.8838 12.392 22.1958 12.68 21.7078 13.256C21.2278 13.832 20.9878 14.652 20.9878 15.716C20.9878 16.788 21.2278 17.616 21.7078 18.2C22.1958 18.776 22.8838 19.064 23.7718 19.064C24.2278 19.064 24.6478 18.992 25.0318 18.848C25.4238 18.696 25.8198 18.456 26.2198 18.128L26.6518 19.04C26.3078 19.384 25.8838 19.648 25.3798 19.832C24.8838 20.008 24.3438 20.096 23.7598 20.096Z"
                             fill="#023F88"
                           />
-                          {t("")}
                         </svg>
-                        {t("")}
                       </span>
-                      {t("")}
                     </div>
-                    {t("")}
                   </div>
                   {console.log("sadfadfasdf", this.props)}
                   {this.props.id === "RETAIL" ? (
@@ -428,7 +424,6 @@ export class ServicesItemClass extends Component {
                     }
                   >
                     <img src={data.Stock_PIC} alt="" />
-                    {t("")}
                   </div>
                   <div>
                     <NormalButton
@@ -437,9 +432,7 @@ export class ServicesItemClass extends Component {
                       outline={true}
                       onClick={() => this.handleOpenDetail(data)}
                     />
-                    {t("")}
                   </div>
-                  {t("")}
                 </div>
               ))}
             {pagination && (
@@ -449,7 +442,6 @@ export class ServicesItemClass extends Component {
               />
             )}
           </div>
-          {t("")}
         </div>
         <NormalModal
           className={"multiple-appointment"}
@@ -463,7 +455,7 @@ export class ServicesItemClass extends Component {
             src={closeIcon}
             alt=""
           />
-          {/* <Discount discountFields={()=>{}} handleChange={()=>{}} handleSubmit={()=>{}}>{t("")}</Discount> */}
+          {/* <Discount discountFields={()=>{}} handleChange={()=>{}} handleSubmit={()=>{}}></Discount> */}
           <p className="title fs-18">{t("Detail")}</p>
           <ItemDetail
             id={selectedId}
@@ -474,10 +466,7 @@ export class ServicesItemClass extends Component {
                 ? () => this.handleSelectPrice()
                 : () => this.handleAddCart()
             }
-          >
-            {t("")}
-          </ItemDetail>
-          {t("")}
+          ></ItemDetail>
         </NormalModal>
         <NormalModal
           className={"retail-price-modal"}
@@ -501,7 +490,6 @@ export class ServicesItemClass extends Component {
               <div className="col-4">{t("Type")}</div>
               <div className="col-4">{t("Price")}</div>
               <div className="col-2">{t("Action")}</div>
-              {t("")}
             </div>
             {serviceDetail && serviceDetail.uomprice.length > 0
               ? serviceDetail.uomprice.map((data, index) => {
@@ -537,15 +525,12 @@ export class ServicesItemClass extends Component {
                             )
                           }
                         />
-                        {t("")}
                       </div>
-                      {t("")}
                     </div>
                   );
                 })
               : ""}
           </div>
-          {t("")}
         </NormalModal>
         <NormalModal
           className={"select-category customer-select"}
@@ -571,7 +556,6 @@ export class ServicesItemClass extends Component {
                 onChange={this.handleSearchCustomer}
                 className="search m-0 p-0 px-3"
               />
-              {t("")}
             </div>
             <div className="col-3">
               <NormalButton
@@ -582,7 +566,6 @@ export class ServicesItemClass extends Component {
                 outline={false}
                 onClick={() => this.search(this.state.search)}
               />
-              {t("")}
             </div>
 
             <div className="row mt-4 table-header w-100 m-0">
@@ -590,7 +573,6 @@ export class ServicesItemClass extends Component {
               <div className="col-2">{t("Phone")}</div>
               <div className="col-3">{t("Cust Code")}</div>
               <div className="col-4">{t("Email")}</div>
-              {t("")}
             </div>
             <div className="response-table w-100">
               {customerOption && customerOption.length > 0 ? (
@@ -605,7 +587,6 @@ export class ServicesItemClass extends Component {
                       <div className="col-2">{item.cust_phone1}</div>
                       <div className="col-3">{item.cust_code}</div>
                       <div className="col-4">{item.cust_email}</div>
-                      {t("")}
                     </div>
                   );
                 })
@@ -615,11 +596,8 @@ export class ServicesItemClass extends Component {
                 </div>
               )}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </NormalModal>
-        {t("")}
       </>
     );
   }

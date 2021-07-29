@@ -7,7 +7,7 @@
       background: $green;
       color: $white;
       &:hover {
-        border: 1px solid  $green;
+        border: 1px solid $green;
         background: $white;
         color: $green;
       }
@@ -17,13 +17,13 @@
     width: 224px;
     padding: 0;
   }
-  #small-down-arrow{
+  #small-down-arrow {
     top: 17px;
   }
 }
-.credit-note-update{
-  .input-group{
-    input{
+.credit-note-update {
+  .input-group {
+    input {
       border: none;
       background: #e4e4e4cf;
     }

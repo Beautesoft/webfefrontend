@@ -45,7 +45,6 @@ class AccountClass extends Component {
                 >
                   {t("Treatment Account")}
                 </NavLink>
-                {t("")}
               </NavItem>
 
               <NavItem>
@@ -59,7 +58,6 @@ class AccountClass extends Component {
                 >
                   {t("Credit Note")}
                 </NavLink>
-                {t("")}
               </NavItem>
 
               <NavItem>
@@ -73,7 +71,6 @@ class AccountClass extends Component {
                 >
                   {t("Product Account")}
                 </NavLink>
-                {t("")}
               </NavItem>
               <NavItem>
                 <NavLink
@@ -86,11 +83,8 @@ class AccountClass extends Component {
                 >
                   {t("Prepaid Account")}
                 </NavLink>
-                {t("")}
               </NavItem>
-              {t("")}
             </Nav>
-            {t("")}
           </div>
           <TabContent activeTab={this.state.activeTab}>
             <TabPane tabId="1">
@@ -126,11 +120,8 @@ class AccountClass extends Component {
                 ""
               )}
             </TabPane>
-            {t("")}
           </TabContent>
-          {t("")}
         </div>
-        {t("")}
       </div>
     );
   }

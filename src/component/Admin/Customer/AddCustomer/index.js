@@ -292,13 +292,12 @@ export class AddCustomerClass extends Component {
         <div className="create-customer">
           <div className="head-label-nav">
             <p className="category">{t("Customer")} </p>
-            <i className="icon-right mx-md-3">{t("")}</i>
+            <i className="icon-right mx-md-3"></i>
             <p className="sub-category">
               {t(
                 (this.props.match.params.id ? "Edit" : "Add") + " New Customer"
               )}
             </p>
-            {t("")}
           </div>
           <div className="customer-detail">
             <AddCustomerForm
@@ -314,14 +313,9 @@ export class AddCustomerClass extends Component {
               handleSubmit={this.handleSubmit}
               handleCancel={this.handleCancel}
               handleChangeBox={this.handleChangeBox}
-            >
-              {t("")}
-            </AddCustomerForm>
-            {t("")}
+            ></AddCustomerForm>
           </div>
-          {t("")}
         </div>
-        {t("")}
       </div>
     );
   }

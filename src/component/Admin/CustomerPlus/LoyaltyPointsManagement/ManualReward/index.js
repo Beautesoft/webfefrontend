@@ -60,9 +60,7 @@ class ManualRewardClass extends React.Component {
           <div className="row align-items-center">
             <div className="col-md-4">
               <h3 className="head-label">{t("Manual Reward")}</h3>
-              {t("")}
             </div>
-            {t("")}
           </div>
           <div className="card-columns mt-5">
             {rewardList.map((e) => (
@@ -70,9 +68,7 @@ class ManualRewardClass extends React.Component {
                 <blockquote class="blockquote mb-0">
                   <h6>{e.label}</h6>
                   <footer class="blockquote-footer">{e.points}</footer>
-                  {t("")}
                 </blockquote>
-                {t("")}
               </div>
             ))}
           </div>
@@ -109,7 +105,6 @@ class ManualRewardClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_code}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className={
@@ -119,7 +114,6 @@ class ManualRewardClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_refer}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className={
@@ -129,7 +123,6 @@ class ManualRewardClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {""}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className={
@@ -139,7 +132,6 @@ class ManualRewardClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_name}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className={
@@ -149,23 +141,16 @@ class ManualRewardClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_phone2}
                               </div>
-                              {t("")}
                             </td>
-                            {t("")}
                           </tr>
                         );
                       })
                     : ""}
                 </TableWrapper>
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
-        {t("")}
       </>
     );
   }

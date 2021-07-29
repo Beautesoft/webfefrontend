@@ -97,9 +97,8 @@ export class TreatmentDetailsPlusClass extends Component {
             >
               {t("Customer")}
             </p>
-            <i className="icon-right mx-md-3">{t("")}</i>
+            <i className="icon-right mx-md-3"></i>
             <p className="sub-category">{t("Customer Details")}</p>
-            {t("")}
           </div>
           <div className="col-md-6">
             <div className="d-flex justify-content-between">
@@ -109,7 +108,6 @@ export class TreatmentDetailsPlusClass extends Component {
                   placeholder="Search Customer"
                   onChange={this.handleChange}
                 />
-                {t("")}
               </div>
 
               <div className="w-100 col-4 mx-2 p-0">
@@ -121,33 +119,25 @@ export class TreatmentDetailsPlusClass extends Component {
                     this.props.history.push("/admin/customerplus/add")
                   }
                 />
-                {t("")}
               </div>
               <div className="bg-white ">
-                {/* <i className="icon-filter">{t("")}</i> */}
+                {/* <i className="icon-filter"></i> */}
                 <img src={filter} alt="" />
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="view-detail-box p-4 d-flex flex-column">
           <div className="d-flex pb-3">
             <div className="col-4 d-flex align-items-center">
               <div>
                 <img className="modal-avatar" src={Modal} alt="" />
-                {t("")}
               </div>
               <div className="pl-3">
                 <p className="fs-28 fw-500 customer-detail-heading py-2">
                   {cust_name}
                 </p>
-                {t("")}
               </div>
-              {t("")}
             </div>
             <div className="col-6 icon-change menu-list">
               <button
@@ -183,19 +173,13 @@ export class TreatmentDetailsPlusClass extends Component {
                   )
                 }
               >
-                <span className="icon-edit mr-2">{t("")}</span>
+                <span className="icon-edit mr-2"></span>
                 {t("Edit")}
               </button>
-              {t("")}
             </div>
-            {t("")}
           </div>
-          <TreatmentHistory id={this.props.match.params.id}>
-            {t("")}
-          </TreatmentHistory>
-          {t("")}
+          <TreatmentHistory id={this.props.match.params.id}></TreatmentHistory>
         </div>
-        {t("")}
       </div>
     );
   }

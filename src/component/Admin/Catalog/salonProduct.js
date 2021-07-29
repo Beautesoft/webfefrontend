@@ -79,21 +79,16 @@ class SalonProductClass extends Component {
                 placeholder="Search here.."
                 onChange={this.handleChange}
               />
-              {t("")}
             </div>
             <div className="d-flex align-items-center nav-icon">
               <div className="mr-3">
-                <i className="icon-barcode">{t("")}</i>
-                {t("")}
+                <i className="icon-barcode"></i>
               </div>
-              {/* <div><i className="icon-">{t("")}</i>{t("")}</div> */}
+              {/* <div><i className="icon-"></i></div> */}
               <div className="ml-3 filter-icon">
                 <img src={filter} alt="" />
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
           <div className="d-flex flex-wrap justify-content-between position-relative">
             {productCard &&
@@ -106,13 +101,11 @@ class SalonProductClass extends Component {
                 >
                   <div className="d-flex justify-content-between px-3">
                     <p className="label">{data.label}</p>
-                    {/* <i className="icon-shopping-cart">{t("")}</i> */}
+                    {/* <i className="icon-shopping-cart"></i> */}
                     <div className="cart-img">
                       {" "}
                       <img src={CartImg} alt="" />
-                      {t("")}
                     </div>
-                    {t("")}
                   </div>
                   <p className="cost px-3">{data.cost}</p>
                   <div className="product-img px-1">
@@ -129,15 +122,11 @@ class SalonProductClass extends Component {
                       className="col-12 fs-15 "
                       label="View details"
                     />
-                    {t("")}
                   </div>
-                  {t("")}
                 </div>
               ))}
           </div>
-          {t("")}
         </div>
-        {t("")}
       </>
     );
   }

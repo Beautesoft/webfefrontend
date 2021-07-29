@@ -190,9 +190,7 @@ export class CreditNoteClass extends Component {
                   />
                   {t("Show Active Credit Notes Only")}
                 </Label>
-                {t("")}
               </FormGroup>
-              {t("")}
             </div>
             <div className="col-12">
               <FormGroup check>
@@ -205,13 +203,9 @@ export class CreditNoteClass extends Component {
                   />
                   {t("Show All Credit Notes")}
                 </Label>
-                {t("")}
               </FormGroup>
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
 
         <div className="col-12">
@@ -232,40 +226,33 @@ export class CreditNoteClass extends Component {
                               <Label check>
                                 <Input type="radio" name="radio1" />{" "}
                               </Label>
-                              {t("")}
                             </FormGroup>
-                            {t("")}
                           </span>
                           <div className="d-flex align-items-center justify-content-center">
                             {item.credit_code}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {item.sa_date}
                           </div>
-                          {t("")}
                         </td>
-                        {/* <td><div className="d-flex align-items-center justify-content-center">{item.transaction}</div>{t("")}</td>
-                    <td><div className="d-flex align-items-center justify-content-center">{}</div>{t("")}</td> */}
+                        {/* <td><div className="d-flex align-items-center justify-content-center">{item.transaction}</div></td>
+                    <td><div className="d-flex align-items-center justify-content-center">{}</div></td> */}
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {item.amount}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {item.balance}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {item.status}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
@@ -277,19 +264,14 @@ export class CreditNoteClass extends Component {
                               outline={false}
                               onClick={() => this.handleEdit(item)}
                             />
-                            {t("")}
                           </div>
-                          {t("")}
                         </td>
-                        {t("")}
                       </tr>
                     );
                   })
                 : ""}
             </TableWrapper>
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="col-12 d-flex action-bar text-center">
           <NormalButton
@@ -308,7 +290,6 @@ export class CreditNoteClass extends Component {
             // outline={false}
             onClick={() => this.setState({ isOpenEditDisc: false })}
           />
-          {t("")}
         </div>
         <NormalModal
           className={"credit-note-update"}
@@ -327,7 +308,6 @@ export class CreditNoteClass extends Component {
             <div className="col-12 pl-0 mb-3 font-600 fs-18">
               {t("Update Credit Note")}
             </div>
-            {t("")}
           </div>
           <div className="row">
             <div className="col-12 d-flex mb-3">
@@ -335,7 +315,6 @@ export class CreditNoteClass extends Component {
                 <label className="text-left text-black common-label-text ">
                   {t("New Balance")}
                 </label>
-                {t("")}
               </div>
               <div className="input-group">
                 <NormalInput
@@ -346,16 +325,13 @@ export class CreditNoteClass extends Component {
                   onChange={this.handleChangeUpdate}
                   className="customer-name"
                 />
-                {t("")}
               </div>
-              {t("")}
             </div>
             <div className="col-12 d-flex mb-3">
               <div className="w-100">
                 <label className="text-left text-black common-label-text ">
                   {t("Refund")}
                 </label>
-                {t("")}
               </div>
               <div className="input-group">
                 <NormalInput
@@ -366,11 +342,8 @@ export class CreditNoteClass extends Component {
                   onChange={this.handleChangeUpdate}
                   className="customer-name"
                 />
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
           <div className="col-12 d-flex action-bar justify-center">
             <NormalButton
@@ -381,11 +354,8 @@ export class CreditNoteClass extends Component {
               // outline={false}
               onClick={() => this.handleUpdateCredit()}
             />
-            {t("")}
           </div>
-          {t("")}
         </NormalModal>
-        {t("")}
       </div>
     );
   }

@@ -152,9 +152,7 @@ export class PrepaidAccountClass extends Component {
                     />
                     {t("Show active prepaid only")}
                   </Label>
-                  {t("")}
                 </FormGroup>
-                {t("")}
               </div>
               <div className="col-12">
                 <FormGroup check>
@@ -167,15 +165,10 @@ export class PrepaidAccountClass extends Component {
                     />
                     {t("Show all prepaid")}
                   </Label>
-                  {t("")}
                 </FormGroup>
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="col-6 mt-3 mb-4">
           <div className="row">
@@ -187,9 +180,7 @@ export class PrepaidAccountClass extends Component {
 
             <div className="col-6">{t("Balance of All Types")}</div>
             <div className="col-6">$ {balance_alltype}</div>
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="col-12">
           <div className="table">
@@ -208,55 +199,46 @@ export class PrepaidAccountClass extends Component {
                             <div className="d-flex align-items-center justify-content-center">
                               {item.prepaid}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.pp_desc}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.last_update}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.sa_date}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.type}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.exp_date}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.exp_status}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.pp_total}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.remain}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
@@ -267,11 +249,8 @@ export class PrepaidAccountClass extends Component {
                                 label="view"
                                 onClick={() => this.handleOpenDetail(item)}
                               />
-                              {t("")}
                             </div>
-                            {t("")}
                           </td>
-                          {t("")}
                         </tr>
                       );
                     })
@@ -290,57 +269,47 @@ export class PrepaidAccountClass extends Component {
                             <div className="d-flex align-items-center justify-content-center">
                               {item.prepaid_ref}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.transaction_ref}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.voucher}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.item_no}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.item_name}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.use_amt}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.topup_amt}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {"$" + item.balance}
                             </div>
-                            {t("")}
                           </td>
                           <td>
                             <div className="d-flex align-items-center justify-content-center">
                               {item.topup_no}
                             </div>
-                            {t("")}
                           </td>
-                          {t("")}
                         </tr>
                       );
                     })
@@ -348,7 +317,6 @@ export class PrepaidAccountClass extends Component {
               </TableWrapper>
             )}
           </div>
-          {t("")}
         </div>
         <div className="col-12 d-flex justify-center">
           {activeTab === "detail" ? (
@@ -370,9 +338,7 @@ export class PrepaidAccountClass extends Component {
             // outline={false}
             onClick={() => this.setState({ isOpenEditDisc: false })}
           />
-          {t("")}
         </div>
-        {t("")}
       </div>
     );
   }

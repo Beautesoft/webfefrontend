@@ -119,7 +119,6 @@ export class ListCustomerClass extends React.Component {
           <div className="row align-items-center">
             <div className="col-md-6">
               <h3 className="head-label">{t("Customer")}</h3>
-              {t("")}
             </div>
             <div className="col-md-6">
               <div className="d-flex">
@@ -129,7 +128,6 @@ export class ListCustomerClass extends React.Component {
                     placeholder="Search Customer"
                     onChange={this.handlesearch}
                   />
-                  {t("")}
                 </div>
                 <div className="w-100 col-4 p-0">
                   <NormalButton
@@ -140,7 +138,6 @@ export class ListCustomerClass extends React.Component {
                       this.props.history.push("/admin/customer/add")
                     }
                   />
-                  {t("")}
                 </div>
                 {/* <div className="bg-white ml-5 filter-icon filter-section" onClick={() => { this.handleClick('filter') }}>
                                     <img src={filter} alt="" />
@@ -151,14 +148,12 @@ export class ListCustomerClass extends React.Component {
                                                 <p className="subcategory">{t("Unavailable today")}</p>
                                                 <p className="subcategory">{t("Morning shift")}</p>
                                                 <p className="subcategory">{t("Evening shift")}</p>
-                                            {t("")}</div>
-                                        {t("")}</>
+                                            </div>
+                                        </>
                                     }
                                 </div> */}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
           {/* <div className="filter-by">
                         <p className="head">{t("Filter")}</p>
@@ -175,9 +170,9 @@ export class ListCustomerClass extends React.Component {
                                             name="treatment"
                                             onChange={this.handleChange}
                                         />
-                                    {t("")}</div>
-                                {t("")}</div>
-                            {t("")}</div>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="col-md-3">
                                 <div>
                                     <label className="label">{t("Service")}</label>
@@ -190,9 +185,9 @@ export class ListCustomerClass extends React.Component {
                                             name="treatment"
                                             onChange={this.handleChange}
                                         />
-                                    {t("")}</div>
-                                {t("")}</div>
-                            {t("")}</div>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="col-md-3">
                                 <div>
                                     <label className="label">{t("Date")}</label>
@@ -205,12 +200,12 @@ export class ListCustomerClass extends React.Component {
                                             name="treatment"
                                             onChange={this.handleChange}
                                         />
-                                    {t("")}</div>
-                                {t("")}</div>
-                            {t("")}</div>
+                                    </div>
+                                </div>
+                            </div>
 
-                        {t("")}</div>
-                    {t("")}</div> */}
+                        </div>
+                    </div> */}
 
           <div className="tab-table-content">
             <div className="py-4">
@@ -238,43 +233,36 @@ export class ListCustomerClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_name}
                               </div>
-                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_phone2}
                               </div>
-                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {cardno1}
                               </div>
-                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {cardno2}
                               </div>
-                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {cardno3}
                               </div>
-                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {cardno4}
                               </div>
-                              {t("")}
                             </td>
                             <td>
                               <div className="d-flex align-items-center justify-content-center">
                                 {cardno5}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className="position-relative"
@@ -286,8 +274,7 @@ export class ListCustomerClass extends React.Component {
                               {currentIndex === index ? (
                                 <>
                                   <div className="d-flex align-items-center justify-content-center horizontal-more-active">
-                                    <i className="icon-more">{t("")}</i>
-                                    {t("")}
+                                    <i className="icon-more"></i>
                                   </div>
                                   <div className="option card">
                                     <div
@@ -298,15 +285,11 @@ export class ListCustomerClass extends React.Component {
                                         )
                                       }
                                     >
-                                      <span className="icon-eye-grey px-3">
-                                        {t("")}
-                                      </span>
+                                      <span className="icon-eye-grey px-3"></span>
                                       {t("View")}
                                     </div>
                                     <div className="d-flex align-items-center fs-16">
-                                      <span className="icon-schedule px-3">
-                                        {t("")}
-                                      </span>
+                                      <span className="icon-schedule px-3"></span>
                                       {t("Reschedule Appointment")}
                                     </div>
                                     <div
@@ -338,44 +321,31 @@ export class ListCustomerClass extends React.Component {
                                             stroke-linecap="round"
                                             stroke-linejoin="round"
                                           />
-                                          {t("")}
                                         </svg>
-                                        {t("")}
                                       </span>
                                       {t("Book Appointment")}
                                     </div>
                                     <div className="d-flex align-items-center fs-16 pb-3">
-                                      <span className="icon-cancel-schedule px-3">
-                                        {t("")}
-                                      </span>
+                                      <span className="icon-cancel-schedule px-3"></span>
                                       {t("Cancel Appointment")}
                                     </div>
-                                    {t("")}
                                   </div>
-                                  {t("")}
                                 </>
                               ) : (
                                 <div className="d-flex align-items-center justify-content-center horizontal-more">
-                                  <i className="icon-more">{t("")}</i>
-                                  {t("")}
+                                  <i className="icon-more"></i>
                                 </div>
                               )}
                             </td>
-                            {t("")}
                           </tr>
                         );
                       })
                     : ""}
                 </TableWrapper>
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
-        {t("")}
       </>
     );
   }

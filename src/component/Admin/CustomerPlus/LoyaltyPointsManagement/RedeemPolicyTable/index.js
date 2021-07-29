@@ -57,7 +57,6 @@ export class RedeemPolicyTableClass extends React.Component {
           <div className="row align-items-center">
             <div className="col-md-4">
               <h3 className="head-label">{t("Redeem Policy")}</h3>
-              {t("")}
             </div>
             <div className="col-md-8">
               <InputSearch
@@ -65,9 +64,7 @@ export class RedeemPolicyTableClass extends React.Component {
                 placeholder="Search Policy"
                 onChange={this.handlesearch}
               />
-              {t("")}
             </div>
-            {t("")}
           </div>
           <div className="tab-table-content">
             <div className="py-4">
@@ -102,7 +99,6 @@ export class RedeemPolicyTableClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_code}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className={
@@ -112,7 +108,6 @@ export class RedeemPolicyTableClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_refer}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className={
@@ -122,7 +117,6 @@ export class RedeemPolicyTableClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {""}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className={
@@ -132,7 +126,6 @@ export class RedeemPolicyTableClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_name}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className={
@@ -142,7 +135,6 @@ export class RedeemPolicyTableClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_phone2}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className={
@@ -152,7 +144,6 @@ export class RedeemPolicyTableClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_dob}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className={
@@ -162,7 +153,6 @@ export class RedeemPolicyTableClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {"123"}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className="position-relative"
@@ -174,8 +164,7 @@ export class RedeemPolicyTableClass extends React.Component {
                               {currentIndex === index ? (
                                 <>
                                   <div className="d-flex align-items-center justify-content-center horizontal-more-active">
-                                    <i className="icon-more">{t("")}</i>
-                                    {t("")}
+                                    <i className="icon-more"></i>
                                   </div>
                                   <div className="option card">
                                     <div
@@ -186,37 +175,26 @@ export class RedeemPolicyTableClass extends React.Component {
                                         )
                                       }
                                     >
-                                      <span className="icon-eye-grey px-3">
-                                        {t("")}
-                                      </span>
+                                      <span className="icon-eye-grey px-3"></span>
                                       {t("Edit")}
                                     </div>
-                                    {t("")}
                                   </div>
-                                  {t("")}
                                 </>
                               ) : (
                                 <div className="d-flex align-items-center justify-content-center horizontal-more">
-                                  <i className="icon-more">{t("")}</i>
-                                  {t("")}
+                                  <i className="icon-more"></i>
                                 </div>
                               )}
                             </td>
-                            {t("")}
                           </tr>
                         );
                       })
                     : ""}
                 </TableWrapper>
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
-        {t("")}
       </>
     );
   }

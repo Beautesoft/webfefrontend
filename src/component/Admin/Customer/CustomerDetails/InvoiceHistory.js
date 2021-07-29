@@ -40,11 +40,8 @@ class InvoiceHistoryClass extends Component {
                 >
                   {t("Invoice History")}
                 </NavLink>
-                {t("")}
               </NavItem>
-              {t("")}
             </Nav>
-            {t("")}
           </div>
           <TabContent activeTab={this.state.activeTab}>
             <TabPane tabId="1">
@@ -54,11 +51,8 @@ class InvoiceHistoryClass extends Component {
                 ""
               )}
             </TabPane>
-            {t("")}
           </TabContent>
-          {t("")}
         </div>
-        {t("")}
       </div>
     );
   }

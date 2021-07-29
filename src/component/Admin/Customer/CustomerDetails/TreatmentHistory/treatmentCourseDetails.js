@@ -53,21 +53,18 @@ class TreatmentCourseDetailsClass extends Component {
             <div className="col-3">{t("Treatment No")}</div>
             <div className="col-5">{t("Content")}</div>
             <div className="col-2">{t("Value")}</div>
-            {t("")}
           </div>
           <div className="row m-0 fs-14">
             <div className="col-2 text-center">...</div>
             <div className="col-3">{t("Reverse list")}</div>
             <div className="col-5">{t("HQRAFTOOCFD")}</div>
-            <div className="col-2">{t("")}</div>
-            {t("")}
+            <div className="col-2"></div>
           </div>
           <div className="row m-0 fs-18 font-600">
             <div className="col-2 text-center">{t("No")}</div>
             <div className="col-3">{t("Treatment")} #</div>
             <div className="col-5">{t("Description")}</div>
             <div className="col-2">{t("Price")}</div>
-            {t("")}
           </div>
           <div className="row m-0 fs-14">
             <div className="col-2 text-center">1.</div>
@@ -82,21 +79,17 @@ class TreatmentCourseDetailsClass extends Component {
               <p className="text-orenge">
                 {t("Total credit Note after adjustment")}
               </p>
-              {t("")}
             </div>
             <div className="col-2">
               <p>$180.00</p>
               <p className="text-orenge">$180.00</p>
               <p className="text-orenge">$1440.00</p>
               <p>$180.00</p>
-              <br>{t("")}</br>
+              <br></br>
               <p>$20.00</p>
               <p className="text-orenge">$160.00</p>
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="col-6 mt-2 pb-3">
           <div className="row">
@@ -106,14 +99,12 @@ class TreatmentCourseDetailsClass extends Component {
                 <Label check>
                   <Input type="radio" name="radio1" />{" "}
                 </Label>
-                {t("")}
               </FormGroup>{" "}
               {" + "}
               <FormGroup className="ml-2" check>
                 <Label check>
                   <Input type="radio" name="radio1" />{" "}
                 </Label>
-                {t("")}
               </FormGroup>{" "}
               {" - "}
               <div className="input-group ml-3">
@@ -123,9 +114,7 @@ class TreatmentCourseDetailsClass extends Component {
                   name="adjustment"
                   onChange={this.props.handleChange}
                 />
-                {t("")}
               </div>
-              {t("")}
             </div>
             <div className="col-4 mb-2">{t("Reason")}</div>
             <div className="col-8 mb-2 reason">
@@ -136,9 +125,7 @@ class TreatmentCourseDetailsClass extends Component {
                   name="reason"
                   onChange={this.props.handleChange}
                 />
-                {t("")}
               </div>
-              {t("")}
             </div>
             <div className="col-4">{t("Remarks")}</div>
             <div className="col-8 remark">
@@ -149,13 +136,9 @@ class TreatmentCourseDetailsClass extends Component {
                   name="reason"
                   onChange={this.props.handleChange}
                 />
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="col-6 mt-2 py-3">
           <div className="row">
@@ -168,7 +151,6 @@ class TreatmentCourseDetailsClass extends Component {
                 // outline={false}
                 onClick={() => this.setState({ isOpenModal: true })}
               />
-              {t("")}
             </div>
             <div className="col-9 mt-5 text-center">
               <NormalButton
@@ -179,11 +161,8 @@ class TreatmentCourseDetailsClass extends Component {
                 outline={true}
                 onClick={() => {}}
               />
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="col-12 action-bar custom-border pt-4 d-flex text-center">
           <NormalButton
@@ -202,7 +181,6 @@ class TreatmentCourseDetailsClass extends Component {
             // outline={false}
             onClick={() => this.setState({ isOpenEditDisc: false })}
           />
-          {t("")}
         </div>
 
         <NormalModal
@@ -241,13 +219,9 @@ class TreatmentCourseDetailsClass extends Component {
                 // outline={false}
                 onClick={() => this.handleCloseDialog()}
               />
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </NormalModal>
-        {t("")}
       </div>
     );
   }

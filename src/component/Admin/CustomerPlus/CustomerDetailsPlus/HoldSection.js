@@ -40,21 +40,15 @@ class HoldSectionClass extends Component {
                 >
                   {t("Hold")}
                 </NavLink>
-                {t("")}
               </NavItem>
-              {t("")}
             </Nav>
-            {t("")}
           </div>
           <TabContent activeTab={this.state.activeTab}>
             <TabPane tabId="1">
               {this.state.activeTab === "1" ? <Hold id={this.props.id} /> : ""}
             </TabPane>
-            {t("")}
           </TabContent>
-          {t("")}
         </div>
-        {t("")}
       </div>
     );
   }

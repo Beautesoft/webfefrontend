@@ -120,9 +120,7 @@ export class ListCustomerPlusClass extends React.Component {
                 className="col-12 fs-15 float-right"
                 label="Settings"
               />
-              {t("")}
             </Link>
-            {t("")}
           </div>
           <div className="col-md-4 col-lg-3 mb-2">
             <Link to="/admin/customerplus/lpmanagement">
@@ -131,18 +129,14 @@ export class ListCustomerPlusClass extends React.Component {
                 className="col-12 fs-15 float-right"
                 label="LP Management"
               />
-              {t("")}
             </Link>
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="row">
           <div className="col">
             <div className="row">
               <div className="col-12 mb-2">
                 <h3 className="head-label">{t("Customer Plus List")}</h3>
-                {t("")}
               </div>
               <div className="col-md-8 col-sm-12 mb-2">
                 <InputSearch
@@ -150,7 +144,6 @@ export class ListCustomerPlusClass extends React.Component {
                   placeholder="Search Customer"
                   onEnter={this.handlesearch}
                 />
-                {t("")}
               </div>
               <div className="col-md-4 col-sm-12">
                 <NormalButton
@@ -161,9 +154,7 @@ export class ListCustomerPlusClass extends React.Component {
                     this.props.history.push("/admin/customerplus/add")
                   }
                 />
-                {t("")}
               </div>
-              {t("")}
             </div>
             <div className="tab-table-content">
               <div className="py-4">
@@ -183,13 +174,9 @@ export class ListCustomerPlusClass extends React.Component {
                           <div class="d-flex mt-5 align-items-center justify-content-center">
                             <div class="spinner-border" role="status">
                               <span class="sr-only">Loading...</span>
-                              {t("")}
                             </div>
-                            {t("")}
                           </div>
-                          {t("")}
                         </td>
-                        {t("")}
                       </tr>
                     ) : customerList ? (
                       customerList.map((item, index) => {
@@ -214,7 +201,6 @@ export class ListCustomerPlusClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_code}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className={
@@ -224,7 +210,6 @@ export class ListCustomerPlusClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_refer}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className={
@@ -234,7 +219,6 @@ export class ListCustomerPlusClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {""}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className={
@@ -244,7 +228,6 @@ export class ListCustomerPlusClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_name}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className={
@@ -254,7 +237,6 @@ export class ListCustomerPlusClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_phone2}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className={
@@ -264,7 +246,6 @@ export class ListCustomerPlusClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {cust_dob}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className={
@@ -274,7 +255,6 @@ export class ListCustomerPlusClass extends React.Component {
                               <div className="d-flex align-items-center justify-content-center">
                                 {class_name}
                               </div>
-                              {t("")}
                             </td>
                             <td
                               className="position-relative"
@@ -286,8 +266,7 @@ export class ListCustomerPlusClass extends React.Component {
                               {currentIndex === index ? (
                                 <>
                                   <div className="d-flex align-items-center justify-content-center horizontal-more-active">
-                                    <i className="icon-more">{t("")}</i>
-                                    {t("")}
+                                    <i className="icon-more"></i>
                                   </div>
                                   <div className="option card">
                                     <div
@@ -298,9 +277,7 @@ export class ListCustomerPlusClass extends React.Component {
                                         )
                                       }
                                     >
-                                      <span className="icon-eye-grey px-3">
-                                        {t("")}
-                                      </span>
+                                      <span className="icon-eye-grey px-3"></span>
                                       {t("View")}
                                     </div>
                                     <div
@@ -320,16 +297,12 @@ export class ListCustomerPlusClass extends React.Component {
                                           viewBox="0 0 15 30"
                                         >
                                           <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
-                                          {t("")}
                                         </svg>
-                                        {t("")}
                                       </span>
                                       {t("Loyalty Points Management")}
                                     </div>
                                     <div className="d-flex align-items-center fs-16">
-                                      <span className="icon-schedule px-3">
-                                        {t("")}
-                                      </span>
+                                      <span className="icon-schedule px-3"></span>
                                       {t("Reschedule Appointment")}
                                     </div>
                                     <div
@@ -361,30 +334,22 @@ export class ListCustomerPlusClass extends React.Component {
                                             stroke-linecap="round"
                                             stroke-linejoin="round"
                                           />
-                                          {t("")}
                                         </svg>
-                                        {t("")}
                                       </span>
                                       {t("Book Appointment")}
                                     </div>
                                     <div className="d-flex align-items-center fs-16 pb-3">
-                                      <span className="icon-cancel-schedule px-3">
-                                        {t("")}
-                                      </span>
+                                      <span className="icon-cancel-schedule px-3"></span>
                                       {t("Cancel Appointment")}
                                     </div>
-                                    {t("")}
                                   </div>
-                                  {t("")}
                                 </>
                               ) : (
                                 <div className="d-flex align-items-center justify-content-center horizontal-more">
-                                  <i className="icon-more">{t("")}</i>
-                                  {t("")}
+                                  <i className="icon-more"></i>
                                 </div>
                               )}
                             </td>
-                            {t("")}
                           </tr>
                         );
                       })
@@ -392,17 +357,11 @@ export class ListCustomerPlusClass extends React.Component {
                       ""
                     )}
                   </TableWrapper>
-                  {t("")}
                 </div>
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
-        {t("")}
       </div>
     );
   }

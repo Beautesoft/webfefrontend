@@ -38,13 +38,11 @@ class treatmentHistoryClass extends Component {
       <div className="treatment-account row">
         <div className="col-6 mt-3 mb-4">
           <div className="row">
-            <div className="col-5 mb-2">{t("")}</div>
-            <div className="col-5 mb-2">{t("")}</div>
+            <div className="col-5 mb-2"></div>
+            <div className="col-5 mb-2"></div>
             <div className="col-5">{t("Total treatment count")} </div>
             <div className="col-5">{t("4")}</div>
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="col-6 mt-3 mb-4">
           <div className="row">
@@ -53,9 +51,7 @@ class treatmentHistoryClass extends Component {
 
             <div className="col-6">{t("Outstanding balance")}</div>
             <div className="col-6">$500</div>
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="col-12">
           <div className="table">
@@ -70,57 +66,47 @@ class treatmentHistoryClass extends Component {
                     return (
                       <tr key={index}>
                         <td className="position-relative status-type">
-                          <span className={``}>{t("")}</span>
+                          <span className={``}></span>
                           <div className="d-flex align-items-center justify-content-center">
                             {"12/12/2020"}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {"ASDFSAD34534"}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {"TRTTRA1134"}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {"Facial Fire"}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {"$1500"}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {"$1500"}
                           </div>
-                          {t("")}
                         </td>
                         <td>
                           <div className="d-flex align-items-center justify-content-center">
                             {"$1500"}
                           </div>
-                          {t("")}
                         </td>
-                        {t("")}
                       </tr>
                     );
                   })
                 : ""}
             </TableWrapper>
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="col-12 text-center">
           <NormalButton
@@ -131,9 +117,7 @@ class treatmentHistoryClass extends Component {
             // outline={false}
             onClick={() => this.setState({ isOpenEditDisc: false })}
           />
-          {t("")}
         </div>
-        {t("")}
       </div>
     );
   }

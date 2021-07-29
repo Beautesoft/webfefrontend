@@ -88,7 +88,6 @@ class AddCustomerFormClass extends Component {
               name="cust_name"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
           {this.validator.message("Name", cust_name, "required|max:50")}
         </div>
@@ -103,7 +102,6 @@ class AddCustomerFormClass extends Component {
               name="cust_phone2"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
           {this.validator.message("Phone", cust_phone2, "required")}
         </div>
@@ -120,7 +118,6 @@ class AddCustomerFormClass extends Component {
               name="cust_nric"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
           {this.validator.message("NRIC", cust_nric, "required")}
         </div>
@@ -136,7 +133,6 @@ class AddCustomerFormClass extends Component {
               name="cust_address"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
           {this.validator.message("Address", cust_address, "required")}
         </div>
@@ -151,7 +147,6 @@ class AddCustomerFormClass extends Component {
               name="cust_postcode"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
           {this.validator.message("postcode", cust_postcode, "required")}
         </div>
@@ -167,7 +162,6 @@ class AddCustomerFormClass extends Component {
               name="cust_state"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
           {this.validator.message("State", cust_state, "required")}
         </div>
@@ -183,7 +177,6 @@ class AddCustomerFormClass extends Component {
               name="cust_country"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
           {this.validator.message("Country", cust_country, "required")}
         </div>
@@ -199,9 +192,7 @@ class AddCustomerFormClass extends Component {
               name="cust_email"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="pb-md-4">
           <label className="text-left text-black common-label-text fs-17 pb-2">
@@ -214,9 +205,7 @@ class AddCustomerFormClass extends Component {
               name="emergencycontact"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="gender mt-3">
           <label className="text-left text-black common-label-text fs-17 pb-2">
@@ -230,7 +219,6 @@ class AddCustomerFormClass extends Component {
               name="cust_language"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
           {this.validator.message("Language", cust_language, "required")}
         </div>
@@ -257,7 +245,7 @@ class AddCustomerFormClass extends Component {
               showYearDropdown={true}
               dateFormat="MM/dd/yyyy"
             />
-            {/* <span className="icon-calendar icon font-lg icon">{t("")}</span> */}
+            {/* <span className="icon-calendar icon font-lg icon"></span> */}
           </div>
           {this.validator.message("Date Of Birth", cust_dob, "required")}
         </div>
@@ -274,7 +262,6 @@ class AddCustomerFormClass extends Component {
               name="cust_source"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
           {this.validator.message("cust_source", cust_source, "required")}
         </div>
@@ -291,7 +278,6 @@ class AddCustomerFormClass extends Component {
               name="Cust_sexesid"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
           {this.validator.message("Gender", Cust_sexesid, "required")}
         </div>
@@ -307,9 +293,7 @@ class AddCustomerFormClass extends Component {
               name="cardno1"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="pb-md-4">
           <label className="text-left text-black common-label-text fs-17 pb-2">
@@ -322,9 +306,7 @@ class AddCustomerFormClass extends Component {
               name="cardno2"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="pb-md-4">
           <label className="text-left text-black common-label-text fs-17 pb-2">
@@ -337,9 +319,7 @@ class AddCustomerFormClass extends Component {
               name="cardno3"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="pb-md-4">
           <label className="text-left text-black common-label-text fs-17 pb-2">
@@ -352,9 +332,7 @@ class AddCustomerFormClass extends Component {
               name="cardno4"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="pb-md-4">
           <label className="text-left text-black common-label-text fs-17 pb-2">
@@ -367,9 +345,7 @@ class AddCustomerFormClass extends Component {
               name="cardno5"
               onChange={this.props.handleChange}
             />
-            {t("")}
           </div>
-          {t("")}
         </div>
         <div className="gender mt-3">
           <FormGroup check>
@@ -381,9 +357,7 @@ class AddCustomerFormClass extends Component {
               />
               {t("Send SMS")}
             </Label>
-            {t("")}
           </FormGroup>
-          {t("")}
         </div>
         <div className="gender mt-3">
           <FormGroup check>
@@ -395,9 +369,7 @@ class AddCustomerFormClass extends Component {
               />
               {t("Send Mail")}
             </Label>
-            {t("")}
           </FormGroup>
-          {t("")}
         </div>
 
         {/* <div className="form-group mb-4 pb-3">
@@ -409,10 +381,10 @@ class AddCustomerFormClass extends Component {
                             name="Site_Codeid"
                             onChange={this.handleChange}
                         />
-                    {t("")}</div>
+                    </div>
                     {this.validator.message('salon', Site_Codeid, 'required|string')}
                 </div> */}
-        <div className="border-bottom-line mt-5">{t("")}</div>
+        <div className="border-bottom-line mt-5"></div>
         <div className="pt-5 d-flex justify-content-center">
           <div className="col-3">
             <NormalButton
@@ -421,7 +393,6 @@ class AddCustomerFormClass extends Component {
               danger={true}
               className="mr-2 col-12"
             />
-            {t("")}
           </div>
           <div className="col-3">
             <NormalButton
@@ -430,7 +401,6 @@ class AddCustomerFormClass extends Component {
               success={true}
               className="mr-2 col-12"
             />
-            {t("")}
           </div>
           <div className="col-3">
             <NormalButton
@@ -439,11 +409,8 @@ class AddCustomerFormClass extends Component {
               success={true}
               className="mr-2 col-12"
             />
-            {t("")}
           </div>
-          {t("")}
         </div>
-        {t("")}
       </div>
     );
   }

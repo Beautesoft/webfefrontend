@@ -44,7 +44,6 @@ class DetailsClass extends Component {
                 >
                   {t("Details")}
                 </NavLink>
-                {t("")}
               </NavItem>
 
               <NavItem>
@@ -58,7 +57,6 @@ class DetailsClass extends Component {
                 >
                   {t("Products")}
                 </NavLink>
-                {t("")}
               </NavItem>
               <NavItem>
                 <NavLink
@@ -71,7 +69,6 @@ class DetailsClass extends Component {
                 >
                   {t("Packages")}
                 </NavLink>
-                {t("")}
               </NavItem>
 
               <NavItem>
@@ -85,11 +82,8 @@ class DetailsClass extends Component {
                 >
                   {t("Favourites")}
                 </NavLink>
-                {t("")}
               </NavItem>
-              {t("")}
             </Nav>
-            {t("")}
           </div>
           <TabContent activeTab={this.state.activeTab}>
             <TabPane tabId="1">
@@ -113,11 +107,8 @@ class DetailsClass extends Component {
             <TabPane tabId="5">
               {this.state.activeTab === "5" ? <Favourites /> : ""}
             </TabPane>
-            {t("")}
           </TabContent>
-          {t("")}
         </div>
-        {t("")}
       </div>
     );
   }

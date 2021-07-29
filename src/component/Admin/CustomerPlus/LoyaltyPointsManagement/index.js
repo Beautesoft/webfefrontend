@@ -66,37 +66,29 @@ class LoyaltyPointsManagementClass extends React.Component {
                   },
                 ]}
               />
-              {t("")}
             </div>
             <div className="col-md-10">
               <div className="container-fluid">
                 <div className="row align-items-center">
                   <div className="col-md-4">
                     <h3 className="head-label">{t("Customer Details")}</h3>
-                    {t("")}
                   </div>
-                  {t("")}
                 </div>
                 <div className="row mt-2 mb-5">
                   <div className="col-md-6  mt-2">
                     <label className="label">{t("Name")}</label>
                     <NormalInput disabled />
-                    {t("")}
                   </div>
                   <div className="col-md-6 mt-2">
                     <label className="label">{t("Code Referance")}</label>
                     <NormalInput disabled />
-                    {t("")}
                   </div>
 
                   <div className="col-md-6  mt-2">
                     <label className="label">{t("Available Points")}</label>
                     <NormalInput disabled />
-                    {t("")}
                   </div>
-                  {t("")}
                 </div>
-                {t("")}
               </div>
 
               {currentMenu == "/" ? (
@@ -109,11 +101,8 @@ class LoyaltyPointsManagementClass extends React.Component {
                 <ManualRedeem />
               )}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
-        {t("")}
       </>
     );
   }

@@ -11,15 +11,14 @@ class AddRedeemPolicyClass extends React.Component {
       <div className="container-fuild">
         <div className="head-label-nav">
           <p className="category">{t("CustomerPlus")}</p>
-          <i className="icon-right mx-md-3">{t("")}</i>
+          <i className="icon-right mx-md-3"></i>
           <p className="sub-category">{t("Loyalty Points Management")}</p>
-          <i className="icon-right mx-md-3">{t("")}</i>
+          <i className="icon-right mx-md-3"></i>
           <p className="sub-category">
             {t(
               (this.props.match.params.id ? "Edit" : "New") + " Redeem Policy"
             )}
           </p>
-          {t("")}
         </div>
         <div className="container-lg mt-5">
           <div className="row align-items-center">
@@ -30,9 +29,7 @@ class AddRedeemPolicyClass extends React.Component {
                     " Redeem Policy"
                 )}
               </h3>
-              {t("")}
             </div>
-            {t("")}
           </div>
           <div className="form-group pb-2 mb-4">
             <div className="row">
@@ -41,18 +38,14 @@ class AddRedeemPolicyClass extends React.Component {
                   {t("Code")}
                 </label>
                 <NormalInput />
-                {t("")}
               </div>{" "}
               <div className="col-md-6 ">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
                   {t("Currency Value")}
                 </label>
                 <NormalInput />
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
 
           <div className="form-group pb-2 mb-4">
@@ -62,18 +55,14 @@ class AddRedeemPolicyClass extends React.Component {
                   {t("Custoemr Class")}
                 </label>
                 <NormalSelect />
-                {t("")}
               </div>
               <div className="col-md-6 ">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
                   {t("Point Value")}
                 </label>
                 <NormalInput />
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
 
           <div className="form-group mb-4 pb-2">
@@ -86,11 +75,8 @@ class AddRedeemPolicyClass extends React.Component {
                 >
                   {t("Is Currently Active")}
                 </label>
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
 
           <div className="form-group mb-4 pb-2">
@@ -101,9 +87,7 @@ class AddRedeemPolicyClass extends React.Component {
                     label="Cancel"
                     className="mr-2 bg-danger text-light col-12"
                   />
-                  {t("")}
                 </Link>
-                {t("")}
               </div>
               <div className="col-2">
                 <NormalButton
@@ -111,15 +95,10 @@ class AddRedeemPolicyClass extends React.Component {
                   success={true}
                   className="mr-2 col-12"
                 />
-                {t("")}
               </div>
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
-        {t("")}
       </div>
     );
   }

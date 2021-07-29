@@ -30,52 +30,39 @@ export class PersonalDetailsClass extends Component {
           <div className="row pt-5">
             <div className="col-3">
               <p className="customer-detail-desc pb-4">{t("Contact Number")}</p>
-              {t("")}
             </div>
             <div className="col-9">
               <p className="customer-detail-text pb-4">{cust_phone2}</p>
-              {t("")}
             </div>
             <div className="col-3">
               <p className="customer-detail-desc pb-4">{t("Email Address")}</p>
-              {t("")}
             </div>
             <div className="col-9">
               <p className="customer-detail-text pb-4">{cust_email}</p>
-              {t("")}
             </div>
             <div className="col-3">
               <p className="customer-detail-desc pb-4">{t("Address")}</p>
-              {t("")}
             </div>
             <div className="col-9">
               <p className="customer-detail-text pb-4">{cust_address}</p>
-              {t("")}
             </div>
             <div className="col-3">
               <p className="customer-detail-desc pb-4">{t("Gender")}</p>
-              {t("")}
             </div>
             <div className="col-9">
               <p className="customer-detail-text pb-4">
                 {Cust_sexesid === 1 ? "Male" : "Female"}
               </p>
-              {t("")}
             </div>
 
             <div className="col-3">
               <p className="customer-detail-desc pb-4">{t("DOB")}</p>
-              {t("")}
             </div>
             <div className="col-9">
               <p className="customer-detail-text pb-4">{cust_dob}</p>
-              {t("")}
             </div>
-            {t("")}
           </div>
-          {t("")}
         </div>
-        {t("")}
       </>
     );
   }

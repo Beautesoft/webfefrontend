@@ -58,7 +58,6 @@ export class CatalogCartClass extends Component {
         <div className="products">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <p className="headline">{t("Cart")}</p>
-            {t("")}
           </div>
           <div className="d-flex list flex-wrap justify-content position-relative ">
             {productCard.dataList &&
@@ -92,15 +91,12 @@ export class CatalogCartClass extends Component {
                           stroke-linecap="round"
                           stroke-linejoin="round"
                         />
-                        {t("")}
                       </svg>
-                      {t("")}
                     </div>
                     <div className="col-4 p-0">
                       <p className="font-600 fs-14">
                         {t("Makeup brush & Compact combo")}
                       </p>
-                      {t("")}
                     </div>
                     <div className="col-2">
                       <svg
@@ -122,7 +118,6 @@ export class CatalogCartClass extends Component {
                           stroke-linecap="round"
                           stroke-linejoin="round"
                         />
-                        {t("")}
                       </svg>
                       <span>{t("1")}</span>
                       <svg
@@ -144,17 +139,12 @@ export class CatalogCartClass extends Component {
                           stroke-linecap="round"
                           stroke-linejoin="round"
                         />
-                        {t("")}
                       </svg>
-                      {t("")}
                     </div>
                     <div className="col-3">
                       <p className="font-600 fs-14">$12.35</p>
-                      {t("")}
                     </div>
-                    {t("")}
                   </div>
-                  {t("")}
                 </div>
               ))}
             {pagination && (
@@ -164,7 +154,6 @@ export class CatalogCartClass extends Component {
               />
             )}
           </div>
-          {t("")}
         </div>
         <div className="checkout">
           <NormalButton
@@ -173,9 +162,7 @@ export class CatalogCartClass extends Component {
             outline={false}
             onClick={() => this.props.handleSelectServices()}
           />
-          {t("")}
         </div>
-        {t("")}
       </>
     );
   }
