@@ -765,6 +765,9 @@ export class SelectStaffClass extends Component {
 
   calculateSessions = () => {
     let { sessionTableDetails, employeeOptions, tstaffList } = this.state;
+    tstaffList.forEach((e, index) => {
+      tstaffList[index].session = parseFloat(`${e.session}`);
+    });
     let sessionCount = 0;
     sessionTableDetails.forEach((e) => {
       sessionCount += e.sessions;
@@ -788,15 +791,12 @@ export class SelectStaffClass extends Component {
             sessionTableDetails[index].values.length;
         }
       });
-      tstaffList.filter((ele) => ele.helper_id == e.value)[0].session =
-        round(total);
+      tstaffList.find((ele) => ele.helper_id == e.value).session = round(total);
     });
 
     let total = 0;
     if (tstaffList.length > 2)
-      total = tstaffList
-        .slice(0, -1)
-        .reduce((e1, e2) => e1.session + e2.session);
+      total = tstaffList.slice(0, -1).reduce((e1, e2) => e1 + e2.session, 0);
     else total = tstaffList[0].session;
 
     tstaffList[tstaffList.length - 1].session = round(
