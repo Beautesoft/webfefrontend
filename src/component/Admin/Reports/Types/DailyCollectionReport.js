@@ -221,6 +221,7 @@ class DailyCollectionReportClass extends Component {
                         report={{
                           id: reportName,
                           displayName: reportName,
+                          definition: report,
                         }}
                         language={localStorage.getItem("lang")}
                         onSave={onSaveReport}
