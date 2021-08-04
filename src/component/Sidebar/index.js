@@ -21,6 +21,11 @@ export class SidebarClass extends Component {
         role: ["MANAGER", "ADMINISTRATOR", "THERAPIST"],
       },
       {
+        to: "/admin/reports",
+        label: "Reports",
+        role: ["MANAGER", "ADMINISTRATOR", "THERAPIST"],
+      },
+      {
         to: "/admin/newappointment",
         label: "Appointment",
         role: ["MANAGER", "ADMINISTRATOR", "THERAPIST"],

@@ -82,3 +82,21 @@ export {
   AddRewardPolicy,
 } from "./CustomerPlus";
 export { KPIDashboard } from "./KPI";
+export {
+  Reports,
+  UnearnedRevenueReport,
+  BirthdayReport,
+  CustomerLastVisitReport,
+  CustomerNewJoinReport,
+  DailyCollectionReport,
+  DailyInvoiceReport,
+  ProductSalesReport,
+  SalesByDepartmentReport,
+  SalesCollectionsReport,
+  SpecialTransactionTypeReport,
+  StaffPerformanceReport,
+  StockBalanceReport,
+  StockMovementDetailReport,
+  StockMovementSummaryReport,
+  TreamentDoneReport,
+} from "./Reports";
