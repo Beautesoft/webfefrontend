@@ -163,7 +163,7 @@ class DailyCollectionReportClass extends Component {
           </div>
         ) : (
           <>
-            <div className="row mb-2">
+            <div className="row">
               <div className="col-md-3 col-lg-2 mb-4">
                 <NormalButton
                   label={t("Run")}
@@ -185,7 +185,8 @@ class DailyCollectionReportClass extends Component {
                 />
               </div>
             </div>
-            <div className="row mb-4">
+            <hr />
+            <div className="row">
               <div className="col-md-4 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-1">
                   {t("From Date")}
@@ -242,6 +243,7 @@ class DailyCollectionReportClass extends Component {
                 />
               </div>
             </div>
+            <hr />
             <div className="row mb-4">
               {this.state.data ? (
                 <Fragment>
