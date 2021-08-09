@@ -5,6 +5,7 @@ class NormalCheckboxClass extends Component {
   render() {
     let {
       className = "custom-checkbox d-flex align-items-center",
+      labelClass = "label-txt fs-14",
       label = "",
       value = "",
       name = "",
@@ -31,7 +32,7 @@ class NormalCheckboxClass extends Component {
         <span className="checkbox-tick d-flex justify-content-center align-items-center">
           <i className="icon-tick fs-10"></i>
         </span>
-        {label ? <span className="label-txt fs-14 pl-1">{t(label)}</span> : ""}
+        {label ? <span className={labelClass + " pl-1"}>{t(label)}</span> : ""}
       </label>
     );
   }
