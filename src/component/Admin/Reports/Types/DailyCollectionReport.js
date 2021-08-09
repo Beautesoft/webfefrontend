@@ -26,12 +26,7 @@ class DailyCollectionReportClass extends Component {
     isMounted: true,
     isLoading: true,
     start: Date.now(),
-    inOptions: [
-      { label: "Month", value: "month" },
-      { label: "Week", value: "week" },
-      { label: "Day", value: "day" },
-    ],
-    selectedInOption: "week",
+    end: Date.now(),
     data: null,
   };
 
@@ -104,6 +99,11 @@ class DailyCollectionReportClass extends Component {
 
   handleDatePick = (name, value) => {
     this.state[name] = value;
+    if (name === "start") {
+      let start = new Date(value);
+      let end = new Date(this.state.end);
+      if (end < start) this.state.end = this.state.start;
+    }
     this.updateState({});
   };
 
@@ -112,23 +112,28 @@ class DailyCollectionReportClass extends Component {
     let {
       data,
       selectedSites,
-      selectedInOption,
       selectedSiteGroup,
       selectedPayGroup,
       start,
+      end,
     } = this.state;
     let additionalParams = "";
     if (selectedSiteGroup) additionalParams = `&siteGroup=${selectedSiteGroup}`;
     else additionalParams = `&siteCodes=${selectedSites}`;
     if (selectedPayGroup) additionalParams += `&payGroup=${selectedPayGroup}`;
-    let res = await this.props.getCommonApi(
-      `SalesDailyReporting?start=${this.getFormatedDate(
-        start
-      )}&in=${selectedInOption}${additionalParams}`
-    );
-    console.log(res);
-    data = res.data;
-    this.updateState({ data, isLoading: false });
+    try {
+      let res = await this.props.getCommonApi(
+        `SalesDailyReporting?start=${this.getFormatedDate(
+          start
+        )}&end=${this.getFormatedDate(end)}${additionalParams}`
+      );
+      console.log(res);
+      data = res.data;
+      this.updateState({ data, isLoading: false });
+    } catch (e) {
+      console.log(e);
+    }
+    this.updateState({ isLoading: false });
   };
 
   onSaveReport = async (info) => {
@@ -139,11 +144,6 @@ class DailyCollectionReportClass extends Component {
 
   render() {
     let { t, report } = this.props;
-    let { inOptions } = this.state;
-    inOptions = inOptions.map((e) => {
-      return { ...e, label: t(e.label) };
-    });
-
     if (report.DataSources)
       report.DataSources[0].ConnectionProperties.ConnectString = `jsondata=${JSON.stringify(
         { data: this.state.data }
@@ -200,13 +200,14 @@ class DailyCollectionReportClass extends Component {
               </div>
               <div className="col-md-4 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-1">
-                  {t("In")}
+                  {t("To Date")}
                 </label>
-                <NormalSelect
-                  onChange={this.handleChanges}
-                  options={inOptions}
-                  value={this.state.selectedInOption}
-                  name="selectedInOption"
+                <NormalDateTime
+                  onChange={this.handleDatePick}
+                  value={this.state.end}
+                  minDate={this.state.start}
+                  name="end"
+                  showYearDropdown={true}
                 />
               </div>
               <div className="col-md-4 mb-4">
