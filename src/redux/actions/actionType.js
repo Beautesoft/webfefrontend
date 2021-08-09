@@ -62,10 +62,14 @@ export const CustomerPlusActionType = {
 };
 
 export const KPIActionType = {
-  getDailyCollections : "GET_DAILY_COLLECTIONS",
-  getMonthlyCollections : "GET_MONTHLY_COLLECTIONS",
-  getConsultantCollections : "GET_CONSULTATNT_COLLECTIONS",
-  getRankingByOutlet : "GET_RANKING_BY_OUTLET",
-  getConsultantServiceRanking : "GET_CONSULTATNT_SERVICE_RANKING",
-  getConsultantSalesRanking : "GET_CONSULTATNT_SALES_RANKING",
-}
+  getDailyCollections: "GET_DAILY_COLLECTIONS",
+  getMonthlyCollections: "GET_MONTHLY_COLLECTIONS",
+  getConsultantCollections: "GET_CONSULTATNT_COLLECTIONS",
+  getRankingByOutlet: "GET_RANKING_BY_OUTLET",
+  getConsultantServiceRanking: "GET_CONSULTATNT_SERVICE_RANKING",
+  getConsultantSalesRanking: "GET_CONSULTATNT_SALES_RANKING",
+};
+
+export const ReportActionType = {
+  getReportLayout: "GET_REPORT_LAYOUT",
+};

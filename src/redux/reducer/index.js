@@ -11,6 +11,7 @@ import customer from "./customer";
 import customerPlus from "./customerPlus";
 import appointment from "./appointment";
 import kpi from "./kpi";
+import reporting from "./reporting";
 
 export const reducers = combineReducers({
   authStore,
@@ -25,4 +26,5 @@ export const reducers = combineReducers({
   customerPlus,
   appointment,
   kpi,
+  reporting,
 });

@@ -961,3 +961,29 @@ export const multiLanguage = {
     baseURL: "normal",
   },
 };
+export const Reporting = {
+  getReportLayout: {
+    url: "ReportSettings/",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  updateReportLayout: {
+    url: "ReportSettings/",
+    method: "post",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+};

@@ -9,14 +9,15 @@ import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getCommonApi } from "redux/actions/common";
+import { getReport, updateReport } from "redux/actions/reports";
 import { Viewer, Designer } from "@grapecity/activereports-react";
 import "../style.scss";
 import { Fragment } from "react";
-import report from "./Files/urr-report-template.json";
-const reportName = "urr-report-template.json";
 
 class DailyCollectionReportClass extends Component {
   state = {
+    payGroupOptions: [],
+    selectedPayGroup: "",
     selectedSites: "",
     siteOptions: [],
     selectedSiteGroup: "",
@@ -47,9 +48,17 @@ class DailyCollectionReportClass extends Component {
   }
 
   getData = async () => {
-    let { siteOptions, siteGroupOptions } = this.state;
+    let { siteOptions, siteGroupOptions, payGroupOptions } = this.state;
+    await this.props.getReport("");
+    let payGroup = await this.props.getCommonApi("pay_group_list");
     let branchRes = await this.props.getCommonApi("branchlist/");
     let siteGroupRes = await this.props.getCommonApi("site_group_list/");
+    for (let key of payGroup.data) {
+      payGroupOptions.push({
+        value: key,
+        label: key,
+      });
+    }
     for (let key of branchRes.data) {
       siteOptions.push({
         value: key.itemsite_code,
@@ -59,7 +68,12 @@ class DailyCollectionReportClass extends Component {
     for (let key of siteGroupRes.data.groups) {
       siteGroupOptions.push({ value: key.code, label: key.description });
     }
-    this.updateState({ siteOptions, siteGroupOptions, isLoading: false });
+    this.updateState({
+      siteOptions,
+      siteGroupOptions,
+      payGroupOptions,
+      isLoading: false,
+    });
   };
 
   getFormatedDate = (input) => {
@@ -95,11 +109,18 @@ class DailyCollectionReportClass extends Component {
 
   onRun = async () => {
     this.updateState({ isLoading: true });
-    let { data, selectedSites, selectedInOption, selectedSiteGroup, start } =
-      this.state;
+    let {
+      data,
+      selectedSites,
+      selectedInOption,
+      selectedSiteGroup,
+      selectedPayGroup,
+      start,
+    } = this.state;
     let additionalParams = "";
     if (selectedSiteGroup) additionalParams = `&siteGroup=${selectedSiteGroup}`;
     else additionalParams = `&siteCodes=${selectedSites}`;
+    if (selectedPayGroup) additionalParams += `$payGroup=${selectedPayGroup}`;
     let res = await this.props.getCommonApi(
       `SalesDailyReporting?start=${this.getFormatedDate(
         start
@@ -110,22 +131,23 @@ class DailyCollectionReportClass extends Component {
     this.updateState({ data, isLoading: false });
   };
 
+  onSaveReport = async (info) => {
+    this.updateReport({ isLoading: true });
+    await this.props.updateReport("", info.definition);
+    this.updateReport({ isLoading: false });
+  };
+
   render() {
-    let { t } = this.props;
+    let { t, report } = this.props;
     let { inOptions } = this.state;
     inOptions = inOptions.map((e) => {
       return { ...e, label: t(e.label) };
     });
 
-    function onSaveReport(info) {
-      console.log("save clicked");
-      console.log(info);
-      return Promise.resolve({ displayName: "report" });
-    }
-    report.DataSources[0].ConnectionProperties.ConnectString = `jsondata=${JSON.stringify(
-      { data: this.state.data }
-    )}`;
-    console.log(report);
+    if (report.DataSources)
+      report.DataSources[0].ConnectionProperties.ConnectString = `jsondata=${JSON.stringify(
+        { data: this.state.data }
+      )}`;
     return (
       <div className="container-fluid report-types">
         <div className="row mb-4">
@@ -184,7 +206,6 @@ class DailyCollectionReportClass extends Component {
                   options={inOptions}
                   value={this.state.selectedInOption}
                   name="selectedInOption"
-                  showYearDropdown={true}
                 />
               </div>
               <div className="col-md-4 mb-4">
@@ -196,7 +217,6 @@ class DailyCollectionReportClass extends Component {
                   options={this.state.siteGroupOptions}
                   value={this.state.selectedSiteGroup}
                   name="selectedSiteGroup"
-                  showYearDropdown={true}
                 />
               </div>
               <div className="col-md-4 mb-4">
@@ -208,7 +228,17 @@ class DailyCollectionReportClass extends Component {
                   options={this.state.siteOptions}
                   value={this.state.selectedSites}
                   name="selectedSites"
-                  showYearDropdown={true}
+                />
+              </div>
+              <div className="col-md-4 mb-4">
+                <label className="text-left text-black common-label-text fs-17 pb-1">
+                  {t("Pay Group")}
+                </label>
+                <NormalSelect
+                  onChange={this.handleChanges}
+                  options={this.state.payGroupOptions}
+                  value={this.state.selectedPayGroup}
+                  name="selectedPayGroup"
                 />
               </div>
             </div>
@@ -219,12 +249,11 @@ class DailyCollectionReportClass extends Component {
                     <div id="designer-host">
                       <Designer
                         report={{
-                          id: reportName,
-                          displayName: reportName,
+                          displayName: t("report"),
                           definition: report,
                         }}
                         language={localStorage.getItem("lang")}
-                        onSave={onSaveReport}
+                        onSave={this.onSaveReport}
                       />
                     </div>
                   ) : (
@@ -246,12 +275,16 @@ class DailyCollectionReportClass extends Component {
     );
   }
 }
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  report: state.reporting.reportLayout,
+});
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
+      getReport,
+      updateReport,
     },
     dispatch
   );
