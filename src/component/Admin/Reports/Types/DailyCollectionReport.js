@@ -120,7 +120,7 @@ class DailyCollectionReportClass extends Component {
     let additionalParams = "";
     if (selectedSiteGroup) additionalParams = `&siteGroup=${selectedSiteGroup}`;
     else additionalParams = `&siteCodes=${selectedSites}`;
-    if (selectedPayGroup) additionalParams += `$payGroup=${selectedPayGroup}`;
+    if (selectedPayGroup) additionalParams += `&payGroup=${selectedPayGroup}`;
     let res = await this.props.getCommonApi(
       `SalesDailyReporting?start=${this.getFormatedDate(
         start
