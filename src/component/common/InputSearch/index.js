@@ -7,8 +7,10 @@ import PropTypes from "prop-types";
 export const InputSearch = ({
   inputClassName = "form-control pl-3",
   onChange,
+  onEnter,
   placeholder = "Search",
   value,
+  disabled = false,
 }) => {
   let { t } = useTranslation();
   return (
@@ -19,11 +21,15 @@ export const InputSearch = ({
         name="search"
         type="text"
         value={value}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") if (onEnter) onEnter(e);
+        }}
         onChange={(e) => {
           if (onChange) {
             onChange(e);
           }
         }}
+        disabled={disabled}
       />
       <i className={`icon-searchIcon search-icon`}></i>
     </div>

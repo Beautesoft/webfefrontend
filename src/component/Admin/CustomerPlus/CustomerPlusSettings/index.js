@@ -12,6 +12,7 @@ import { withTranslation } from "react-i18next";
 export class SettingsClass extends React.Component {
   state = {
     dataList: [],
+    originalData: [],
     tableHeader: [
       { label: "Field Name", sortKey: "field" },
       { label: "Mandatory", sortKey: "mandatory" },
@@ -35,13 +36,21 @@ export class SettingsClass extends React.Component {
     this.loadData();
   }
 
-  handleSearch = (event) => {};
+  handleSearch = (event) => {
+    let { originalData, dataList } = this.state;
+    dataList = originalData.filter(
+      (e) =>
+        e.display_field_name.includes(event.target.value) ||
+        e.field_name.includes(event.target.value)
+    );
+    this.updateState({ dataList });
+  };
 
   loadData = async () => {
     this.updateState({ isLoading: true });
     await this.props.getCustomerPlusSettings();
     let { dataList } = this.props;
-    this.updateState({ dataList, isLoading: false });
+    this.updateState({ dataList, originalData: dataList, isLoading: false });
   };
 
   handleSubmit = async () => {
@@ -68,7 +77,7 @@ export class SettingsClass extends React.Component {
                 <InputSearch
                   className=""
                   placeholder="Search Field"
-                  onChange={this.handlesearch}
+                  onChange={this.handleSearch}
                 />
               </div>
 

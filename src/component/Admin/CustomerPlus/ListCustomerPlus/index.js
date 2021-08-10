@@ -3,26 +3,19 @@ import { NormalButton } from "component/common";
 import { InputSearch, TableWrapper } from "component/common";
 import { Link } from "react-router-dom";
 import "./style.scss";
-import { getCustomerPlus } from "redux/actions/customerPlus";
+import {
+  getCustomerPlus,
+  getCustomerPlusSettings,
+} from "redux/actions/customerPlus";
 import { updateForm } from "redux/actions/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import _ from "lodash";
-import { Navigation } from "react-minimal-side-navigation";
 import { withTranslation } from "react-i18next";
 
 export class ListCustomerPlusClass extends React.Component {
   state = {
-    headerDetails: [
-      { label: "Customer Code", sortKey: "cust_code" },
-      { label: "Referance Code", sortKey: "cust_refer", enabled: true },
-      { label: "Salutation", sortKey: "cust_title", enabled: true },
-      { label: "Customer Name", sortKey: "cust_name", enabled: true },
-      { label: "Mobile Phone", sortKey: "cust_phone2", enabled: true },
-      { label: "Birthday", sortKey: "cust_dob,", enabled: true },
-      { label: "Customer Class", sortKey: "cust_title", enabled: true },
-      { label: "" },
-    ],
+    headerDetails: [],
     customerList: [],
     search: "",
     meta: {},
@@ -67,8 +60,26 @@ export class ListCustomerPlusClass extends React.Component {
 
   getCustomerPlus = async (data) => {
     this.updateState({ isLoading: true });
-    let { search } = this.state;
+    let { search, headerDetails } = this.state;
     let { page = 1, limit = 10 } = data;
+    if (headerDetails.length == 0) {
+      await this.props.getCustomerPlusSettings();
+      let { settings } = this.props;
+      for (let {
+        display_field_name,
+        field_name,
+        visible_in_listing,
+      } of settings) {
+        if (visible_in_listing)
+          headerDetails.push({
+            label: display_field_name,
+            field: field_name,
+            sortKey: field_name,
+          });
+      }
+      headerDetails.push({ label: "" });
+      this.updateState({ headerDetails });
+    }
     await this.props.getCustomerPlus(
       `?page=${page}&limit=${limit}&search=${search}`
     );
@@ -143,6 +154,7 @@ export class ListCustomerPlusClass extends React.Component {
                   className=""
                   placeholder="Search Customer"
                   onEnter={this.handlesearch}
+                  disabled={isLoading}
                 />
               </div>
               <div className="col-md-4 col-sm-12">
@@ -180,83 +192,18 @@ export class ListCustomerPlusClass extends React.Component {
                       </tr>
                     ) : customerList ? (
                       customerList.map((item, index) => {
-                        let {
-                          id,
-                          cust_code,
-                          cust_refer,
-                          cust_name,
-                          cust_phone2,
-                          cust_dob,
-                          class_name,
-                          cust_title,
-                        } = item;
-                        let date = new Date(cust_dob);
-                        cust_dob = date.toLocaleDateString();
+                        let { id } = item;
                         return (
                           <tr key={index}>
-                            <td
-                              className={
-                                headerDetails[0].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_code}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[1].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_refer}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[2].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_title}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[3].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_name}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[4].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_phone2}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[5].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {cust_dob}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[6].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {class_name}
-                              </div>
-                            </td>
+                            {headerDetails.map((e) =>
+                              e.field ? (
+                                <td>
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    {item[e.field]}
+                                  </div>
+                                </td>
+                              ) : null
+                            )}
                             <td
                               className="position-relative"
                               ref={(node) => {
@@ -370,6 +317,7 @@ export class ListCustomerPlusClass extends React.Component {
 
 const mapStateToProps = (state) => ({
   customerDetails: state.customerPlus.customerPlusDetail,
+  settings: state.customerPlus.customerPlusSettings,
 });
 
 const mapDispatchToProps = (dispatch) => {
@@ -377,6 +325,7 @@ const mapDispatchToProps = (dispatch) => {
     {
       getCustomerPlus,
       updateForm,
+      getCustomerPlusSettings,
     },
     dispatch
   );
