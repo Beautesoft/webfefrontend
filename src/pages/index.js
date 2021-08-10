@@ -80,6 +80,8 @@ export {
   LoyaltyPointsManagement,
   AddRedeemPolicy,
   AddRewardPolicy,
+  Settings,
+  LoyaltyPointsManagementSettings,
 } from "./CustomerPlus";
 export { KPIDashboard } from "./KPI";
 export {
