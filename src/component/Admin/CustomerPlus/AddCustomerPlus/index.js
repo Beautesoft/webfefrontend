@@ -181,9 +181,9 @@ export class AddCustomerPlusClass extends Component {
         ? (12 - extraFields[0].col_width) * extraFields.length
         : 0;
     console.log(leftLength, "len");
-    let addressFileds = extraFields.map((e) => {
+    let addressFileds = extraFields.map((e, index) => {
       return (
-        <div className="input-group pb-2">
+        <div className="input-group pb-2" key={index}>
           <NormalInput
             placeholder="Enter here"
             value={this.state.formFields[e.field_name]}
@@ -208,195 +208,196 @@ export class AddCustomerPlusClass extends Component {
       });
     console.log(sorted, "sorted fields");
     console.log(rowElements, "row fields");
-    return sorted
-      .slice(0, sorted.indexOf(extraFields[0]))
-      .concat(
-        sorted.slice(sorted.indexOf(rowElements[rowElements.length - 1]) + 1)
-      )
-      .map((e) => {
-        if (e.field_name.includes("cust_address")) {
-          return (
-            <>
-              <div className={`col-md-${e.col_width} pb-md-4`}>
-                <label className="text-left text-black common-label-text fs-17 p-0">
-                  {e.display_field_name}
-                </label>
-                <div className="input-group pb-2">
-                  <NormalInput
-                    placeholder="Enter here"
-                    value={this.state.formFields[e.field_name]}
-                    name={e.field_name}
-                    onChange={this.handleChange}
-                  />
-                </div>
-                {addressFileds}
-                {e.mandatory
-                  ? this.validator.message(
-                      e.display_field_name,
-                      this.state.formFields[e.field_name],
-                      "required"
-                    )
-                  : null}
-              </div>
-              <div className={`col-md-${12 - e.col_width} pb-md-4`}>
-                <div className="row">
-                  {rowElements.map((e) => {
-                    return (
-                      <div className={`col-md-${e.col_width * 2} pb-md-4`}>
-                        <label className="text-left text-black common-label-text fs-17 p-0">
-                          {e.display_field_name}
-                        </label>
-                        <div className="input-group">
-                          {e.data_type == "text" ? (
-                            <NormalInput
-                              placeholder="Enter here"
-                              value={this.state.formFields[e.field_name]}
-                              name={e.field_name}
-                              onChange={this.handleChange}
-                            />
-                          ) : e.data_type == "date" ? (
-                            <NormalDateTime
-                              onChange={this.handleDatePick}
-                              value={
-                                new Date(this.state.formFields[e.field_name])
-                              }
-                              name={e.field_name}
-                              showYearDropdown={true}
-                            />
-                          ) : e.data_type == "datetime" ? (
-                            <NormalDateTime
-                              onChange={this.handleDatePick}
-                              value={
-                                new Date(this.state.formFields[e.field_name])
-                              }
-                              name={e.field_name}
-                              showYearDropdown={true}
-                            />
-                          ) : e.data_type == "selection" ? (
-                            <NormalSelect
-                              options={e.selection}
-                              value={this.state.formFields[e.field_name]}
-                              name={e.field_name}
-                              onChange={this.handleChange}
-                            />
-                          ) : e.data_type == "multiSelect" ? (
-                            <NormalMultiSelect
-                              options={e.selection}
-                              defaultValue={this.state.formFields[e.field_name]}
-                              name={e.field_name}
-                              handleMultiSelect={(e) =>
-                                this.handleMultiSelect(e.field_name, e)
-                              }
-                            />
-                          ) : e.data_type == "boolean" ? (
-                            <input
-                              type="checkbox"
-                              checked={this.state.formFields[e.field_name]}
-                              name={e.field_name}
-                              onClick={this.handleChangeBox}
-                            />
-                          ) : e.data_type == "number" ? (
-                            <NormalInput
-                              type="number"
-                              placeholder="Enter here"
-                              value={this.state.formFields[e.field_name]}
-                              name={e.field_name}
-                              onChange={this.handleChange}
-                            />
-                          ) : (
-                            t("NO FILED RENDER DATA FOUND")
-                          )}
-                        </div>
-                        {e.mandatory
-                          ? this.validator.message(
-                              e.display_field_name,
-                              this.state.formFields[e.field_name],
-                              "required"
-                            )
-                          : null}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </>
-          );
-        }
-        if (e.data_type == "date" || e.data_type == "datetime")
-          if (!this.state.formFields[e.field_name])
-            this.state.formFields[e.field_name] = new Date();
+    const mapFunction = (e, index) => {
+      if (e.data_type == "date" || e.data_type == "datetime")
+        if (!this.state.formFields[e.field_name])
+          this.state.formFields[e.field_name] = new Date();
+      if (e.field_name.includes("cust_address")) {
         return (
-          <div className={`col-md-${e.col_width} pb-md-4`}>
-            <label className="text-left text-black common-label-text fs-17 p-0">
-              {t(e.display_field_name)}
-            </label>
-            <div className="input-group">
-              {e.data_type == "text" ? (
+          <>
+            <div className={`col-md-${e.col_width} pb-md-4`}>
+              <label className="text-left text-black common-label-text fs-17 p-0">
+                {e.display_field_name}
+              </label>
+              <div className="input-group pb-2">
                 <NormalInput
                   placeholder="Enter here"
                   value={this.state.formFields[e.field_name]}
                   name={e.field_name}
                   onChange={this.handleChange}
                 />
-              ) : e.data_type == "date" ? (
-                <NormalDateTime
-                  onChange={this.handleDatePick}
-                  value={new Date(this.state.formFields[e.field_name])}
-                  name={e.field_name}
-                  showYearDropdown={true}
-                />
-              ) : e.data_type == "datetime" ? (
-                <NormalDateTime
-                  onChange={this.handleDatePick}
-                  value={new Date(this.state.formFields[e.field_name])}
-                  name={e.field_name}
-                  showYearDropdown={true}
-                />
-              ) : e.data_type == "selection" ? (
-                <NormalSelect
-                  options={e.selection}
-                  value={this.state.formFields[e.field_name]}
-                  name={e.field_name}
-                  onChange={this.handleChange}
-                />
-              ) : e.data_type == "multiSelect" ? (
-                <NormalMultiSelect
-                  options={e.selection}
-                  defaultValue={this.state.formFields[e.field_name]}
-                  name={e.field_name}
-                  handleMultiSelect={(e) =>
-                    this.handleMultiSelect(e.field_name, e)
-                  }
-                />
-              ) : e.data_type == "boolean" ? (
-                <input
-                  type="checkbox"
-                  checked={this.state.formFields[e.field_name]}
-                  name={e.field_name}
-                  onClick={this.handleChangeBox}
-                />
-              ) : e.data_type == "number" ? (
-                <NormalInput
-                  type="number"
-                  placeholder="Enter here"
-                  value={this.state.formFields[e.field_name]}
-                  name={e.field_name}
-                  onChange={this.handleChange}
-                />
-              ) : (
-                "NO FILED RENDER DATA FOUND"
-              )}
+              </div>
+              {addressFileds}
+              {e.mandatory
+                ? this.validator.message(
+                    e.display_field_name,
+                    this.state.formFields[e.field_name],
+                    "required"
+                  )
+                : null}
             </div>
-            {e.mandatory
-              ? this.validator.message(
-                  e.display_field_name,
-                  this.state.formFields[e.field_name],
-                  "required"
-                )
-              : null}
-          </div>
+            <div className={`col-md-${12 - e.col_width} pb-md-4`}>
+              <div className="row">
+                {rowElements.map((e,index) => {
+                  return (
+                    <div className={`col-md-${e.col_width * 2} pb-md-4`} key={index}>
+                      <label className="text-left text-black common-label-text fs-17 p-0">
+                        {e.display_field_name}
+                      </label>
+                      <div className="input-group">
+                        {e.data_type == "text" ? (
+                          <NormalInput
+                            placeholder="Enter here"
+                            value={this.state.formFields[e.field_name]}
+                            name={e.field_name}
+                            onChange={this.handleChange}
+                          />
+                        ) : e.data_type == "date" ? (
+                          <NormalDateTime
+                            onChange={this.handleDatePick}
+                            value={this.state.formFields[e.field_name]}
+                            name={e.field_name}
+                            showYearDropdown={true}
+                          />
+                        ) : e.data_type == "datetime" ? (
+                          <NormalDateTime
+                            onChange={this.handleDatePick}
+                            value={this.state.formFields[e.field_name]}
+                            name={e.field_name}
+                            showYearDropdown={true}
+                          />
+                        ) : e.data_type == "selection" ? (
+                          <NormalSelect
+                            options={e.selection}
+                            value={this.state.formFields[e.field_name]}
+                            name={e.field_name}
+                            onChange={this.handleChange}
+                          />
+                        ) : e.data_type == "multiSelect" ? (
+                          <NormalMultiSelect
+                            options={e.selection}
+                            defaultValue={this.state.formFields[e.field_name]}
+                            name={e.field_name}
+                            handleMultiSelect={(e) =>
+                              this.handleMultiSelect(e.field_name, e)
+                            }
+                          />
+                        ) : e.data_type == "boolean" ? (
+                          <input
+                            type="checkbox"
+                            checked={this.state.formFields[e.field_name]}
+                            name={e.field_name}
+                            onClick={this.handleChangeBox}
+                          />
+                        ) : e.data_type == "number" ? (
+                          <NormalInput
+                            type="number"
+                            placeholder="Enter here"
+                            value={this.state.formFields[e.field_name]}
+                            name={e.field_name}
+                            onChange={this.handleChange}
+                          />
+                        ) : (
+                          t("NO FILED RENDER DATA FOUND")
+                        )}
+                      </div>
+                      {e.mandatory
+                        ? this.validator.message(
+                            e.display_field_name,
+                            this.state.formFields[e.field_name],
+                            "required"
+                          )
+                        : null}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </>
         );
-      });
+      }
+      return (
+        <div className={`col-md-${e.col_width} pb-md-4`} key={index}>
+          <label className="text-left text-black common-label-text fs-17 p-0">
+            {t(e.display_field_name)}
+          </label>
+          <div className="input-group">
+            {e.data_type == "text" ? (
+              <NormalInput
+                placeholder="Enter here"
+                value={this.state.formFields[e.field_name]}
+                name={e.field_name}
+                onChange={this.handleChange}
+              />
+            ) : e.data_type == "date" ? (
+              <NormalDateTime
+                onChange={this.handleDatePick}
+                value={this.state.formFields[e.field_name]}
+                name={e.field_name}
+                showYearDropdown={true}
+              />
+            ) : e.data_type == "datetime" ? (
+              <NormalDateTime
+                onChange={this.handleDatePick}
+                value={this.state.formFields[e.field_name]}
+                name={e.field_name}
+                showYearDropdown={true}
+              />
+            ) : e.data_type == "selection" ? (
+              <NormalSelect
+                options={e.selection}
+                value={this.state.formFields[e.field_name]}
+                name={e.field_name}
+                onChange={this.handleChange}
+              />
+            ) : e.data_type == "multiSelect" ? (
+              <NormalMultiSelect
+                options={e.selection}
+                defaultValue={this.state.formFields[e.field_name]}
+                name={e.field_name}
+                handleMultiSelect={(e) =>
+                  this.handleMultiSelect(e.field_name, e)
+                }
+              />
+            ) : e.data_type == "boolean" ? (
+              <input
+                type="checkbox"
+                checked={this.state.formFields[e.field_name]}
+                name={e.field_name}
+                onChange={this.handleChangeBox}
+              />
+            ) : e.data_type == "number" ? (
+              <NormalInput
+                type="number"
+                placeholder="Enter here"
+                value={this.state.formFields[e.field_name]}
+                name={e.field_name}
+                onChange={this.handleChange}
+              />
+            ) : (
+              "NO FILED RENDER DATA FOUND"
+            )}
+          </div>
+          {e.mandatory
+            ? this.validator.message(
+                e.display_field_name,
+                this.state.formFields[e.field_name],
+                "required"
+              )
+            : null}
+        </div>
+      );
+    };
+    return extraFields.length > 0
+      ? sorted
+          .slice(0, sorted.indexOf(extraFields[0]))
+          .concat(
+            sorted.slice(
+              sorted.indexOf(rowElements[rowElements.length - 1]) + 1
+            )
+          )
+          .map(mapFunction)
+      : sorted.map(mapFunction);
   };
 
   render() {
