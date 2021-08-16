@@ -108,12 +108,6 @@ class ScheduleTableClass extends Component {
                     key={"alt" + keyName}
                     onClick={() => handleOnClick("alt" + keyName)}
                     style={{
-                      color:
-                        optionList.find(
-                          (val) => val.value == altws_data[keyName]
-                        ) != null
-                          ? "white"
-                          : "black",
                       backgroundColor:
                         optionList.find(
                           (val) => val.value == altws_data[keyName]

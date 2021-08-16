@@ -7,6 +7,7 @@ import {
   NormalSelect,
   NormalButton,
   NormalDateTime,
+  NormalMultiSelect,
 } from "component/common";
 import { displayImg, dateFormat } from "service/helperFunctions";
 import { DragFileUpload } from "../../../common";
@@ -52,12 +53,13 @@ export class AddStaffClass extends Component {
         sunday: "NO",
       },
       defaultSiteCodeid: "",
+      siteCodes: [],
     },
     scheduleOptions: [],
     jobOption: [],
     locationOption: [],
     levelList: [],
-    is_loading: false,
+    is_loading: true,
     isMounted: true,
   };
 
@@ -128,14 +130,19 @@ export class AddStaffClass extends Component {
       this.updateState({ scheduleOptions });
     });
 
-    // jobtitle option api
-    this.props.getJobtitle().then(() => {
-      this.getDatafromStore("jobtitle");
-    });
-
     // get api for staff while
     if (this.props.match.params.id) {
-      this.getStaffDetail();
+      // jobtitle option api
+      this.props.getJobtitle().then(async () => {
+        await this.getDatafromStore("jobtitle");
+        this.getStaffDetail();
+      });
+    } else {
+      this.updateState({ is_loading: false });
+      // jobtitle option api
+      this.props.getJobtitle().then(() => {
+        this.getDatafromStore("jobtitle");
+      });
     }
   }
 
@@ -170,7 +177,7 @@ export class AddStaffClass extends Component {
   // set data to formfield from response while edit
   setDataFromStore = () => {
     let { staffPlusDetail, staffPlusWorkScheduleDetails } = this.props;
-    let { formFields } = this.state;
+    let { formFields, locationOption } = this.state;
     formFields["emp_name"] = staffPlusDetail.emp_name;
     formFields["display_name"] = staffPlusDetail.display_name;
     formFields["emp_joindate"] = new Date(staffPlusDetail.emp_joindate);
@@ -185,6 +192,13 @@ export class AddStaffClass extends Component {
     formFields["show_in_sales"] = staffPlusDetail.show_in_sales;
     formFields["show_in_appt"] = staffPlusDetail.show_in_appt;
     formFields["show_in_trmt"] = staffPlusDetail.show_in_trmt;
+    formFields.siteCodes = [];
+    staffPlusDetail.site_list.forEach((e) => {
+      let val = locationOption.find(
+        (element) => element.value == e.Site_Codeid
+      );
+      formFields.siteCodes.push(val);
+    });
     formFields.work_schedule.monday = staffPlusWorkScheduleDetails.monday;
     formFields.work_schedule.tuesday = staffPlusWorkScheduleDetails.tuesday;
     formFields.work_schedule.wednesday = staffPlusWorkScheduleDetails.wednesday;
@@ -203,6 +217,13 @@ export class AddStaffClass extends Component {
     this.updateState({
       formFields,
     });
+  };
+
+  handleMultiSelect = (data = []) => {
+    let { formFields } = this.state;
+    formFields.siteCodes = data;
+    console.log(data);
+    this.updateState({ formFields });
   };
 
   handleDatePick = async (name, value) => {
@@ -252,6 +273,10 @@ export class AddStaffClass extends Component {
       if (this.validator.allValid()) {
         this.updateState({ is_loading: true });
         let { formFields } = this.state;
+        Object.keys(formFields).forEach((e) => {
+          if (typeof formFields[e] === "boolean")
+            formFields[e] = formFields[e] ? "True" : "False";
+        });
         const formData = new FormData();
         formData.append("emp_name", formFields.emp_name);
         formData.append("display_name", formFields.display_name);
@@ -259,7 +284,10 @@ export class AddStaffClass extends Component {
         formData.append("emp_joindate", dateFormat(formFields.emp_joindate));
         formData.append("defaultSiteCodeid", formFields.defaultSiteCodeid);
         formData.append("EMP_TYPEid", formFields.EMP_TYPEid);
-        if (typeof formFields.emp_pic === "object")
+        if (
+          formFields.emp_pic != null &&
+          typeof formFields.emp_pic === "object"
+        )
           formData.append("emp_pic", formFields.emp_pic);
         formData.append("emp_nric", formFields.emp_nric);
         formData.append("is_login", formFields.is_login);
@@ -269,6 +297,10 @@ export class AddStaffClass extends Component {
         formData.append("show_in_sales", formFields.show_in_sales);
         formData.append("show_in_appt", formFields.show_in_appt);
         formData.append("show_in_trmt", formFields.show_in_trmt);
+        formData.append(
+          "site_list",
+          formFields.siteCodes.map((e) => e.value).reduce((a, e) => a + "," + e)
+        );
         const scheduleData = new FormData();
         scheduleData.append("monday", formFields.work_schedule.monday);
         scheduleData.append("tuesday", formFields.work_schedule.tuesday);
@@ -534,7 +566,7 @@ export class AddStaffClass extends Component {
                 </div>
                 <div className="col-6 mb-4">
                   <label className="text-left text-black common-label-text fs-17 pb-3">
-                    {t("Site List")}
+                    {t("Default List")}
                   </label>
                   <div className="input-group">
                     <NormalSelect
@@ -542,6 +574,19 @@ export class AddStaffClass extends Component {
                       value={defaultSiteCodeid}
                       name="defaultSiteCodeid"
                       onChange={this.handleChange}
+                    />
+                  </div>
+                </div>
+                <div className="col-6 mb-4">
+                  <label className="text-left text-black common-label-text fs-17 pb-3">
+                    {t("Site List")}
+                  </label>
+                  <div className="input-group">
+                    <NormalMultiSelect
+                      handleMultiSelect={this.handleMultiSelect}
+                      options={locationOption}
+                      value={formFields.siteCodes}
+                      name="siteCodes"
                     />
                   </div>
                 </div>

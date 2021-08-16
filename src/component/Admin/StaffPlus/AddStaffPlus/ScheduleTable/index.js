@@ -51,11 +51,6 @@ class ScheduleTableClass extends Component {
                   <td
                     onClick={() => handleOnClick(keyName)}
                     style={{
-                      color:
-                        optionList.find((val) => val.value == data[keyName]) !=
-                        null
-                          ? "white"
-                          : "black",
                       backgroundColor:
                         optionList.find((val) => val.value == data[keyName]) !=
                         null

@@ -95,7 +95,7 @@ class StaffScheduleClass extends React.Component {
       jobOption.push({ label: key.level_desc, value: key.id });
     }
     for (let key of siteRes.data) {
-      siteOptions.push({ value: key.id, label: key.itemsite_desc });
+      siteOptions.push({ value: key.itemsite_code, label: key.itemsite_desc });
     }
     for (let key of scheduleRes.schedules) {
       scheduleOptions.push({
@@ -140,7 +140,7 @@ class StaffScheduleClass extends React.Component {
         staffList.push({
           label: key.emp_name,
           value: key.emp_code,
-          sites: key.Site_Codeid,
+          sites: key.site_list.map((e) => e.site_code),
         });
       });
     }
@@ -168,7 +168,9 @@ class StaffScheduleClass extends React.Component {
     formFields.cal_data = [];
     filteredSiteOptions = [];
     let selected = staffList.find((e) => e.value == staffList_selected);
-    filteredSiteOptions = siteOptions.filter((e) => e.value == selected.sites);
+    filteredSiteOptions = siteOptions.filter((e) =>
+      selected.sites.some((val) => val == e.value)
+    );
     this.updateState({ filteredSiteOptions, formFields, selected_site });
   };
 
@@ -284,7 +286,7 @@ class StaffScheduleClass extends React.Component {
     this.getFullScheduleData({});
   };
 
-  onApplyToMonthlySchedule = () => {
+  onApplyWSToMonthlySchedule = () => {
     let { ws, cal_data } = this.state.formFields;
     for (let key of cal_data) {
       var date = new Date(key.itm_date);
@@ -310,6 +312,40 @@ class StaffScheduleClass extends React.Component {
           break;
         case 6:
           key.itm_type = ws.saturday;
+          break;
+        default:
+          break;
+      }
+    }
+    this.updateState({});
+  };
+
+  onApplyALTWSToMonthlySchedule = () => {
+    let { altws, cal_data } = this.state.formFields;
+    for (let key of cal_data) {
+      var date = new Date(key.itm_date);
+      var day = date.getDay();
+      switch (day) {
+        case 0:
+          key.itm_type = altws.sunday;
+          break;
+        case 1:
+          key.itm_type = altws.monday;
+          break;
+        case 2:
+          key.itm_type = altws.tuesday;
+          break;
+        case 3:
+          key.itm_type = altws.wednesday;
+          break;
+        case 4:
+          key.itm_type = altws.thursday;
+          break;
+        case 5:
+          key.itm_type = altws.friday;
+          break;
+        case 6:
+          key.itm_type = altws.saturday;
           break;
         default:
           break;
@@ -507,11 +543,18 @@ class StaffScheduleClass extends React.Component {
                   {cal_data.length == 0 ? null : (
                     <div className="form-group mb-4 pb-2">
                       <div className="row">
+                        <div className="col-md-6 col-sm-12 mb-2">
+                          <NormalButton
+                            label="Apply WS to Monthly Schedule"
+                            mainbg={true}
+                            onClick={this.onApplyWSToMonthlySchedule}
+                          />
+                        </div>
                         <div className="col-md-6 col-sm-12">
                           <NormalButton
-                            label="Apply to Monthly Schedule"
+                            label="Apply ALTWS to Monthly Schedule"
                             mainbg={true}
-                            onClick={this.onApplyToMonthlySchedule}
+                            onClick={this.onApplyALTWSToMonthlySchedule}
                           />
                         </div>
                       </div>
