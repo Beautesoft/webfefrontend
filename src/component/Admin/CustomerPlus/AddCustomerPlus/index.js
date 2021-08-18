@@ -255,14 +255,14 @@ export class AddCustomerPlusClass extends Component {
                         ) : e.data_type == "date" ? (
                           <NormalDateTime
                             onChange={this.handleDatePick}
-                            value={this.state.formFields[e.field_name]}
+                            value={new Date(this.state.formFields[e.field_name])}
                             name={e.field_name}
                             showYearDropdown={true}
                           />
                         ) : e.data_type == "datetime" ? (
                           <NormalDateTime
                             onChange={this.handleDatePick}
-                            value={this.state.formFields[e.field_name]}
+                            value={new Date(this.state.formFields[e.field_name])}
                             name={e.field_name}
                             showYearDropdown={true}
                           />
@@ -332,14 +332,14 @@ export class AddCustomerPlusClass extends Component {
             ) : e.data_type == "date" ? (
               <NormalDateTime
                 onChange={this.handleDatePick}
-                value={this.state.formFields[e.field_name]}
+                value={new Date(this.state.formFields[e.field_name])}
                 name={e.field_name}
                 showYearDropdown={true}
               />
             ) : e.data_type == "datetime" ? (
               <NormalDateTime
                 onChange={this.handleDatePick}
-                value={this.state.formFields[e.field_name]}
+                value={new Date(this.state.formFields[e.field_name])}
                 name={e.field_name}
                 showYearDropdown={true}
               />
