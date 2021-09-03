@@ -9,6 +9,10 @@ import { AddPhotoPopup } from "./AddPhotoPopup";
 import { Navigation } from "react-minimal-side-navigation";
 import { ComparePhotoPopup } from "./ComparePhotoPopup";
 import { withTranslation } from "react-i18next";
+import {
+  getDiagnosisPhotos,
+  getDiagnosisHistory,
+} from "redux/actions/customerPlus";
 
 export class DianosisClass extends React.Component {
   state = {
@@ -19,34 +23,7 @@ export class DianosisClass extends React.Component {
       { label: "Compare", sortKey: "compare" },
       { label: "View", sortKey: "view" },
     ],
-    photoList: [
-      {
-        id: "1",
-        date: "2020/04/02",
-        code: "123",
-        image: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
-        remarks: "test ",
-        isCompare: false,
-      },
-      {
-        id: "2",
-        date: "2020/04/02",
-        code: "123",
-        image:
-          "https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg?w=1155&h=1528",
-        remarks: "test 2",
-        isCompare: false,
-      },
-      {
-        id: "3",
-        date: "2020/04/02",
-        code: "123",
-        image:
-          "https://media.glamour.com/photos/5a425fd3b6bcee68da9f86f8/master/pass/best-face-oil.png",
-        remarks: "test 3",
-        isCompare: false,
-      },
-    ],
+    photoList: [],
     historyTableHeader: [
       { label: "Compare Date", sortKey: "date" },
       { label: "Compare Remarks", sortKey: "remarks", enabled: true },
@@ -54,33 +31,7 @@ export class DianosisClass extends React.Component {
       { label: "Date", sortKey: "dDate" },
       { label: "View", sortKey: "view" },
     ],
-    historyList: [
-      {
-        id: "1",
-        date: "2020/04/02",
-        remarks: "test 3",
-        images: [
-          {
-            id: "2",
-            date: "2020/04/02",
-            code: "123",
-            image:
-              "https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg?w=1155&h=1528",
-            remarks: "test 2",
-            isCompare: false,
-          },
-          {
-            id: "3",
-            date: "2020/04/02",
-            code: "123",
-            image:
-              "https://media.glamour.com/photos/5a425fd3b6bcee68da9f86f8/master/pass/best-face-oil.png",
-            remarks: "test 3",
-            isCompare: false,
-          },
-        ],
-      },
-    ],
+    historyList: [],
     visitTableHeader: [
       { label: "Date", sortKey: "date" },
       { label: "PDPA", sortKey: "pdpa", enabled: true },
@@ -95,16 +46,20 @@ export class DianosisClass extends React.Component {
       { label: "Sales", sortKey: "sales" },
     ],
     visitList: [],
-    meta: {},
+    photoListMeta: {},
+    historyMeta: {},
+    visitMeta: {},
     active: false,
     currentIndex: -1,
     currentMenu: "/",
     compareList: [],
     selectedRemark: null,
+    selectedHistoryCode: null,
     currentData: null,
     isAddPhotoOpen: false,
     isCompareOpen: false,
     isMounted: true,
+    isLoading: true,
   };
 
   componentDidMount() {
@@ -113,7 +68,35 @@ export class DianosisClass extends React.Component {
     if (submenu)
       if (submenu == "history" || submenu == "visits")
         this.setState({ currentMenu: "/" + submenu });
+    this.loadDiagnosisPhotos();
+    this.loadDiagnosisHistory();
   }
+
+  loadDiagnosisPhotos = async (data = {}) => {
+    this.updateState({ isLoading: true });
+    let { page = 1, search = "" } = data;
+    await this.props.getDiagnosisPhotos(
+      this.props.id,
+      `?page=${page}&search=${search}`
+    );
+    let { photoList } = this.props;
+    this.state.photoList = photoList.diagnosisList;
+    this.state.photoListMeta = photoList.pagination;
+    this.updateState({ isLoading: false });
+  };
+
+  loadDiagnosisHistory = async (data = {}) => {
+    this.updateState({ isLoading: true });
+    let { page = 1, search = "" } = data;
+    await this.props.getDiagnosisHistory(
+      this.props.id,
+      `?page=${page}&search=${search}`
+    );
+    let { historyList } = this.props;
+    this.state.historyList = historyList.diagnosisList;
+    this.state.historyMeta = historyList.pagination;
+    this.updateState({ isLoading: false });
+  };
 
   componentWillUnmount() {
     this.state.isMounted = false;
@@ -132,12 +115,22 @@ export class DianosisClass extends React.Component {
     this.handleClick();
   };
 
-  handlePagination = (page) => {
-    console.log(page, "dsfsdfsdfsdf");
+  handlePagination = (type, page) => {
+    if (type === "photo") {
+      this.loadDiagnosisPhotos(page);
+    }
+    if (type === "history") {
+    }
+    if (type === "visit") {
+    }
   };
 
-  handlePhotosearch = (event) => {};
-  handleHistorySearch = (event) => {};
+  handlePhotosearch = (event) => {
+    this.loadDiagnosisPhotos({ search: event.target.value });
+  };
+  handleHistorySearch = (event) => {
+    this.loadDiagnosisHistory({ search: event.target.value });
+  };
   handleVisitSearch = (event) => {};
 
   handleMenuSelection = (value) => {
@@ -152,7 +145,9 @@ export class DianosisClass extends React.Component {
     let {
       photoTableHeader,
       photoList,
-      meta,
+      photoListMeta,
+      historyMeta,
+      visitMeta,
       currentData,
       currentMenu,
       isAddPhotoOpen,
@@ -163,6 +158,7 @@ export class DianosisClass extends React.Component {
       selectedRemark,
       visitList,
       visitTableHeader,
+      isLoading,
     } = this.state;
     let { t } = this.props;
     return (
@@ -178,21 +174,25 @@ export class DianosisClass extends React.Component {
                 onSelect={({ itemId }) => this.handleMenuSelection(itemId)}
                 items={[
                   {
-                    title: "Photos",
+                    title: t("Photos"),
                     itemId: "/",
                   },
                   {
-                    title: "History",
+                    title: t("History"),
                     itemId: "/history",
-                  },
-                  {
-                    title: "Visits",
-                    itemId: "/visits",
                   },
                 ]}
               />
             </div>
-            {currentMenu == "/" ? (
+            {isLoading ? (
+              <div className="col-md-12 col-lg-10">
+                <div class="d-flex mt-5 align-items-center justify-content-center">
+                  <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+              </div>
+            ) : currentMenu == "/" ? (
               <div className="col-md-12 col-lg-10">
                 <div className="col-md-12 mb-4">
                   <div className="row">
@@ -200,7 +200,7 @@ export class DianosisClass extends React.Component {
                       <InputSearch
                         className=""
                         placeholder="Search Photo"
-                        onChange={this.handlePhotosearch}
+                        onEnter={this.handlePhotosearch}
                       />
                     </div>
                     <div className="col-sm-12 col-md-6 p-0">
@@ -208,7 +208,10 @@ export class DianosisClass extends React.Component {
                         mainbg={true}
                         className="col-md-10 fs-15 float-right"
                         label="Add Photo"
-                        onClick={() => this.setState({ isAddPhotoOpen: true })}
+                        onClick={() => {
+                          this.state.currentData = null;
+                          this.setState({ isAddPhotoOpen: true });
+                        }}
                       />
                     </div>
                   </div>
@@ -217,8 +220,8 @@ export class DianosisClass extends React.Component {
                   <div className="table-container">
                     <TableWrapper
                       headerDetails={photoTableHeader}
-                      queryHandler={this.handlePagination}
-                      pageMeta={meta}
+                      queryHandler={(e) => this.handlePagination("photo", e)}
+                      pageMeta={photoListMeta}
                       showFilterColumn={true}
                       parentHeaderChange={(value) =>
                         this.setState(() => (photoTableHeader = value))
@@ -226,8 +229,15 @@ export class DianosisClass extends React.Component {
                     >
                       {photoList
                         ? photoList.map((item, index) => {
-                            let { isCompare, image, date, code, remarks } =
-                              item;
+                            let {
+                              isCompare,
+                              pic_path,
+                              diagnosis_date,
+                              diagnosis_code,
+                              sys_code,
+                              remarks,
+                              pic_data1,
+                            } = item;
                             console.log(photoTableHeader[0]);
                             return (
                               <tr key={index}>
@@ -239,7 +249,9 @@ export class DianosisClass extends React.Component {
                                   }
                                 >
                                   <div className="d-flex align-items-center justify-content-center">
-                                    {date}
+                                    {new Date(
+                                      diagnosis_date
+                                    ).toLocaleDateString("en-GB")}
                                   </div>
                                 </td>
                                 <td
@@ -250,7 +262,7 @@ export class DianosisClass extends React.Component {
                                   }
                                 >
                                   <div className="d-flex align-items-center justify-content-center">
-                                    {code}
+                                    {diagnosis_code}
                                   </div>
                                 </td>
                                 <td
@@ -299,7 +311,12 @@ export class DianosisClass extends React.Component {
                                       className="d-flex align-items-center fs-20"
                                       onClick={() =>
                                         this.setState({
-                                          currentData: { image, remarks },
+                                          currentData: {
+                                            image: pic_path,
+                                            remarks,
+                                            pic_data1,
+                                            diagnosis_code: sys_code,
+                                          },
                                           isAddPhotoOpen: true,
                                         })
                                       }
@@ -322,6 +339,7 @@ export class DianosisClass extends React.Component {
                       className="col-12 fs-15 float-right"
                       label="Compare"
                       onClick={() => {
+                        this.state.selectedRemark = null;
                         this.setState({ isCompareOpen: true });
                       }}
                     />
@@ -336,7 +354,7 @@ export class DianosisClass extends React.Component {
                       <InputSearch
                         className=""
                         placeholder="Search History"
-                        onChange={this.handleHistorySearch}
+                        onEnter={this.handleHistorySearch}
                       />
                     </div>
                   </div>
@@ -345,8 +363,8 @@ export class DianosisClass extends React.Component {
                   <div className="table-container">
                     <TableWrapper
                       headerDetails={historyTableHeader}
-                      queryHandler={this.handlePagination}
-                      pageMeta={meta}
+                      queryHandler={(e) => this.handlePagination("history", e)}
+                      pageMeta={historyMeta}
                       showFilterColumn={true}
                       parentHeaderChange={(value) =>
                         this.setState(() => (historyTableHeader = value))
@@ -354,7 +372,12 @@ export class DianosisClass extends React.Component {
                     >
                       {historyList
                         ? historyList.map((item, index) => {
-                            let { images, date, remarks } = item;
+                            let {
+                              diagnosis_list,
+                              compare_datetime,
+                              compare_remark,
+                              id,
+                            } = item;
                             console.log(historyTableHeader[0]);
                             return (
                               <tr key={index}>
@@ -366,7 +389,9 @@ export class DianosisClass extends React.Component {
                                   }
                                 >
                                   <div className="d-flex align-items-center justify-content-center">
-                                    {date}
+                                    {new Date(
+                                      compare_datetime
+                                    ).toLocaleDateString("en-GB")}
                                   </div>
                                 </td>
                                 <td
@@ -377,7 +402,7 @@ export class DianosisClass extends React.Component {
                                   }
                                 >
                                   <div className="d-flex align-items-center justify-content-center">
-                                    {remarks}
+                                    {compare_remark}
                                   </div>
                                 </td>
                                 <td
@@ -388,9 +413,9 @@ export class DianosisClass extends React.Component {
                                   }
                                 >
                                   <div className="d-flex align-items-center justify-content-center">
-                                    {images.map((image) => (
+                                    {diagnosis_list.map((image) => (
                                       <>
-                                        {image.id} <br />
+                                        {image.diagnosis_code} <br />
                                       </>
                                     ))}
                                   </div>
@@ -403,9 +428,12 @@ export class DianosisClass extends React.Component {
                                   }
                                 >
                                   <div className="d-flex align-items-center justify-content-center">
-                                    {images.map((image) => (
+                                    {diagnosis_list.map((image) => (
                                       <>
-                                        {image.date} <br />
+                                        {new Date(
+                                          image.date_pic_take
+                                        ).toLocaleDateString("en-GB")}
+                                        <br />
                                       </>
                                     ))}
                                   </div>
@@ -422,8 +450,9 @@ export class DianosisClass extends React.Component {
                                       className="d-flex align-items-center fs-20"
                                       onClick={() =>
                                         this.setState({
-                                          selectedRemark: remarks,
-                                          compareList: images,
+                                          selectedRemark: compare_remark,
+                                          selectedHistoryCode: id,
+                                          compareList: diagnosis_list,
                                           isCompareOpen: true,
                                         })
                                       }
@@ -448,7 +477,7 @@ export class DianosisClass extends React.Component {
                       <InputSearch
                         className=""
                         placeholder="Search Visit"
-                        onChange={this.handleVisitSearch}
+                        onEnter={this.handleVisitSearch}
                       />
                     </div>
                   </div>
@@ -457,8 +486,8 @@ export class DianosisClass extends React.Component {
                   <div className="table-container">
                     <TableWrapper
                       headerDetails={visitTableHeader}
-                      queryHandler={this.handlePagination}
-                      pageMeta={meta}
+                      queryHandler={(e) => this.handlePagination("visit", e)}
+                      pageMeta={visitMeta}
                       showFilterColumn={true}
                       parentHeaderChange={(value) =>
                         this.setState(() => (visitTableHeader = value))
@@ -569,6 +598,14 @@ export class DianosisClass extends React.Component {
             <AddPhotoPopup
               image={currentData?.image}
               remarks={currentData?.remarks}
+              layoutData={currentData?.pic_data1}
+              diagnosis_code={currentData?.diagnosis_code}
+              cust_no={this.props.id}
+              onDone={() => {
+                this.updateState({ isAddPhotoOpen: false });
+                this.loadDiagnosisHistory();
+                this.loadDiagnosisPhotos();
+              }}
             />
           </NormalModal>
           <NormalModal
@@ -589,6 +626,13 @@ export class DianosisClass extends React.Component {
                   : compareList
               }
               remarks={currentMenu == "/" ? null : selectedRemark}
+              id={this.state.selectedHistoryCode}
+              cust_code={this.props.id}
+              onDone={() => {
+                this.updateState({ isCompareOpen: false });
+                this.loadDiagnosisHistory();
+                this.loadDiagnosisPhotos();
+              }}
             />
           </NormalModal>
         </div>
@@ -597,10 +641,19 @@ export class DianosisClass extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  photoList: state.customerPlus.customerDiagnosisPhotoList,
+  historyList: state.customerPlus.customerDiagnosisHistory,
+});
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({}, dispatch);
+  return bindActionCreators(
+    {
+      getDiagnosisPhotos,
+      getDiagnosisHistory,
+    },
+    dispatch
+  );
 };
 
 export const Dianosis = withTranslation()(

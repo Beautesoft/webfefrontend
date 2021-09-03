@@ -163,7 +163,7 @@ class DetailsClass extends Component {
               {this.state.activeTab === "6" ? <MGMDetails /> : ""}
             </TabPane>
             <TabPane tabId="7">
-              {this.state.activeTab === "7" ? <Dianosis /> : ""}
+              {this.state.activeTab === "7" ? <Dianosis id={this.props.id}/> : ""}
             </TabPane>
           </TabContent>
         </div>

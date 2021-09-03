@@ -190,3 +190,167 @@ export const getRedeemPlolicySettings =
         });
     });
   };
+
+// get diagnosis photo list
+export const getDiagnosisPhotos =
+  (id, params) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      customerPlus.getDiagnosisPhotos.addQuery = { key: "id", payload: id };
+      customerPlus.getDiagnosisPhotos.addQuery = {
+        key: "params",
+        payload: params,
+      };
+      api({ ...customerPlus.getDiagnosisPhotos })
+        .then((response) => {
+          resolve(response);
+          let { message, status, data } = response;
+          if (status === 200) {
+            dispatch({
+              type: CustomerPlusActionType.getDiagnosisPhotos,
+              payload: data,
+            });
+            // Toast({ type: 'success', message })
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
+// add dignosis photo
+export const addDiagosisPhoto =
+  (body) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      api({
+        ...customerPlus.addDiagnosisPhoto,
+        body,
+      })
+        .then((response) => {
+          resolve(response);
+          let { message, status } = response;
+          if (status === 200) {
+            // dispatch({ type: ArticalsActionType.getArticalsDetails, payload: data });
+            Toast({ type: "success", message });
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
+// update dignosis photo
+export const updateDiagosisPhoto =
+  (id, body) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      customerPlus.updateDiagnosisPhoto.addQuery = { key: "id", payload: id };
+      api({
+        ...customerPlus.updateDiagnosisPhoto,
+        body,
+      })
+        .then((response) => {
+          resolve(response);
+          let { message, status } = response;
+          if (status === 200) {
+            // dispatch({ type: ArticalsActionType.getArticalsDetails, payload: data });
+            Toast({ type: "success", message });
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
+// get diagnosis history
+export const getDiagnosisHistory =
+  (id, params) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      customerPlus.getDiagnosisHistory.addQuery = { key: "id", payload: id };
+      customerPlus.getDiagnosisHistory.addQuery = {
+        key: "params",
+        payload: params,
+      };
+      api({ ...customerPlus.getDiagnosisHistory })
+        .then((response) => {
+          resolve(response);
+          let { message, status, data } = response;
+          if (status === 200) {
+            dispatch({
+              type: CustomerPlusActionType.getDiagnosisHistory,
+              payload: data,
+            });
+            // Toast({ type: 'success', message })
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
+// add dignosis history
+export const addDiagnosisHistory =
+  (body) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      api({
+        ...customerPlus.addDiagnosisHistory,
+        body,
+        header: { type: "Content-Type", value: "application/json" },
+      })
+        .then((response) => {
+          resolve(response);
+          let { message, status } = response;
+          if (status === 200) {
+            // dispatch({ type: ArticalsActionType.getArticalsDetails, payload: data });
+            Toast({ type: "success", message });
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
+// update dignosis history
+export const updateDiagnosisHistory =
+  (id, body) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      customerPlus.updateDiagnosisHistory.addQuery = { key: "id", payload: id };
+      api({
+        ...customerPlus.updateDiagnosisHistory,
+        body,
+        header: { type: "Content-Type", value: "application/json" },
+      })
+        .then((response) => {
+          resolve(response);
+          let { message, status } = response;
+          if (status === 200) {
+            // dispatch({ type: ArticalsActionType.getArticalsDetails, payload: data });
+            Toast({ type: "success", message });
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };

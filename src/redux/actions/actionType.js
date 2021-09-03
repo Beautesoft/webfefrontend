@@ -59,6 +59,8 @@ export const CustomerPlusActionType = {
   getCustomerPlusSettings: "GET_CUSTOMER_PLUS_SETTINGS",
   getRewardPolicySettings: "GET_REWARD_POLICY_SETTINGS",
   getRedeemPolicySettings: "GET_REDEEM_POLICY_SETTINGS",
+  getDiagnosisPhotos: "GET_DIAGNOSIS_PHOTOS",
+  getDiagnosisHistory: "GET_DIAGNOSIS_HISTORY",
 };
 
 export const KPIActionType = {

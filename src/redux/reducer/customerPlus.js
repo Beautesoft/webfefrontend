@@ -5,6 +5,8 @@ const initialState = {
   customerPlusSettings: {},
   rewardPolicyList: {},
   redeemPolicyList: {},
+  customerDiagnosisPhotoList: {},
+  customerDiagnosisHistory: {},
 };
 
 export default (state = Object.assign({}, initialState), { type, payload }) => {
@@ -28,6 +30,16 @@ export default (state = Object.assign({}, initialState), { type, payload }) => {
       return {
         ...state,
         redeemPolicyList: payload,
+      };
+    case CustomerPlusActionType.getDiagnosisPhotos:
+      return {
+        ...state,
+        customerDiagnosisPhotoList: payload,
+      };
+    case CustomerPlusActionType.getDiagnosisHistory:
+      return {
+        ...state,
+        customerDiagnosisHistory: payload,
       };
     default:
       return state;

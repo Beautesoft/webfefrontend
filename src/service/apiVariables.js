@@ -612,6 +612,78 @@ export const customerPlus = {
     },
     baseURL: "token",
   },
+  getDiagnosisPhotos: {
+    url: "CustomerPlus/",
+    method: "get",
+    id: null,
+    params: "",
+    get api() {
+      return this.url + this.id + "/photoDiagnosis/" + this.params;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  addDiagnosisPhoto: {
+    url: "PhotoDiagnosis/",
+    method: "post",
+    get api() {
+      return this.url;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  updateDiagnosisPhoto: {
+    url: "PhotoDiagnosis/",
+    id: null,
+    method: "put",
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  getDiagnosisHistory: {
+    url: "CustomerPlus/",
+    method: "get",
+    id: null,
+    params: "",
+    get api() {
+      return this.url + this.id + "/photoDiagnosisCompare/" + this.params;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  addDiagnosisHistory: {
+    url: "DiagnosisCompare/",
+    method: "post",
+    get api() {
+      return this.url;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  updateDiagnosisHistory: {
+    url: "DiagnosisCompare/",
+    method: "put",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
 };
 
 export const lpManagement = {

@@ -5,13 +5,19 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Webcam from "react-webcam";
 import { withTranslation } from "react-i18next";
+import {
+  addDiagosisPhoto,
+  updateDiagosisPhoto,
+} from "redux/actions/customerPlus";
 
 export class AddPhotoPopupClass extends Component {
   state = {
     image: null,
     isCameraAvailable: true,
     remarks: "",
+    layoutData: "",
     brushRadius: "2",
+    diagnosis_code: null,
     brushColor: "yellow",
     brushColorOptions: [
       { label: "Yellow", value: "yellow" },
@@ -51,10 +57,10 @@ export class AddPhotoPopupClass extends Component {
   }
 
   componentDidMount() {
-    let { image, remarks } = this.props;
+    let { image, remarks, layoutData, diagnosis_code } = this.props;
     console.log(this.props);
     if (image && remarks) {
-      this.updateState({ image, remarks });
+      this.updateState({ image, remarks, layoutData, diagnosis_code });
     }
     document.getElementById("get_file").onclick = function () {
       document.getElementById("my_file").click();
@@ -76,7 +82,41 @@ export class AddPhotoPopupClass extends Component {
     });
   };
 
-  handleSubmit = () => {};
+  handleSubmit = async () => {
+    function dataURLtoFile(dataurl, filename) {
+      var arr = dataurl.split(","),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]),
+        n = bstr.length,
+        u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, { type: mime });
+    }
+
+    let { remarks, image, diagnosis_code } = this.state;
+    let { cust_no, onDone } = this.props;
+    let pic_data1 = `${this.canvasDraw.getSaveData()}`;
+
+    let formData = new FormData();
+    formData.append("remarks", remarks);
+    formData.append("cust_no", cust_no);
+    formData.append("pic_data1", pic_data1);
+
+    if (diagnosis_code == null) {
+      formData.append("diagnosis_date", new Date().toISOString());
+      formData.append("date_pic_take", new Date().toISOString());
+      formData.append(
+        "pic_path",
+        dataURLtoFile(image, `${Date.now().toLocaleString("en-GB")}.jpeg`)
+      );
+      await this.props.addDiagosisPhoto(formData);
+    } else {
+      await this.props.updateDiagosisPhoto(diagnosis_code, formData);
+    }
+    onDone();
+  };
 
   render() {
     let {
@@ -86,6 +126,7 @@ export class AddPhotoPopupClass extends Component {
       brushRadius,
       brushColor,
       brushColorOptions,
+      layoutData,
     } = this.state;
     const videoConstraints = {
       width: 1280,
@@ -93,7 +134,6 @@ export class AddPhotoPopupClass extends Component {
       facingMode: "user",
     };
     let { t } = this.props;
-
     return (
       <>
         <div className="container-fluid mb-4 mt-2 product-details">
@@ -161,15 +201,16 @@ export class AddPhotoPopupClass extends Component {
             </div>
           ) : (
             <div className="row pl-5 pr-5 mt-4">
-              <div className="col-12 mb-4">
-                <CanvasDraw
-                  imgSrc={this.state.image}
-                  canvasHeight={"60vw"}
-                  ref={(ref) => (this.canvasDraw = ref)}
-                  canvasWidth={"100%"}
-                  brushRadius={brushRadius}
-                  brushColor={brushColor}
-                />
+              <div className="col-12  mb-4">
+                <div class="d-flex mt-5 align-items-center justify-content-center">
+                  <CanvasDraw
+                    imgSrc={this.state.image}
+                    ref={(ref) => (this.canvasDraw = ref)}
+                    brushRadius={brushRadius}
+                    brushColor={brushColor}
+                    saveData={layoutData && JSON.stringify(layoutData)}
+                  />
+                </div>
               </div>
               <div className="col-12 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-2">
@@ -232,7 +273,10 @@ export class AddPhotoPopupClass extends Component {
 const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({}, dispatch);
+  return bindActionCreators(
+    { addDiagosisPhoto, updateDiagosisPhoto },
+    dispatch
+  );
 };
 
 export const AddPhotoPopup = withTranslation()(
