@@ -40,7 +40,7 @@ export class AddPhotoPopupClass extends Component {
 
   componentWillMount() {
     navigator.getMedia =
-      navigator.getUserMedia ||
+      navigator.mediaDevices.getUserMedia ||
       navigator.webkitGetUserMedia ||
       navigator.mozGetUserMedia ||
       navigator.msGetUserMedia;
