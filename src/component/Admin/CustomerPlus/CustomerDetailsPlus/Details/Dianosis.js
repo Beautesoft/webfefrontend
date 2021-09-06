@@ -46,13 +46,13 @@ export class DianosisClass extends React.Component {
       { label: "Sales", sortKey: "sales" },
     ],
     visitList: [],
+    compareList: [],
     photoListMeta: {},
     historyMeta: {},
     visitMeta: {},
     active: false,
     currentIndex: -1,
     currentMenu: "/",
-    compareList: [],
     selectedRemark: null,
     selectedHistoryCode: null,
     currentData: null,
@@ -137,7 +137,6 @@ export class DianosisClass extends React.Component {
     this.setState({
       currentMenu: value,
       selectedRemark: null,
-      compareList: [],
     });
   };
 
@@ -148,11 +147,11 @@ export class DianosisClass extends React.Component {
       photoListMeta,
       historyMeta,
       visitMeta,
+      compareList,
       currentData,
       currentMenu,
       isAddPhotoOpen,
       isCompareOpen,
-      compareList,
       historyList,
       historyTableHeader,
       selectedRemark,
@@ -288,13 +287,8 @@ export class DianosisClass extends React.Component {
                                       type="checkbox"
                                       checked={isCompare}
                                       onClick={() => {
-                                        if (isCompare) {
-                                          if (compareList.indexOf(index) != -1)
-                                            compareList.pop(index);
-                                        } else compareList.push(index);
                                         photoList[index].isCompare = !isCompare;
-                                        this.setState({ compareList });
-                                        console.log(this.state.compareList);
+                                        this.setState({});
                                       }}
                                     />
                                   </div>
@@ -332,7 +326,7 @@ export class DianosisClass extends React.Component {
                     </TableWrapper>
                   </div>
                 </div>
-                {compareList.length > 0 ? (
+                {photoList.filter((e) => e.isCompare).length > 0 ? (
                   <div className="w-100 col-4 p-0">
                     <NormalButton
                       mainbg={true}
@@ -622,7 +616,7 @@ export class DianosisClass extends React.Component {
             <ComparePhotoPopup
               dataList={
                 currentMenu == "/"
-                  ? compareList.map((id) => photoList[id])
+                  ? photoList.filter((e) => e.isCompare)
                   : compareList
               }
               remarks={currentMenu == "/" ? null : selectedRemark}
