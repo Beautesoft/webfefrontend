@@ -17,6 +17,7 @@ export class ListCustomerPlusClass extends React.Component {
   state = {
     headerDetails: [],
     customerList: [],
+    originalCustomerList: [],
     search: "",
     meta: {},
     active: false,
@@ -86,13 +87,13 @@ export class ListCustomerPlusClass extends React.Component {
     let { customerDetails } = this.props;
     this.updateState({
       customerList: customerDetails.dataList,
+      originalCustomerList: customerDetails.dataList,
       meta: customerDetails.meta?.pagination,
       isLoading: false,
     });
   };
 
   handlePagination = (page) => {
-    console.log(page, "dsfsdfsdfsdf");
     this.getCustomerPlus(page);
   };
 
@@ -118,8 +119,14 @@ export class ListCustomerPlusClass extends React.Component {
   };
 
   render() {
-    let { headerDetails, customerList, meta, currentIndex, isLoading } =
-      this.state;
+    let {
+      headerDetails,
+      originalCustomerList,
+      customerList,
+      meta,
+      currentIndex,
+      isLoading,
+    } = this.state;
     let { t } = this.props;
     return (
       <div className="customer-list container-fluid">
@@ -179,6 +186,8 @@ export class ListCustomerPlusClass extends React.Component {
                     parentHeaderChange={(value) =>
                       this.updateState(() => (headerDetails = value))
                     }
+                    sortData={originalCustomerList}
+                    onSort={(list) => this.updateState({ customerList: list })}
                   >
                     {isLoading ? (
                       <tr>
