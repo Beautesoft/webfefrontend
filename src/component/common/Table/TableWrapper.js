@@ -11,7 +11,7 @@ class TableWrapperClass extends Component {
   };
 
   componentDidMount() {
-    let { field = "", orderBy = "" } = this.props;
+    let { field, orderBy } = this.props;
     if (field && orderBy) {
       this.setState({
         currentSortKeyDetails: { sortKey: field, orderBy },
@@ -30,7 +30,6 @@ class TableWrapperClass extends Component {
 
   handlePagination = (page) => {
     let { queryHandler, scrollProps = "" } = this.props;
-    console.log(page, "dsfsdfsdfsdf");
     queryHandler({ page: page });
     // .then(() => {
     //   scrollTop(...scrollProps);
@@ -41,8 +40,7 @@ class TableWrapperClass extends Component {
   };
 
   handleFilter = (sortKey) => {
-    console.log("queryHandler ===", sortKey);
-    let { queryAppend = true } = this.props;
+    let { queryAppend = true, sortData, onSort } = this.props;
     if (!sortKey) {
       return "";
     }
@@ -70,25 +68,48 @@ class TableWrapperClass extends Component {
         { label: "orderBy", value: orderBy },
       ]);
     }
-    console.log("queryHandler ===", currentSortKeyDetails, sortKey);
     this.setState(
       {
         currentSortKeyDetails,
       },
       () => !queryAppend && this.handleFilterAPI()
     );
+    let sort = {
+      field: sortKey,
+      orderBy,
+    };
+    if (sortData) {
+      if (currentSortKeyDetails === null) {
+        if (onSort) onSort(sortData);
+        return;
+      }
+      const compareFunction = (a, b) => {
+        if (sort.orderBy === "asc") {
+          if (a[sort.field] > b[sort.field]) return 1;
+          if (a[sort.field] < b[sort.field]) return -1;
+          return 0;
+        } else {
+          if (a[sort.field] > b[sort.field]) return -1;
+          if (a[sort.field] < b[sort.field]) return 1;
+          return 0;
+        }
+      };
+      if (onSort) {
+        let sortedData = [...sortData].sort(compareFunction);
+        return onSort(sortedData);
+      }
+    }
   };
 
   handleFilterAPI = () => {
     let { sortKey = null, orderBy = null } =
       this.state.currentSortKeyDetails || {};
     let { queryHandler } = this.props;
+    let sort = {
+      field: sortKey,
+      orderBy,
+    };
     if (queryHandler) {
-      let sort = {
-        field: sortKey,
-        orderBy,
-      };
-      console.log("queryHandler ===", sort);
       queryHandler({ sort });
     }
   };
