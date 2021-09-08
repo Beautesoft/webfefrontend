@@ -15,11 +15,12 @@ export const NormalDateTime = ({
   value,
   className,
   showYearDropdown = false,
-  dateFormat = 'dd/MM/yyyy',
+  dateFormat = "dd/MM/yyyy",
   timeIntervals = 5,
   showIcon = true,
   showMonthYearPicker,
   minDate,
+  disabled = false,
 }) => {
   const [startDate, setStartDate] = useState(new Date());
   const handleDateSelect = (date) => {
@@ -30,6 +31,7 @@ export const NormalDateTime = ({
   return (
     <div className={`${className} date-picker`}>
       <DatePicker
+        disabled={disabled}
         selected={value ? value : startDate}
         onChange={(date) => handleDateSelect(date)}
         showTimeSelect={showTime}

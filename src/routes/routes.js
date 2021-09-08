@@ -252,6 +252,12 @@ const routers = [
         exact: true,
       },
       {
+        component: "CustomerPlusEditLayout",
+        path: "/customerplus/settings/layout",
+        auth: false,
+        exact: true,
+      },
+      {
         component: "LoyaltyPointsManagement",
         path: "/customerplus/:id/lpmanagement",
         auth: false,

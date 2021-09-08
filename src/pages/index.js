@@ -82,6 +82,7 @@ export {
   AddRewardPolicy,
   Settings,
   LoyaltyPointsManagementSettings,
+  CustomerPlusEditLayout,
 } from "./CustomerPlus";
 export { KPIDashboard } from "./KPI";
 export {

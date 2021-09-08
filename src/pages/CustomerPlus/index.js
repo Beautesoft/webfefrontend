@@ -14,3 +14,4 @@ export { LoyaltyPointsManagement } from "component/Admin/CustomerPlus/LoyaltyPoi
 export { Settings } from "component/Admin/CustomerPlus/CustomerPlusSettings";
 export { AddRedeemPolicy } from "component/Admin/CustomerPlus/LoyaltyPointsSettings/AddRedeemPolicy";
 export { AddRewardPolicy } from "component/Admin/CustomerPlus/LoyaltyPointsSettings/AddRewardPolicy";
+export { CustomerPlusEditLayout } from "component/Admin/CustomerPlus/CustomerPlusSettings/EditLayout";

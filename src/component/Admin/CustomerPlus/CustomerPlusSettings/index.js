@@ -1,5 +1,5 @@
 import React from "react";
-import { NormalButton } from "component/common";
+import { NormalButton, NormalInput, NormalSelect } from "component/common";
 import {
   getCustomerPlusSettings,
   updateCustomerPlusSettings,
@@ -8,17 +8,19 @@ import { InputSearch, TableWrapper } from "component/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { withTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 export class SettingsClass extends React.Component {
   state = {
     dataList: [],
     originalData: [],
     tableHeader: [
-      { label: "Field Name", sortKey: "field" },
+      { label: "Field Name", sortKey: "display_field_name", width: 220 },
       { label: "Mandatory", sortKey: "mandatory" },
-      { label: "Show in Register", sortKey: "register" },
-      { label: "Show in Profile", sortKey: "profile" },
-      { label: "Show in Listing", sortKey: "listing" },
+      { label: "Show in Register", sortKey: "visible_in_registration" },
+      { label: "Show in Profile", sortKey: "visible_in_profile" },
+      { label: "Show in Listing", sortKey: "visible_in_listing" },
+      { label: "Show Label", sortKey: "showLable" },
     ],
     isLoading: true,
     isMounted: true,
@@ -80,8 +82,16 @@ export class SettingsClass extends React.Component {
                   onChange={this.handleSearch}
                 />
               </div>
-
-              <div className="w-100 col-4 p-0">
+              <div className="w-100 col-3 p-0 mr-2">
+                <Link to="/admin/customerplus/settings/layout">
+                  <NormalButton
+                    mainbg={true}
+                    className="col-12 fs-15 float-right"
+                    label="Edit Layout"
+                  />
+                </Link>
+              </div>
+              <div className="w-100 col-3 p-0">
                 <NormalButton
                   mainbg={true}
                   className="col-12 fs-15 float-right"
@@ -100,6 +110,8 @@ export class SettingsClass extends React.Component {
               parentHeaderChange={(value) =>
                 this.updateState(() => (tableHeader = value))
               }
+              sortData={this.state.originalData}
+              onSort={(list) => this.updateState({ dataList: list })}
             >
               {isLoading ? (
                 <tr>
@@ -119,8 +131,8 @@ export class SettingsClass extends React.Component {
                     visible_in_listing,
                     mandatory,
                     visible_in_registration,
+                    showLabel,
                   } = item;
-                  console.log(tableHeader[0]);
                   return (
                     <tr key={index}>
                       <td
@@ -128,7 +140,7 @@ export class SettingsClass extends React.Component {
                           tableHeader[0].enabled ?? true ? "" : "d-none"
                         }
                       >
-                        <div className="d-flex align-items-center justify-content-center">
+                        <div className="d-flex align-slef-start">
                           {display_field_name}
                         </div>
                       </td>
@@ -194,6 +206,22 @@ export class SettingsClass extends React.Component {
                             onClick={() => {
                               dataList[index].visible_in_listing =
                                 !visible_in_listing;
+                              this.updateState({ dataList });
+                            }}
+                          />
+                        </div>
+                      </td>
+                      <td
+                        className={
+                          tableHeader[3].enabled ?? true ? "" : "d-none"
+                        }
+                      >
+                        <div className="d-flex align-items-center justify-content-center">
+                          <input
+                            type="checkbox"
+                            checked={showLabel}
+                            onClick={() => {
+                              dataList[index].showLabel = !showLabel;
                               this.updateState({ dataList });
                             }}
                           />

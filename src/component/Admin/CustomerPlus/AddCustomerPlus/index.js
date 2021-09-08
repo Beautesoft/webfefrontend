@@ -15,6 +15,7 @@ import {
   NormalSelect,
   NormalMultiSelect,
   NormalButton,
+  LayoutEditor,
 } from "component/common";
 import { withTranslation } from "react-i18next";
 
@@ -91,6 +92,14 @@ export class AddCustomerPlusClass extends Component {
             let month = a < 10 ? "0" + a : a;
             let year = date.getFullYear();
             this.state.formFields[e.field_name] = `${year}-${month}-${day}`;
+          }
+        });
+      this.state.fields
+        .filter((e) => e.data_type == "datetime")
+        .forEach((e) => {
+          if (this.state.formFields[e.field_name]) {
+            let date = new Date(this.state.formFields[e.field_name]);
+            this.state.formFields[e.field_name] = date.toISOString();
           }
         });
       if (this.props.match.params.id) {
@@ -170,157 +179,12 @@ export class AddCustomerPlusClass extends Component {
     });
   };
 
-  renderFields = () => {
+  renderLayout = () => {
     let { t } = this.props;
-    let extraFields =
-      this.state.fields.filter((e) => e.field_name == "cust_address").length > 0
-        ? this.state.fields.filter((e) => e.field_name.match(/cust_address\w+/))
-        : [];
-    let leftLength =
-      extraFields.length > 0
-        ? (12 - extraFields[0].col_width) * extraFields.length
-        : 0;
-    console.log(leftLength, "len");
-    let addressFileds = extraFields.map((e, index) => {
+    let filtered = this.state.fields;
+    const renderFormData = (e, index) => {
       return (
-        <div className="input-group pb-2" key={index}>
-          <NormalInput
-            placeholder="Enter here"
-            value={this.state.formFields[e.field_name]}
-            name={e.field_name}
-            onChange={this.handleChange}
-          />
-        </div>
-      );
-    });
-    let sorted = this.state.fields.sort((a, b) => {
-      if (a.order > b.order) return 1;
-      else return -1;
-    });
-    let rowElements = [];
-    let totalWidth = 0;
-    sorted
-      .slice(sorted.indexOf(extraFields[extraFields.length - 1]) + 1)
-      .forEach((e) => {
-        totalWidth += e.col_width;
-        if (totalWidth <= leftLength) rowElements.push(e);
-        else return;
-      });
-    console.log(sorted, "sorted fields");
-    console.log(rowElements, "row fields");
-    const mapFunction = (e, index) => {
-      if (e.data_type == "date" || e.data_type == "datetime")
-        if (!this.state.formFields[e.field_name])
-          this.state.formFields[e.field_name] = new Date();
-      if (e.field_name.includes("cust_address")) {
-        return (
-          <>
-            <div className={`col-md-${e.col_width} pb-md-4`}>
-              <label className="text-left text-black common-label-text fs-17 p-0">
-                {e.display_field_name}
-              </label>
-              <div className="input-group pb-2">
-                <NormalInput
-                  placeholder="Enter here"
-                  value={this.state.formFields[e.field_name]}
-                  name={e.field_name}
-                  onChange={this.handleChange}
-                />
-              </div>
-              {addressFileds}
-              {e.mandatory
-                ? this.validator.message(
-                    e.display_field_name,
-                    this.state.formFields[e.field_name],
-                    "required"
-                  )
-                : null}
-            </div>
-            <div className={`col-md-${12 - e.col_width} pb-md-4`}>
-              <div className="row">
-                {rowElements.map((e,index) => {
-                  return (
-                    <div className={`col-md-${e.col_width * 2} pb-md-4`} key={index}>
-                      <label className="text-left text-black common-label-text fs-17 p-0">
-                        {e.display_field_name}
-                      </label>
-                      <div className="input-group">
-                        {e.data_type == "text" ? (
-                          <NormalInput
-                            placeholder="Enter here"
-                            value={this.state.formFields[e.field_name]}
-                            name={e.field_name}
-                            onChange={this.handleChange}
-                          />
-                        ) : e.data_type == "date" ? (
-                          <NormalDateTime
-                            onChange={this.handleDatePick}
-                            value={new Date(this.state.formFields[e.field_name])}
-                            name={e.field_name}
-                            showYearDropdown={true}
-                          />
-                        ) : e.data_type == "datetime" ? (
-                          <NormalDateTime
-                            onChange={this.handleDatePick}
-                            value={new Date(this.state.formFields[e.field_name])}
-                            name={e.field_name}
-                            showYearDropdown={true}
-                          />
-                        ) : e.data_type == "selection" ? (
-                          <NormalSelect
-                            options={e.selection}
-                            value={this.state.formFields[e.field_name]}
-                            name={e.field_name}
-                            onChange={this.handleChange}
-                          />
-                        ) : e.data_type == "multiSelect" ? (
-                          <NormalMultiSelect
-                            options={e.selection}
-                            defaultValue={this.state.formFields[e.field_name]}
-                            name={e.field_name}
-                            handleMultiSelect={(e) =>
-                              this.handleMultiSelect(e.field_name, e)
-                            }
-                          />
-                        ) : e.data_type == "boolean" ? (
-                          <input
-                            type="checkbox"
-                            checked={this.state.formFields[e.field_name]}
-                            name={e.field_name}
-                            onClick={this.handleChangeBox}
-                          />
-                        ) : e.data_type == "number" ? (
-                          <NormalInput
-                            type="number"
-                            placeholder="Enter here"
-                            value={this.state.formFields[e.field_name]}
-                            name={e.field_name}
-                            onChange={this.handleChange}
-                          />
-                        ) : (
-                          t("NO FILED RENDER DATA FOUND")
-                        )}
-                      </div>
-                      {e.mandatory
-                        ? this.validator.message(
-                            e.display_field_name,
-                            this.state.formFields[e.field_name],
-                            "required"
-                          )
-                        : null}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </>
-        );
-      }
-      return (
-        <div className={`col-md-${e.col_width} pb-md-4`} key={index}>
-          <label className="text-left text-black common-label-text fs-17 p-0">
-            {t(e.display_field_name)}
-          </label>
+        <div key={index}>
           <div className="input-group">
             {e.data_type == "text" ? (
               <NormalInput
@@ -332,14 +196,22 @@ export class AddCustomerPlusClass extends Component {
             ) : e.data_type == "date" ? (
               <NormalDateTime
                 onChange={this.handleDatePick}
-                value={new Date(this.state.formFields[e.field_name])}
+                value={
+                  this.state.formFields[e.field_name]
+                    ? new Date(this.state.formFields[e.field_name])
+                    : new Date()
+                }
                 name={e.field_name}
                 showYearDropdown={true}
               />
             ) : e.data_type == "datetime" ? (
               <NormalDateTime
                 onChange={this.handleDatePick}
-                value={new Date(this.state.formFields[e.field_name])}
+                value={
+                  this.state.formFields[e.field_name]
+                    ? new Date(this.state.formFields[e.field_name])
+                    : new Date()
+                }
                 name={e.field_name}
                 showYearDropdown={true}
               />
@@ -375,7 +247,7 @@ export class AddCustomerPlusClass extends Component {
                 onChange={this.handleChange}
               />
             ) : (
-              "NO FILED RENDER DATA FOUND"
+              t("NO FILED RENDER DATA FOUND")
             )}
           </div>
           {e.mandatory
@@ -388,16 +260,18 @@ export class AddCustomerPlusClass extends Component {
         </div>
       );
     };
-    return extraFields.length > 0
-      ? sorted
-          .slice(0, sorted.indexOf(extraFields[0]))
-          .concat(
-            sorted.slice(
-              sorted.indexOf(rowElements[rowElements.length - 1]) + 1
-            )
-          )
-          .map(mapFunction)
-      : sorted.map(mapFunction);
+    return filtered.map((e) => {
+      return (
+        <div key={`${e.id}`}>
+          {e.showLabel && (
+            <label className="text-left text-black common-label-text fs-17 p-0">
+              {t(e.display_field_name)}
+            </label>
+          )}
+          {renderFormData(e)}
+        </div>
+      );
+    });
   };
 
   render() {
@@ -407,7 +281,7 @@ export class AddCustomerPlusClass extends Component {
       <div className="create-customer-section container-fluid">
         {/* <p className="list-heading pb-4"> {id ? "Edit" : "Add"} Customer</p> */}
         <div className="create-customerplus">
-          <div className="head-label-nav">
+          <div className="head-label-nav p-2">
             <p className="category">{t("Customer Plus")}</p>
             <i className="icon-right mx-md-3"></i>
             <p className="sub-category">
@@ -426,7 +300,9 @@ export class AddCustomerPlusClass extends Component {
             ) : (
               <>
                 <div className="form-group mb-4 pb-2 row">
-                  {this.renderFields()}
+                  <LayoutEditor fields={this.state.fields} editable={false}>
+                    {this.renderLayout()}
+                  </LayoutEditor>
                 </div>
                 <div className="row d-flex justify-content-center">
                   <div className="col-md-4 col-sm-12 mb-4">

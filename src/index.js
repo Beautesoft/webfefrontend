@@ -5,6 +5,8 @@ import { Provider } from "react-redux";
 import { store } from "./helpers";
 import "react-notifications/lib/notifications.css";
 import "./assets/scss/index.scss";
+import "react-grid-layout/css/styles.css"
+import "react-resizable/css/styles.css"
 import { MultiLanguage } from "multiLanguage";
 
 ReactDOM.render(
