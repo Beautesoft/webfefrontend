@@ -81,6 +81,32 @@ export const getCustomerPlus =
     });
   };
 
+// get customer MGM action
+export const getCustomerMGMDetails =
+  (id) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      customerPlus.getMGMdetails.addQuery = { key: "id", payload: id };
+      api({ ...customerPlus.getMGMdetails })
+        .then((response) => {
+          resolve(response);
+          let { message, status, data } = response;
+          if (status === 200) {
+            dispatch({
+              type: CustomerPlusActionType.getMGMDetails,
+              payload: data,
+            });
+            // Toast({ type: 'success', message })
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
 // get customer settings action
 export const getCustomerPlusSettings =
   (id) =>
@@ -137,6 +163,37 @@ export const updateCustomerPlusSettings =
     });
   };
 
+//get customer points
+export const getCustomerPoints =
+  (id, params) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      lpManagement.getCustomerPoints.addQuery = { key: "id", payload: id };
+      lpManagement.getCustomerPoints.addQuery = {
+        key: "params",
+        payload: params,
+      };
+      api({
+        ...lpManagement.getCustomerPoints,
+      })
+        .then((response) => {
+          resolve(response);
+          let { message, status, data } = response;
+          if (status === 200) {
+            dispatch({
+              type: CustomerPlusActionType.getCustomerPoints,
+              payload: data,
+            });
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
 //get lpmanagement reward settings
 export const getRewardPlolicySettings =
   (id) =>
@@ -164,6 +221,57 @@ export const getRewardPlolicySettings =
     });
   };
 
+//add lpmanagement reward settings
+export const addRewardPlolicySettings =
+  (body) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      api({
+        ...lpManagement.addRewardPolicy,
+        body,
+        header: { type: "Content-Type", value: "application/json" },
+      })
+        .then((response) => {
+          resolve(response);
+          let { message, status, data } = response;
+          if (status === 200) {
+            Toast({ type: "success", message });
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
+//edit lpmanagement reward settings
+export const updateRewardPlolicySettings =
+  (id, body) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      lpManagement.updateRewardPolicy.addQuery = { key: "id", payload: id };
+      api({
+        ...lpManagement.updateRewardPolicy,
+        body,
+        header: { type: "Content-Type", value: "application/json" },
+      })
+        .then((response) => {
+          resolve(response);
+          let { message, status, data } = response;
+          if (status === 200) {
+            Toast({ type: "success", message });
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
 //get lpmanagement redeem settings
 export const getRedeemPlolicySettings =
   (id) =>
@@ -181,6 +289,57 @@ export const getRedeemPlolicySettings =
               type: CustomerPlusActionType.getRedeemPolicySettings,
               payload: data,
             });
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
+//add lpmanagement redeem settings
+export const addRedeemPlolicySettings =
+  (body) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      api({
+        ...lpManagement.addRedeemPolicy,
+        body,
+        header: { type: "Content-Type", value: "application/json" },
+      })
+        .then((response) => {
+          resolve(response);
+          let { message, status, data } = response;
+          if (status === 200) {
+            Toast({ type: "success", message });
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
+//edit lpmanagement redeem settings
+export const updateRedeemPlolicySettings =
+  (id, body) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      lpManagement.updateRedeemPolicy.addQuery = { key: "id", payload: id };
+      api({
+        ...lpManagement.updateRedeemPolicy,
+        body,
+        header: { type: "Content-Type", value: "application/json" },
+      })
+        .then((response) => {
+          resolve(response);
+          let { message, status, data } = response;
+          if (status === 200) {
+            Toast({ type: "success", message });
           } else {
             reject(Toast({ type: "error", message }));
           }

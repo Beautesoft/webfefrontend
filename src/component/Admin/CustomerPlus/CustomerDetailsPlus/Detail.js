@@ -160,10 +160,18 @@ class DetailsClass extends Component {
               {this.state.activeTab === "5" ? <Favourites /> : ""}
             </TabPane>
             <TabPane tabId="6">
-              {this.state.activeTab === "6" ? <MGMDetails /> : ""}
+              {this.state.activeTab === "6" ? (
+                <MGMDetails id={this.props.id} />
+              ) : (
+                ""
+              )}
             </TabPane>
             <TabPane tabId="7">
-              {this.state.activeTab === "7" ? <Dianosis id={this.props.id}/> : ""}
+              {this.state.activeTab === "7" ? (
+                <Dianosis id={this.props.id} />
+              ) : (
+                ""
+              )}
             </TabPane>
           </TabContent>
         </div>

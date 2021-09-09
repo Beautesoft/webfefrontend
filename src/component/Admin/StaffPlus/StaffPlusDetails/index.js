@@ -80,7 +80,7 @@ export class StaffPlusDetailsClass extends Component {
                   className="col-12 fs-15 float-right"
                   label="Staff availability"
                   mainbg={true}
-                  // onClick={() => this.props.history.push('/admin/staff/add')}
+                  // onClick={() => this.props.history.push('/admin/staffPlus/add')}
                 />
               </div>
               <div className="w-100 col-3 p-0">
@@ -88,7 +88,7 @@ export class StaffPlusDetailsClass extends Component {
                   mainbg={true}
                   className="col-12 fs-15 float-right"
                   label="Add Staff"
-                  onClick={() => this.props.history.push("/admin/staff/add")}
+                  onClick={() => this.props.history.push("/admin/staffPlus/add")}
                 />
               </div>
               <div className="bg-white filter-icon ml-3">
@@ -119,7 +119,7 @@ export class StaffPlusDetailsClass extends Component {
                 className="btn outline-btn col-2 mx-2 fs-15 float-right text-capitalize"
                 onClick={() =>
                   history.push(
-                    `/admin/staff/${this.props.match.params.id}/editStaff`
+                    `/admin/staffPlus/${this.props.match.params.id}/editStaff`
                   )
                 }
               >

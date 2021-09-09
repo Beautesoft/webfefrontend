@@ -242,7 +242,7 @@ class StaffScheduleClass extends React.Component {
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
     await this.props.getAllEmpSchedule(
-      `?site_id=${selected_site}&limit=10&year=${year}&month=${month}&page=${page}`
+      `?siteCode=${selected_site}&limit=10&year=${year}&month=${month}&page=${page}`
     );
     let { staffAllEmpSchedule } = this.props;
     pageMeta = staffAllEmpSchedule.pagination;
@@ -317,7 +317,7 @@ class StaffScheduleClass extends React.Component {
           break;
       }
     }
-    this.updateState({});
+    this.updateState({ cal_data });
   };
 
   onApplyALTWSToMonthlySchedule = () => {
@@ -351,7 +351,7 @@ class StaffScheduleClass extends React.Component {
           break;
       }
     }
-    this.updateState({});
+    this.updateState({ cal_data });
   };
 
   onSubmit = async () => {

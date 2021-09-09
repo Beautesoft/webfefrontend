@@ -1,10 +1,5 @@
 import React from "react";
-import { NormalButton, NormalInput } from "component/common";
-import { InputSearch, TableWrapper } from "component/common";
-import filter from "../../../../assets/images/filter.png";
-import "./style.scss";
-import { getCustomer } from "redux/actions/customer";
-import { updateForm } from "redux/actions/common";
+import { NormalInput } from "component/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Navigation } from "react-minimal-side-navigation";
@@ -12,14 +7,25 @@ import { RedeemPolicyTable } from "./RedeemPolicyTable";
 import { RewardPolicyTable } from "./RewardPolicyTable";
 import { ManualReward } from "./ManualReward";
 import { ManualRedeem } from "./ManualRedeem";
-import _ from "lodash";
+import { getCommonApi } from "redux/actions/common";
 import { withTranslation } from "react-i18next";
 
 class LoyaltyPointsManagementClass extends React.Component {
   state = {
     currentMenu: "/",
     isMounted: true,
+    cust_name: "",
+    cust_bal_point: "",
+    reference: "",
   };
+
+  componentDidMount() {
+    this.props
+      .getCommonApi(`CustomerPlus/${this.props.match.params.id}/Rewards`)
+      .then((e) => {
+        this.updateState({ ...e.data });
+      });
+  }
 
   componentWillUnmount() {
     this.state.isMounted = false;
@@ -77,24 +83,30 @@ class LoyaltyPointsManagementClass extends React.Component {
                 <div className="row mt-2 mb-5">
                   <div className="col-md-6  mt-2">
                     <label className="label">{t("Name")}</label>
-                    <NormalInput disabled />
+                    <NormalInput value={this.state.cust_name} disabled />
                   </div>
                   <div className="col-md-6 mt-2">
                     <label className="label">{t("Code Referance")}</label>
-                    <NormalInput disabled />
+                    <NormalInput value={this.state.reference} disabled />
                   </div>
 
                   <div className="col-md-6  mt-2">
                     <label className="label">{t("Available Points")}</label>
-                    <NormalInput disabled />
+                    <NormalInput value={this.state.cust_bal_point} disabled />
                   </div>
                 </div>
               </div>
 
               {currentMenu == "/" ? (
-                <RewardPolicyTable history={this.props.history} />
+                <RewardPolicyTable
+                  history={this.props.history}
+                  id={this.props.match.params.id}
+                />
               ) : currentMenu == "/redeem" ? (
-                <RedeemPolicyTable history={this.props.history} />
+                <RedeemPolicyTable
+                  history={this.props.history}
+                  id={this.props.match.params.id}
+                />
               ) : currentMenu == "/manualReward" ? (
                 <ManualReward />
               ) : (
@@ -107,6 +119,13 @@ class LoyaltyPointsManagementClass extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ getCommonApi }, dispatch);
+};
+
 export const LoyaltyPointsManagement = withTranslation()(
-  LoyaltyPointsManagementClass
+  connect(mapStateToProps, mapDispatchToProps)(LoyaltyPointsManagementClass)
 );

@@ -7,6 +7,8 @@ const initialState = {
   redeemPolicyList: {},
   customerDiagnosisPhotoList: {},
   customerDiagnosisHistory: {},
+  customerPoints: {},
+  customerMGMDetails: {},
 };
 
 export default (state = Object.assign({}, initialState), { type, payload }) => {
@@ -40,6 +42,16 @@ export default (state = Object.assign({}, initialState), { type, payload }) => {
       return {
         ...state,
         customerDiagnosisHistory: payload,
+      };
+    case CustomerPlusActionType.getCustomerPoints:
+      return {
+        ...state,
+        customerPoints: payload,
+      };
+    case CustomerPlusActionType.getMGMDetails:
+      return {
+        ...state,
+        customerMGMDetails: payload,
       };
     default:
       return state;

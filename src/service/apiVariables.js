@@ -562,6 +562,18 @@ export const customer = {
 };
 
 export const customerPlus = {
+  getMGMdetails: {
+    url: "CustomerPlus/",
+    method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id + "/MGM";
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
   addCustomerPlus: {
     api: "CustomerPlus/",
     method: "post",
@@ -687,6 +699,19 @@ export const customerPlus = {
 };
 
 export const lpManagement = {
+  getCustomerPoints: {
+    url: "CustomerPlus/",
+    method: "get",
+    id: null,
+    params: "",
+    get api() {
+      return this.url + this.id + "/CustomerPoints" + this.params;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
   getRewardPolicy: {
     url: "RewardPolicy",
     method: "get",
@@ -699,9 +724,55 @@ export const lpManagement = {
     },
     baseURL: "token",
   },
+  addRewardPolicy: {
+    url: "RewardPolicy/",
+    method: "post",
+    get api() {
+      return this.url;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  updateRewardPolicy: {
+    url: "RewardPolicy/",
+    method: "put",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
   getRedeemPolicy: {
     url: "RedeemPolicy",
     method: "get",
+    id: null,
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  addRedeemPolicy: {
+    url: "RedeemPolicy/",
+    method: "post",
+    get api() {
+      return this.url;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  updateRedeemPolicy: {
+    url: "RedeemPolicy/",
+    method: "put",
     id: null,
     get api() {
       return this.url + this.id;

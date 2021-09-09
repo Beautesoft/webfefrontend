@@ -1,18 +1,41 @@
 import React, { Component } from "react";
 import Tree from "react-animated-tree";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { getCustomerMGMDetails } from "redux/actions/customerPlus";
 
-export class MGMDetails extends Component {
-  componentDidMount() {
-    var toggler = document.getElementsByClassName("caret");
-    var i;
-
-    for (i = 0; i < toggler.length; i++) {
-      toggler[i].addEventListener("click", function () {
-        this.parentElement.querySelector(".nested").classList.toggle("active");
-        this.classList.toggle("caret-down");
-      });
-    }
+class MGMDetailsClass extends Component {
+  state = {
+    isLoading: true,
+    isMounted: true,
+    data: [],
+  };
+  componentWillUnmount() {
+    this.state.isMounted = false;
   }
+
+  updateState = (data) => {
+    if (this.state.isMounted) this.setState(data);
+  };
+
+  componentDidMount() {
+    this.loadData();
+  }
+
+  loadData = async () => {
+    this.updateState({ isLoading: true });
+    await this.props.getCustomerMGMDetails(this.props.id);
+    let { mgmData } = this.props;
+    this.updateState({ data: mgmData, isLoading: false });
+  };
+
+  generateTree = (e) => {
+    return e.map((e) => (
+      <Tree key={e.cust_no} content={e.cust_name}>
+        {e.reference.length == 0 ? null : this.generateTree(e.reference)}
+      </Tree>
+    ));
+  };
 
   render() {
     const treeStyles = {
@@ -22,26 +45,38 @@ export class MGMDetails extends Component {
       fill: "black",
       width: "100%",
     };
-    let {} = this.props;
+
+    let { isLoading, data } = this.state;
+
     return (
       <div className="container">
         <div className="row pb-5">
-          <Tree content="Customer 1" open style={treeStyles}>
-            <Tree content="Customer 2" />
-            <Tree content="Customer 3">
-              <Tree content="Customer 4" />
-              <Tree content="Customer 5">
-                <Tree content="Customer 6" />
-                <Tree content="Customer 7" />
-                <Tree content="Customer 8" />
-              </Tree>
-              <Tree content="Customer 9" />
+          {isLoading ? (
+            <div class="d-flex w-100 mt-5 align-items-center justify-content-center">
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+          ) : (
+            <Tree content={data.cust_name} open style={treeStyles}>
+              {this.generateTree(data.reference)}
             </Tree>
-            <Tree content="Customer 10" />
-            <Tree content="Customer 11" />
-          </Tree>
+          )}
         </div>
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  mgmData: state.customerPlus.customerMGMDetails,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ getCustomerMGMDetails }, dispatch);
+};
+
+export const MGMDetails = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MGMDetailsClass);

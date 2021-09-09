@@ -40,10 +40,10 @@ export class RedeemPolicyTableClass extends React.Component {
     let page = data?.page ?? 1;
     this.setState({ isLoading: true });
     await this.props.getRedeemPlolicySettings(`?limit=10&page=${page}`);
-    let { diagnosisList, pagination } = this.props.redeemPolicyList;
+    let { dataList, pagination } = this.props.redeemPolicyList;
     this.updateState({
       meta: pagination,
-      dataList: diagnosisList,
+      dataList: dataList,
       isLoading: false,
     });
   };
@@ -179,7 +179,11 @@ export class RedeemPolicyTableClass extends React.Component {
                                 }
                               >
                                 <div className="d-flex align-items-center justify-content-center">
-                                  {isactive}
+                                  <input
+                                    type="checkbox"
+                                    disbaled
+                                    checked={isactive}
+                                  />
                                 </div>
                               </td>
                               <td

@@ -41,10 +41,10 @@ export class RewardPolicyTableClass extends React.Component {
     let page = data?.page ?? 1;
     this.setState({ isLoading: true });
     await this.props.getRewardPlolicySettings(`?limit=10&page=${page}`);
-    let { diagnosisList, pagination } = this.props.rewardPolicyList;
+    let { dataList, pagination } = this.props.rewardPolicyList;
     this.updateState({
       meta: pagination,
-      dataList: diagnosisList,
+      dataList: dataList,
       isLoading: false,
     });
   };
@@ -192,7 +192,11 @@ export class RewardPolicyTableClass extends React.Component {
                                 }
                               >
                                 <div className="d-flex align-items-center justify-content-center">
-                                  {isactive}
+                                  <input
+                                    type="checkbox"
+                                    disbaled
+                                    checked={isactive}
+                                  />
                                 </div>
                               </td>
                               <td
@@ -212,7 +216,7 @@ export class RewardPolicyTableClass extends React.Component {
                                         className="d-flex align-items-center fs-16 pt-3"
                                         onClick={() =>
                                           this.props.history.push(
-                                            `lpmanagement/${id}/editredeem`
+                                            `lpmanagement/${id}/editreward`
                                           )
                                         }
                                       >

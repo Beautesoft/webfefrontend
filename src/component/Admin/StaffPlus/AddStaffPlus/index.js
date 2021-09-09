@@ -32,7 +32,7 @@ export class AddStaffClass extends Component {
       emp_nric: "",
       display_name: "",
       emp_joindate: "",
-      defaultSiteCodeid: "",
+      Site_Codeid: "",
       EMP_TYPEid: "",
       emp_pic: "",
       emp_isactive: false,
@@ -52,7 +52,7 @@ export class AddStaffClass extends Component {
         saturday: "NO",
         sunday: "NO",
       },
-      defaultSiteCodeid: "",
+      Site_Codeid: "",
       siteCodes: [],
     },
     scheduleOptions: [],
@@ -96,9 +96,13 @@ export class AddStaffClass extends Component {
       ),
       autoForceUpdate: this,
     });
+    this.loadData();
+  }
 
+  loadData = async () => {
+    this.updateState({ is_loading: true });
     // branch option api
-    this.props.getCommonApi("branchlist/").then((res) => {
+    await this.props.getCommonApi("branchlist/").then((res) => {
       let { locationOption } = this.state;
       for (let key of res.data) {
         locationOption.push({ value: key.id, label: key.itemsite_desc });
@@ -107,7 +111,7 @@ export class AddStaffClass extends Component {
     });
 
     // level option api
-    this.props.getCommonApi("securities/").then((res) => {
+    await this.props.getCommonApi("securities/").then((res) => {
       let { levelList } = this.state;
       for (let key of res.data) {
         levelList.push({ value: key.id, label: key.level_name });
@@ -116,7 +120,7 @@ export class AddStaffClass extends Component {
     });
 
     // schedule hours api
-    this.props.getCommonApi("WorkScheduleHours/").then((res) => {
+    await this.props.getCommonApi("WorkScheduleHours/").then((res) => {
       let { scheduleOptions } = this.state;
       for (let key of res.schedules) {
         scheduleOptions.push({
@@ -133,43 +137,35 @@ export class AddStaffClass extends Component {
     // get api for staff while
     if (this.props.match.params.id) {
       // jobtitle option api
-      this.props.getJobtitle().then(async () => {
-        await this.getDatafromStore("jobtitle");
-        this.getStaffDetail();
+      await this.props.getJobtitle().then(async () => {
+        await this.mapJobList();
+        await this.getStaffDetail();
       });
     } else {
-      this.updateState({ is_loading: false });
       // jobtitle option api
-      this.props.getJobtitle().then(() => {
-        this.getDatafromStore("jobtitle");
+      await this.props.getJobtitle().then(() => {
+        this.mapJobList();
       });
     }
-  }
-
-  // get api for staff
-  getStaffDetail = async () => {
-    this.updateState({ is_loading: true });
-    await this.props.getStaffPlus(`${this.props.match.params.id}/`);
-    await this.props.getWorkSchedule(`${this.props.match.params.id}`);
-    this.setDataFromStore();
     this.updateState({ is_loading: false });
   };
 
+  // get api for staff
+  getStaffDetail = async () => {
+    await this.props.getStaffPlus(`${this.props.match.params.id}/`);
+    await this.props.getWorkSchedule(`${this.props.match.params.id}`);
+    this.setDataFromStore();
+  };
+
   // set dropdown data from response
-  getDatafromStore = async (type) => {
-    let { branchList, jobtitleList } = this.props;
-    let { jobOption, locationOption } = this.state;
-    if (type === "jobtitle") {
-      for (let key of jobtitleList) {
-        jobOption.push({ label: key.level_desc, value: key.id });
-      }
-    } else if (type === "branch") {
-      for (let key of branchList) {
-        locationOption.push({ label: key.itemsite_desc, value: key.id });
-      }
+  mapJobList = async () => {
+    let { jobtitleList } = this.props;
+    let { jobOption } = this.state;
+    for (let key of jobtitleList) {
+      jobOption.push({ label: key.level_desc, value: key.id });
     }
+
     this.updateState({
-      locationOption,
       jobOption,
     });
   };
@@ -181,7 +177,7 @@ export class AddStaffClass extends Component {
     formFields["emp_name"] = staffPlusDetail.emp_name;
     formFields["display_name"] = staffPlusDetail.display_name;
     formFields["emp_joindate"] = new Date(staffPlusDetail.emp_joindate);
-    formFields["defaultSiteCodeid"] = staffPlusDetail.defaultSiteCodeid;
+    formFields["Site_Codeid"] = staffPlusDetail.Site_Codeid;
     formFields["EMP_TYPEid"] = staffPlusDetail.EMP_TYPEid;
     formFields["emp_pic"] = staffPlusDetail.emp_pic;
     formFields["emp_nric"] = staffPlusDetail.emp_nric;
@@ -282,7 +278,7 @@ export class AddStaffClass extends Component {
         formData.append("display_name", formFields.display_name);
         formData.append("pw_password", formFields.pw_password);
         formData.append("emp_joindate", dateFormat(formFields.emp_joindate));
-        formData.append("defaultSiteCodeid", formFields.defaultSiteCodeid);
+        formData.append("Site_Codeid", formFields.Site_Codeid);
         formData.append("EMP_TYPEid", formFields.EMP_TYPEid);
         if (
           formFields.emp_pic != null &&
@@ -299,7 +295,9 @@ export class AddStaffClass extends Component {
         formData.append("show_in_trmt", formFields.show_in_trmt);
         formData.append(
           "site_list",
-          formFields.siteCodes.map((e) => e.value).reduce((a, e) => a + "," + e)
+          formFields.siteCodes
+            .map((e) => e.value)
+            .reduce((a, e) => (a === "" ? e : a + "," + e), "")
         );
         const scheduleData = new FormData();
         scheduleData.append("monday", formFields.work_schedule.monday);
@@ -338,9 +336,11 @@ export class AddStaffClass extends Component {
         }
       } else {
         this.validator.showMessages();
+        console.log("missing fields found !");
       }
       this.updateState({ is_loading: false });
     } catch (e) {
+      console.log(e);
       this.updateState({ is_loading: false });
     }
   };
@@ -378,7 +378,7 @@ export class AddStaffClass extends Component {
       show_in_sales,
       show_in_appt,
       show_in_trmt,
-      defaultSiteCodeid,
+      Site_Codeid,
       max_disc,
       work_schedule,
     } = formFields;
@@ -464,14 +464,14 @@ export class AddStaffClass extends Component {
                   <div className="input-group">
                     <NormalInput
                       placeholder="Enter here"
-                      value={display_name}
-                      name="display_name"
+                      value={emp_name}
+                      name="emp_name"
                       onChange={this.handleChange}
                     />
                   </div>
                   {this.validator.message(
-                    t("staff name"),
-                    display_name,
+                    t("employee name"),
+                    emp_name,
                     t("required")
                   )}
                 </div>
@@ -495,14 +495,14 @@ export class AddStaffClass extends Component {
                   <div className="input-group">
                     <NormalInput
                       placeholder="Enter here"
-                      value={emp_name}
-                      name="emp_name"
+                      value={display_name}
+                      name="display_name"
                       onChange={this.handleChange}
                     />
                   </div>
                   {this.validator.message(
-                    t("display name"),
-                    emp_name,
+                    t("user name"),
+                    display_name,
                     t("required")
                   )}
                 </div>
@@ -571,8 +571,8 @@ export class AddStaffClass extends Component {
                   <div className="input-group">
                     <NormalSelect
                       options={locationOption}
-                      value={defaultSiteCodeid}
-                      name="defaultSiteCodeid"
+                      value={Site_Codeid}
+                      name="Site_Codeid"
                       onChange={this.handleChange}
                     />
                   </div>

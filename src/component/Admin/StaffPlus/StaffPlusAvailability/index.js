@@ -163,7 +163,7 @@ export class StaffPlusAvailabilityClass extends React.Component {
                     mainbg={true}
                     className="col-12 fs-15 float-right"
                     label="Add Staff"
-                    onClick={() => this.props.history.push("/admin/staff/add")}
+                    onClick={() => this.props.history.push("/admin/staffPlus/add")}
                   />
                 </div>
               </div>
