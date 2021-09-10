@@ -120,11 +120,11 @@ export class RewardPolicyTableClass extends React.Component {
                           let {
                             id,
                             reward_code,
-                            cust_type,
+                            cust_type_desc,
                             cur_value,
                             point_value,
                             isactive,
-                            reward_item_type,
+                            reward_item_type_desc,
                           } = item;
                           console.log(headerDetails[0]);
                           return (
@@ -148,7 +148,7 @@ export class RewardPolicyTableClass extends React.Component {
                                 }
                               >
                                 <div className="d-flex align-items-center justify-content-center">
-                                  {cust_type}
+                                  {cust_type_desc}
                                 </div>
                               </td>
                               <td
@@ -159,7 +159,7 @@ export class RewardPolicyTableClass extends React.Component {
                                 }
                               >
                                 <div className="d-flex align-items-center justify-content-center">
-                                  {reward_item_type}
+                                  {reward_item_type_desc}
                                 </div>
                               </td>
                               <td

@@ -119,7 +119,7 @@ export class RedeemPolicyTableClass extends React.Component {
                           let {
                             id,
                             redeem_code,
-                            cust_type,
+                            cust_type_desc,
                             cur_value,
                             point_value,
                             isactive,
@@ -146,7 +146,7 @@ export class RedeemPolicyTableClass extends React.Component {
                                 }
                               >
                                 <div className="d-flex align-items-center justify-content-center">
-                                  {cust_type}
+                                  {cust_type_desc}
                                 </div>
                               </td>
                               <td
