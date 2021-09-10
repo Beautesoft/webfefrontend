@@ -20,7 +20,7 @@ export class SettingsClass extends React.Component {
       { label: "Show in Register", sortKey: "visible_in_registration" },
       { label: "Show in Profile", sortKey: "visible_in_profile" },
       { label: "Show in Listing", sortKey: "visible_in_listing" },
-      { label: "Show Label", sortKey: "showLable" },
+      { label: "Show Label", sortKey: "showLabel" },
     ],
     isLoading: true,
     isMounted: true,
