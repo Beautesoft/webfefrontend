@@ -262,10 +262,11 @@ export class AddCustomerPlusClass extends Component {
     };
     return filtered.map((e) => {
       return (
-        <div key={`${e.id}`}>
+        <div key={`${e.id}`} style={e.data_type=="date" || e.data_type=="datetime" ? {zIndex:1} : {}}>
           {e.showLabel && (
             <label className="text-left text-black common-label-text fs-17 p-0">
               {t(e.display_field_name)}
+              {e.mandatory && <label className="text-danger p-0 m-0">*</label>}
             </label>
           )}
           {renderFormData(e)}
