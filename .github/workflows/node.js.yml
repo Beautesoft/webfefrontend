@@ -24,3 +24,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: npm i
+    - run: fuser -n tcp -k 2129
+    - run: npm start
