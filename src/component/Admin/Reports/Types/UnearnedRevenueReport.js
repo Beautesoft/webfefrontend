@@ -1,5 +1,6 @@
 import {
   NormalButton,
+  NormalCheckbox,
   NormalDateTime,
   NormalMultiSelect,
   NormalSelect,
@@ -9,12 +10,14 @@ import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getCommonApi } from "redux/actions/common";
+import { getReport, updateReport } from "redux/actions/reports";
 import { Viewer, Designer } from "@grapecity/activereports-react";
 import "../style.scss";
 import { Fragment } from "react";
 
 class UnearnedRevenueReportClass extends Component {
   state = {
+    showUnearned: false,
     selectedSites: "",
     siteOptions: [],
     selectedSiteGroup: "",
@@ -46,6 +49,7 @@ class UnearnedRevenueReportClass extends Component {
 
   getData = async () => {
     let { siteOptions, siteGroupOptions } = this.state;
+    await this.props.getReport("");
     let branchRes = await this.props.getCommonApi("branchlist/");
     let siteGroupRes = await this.props.getCommonApi("site_group_list/");
     for (let key of branchRes.data) {
@@ -57,7 +61,11 @@ class UnearnedRevenueReportClass extends Component {
     for (let key of siteGroupRes.data.groups) {
       siteGroupOptions.push({ value: key.code, label: key.description });
     }
-    this.updateState({ siteOptions, siteGroupOptions, isLoading: false });
+    this.updateState({
+      siteOptions,
+      siteGroupOptions,
+      isLoading: false,
+    });
   };
 
   getFormatedDate = (input) => {
@@ -93,11 +101,18 @@ class UnearnedRevenueReportClass extends Component {
 
   onRun = async () => {
     this.updateState({ isLoading: true });
-    let { data, selectedSites, selectedInOption, selectedSiteGroup, start } =
-      this.state;
+    let {
+      data,
+      selectedSites,
+      selectedInOption,
+      selectedSiteGroup,
+      start,
+      showUnearned,
+    } = this.state;
     let additionalParams = "";
     if (selectedSiteGroup) additionalParams = `&siteGroup=${selectedSiteGroup}`;
     else additionalParams = `&siteCodes=${selectedSites}`;
+    if (showUnearned) additionalParams += `&showUnearned=${showUnearned}`;
     let res = await this.props.getCommonApi(
       `SalesDailyReporting?start=${this.getFormatedDate(
         start
@@ -108,21 +123,23 @@ class UnearnedRevenueReportClass extends Component {
     this.updateState({ data, isLoading: false });
   };
 
+  onSaveReport = async (info) => {
+    this.updateReport({ isLoading: true });
+    await this.props.updateReport("", info.definition);
+    this.updateReport({ isLoading: false });
+  };
+
   render() {
-    let { t } = this.props;
+    let { t, report } = this.props;
     let { inOptions } = this.state;
     inOptions = inOptions.map((e) => {
       return { ...e, label: t(e.label) };
     });
 
-    let reportName = "urr-report-template.json";
-    let report = require(`./Files/${reportName}`);
-
-    function onSaveReport(info) {
-      console.log("save clicked");
-      console.log(info);
-      return Promise.resolve({ displayName: "report" });
-    }
+    if (report.DataSources)
+      report.DataSources[0].ConnectionProperties.ConnectString = `jsondata=${JSON.stringify(
+        { data: this.state.data }
+      )}`;
     return (
       <div className="container-fluid report-types">
         <div className="row mb-4">
@@ -138,7 +155,7 @@ class UnearnedRevenueReportClass extends Component {
           </div>
         ) : (
           <>
-            <div className="row mb-2">
+            <div className="row">
               <div className="col-md-3 col-lg-2 mb-4">
                 <NormalButton
                   label={t("Run")}
@@ -160,7 +177,8 @@ class UnearnedRevenueReportClass extends Component {
                 />
               </div>
             </div>
-            <div className="row mb-4">
+            <hr />
+            <div className="row">
               <div className="col-md-4 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-1">
                   {t("From Date")}
@@ -181,7 +199,6 @@ class UnearnedRevenueReportClass extends Component {
                   options={inOptions}
                   value={this.state.selectedInOption}
                   name="selectedInOption"
-                  showYearDropdown={true}
                 />
               </div>
               <div className="col-md-4 mb-4">
@@ -193,7 +210,6 @@ class UnearnedRevenueReportClass extends Component {
                   options={this.state.siteGroupOptions}
                   value={this.state.selectedSiteGroup}
                   name="selectedSiteGroup"
-                  showYearDropdown={true}
                 />
               </div>
               <div className="col-md-4 mb-4">
@@ -205,10 +221,20 @@ class UnearnedRevenueReportClass extends Component {
                   options={this.state.siteOptions}
                   value={this.state.selectedSites}
                   name="selectedSites"
-                  showYearDropdown={true}
+                />
+              </div>
+              <div className="col-md-4 mb-4 pt-md-5">
+                <NormalCheckbox
+                  onChange={this.handleChanges}
+                  checked={this.state.showUnearned}
+                  value={this.state.showUnearned}
+                  labelClass="text-black common-label-text fs-17"
+                  label="Show Unearned"
+                  name="showUnearned"
                 />
               </div>
             </div>
+            <hr />
             <div className="row mb-4">
               {this.state.data ? (
                 <Fragment>
@@ -216,11 +242,11 @@ class UnearnedRevenueReportClass extends Component {
                     <div id="designer-host">
                       <Designer
                         report={{
-                          id: reportName,
-                          displayName: reportName,
+                          displayName: t("report"),
+                          definition: report,
                         }}
                         language={localStorage.getItem("lang")}
-                        onSave={onSaveReport}
+                        onSave={this.onSaveReport}
                       />
                     </div>
                   ) : (
@@ -242,12 +268,16 @@ class UnearnedRevenueReportClass extends Component {
     );
   }
 }
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  report: state.reporting.reportLayout,
+});
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
+      getReport,
+      updateReport,
     },
     dispatch
   );

@@ -44,7 +44,7 @@ class DailyCollectionReportClass extends Component {
 
   getData = async () => {
     let { siteOptions, siteGroupOptions, payGroupOptions } = this.state;
-    await this.props.getReport("");
+    await this.props.getReport("SalesDailyReporting");
     let payGroup = await this.props.getCommonApi("pay_group_list");
     let branchRes = await this.props.getCommonApi("branchlist/");
     let siteGroupRes = await this.props.getCommonApi("site_group_list/");
@@ -152,7 +152,7 @@ class DailyCollectionReportClass extends Component {
       <div className="container-fluid report-types">
         <div className="row mb-4">
           <div className="col">
-            <h3>{t("Daily Collection")}</h3>
+            <h3>{t("Daily Collection Report")}</h3>
           </div>
         </div>
         {this.state.isLoading ? (

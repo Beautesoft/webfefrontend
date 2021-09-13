@@ -408,6 +408,7 @@ class StaffScheduleClass extends React.Component {
     let { ws, altws, cal_data, staff_data } = formFields;
 
     const handleMenuSelection = (value) => {
+      if (value === "/full") this.getFullScheduleData();
       this.updateState({ currentMenu: value });
     };
 

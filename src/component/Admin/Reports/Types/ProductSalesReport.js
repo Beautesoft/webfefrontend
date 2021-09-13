@@ -9,6 +9,7 @@ import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getCommonApi } from "redux/actions/common";
+import { getReport, updateReport } from "redux/actions/reports";
 import { Viewer, Designer } from "@grapecity/activereports-react";
 import "../style.scss";
 import { Fragment } from "react";
@@ -23,12 +24,7 @@ class ProductSalesReportClass extends Component {
     isMounted: true,
     isLoading: true,
     start: Date.now(),
-    inOptions: [
-      { label: "Month", value: "month" },
-      { label: "Week", value: "week" },
-      { label: "Day", value: "day" },
-    ],
-    selectedInOption: "week",
+    end: Date.now(),
     data: null,
   };
 
@@ -46,6 +42,7 @@ class ProductSalesReportClass extends Component {
 
   getData = async () => {
     let { siteOptions, siteGroupOptions } = this.state;
+    await this.props.getReport("ProductSale");
     let branchRes = await this.props.getCommonApi("branchlist/");
     let siteGroupRes = await this.props.getCommonApi("site_group_list/");
     for (let key of branchRes.data) {
@@ -57,7 +54,11 @@ class ProductSalesReportClass extends Component {
     for (let key of siteGroupRes.data.groups) {
       siteGroupOptions.push({ value: key.code, label: key.description });
     }
-    this.updateState({ siteOptions, siteGroupOptions, isLoading: false });
+    this.updateState({
+      siteOptions,
+      siteGroupOptions,
+      isLoading: false,
+    });
   };
 
   getFormatedDate = (input) => {
@@ -88,46 +89,48 @@ class ProductSalesReportClass extends Component {
 
   handleDatePick = (name, value) => {
     this.state[name] = value;
+    if (name === "start") {
+      let start = new Date(value);
+      let end = new Date(this.state.end);
+      if (end < start) this.state.end = this.state.start;
+    }
     this.updateState({});
   };
 
   onRun = async () => {
     this.updateState({ isLoading: true });
-    let { data, selectedSites, selectedInOption, selectedSiteGroup, start } =
-      this.state;
+    let { data, selectedSites, selectedSiteGroup, start, end } = this.state;
     let additionalParams = "";
     if (selectedSiteGroup) additionalParams = `&siteGroup=${selectedSiteGroup}`;
     else additionalParams = `&siteCodes=${selectedSites}`;
     let res = await this.props.getCommonApi(
-      `SalesDailyReporting?start=${this.getFormatedDate(
+      `ProductSale?start=${this.getFormatedDate(
         start
-      )}&in=${selectedInOption}${additionalParams}`
+      )}&end=${this.getFormatedDate(end)}${additionalParams}`
     );
     console.log(res);
     data = res.data;
     this.updateState({ data, isLoading: false });
   };
 
+  onSaveReport = async (info) => {
+    this.updateReport({ isLoading: true });
+    await this.props.updateReport("", info.definition);
+    this.updateReport({ isLoading: false });
+  };
+
   render() {
-    let { t } = this.props;
-    let { inOptions } = this.state;
-    inOptions = inOptions.map((e) => {
-      return { ...e, label: t(e.label) };
-    });
+    let { t, report } = this.props;
 
-    let reportName = "urr-report-template.json";
-    let report = require(`./Files/${reportName}`);
-
-    function onSaveReport(info) {
-      console.log("save clicked");
-      console.log(info);
-      return Promise.resolve({ displayName: "report" });
-    }
+    if (report.DataSources)
+      report.DataSources[0].ConnectionProperties.ConnectString = `jsondata=${JSON.stringify(
+        { data: this.state.data }
+      )}`;
     return (
       <div className="container-fluid report-types">
         <div className="row mb-4">
           <div className="col">
-            <h3>{t("Product Sales")}</h3>
+            <h3>{t("Product Sales Report")}</h3>
           </div>
         </div>
         {this.state.isLoading ? (
@@ -138,7 +141,7 @@ class ProductSalesReportClass extends Component {
           </div>
         ) : (
           <>
-            <div className="row mb-2">
+            <div className="row">
               <div className="col-md-3 col-lg-2 mb-4">
                 <NormalButton
                   label={t("Run")}
@@ -160,7 +163,8 @@ class ProductSalesReportClass extends Component {
                 />
               </div>
             </div>
-            <div className="row mb-4">
+            <hr />
+            <div className="row">
               <div className="col-md-4 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-1">
                   {t("From Date")}
@@ -174,13 +178,13 @@ class ProductSalesReportClass extends Component {
               </div>
               <div className="col-md-4 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-1">
-                  {t("In")}
+                  {t("To Date")}
                 </label>
-                <NormalSelect
-                  onChange={this.handleChanges}
-                  options={inOptions}
-                  value={this.state.selectedInOption}
-                  name="selectedInOption"
+                <NormalDateTime
+                  onChange={this.handleDatePick}
+                  value={this.state.end}
+                  minDate={this.state.start}
+                  name="end"
                   showYearDropdown={true}
                 />
               </div>
@@ -193,7 +197,6 @@ class ProductSalesReportClass extends Component {
                   options={this.state.siteGroupOptions}
                   value={this.state.selectedSiteGroup}
                   name="selectedSiteGroup"
-                  showYearDropdown={true}
                 />
               </div>
               <div className="col-md-4 mb-4">
@@ -205,10 +208,10 @@ class ProductSalesReportClass extends Component {
                   options={this.state.siteOptions}
                   value={this.state.selectedSites}
                   name="selectedSites"
-                  showYearDropdown={true}
                 />
               </div>
             </div>
+            <hr />
             <div className="row mb-4">
               {this.state.data ? (
                 <Fragment>
@@ -216,11 +219,11 @@ class ProductSalesReportClass extends Component {
                     <div id="designer-host">
                       <Designer
                         report={{
-                          id: reportName,
-                          displayName: reportName,
+                          displayName: t("report"),
+                          definition: report,
                         }}
                         language={localStorage.getItem("lang")}
-                        onSave={onSaveReport}
+                        onSave={this.onSaveReport}
                       />
                     </div>
                   ) : (
@@ -242,12 +245,16 @@ class ProductSalesReportClass extends Component {
     );
   }
 }
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  report: state.reporting.reportLayout,
+});
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getCommonApi,
+      getReport,
+      updateReport,
     },
     dispatch
   );

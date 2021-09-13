@@ -10,14 +10,19 @@ import { withTranslation } from "react-i18next";
 export class RewardPolicyTableClass extends React.Component {
   state = {
     headerDetails: [
-      { label: "Code", sortKey: "customerCode" },
-      { label: "Cust Type", sortKey: "customerType", enabled: true },
-      { label: "Reward Stock Type", sortKey: "rewardStockType", enabled: true },
-      { label: "Currency Value", sortKey: "currencyValue", enabled: true },
-      { label: "Point Value", sortKey: "pointsValue", enabled: true },
-      { label: "Active", sortKey: "active", enabled: true },
+      { label: "Code", sortKey: "reward_code" },
+      { label: "Cust Type", sortKey: "cust_type_desc", enabled: true },
+      {
+        label: "Reward Stock Type",
+        sortKey: "reward_item_type_desc",
+        enabled: true,
+      },
+      { label: "Currency Value", sortKey: "cur_value", enabled: true },
+      { label: "Point Value", sortKey: "point_value", enabled: true },
+      { label: "Active", sortKey: "isactive", enabled: true },
       { label: "" },
     ],
+    originalDataList: [],
     dataList: [],
     meta: {},
     currentIndex: -1,
@@ -45,6 +50,7 @@ export class RewardPolicyTableClass extends React.Component {
     this.updateState({
       meta: pagination,
       dataList: dataList,
+      originalDataList: dataList,
       isLoading: false,
     });
   };
@@ -72,7 +78,14 @@ export class RewardPolicyTableClass extends React.Component {
   };
 
   render() {
-    let { headerDetails, dataList, meta, currentIndex, isLoading } = this.state;
+    let {
+      headerDetails,
+      dataList,
+      originalDataList,
+      meta,
+      currentIndex,
+      isLoading,
+    } = this.state;
     let { t } = this.props;
     return (
       <>
@@ -114,6 +127,8 @@ export class RewardPolicyTableClass extends React.Component {
                     parentHeaderChange={(value) =>
                       this.updateState(() => (headerDetails = value))
                     }
+                    sortData={originalDataList}
+                    onSort={(dataList) => this.updateState({ dataList })}
                   >
                     {dataList
                       ? dataList.map((item, index) => {

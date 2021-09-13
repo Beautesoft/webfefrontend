@@ -496,7 +496,7 @@ export const staffPlus = {
   },
   updateEmpSkillList: {
     url: "staffPlus/",
-    method: "put",
+    method: "post",
     id: null,
     get api() {
       return this.url + this.id + "/StaffSkills/";

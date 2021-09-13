@@ -85,13 +85,9 @@ class TableWrapperClass extends Component {
       }
       const compareFunction = (a, b) => {
         if (sort.orderBy === "asc") {
-          if (a[sort.field] > b[sort.field]) return 1;
-          if (a[sort.field] < b[sort.field]) return -1;
-          return 0;
+          return ("" + a[sort.field]).localeCompare(b[sort.field]);
         } else {
-          if (a[sort.field] > b[sort.field]) return -1;
-          if (a[sort.field] < b[sort.field]) return 1;
-          return 0;
+          return ("" + b[sort.field]).localeCompare(a[sort.field]);
         }
       };
       if (onSort) {

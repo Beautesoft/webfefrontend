@@ -10,13 +10,14 @@ import { withTranslation } from "react-i18next";
 export class RedeemPolicyTableClass extends React.Component {
   state = {
     headerDetails: [
-      { label: "Code", sortKey: "customerCode" },
-      { label: "Cust Class", sortKey: "customerClass", enabled: true },
-      { label: "Currency Value", sortKey: "currencyValue", enabled: true },
-      { label: "Point Value", sortKey: "pointsValue", enabled: true },
-      { label: "Active", sortKey: "active", enabled: true },
+      { label: "Code", sortKey: "redeem_code" },
+      { label: "Cust Class", sortKey: "cust_type_desc", enabled: true },
+      { label: "Currency Value", sortKey: "cur_value", enabled: true },
+      { label: "Point Value", sortKey: "point_value", enabled: true },
+      { label: "Active", sortKey: "isactive", enabled: true },
       { label: "" },
     ],
+    originalDataList: [],
     dataList: [],
     meta: {},
     currentIndex: -1,
@@ -44,6 +45,7 @@ export class RedeemPolicyTableClass extends React.Component {
     this.updateState({
       meta: pagination,
       dataList: dataList,
+      originalDataList: dataList,
       isLoading: false,
     });
   };
@@ -71,7 +73,14 @@ export class RedeemPolicyTableClass extends React.Component {
   };
 
   render() {
-    let { headerDetails, dataList, meta, currentIndex, isLoading } = this.state;
+    let {
+      headerDetails,
+      dataList,
+      originalDataList,
+      meta,
+      currentIndex,
+      isLoading,
+    } = this.state;
     let { t } = this.props;
     return (
       <>
@@ -113,6 +122,8 @@ export class RedeemPolicyTableClass extends React.Component {
                     parentHeaderChange={(value) =>
                       this.updateState(() => (headerDetails = value))
                     }
+                    sortData={originalDataList}
+                    onSort={(dataList) => this.updateState({ dataList })}
                   >
                     {dataList
                       ? dataList.map((item, index) => {

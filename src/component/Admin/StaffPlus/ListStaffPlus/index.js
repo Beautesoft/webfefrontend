@@ -14,14 +14,16 @@ import { withTranslation } from "react-i18next";
 export class ListStaffPlusClass extends React.Component {
   state = {
     headerDetails: [
-      { label: "Staff Name", sortKey: true },
-      { label: "Phone" },
-      { label: "Staff ID", sortKey: true },
-      { label: "Specialist", sortKey: true },
-      { label: "Home site", sortKey: true },
-      { label: "Current site", sortKey: true },
+      { label: "Status", sortKey: "status" },
+      { label: "Staff Name", sortKey: "emp_name" },
+      { label: "Phone", sortKey: "emp_phone1" },
+      { label: "Staff ID", sortKey: "emp_code" },
+      { label: "Specialist", sortKey: "services" },
+      { label: "Home site", sortKey: "site_code" },
+      { label: "Current site", sortKey: "defaultsitecode" },
       { label: "" },
     ],
+    originalStaffList: [],
     staffList: [],
     filter: "all",
     locationOption: [],
@@ -165,6 +167,7 @@ export class ListStaffPlusClass extends React.Component {
     pageMeta = staffDetails.meta?.pagination;
     this.updateState({
       staffList,
+      originalStaffList: staffList,
       pageMeta,
       isLoading: false,
     });
@@ -219,6 +222,7 @@ export class ListStaffPlusClass extends React.Component {
       levelList,
       jobOption,
       staffList,
+      originalStaffList,
       isLoading,
       selectedMenu,
     } = this.state;
@@ -349,6 +353,8 @@ export class ListStaffPlusClass extends React.Component {
                     headerDetails={headerDetails}
                     queryHandler={this.handlePagination}
                     pageMeta={pageMeta}
+                    sortData={originalStaffList}
+                    onSort={(staffList) => this.updateState({ staffList })}
                   >
                     {isLoading ? (
                       <tr>
@@ -385,6 +391,8 @@ export class ListStaffPlusClass extends React.Component {
                                       : "not-available"
                                   }`}
                                 ></span>
+                              </td>
+                              <td>
                                 <div className="d-flex align-items-center justify-content-center">
                                   {emp_name}
                                 </div>

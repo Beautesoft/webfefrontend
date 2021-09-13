@@ -58,7 +58,7 @@ export class StaffPlusDetailsClass extends Component {
             <div className="detail">
               <p
                 className="category"
-                onClick={() => history.push("/admin/staff")}
+                onClick={() => history.push("/admin/staffPlus")}
               >
                 {t("Staffs")}
               </p>
