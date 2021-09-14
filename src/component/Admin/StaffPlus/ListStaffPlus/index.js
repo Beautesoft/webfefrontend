@@ -180,16 +180,9 @@ export class ListStaffPlusClass extends React.Component {
 
   // seach change with api call
   handlesearch = (event) => {
-    event.persist();
-
-    if (!this.debouncedFn) {
-      this.debouncedFn = _.debounce(() => {
-        let searchString = event.target.value;
-        let data = { search: searchString };
-        this.queryHandler(data);
-      }, 500);
-    }
-    this.debouncedFn();
+    let searchString = event.target.value;
+    let data = { search: searchString };
+    this.queryHandler(data);
   };
 
   getDatafromStore = async (type) => {

@@ -98,16 +98,8 @@ export class ListCustomerPlusClass extends React.Component {
   };
 
   handlesearch = (event) => {
-    event.persist();
-    let { search } = this.state;
-    if (!this.debouncedFn) {
-      this.debouncedFn = _.debounce(async () => {
-        search = event.target.value;
-        await this.setState({ search });
-        this.getCustomerPlus({});
-      }, 500);
-    }
-    this.debouncedFn();
+    this.state.search = event.target.value;
+    this.getCustomerPlus({});
   };
 
   bookAppointment = async (data) => {

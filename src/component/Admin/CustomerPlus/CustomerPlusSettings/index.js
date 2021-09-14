@@ -42,8 +42,12 @@ export class SettingsClass extends React.Component {
     let { originalData, dataList } = this.state;
     dataList = originalData.filter(
       (e) =>
-        e.display_field_name.includes(event.target.value) ||
-        e.field_name.includes(event.target.value)
+        e.display_field_name
+          .toLocaleLowerCase()
+          .includes(event.target.value.toLocaleLowerCase()) ||
+        e.field_name
+          .toLocaleLowerCase()
+          .includes(event.target.value.toLocaleLowerCase())
     );
     this.updateState({ dataList });
   };
