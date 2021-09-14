@@ -18,6 +18,7 @@ import {
   LayoutEditor,
 } from "component/common";
 import { withTranslation } from "react-i18next";
+import { dateFormat } from "service/helperFunctions";
 
 export class AddCustomerPlusClass extends Component {
   state = {
@@ -66,7 +67,10 @@ export class AddCustomerPlusClass extends Component {
       (e) => e.visible_in_registration
     );
     this.state.formFields = this.state.fields.reduce((map, obj) => {
-      map[obj.field_name] = "";
+      if (obj.data_type == "date") map[obj.field_name] = dateFormat(new Date());
+      else if (obj.data_type == "datetime")
+        map[obj.field_name] = new Date().toISOString();
+      else map[obj.field_name] = null;
       return map;
     }, {});
     if (this.props.match.params.id) {
@@ -85,13 +89,9 @@ export class AddCustomerPlusClass extends Component {
         .filter((e) => e.data_type == "date")
         .forEach((e) => {
           if (this.state.formFields[e.field_name]) {
-            let date = new Date(this.state.formFields[e.field_name]);
-            let d = date.getDate();
-            let day = d < 10 ? "0" + d : d;
-            let a = date.getMonth() + 1;
-            let month = a < 10 ? "0" + a : a;
-            let year = date.getFullYear();
-            this.state.formFields[e.field_name] = `${year}-${month}-${day}`;
+            this.state.formFields[e.field_name] = dateFormat(
+              this.state.formFields[e.field_name]
+            );
           }
         });
       this.state.fields
@@ -262,7 +262,14 @@ export class AddCustomerPlusClass extends Component {
     };
     return filtered.map((e) => {
       return (
-        <div key={`${e.id}`} style={e.data_type=="date" || e.data_type=="datetime" ? {zIndex:1} : {}}>
+        <div
+          key={`${e.id}`}
+          style={
+            e.data_type == "date" || e.data_type == "datetime"
+              ? { zIndex: 1 }
+              : {}
+          }
+        >
           {e.showLabel && (
             <label className="text-left text-black common-label-text fs-17 p-0">
               {t(e.display_field_name)}
