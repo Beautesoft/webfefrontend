@@ -24,4 +24,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: pm2 delete 0
     - run: npm i
+    - run: pm2 --name staging-app start npm -- start
