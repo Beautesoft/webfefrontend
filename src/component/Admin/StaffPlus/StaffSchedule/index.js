@@ -232,9 +232,9 @@ class StaffScheduleClass extends React.Component {
   };
 
   getFullScheduleData = async (page = 1) => {
-    let { selected_site, fullScheduleMonth, formFields, pageMeta } = this.state;
+    let { fullSchedule_selected_site, fullScheduleMonth, formFields, pageMeta } = this.state;
     formFields.staff_data = [];
-    if (selected_site == "") {
+    if (fullSchedule_selected_site == "") {
       return this.updateState({ formFields });
     }
     this.updateState({ isLoading: true });
@@ -242,7 +242,7 @@ class StaffScheduleClass extends React.Component {
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
     await this.props.getAllEmpSchedule(
-      `?siteCode=${selected_site}&limit=10&year=${year}&month=${month}&page=${page}`
+      `?siteCode=${fullSchedule_selected_site}&limit=10&year=${year}&month=${month}&page=${page}`
     );
     let { staffAllEmpSchedule } = this.props;
     pageMeta = staffAllEmpSchedule.pagination;
@@ -398,6 +398,7 @@ class StaffScheduleClass extends React.Component {
       filteredSiteOptions,
       isLoading,
       selected_site,
+      fullSchedule_selected_site,
       siteOptions,
       selectedMonth,
       scheduleOptions,
@@ -649,9 +650,9 @@ class StaffScheduleClass extends React.Component {
                         <div className="input-group">
                           <NormalSelect
                             options={siteOptions}
-                            value={selected_site}
-                            name="selected_site"
-                            onChange={this.onSiteOptionChange}
+                            value={fullSchedule_selected_site}
+                            name="fullSchedule_selected_site"
+                            onChange={this.onFullScheduleSiteChange}
                           />
                         </div>
                       </div>
@@ -679,7 +680,6 @@ class StaffScheduleClass extends React.Component {
                             data={staff_data}
                             options={scheduleOptions}
                             disabled={true}
-                            onChange={this.onFullScheduleSiteChange}
                           />
                         </div>
                         {pageMeta && (
