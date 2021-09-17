@@ -8,11 +8,14 @@ import { bindActionCreators } from "redux";
 export class RedeemPolicyTableClass extends React.Component {
   state = {
     headerDetails: [
-      { label: "Code", sortKey: "customerCode" },
-      { label: "Cust Class", sortKey: "customerClass", enabled: true },
-      { label: "Currency Value", sortKey: "currencyValue", enabled: true },
-      { label: "Point Value", sortKey: "pointsValue", enabled: true },
-      { label: "Active", sortKey: "active", enabled: true },
+      { label: "Transcation No", sortKey: "transacno" },
+      {
+        label: "Post Transcation No",
+        sortKey: "postransactionno",
+        enabled: true,
+      },
+      { label: "Remarks", sortKey: "remarks", enabled: true },
+      { label: "Point Value", sortKey: "total_point", enabled: true },
     ],
     dataList: [],
     originalDataList: [],
@@ -99,12 +102,10 @@ export class RedeemPolicyTableClass extends React.Component {
                     {dataList
                       ? dataList.map((item, index) => {
                           let {
-                            id,
-                            cust_code,
-                            cust_refer,
-                            cust_name,
-                            cust_phone2,
-                            cust_dob,
+                            transacno,
+                            postransactionno,
+                            remarks,
+                            total_point,
                           } = item;
                           return (
                             <tr key={index}>
@@ -116,7 +117,7 @@ export class RedeemPolicyTableClass extends React.Component {
                                 }
                               >
                                 <div className="d-flex align-items-center justify-content-center">
-                                  {cust_code}
+                                  {transacno}
                                 </div>
                               </td>
                               <td
@@ -127,7 +128,7 @@ export class RedeemPolicyTableClass extends React.Component {
                                 }
                               >
                                 <div className="d-flex align-items-center justify-content-center">
-                                  {cust_refer}
+                                  {postransactionno}
                                 </div>
                               </td>
                               <td
@@ -137,7 +138,9 @@ export class RedeemPolicyTableClass extends React.Component {
                                     : "d-none"
                                 }
                               >
-                                <div className="d-flex align-items-center justify-content-center"></div>
+                                <div className="d-flex align-items-center justify-content-center">
+                                  {remarks}
+                                </div>
                               </td>
                               <td
                                 className={
@@ -147,18 +150,7 @@ export class RedeemPolicyTableClass extends React.Component {
                                 }
                               >
                                 <div className="d-flex align-items-center justify-content-center">
-                                  {cust_name}
-                                </div>
-                              </td>
-                              <td
-                                className={
-                                  headerDetails[4].enabled ?? true
-                                    ? ""
-                                    : "d-none"
-                                }
-                              >
-                                <div className="d-flex align-items-center justify-content-center">
-                                  {cust_phone2}
+                                  {Math.abs(total_point)}
                                 </div>
                               </td>
                             </tr>

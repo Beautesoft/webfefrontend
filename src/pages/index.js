@@ -80,6 +80,7 @@ export {
   LoyaltyPointsManagement,
   AddRedeemPolicy,
   AddRewardPolicy,
+  AddManualPoints,
   Settings,
   LoyaltyPointsManagementSettings,
   CustomerPlusEditLayout,

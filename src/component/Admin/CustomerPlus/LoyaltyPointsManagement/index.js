@@ -1,12 +1,10 @@
 import React from "react";
-import { NormalInput } from "component/common";
+import { NormalButton, NormalInput } from "component/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Navigation } from "react-minimal-side-navigation";
 import { RedeemPolicyTable } from "./RedeemPolicyTable";
 import { RewardPolicyTable } from "./RewardPolicyTable";
-import { ManualReward } from "./ManualReward";
-import { ManualRedeem } from "./ManualRedeem";
 import { getCommonApi } from "redux/actions/common";
 import { withTranslation } from "react-i18next";
 
@@ -51,7 +49,7 @@ class LoyaltyPointsManagementClass extends React.Component {
           <div className="row">
             <div className="col-md-2 mb-5">
               <Navigation
-                activeItemId="/"
+                activeItemId={this.state.currentMenu}
                 onSelect={({ itemId }) => this.handleMenuChange(itemId)}
                 items={[
                   {
@@ -61,14 +59,6 @@ class LoyaltyPointsManagementClass extends React.Component {
                   {
                     title: "Redeem Poilicy",
                     itemId: "/redeem",
-                  },
-                  {
-                    title: "Manual Reward",
-                    itemId: "/manualReward",
-                  },
-                  {
-                    title: "Manual Redeem",
-                    itemId: "/manualRedeem",
                   },
                 ]}
               />
@@ -98,19 +88,41 @@ class LoyaltyPointsManagementClass extends React.Component {
               </div>
 
               {currentMenu == "/" ? (
-                <RewardPolicyTable
-                  history={this.props.history}
-                  id={this.props.match.params.id}
-                />
-              ) : currentMenu == "/redeem" ? (
-                <RedeemPolicyTable
-                  history={this.props.history}
-                  id={this.props.match.params.id}
-                />
-              ) : currentMenu == "/manualReward" ? (
-                <ManualReward />
+                <div>
+                  <div className="d-flex flex-row-reverse p-3">
+                    <NormalButton
+                      label="Add Manual Reward"
+                      mainbg={true}
+                      onClick={() =>
+                        this.props.history.push(
+                          `/admin/customerplus/${this.props.match.params.id}/lpmanagement/reward`
+                        )
+                      }
+                    />
+                  </div>
+                  <RewardPolicyTable
+                    history={this.props.history}
+                    id={this.props.match.params.id}
+                  />
+                </div>
               ) : (
-                <ManualRedeem />
+                <div>
+                  <div className="d-flex flex-row-reverse p-3">
+                    <NormalButton
+                      label="Add Manual Redeem"
+                      mainbg={true}
+                      onClick={() =>
+                        this.props.history.push(
+                          `/admin/customerplus/${this.props.match.params.id}/lpmanagement/redeem`
+                        )
+                      }
+                    />
+                  </div>
+                  <RedeemPolicyTable
+                    history={this.props.history}
+                    id={this.props.match.params.id}
+                  />
+                </div>
               )}
             </div>
           </div>

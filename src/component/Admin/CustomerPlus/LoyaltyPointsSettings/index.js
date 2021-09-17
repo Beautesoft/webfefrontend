@@ -2,8 +2,6 @@ import React from "react";
 import { Navigation } from "react-minimal-side-navigation";
 import { RedeemPolicyTable } from "./RedeemPolicyTable";
 import { RewardPolicyTable } from "./RewardPolicyTable";
-import { ManualReward } from "./ManualReward";
-import { ManualRedeem } from "./ManualRedeem";
 import { withTranslation } from "react-i18next";
 
 class LoyaltyPointsManagementSettingsClass extends React.Component {
@@ -47,26 +45,14 @@ class LoyaltyPointsManagementSettingsClass extends React.Component {
                     title: "Redeem Policy",
                     itemId: "/redeem",
                   },
-                  {
-                    title: "Manual Reward",
-                    itemId: "/manualReward",
-                  },
-                  {
-                    title: "Manual Redeem",
-                    itemId: "/manualRedeem",
-                  },
                 ]}
               />
             </div>
             <div className="col-md-10">
               {currentMenu == "/" ? (
                 <RewardPolicyTable history={this.props.history} />
-              ) : currentMenu == "/redeem" ? (
-                <RedeemPolicyTable history={this.props.history} />
-              ) : currentMenu == "/manualReward" ? (
-                <ManualReward />
               ) : (
-                <ManualRedeem />
+                <RedeemPolicyTable history={this.props.history} />
               )}
             </div>
           </div>

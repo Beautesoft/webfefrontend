@@ -264,6 +264,12 @@ const routers = [
         exact: true,
       },
       {
+        component: "AddManualPoints",
+        path: "/customerplus/:id/lpmanagement/:type",
+        auth: false,
+        exact: true,
+      },
+      {
         component: "LoyaltyPointsManagementSettings",
         path: "/customerplus/lpmanagement",
         auth: false,

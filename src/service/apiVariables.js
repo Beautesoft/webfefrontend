@@ -712,6 +712,19 @@ export const lpManagement = {
     },
     baseURL: "token",
   },
+  addManualPoints: {
+    url: "CustomerPlus/",
+    method: "post",
+    id: null,
+    params: "",
+    get api() {
+      return this.url + this.id + "/Rewards/" + this.params;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
   getRewardPolicy: {
     url: "RewardPolicy",
     method: "get",

@@ -194,6 +194,37 @@ export const getCustomerPoints =
     });
   };
 
+// add manual lp management
+export const AddManualLoyaltyPoints =
+  (id, params, body) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      lpManagement.addManualPoints.addQuery = { key: "id", payload: id };
+      lpManagement.addManualPoints.addQuery = {
+        key: "params",
+        payload: params,
+      };
+      api({
+        ...lpManagement.addManualPoints,
+        body,
+        header: { type: "Content-Type", value: "application/json" },
+      })
+        .then((response) => {
+          resolve(response);
+          let { message, status } = response;
+          if (status === 200) {
+            // dispatch({ type: ArticalsActionType.getArticalsDetails, payload: data });
+            Toast({ type: "success", message });
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
 //get lpmanagement reward settings
 export const getRewardPlolicySettings =
   (id) =>
