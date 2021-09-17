@@ -130,7 +130,7 @@ class AddRewardPolicyClass extends React.Component {
               </div>
               <div className="col-md-6 mb-4">
                 <label className="text-left text-black common-label-text fs-17 pb-3">
-                  {t("Custoemr Class")}
+                  {t("Customer Class")}
                 </label>
                 <NormalSelect
                   name="cust_type"
