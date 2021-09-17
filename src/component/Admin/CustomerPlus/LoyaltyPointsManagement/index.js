@@ -92,7 +92,7 @@ class LoyaltyPointsManagementClass extends React.Component {
 
                   <div className="col-md-6  mt-2">
                     <label className="label">{t("Available Points")}</label>
-                    <NormalInput value={this.state.cust_bal_point} disabled />
+                    <NormalInput value={this.state.cust_point} disabled />
                   </div>
                 </div>
               </div>
