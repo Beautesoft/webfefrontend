@@ -127,9 +127,8 @@ class StaffScheduleClass extends React.Component {
     formFields.staff_data = [];
     staffList_selected = "";
     selected_site = "";
-    if (this.state.jobOption_selected == "") {
-      staffList = [];
-    } else {
+    staffList = [];
+    if (this.state.jobOption_selected != "") {
       await this.props.getStaffPlus(
         `?limit=100&EMP_TYPEid=${this.state.jobOption_selected}`
       );
@@ -676,7 +675,7 @@ class StaffScheduleClass extends React.Component {
                       <div className="col-12">
                         <div className="input-group">
                           <BigCalander
-                            date={startMonth}
+                            date={fullScheduleMonth}
                             data={staff_data}
                             options={scheduleOptions}
                             disabled={true}
