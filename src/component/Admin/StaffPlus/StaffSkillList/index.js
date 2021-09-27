@@ -190,17 +190,20 @@ export class StaffSkillListClass extends React.Component {
                                   return (
                                     <td>
                                       <div className="d-flex align-items-center justify-content-center">
-                                        {key.skills.filter(
-                                          (e) => e.item_no == item_no
-                                        ).length > 0 ? (
-                                          <div className="d-flex align-items-center justify-content-center">
-                                            <input type="checkbox" disabled checked={true}/>
-                                          </div>
-                                        ) : (
-                                          <div className="d-flex align-items-center justify-content-center">
-                                            <input type="checkbox" disabled checked={false}/>
-                                          </div>
-                                        )}
+                                        <div className="d-flex align-items-center justify-content-center checkbox-container">
+                                          <input
+                                            type="checkbox"
+                                            disabled
+                                            checked={
+                                              key.skills.filter(
+                                                (e) => e.item_no == item_no
+                                              ).length > 0
+                                                ? true
+                                                : false
+                                            }
+                                          />
+                                          <span class="checkmark"></span>
+                                        </div>
                                       </div>
                                     </td>
                                   );
