@@ -231,7 +231,12 @@ class StaffScheduleClass extends React.Component {
   };
 
   getFullScheduleData = async (page = 1) => {
-    let { fullSchedule_selected_site, fullScheduleMonth, formFields, pageMeta } = this.state;
+    let {
+      fullSchedule_selected_site,
+      fullScheduleMonth,
+      formFields,
+      pageMeta,
+    } = this.state;
     formFields.staff_data = [];
     if (fullSchedule_selected_site == "") {
       return this.updateState({ formFields });
@@ -273,9 +278,7 @@ class StaffScheduleClass extends React.Component {
     this.getFullScheduleData({});
   };
 
-  onFullScheduleMonthChange = (e) => {
-    this.state.fullScheduleMonth = e.target.value;
-    this.updateState({});
+  onFullScheduleMonthChange = () => {
     this.getFullScheduleData({});
   };
 
@@ -660,7 +663,7 @@ class StaffScheduleClass extends React.Component {
 
                   <div className="form-group mb-4 pb-2">
                     <div className="row">
-                      <div className="col-4 mb-4">
+                      <div className="col-8 col-md-4 col-xm-8 mb-4">
                         <label className="text-left text-black common-label-text fs-17 pb-3">
                           {t("Year and Month")}
                         </label>
@@ -668,7 +671,19 @@ class StaffScheduleClass extends React.Component {
                           <NormalInput
                             type="month"
                             value={fullScheduleMonth}
-                            onChange={this.onFullScheduleMonthChange}
+                            onChange={(e) => {
+                              this.state.fullScheduleMonth = e.target.value;
+                              this.updateState({});
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="col pt-4 mt-4 mb-4">
+                        <div className="input-group">
+                          <NormalButton
+                            label="Load"
+                            mainbg={true}
+                            onClick={this.onFullScheduleMonthChange}
                           />
                         </div>
                       </div>
