@@ -3,82 +3,30 @@ import "./style.scss";
 import { Link } from "react-router-dom";
 import { NormalSelect, NormalButton } from "component/common";
 import {
+  getIndividualAuthorizationSettings,
+  updateIndividualAuthorizationSettings,
   getAuthorizationSettings,
   updateAuthorizationSettings,
 } from "redux/actions/staffPlus";
-import { getCommonApi } from "redux/actions/common";
+import { getJobtitle } from "redux/actions/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { GroupAuthorizationTable } from "./GroupAuthorizationTable";
 import { IndividualAuthorizationTable } from "./IndividualAuthorizationTable";
 import { withTranslation } from "react-i18next";
 import { Navigation } from "react-minimal-side-navigation/lib";
+import { getStaffPlus } from "redux/actions/staffPlus";
 
 export class SecurityAuthorizationClass extends Component {
   state = {
     currentMenu: "/group",
-    emp_data: [],
-    selected_emp: "",
+    staffList: [],
+    staffList_selected: "",
+    jobOptions: [],
+    jobOptions_selected: "",
     security_groups: [],
     selected_securityGroup: "",
-    individualData: {
-      FEData: [
-        {
-          label: "FE Operation",
-          className: "table-danger",
-          values: [
-            { label: "FE Login", value: true },
-            { label: "Open Drawer", value: true },
-          ],
-        },
-        {
-          label: "FE Transaction",
-          className: "table-danger",
-          values: [
-            { label: "DayEnd Settlement", value: false },
-            { label: "Exchange Service", value: false },
-            { label: "Exchange Product (EXCWOT)", value: false },
-            { label: "Void Transaction", value: false },
-            { label: "Void Same Day Transaction", value: false },
-            { label: "Change Unit Price", value: false },
-            { label: "Allow a Discount", value: false },
-            { label: "FOC items", value: false },
-            { label: "Change Service Expiry Date", value: true },
-          ],
-        },
-      ],
-      BEData: [
-        {
-          label: "Master Configuration",
-          className: "table-primary",
-          values: [
-            { label: "Currency Code", value: false },
-            { label: "Payment Type", value: false },
-            { label: "Payment Group", value: false },
-            { label: "GST Settings", value: false },
-          ],
-        },
-        {
-          label: "Master Article",
-          className: "table-primary",
-          values: [
-            { label: "Add Article", value: false },
-            { label: "Edit Article", value: false },
-            { label: "Delete Article", value: false },
-            { label: "Multi-pricing Policy", value: false },
-          ],
-        },
-        {
-          label: "Work Schedule",
-          className: "table-primary",
-          values: [
-            { label: "Schedule Type", value: false },
-            { label: "Schedule Hour", value: false },
-            { label: "Schedule Settings", value: false },
-          ],
-        },
-      ],
-    },
+    individualData: [],
     groupData: [],
     groupColumns: [
       "Administrator",
@@ -106,19 +54,80 @@ export class SecurityAuthorizationClass extends Component {
 
   loadData = async () => {
     this.updateState({ isLoading: true });
+    await this.props.getJobtitle();
     await this.props.getAuthorizationSettings();
-    await this.props.getCommonApi("EmployeeLevels").then((e) => console.log(e));
-    let { staffPlusAuthorization } = this.props;
-    this.updateState({ isLoading: false, groupData: staffPlusAuthorization });
+    let { staffPlusAuthorization, jobtitleList } = this.props;
+    let { jobOptions } = this.state;
+    for (let key of jobtitleList) {
+      jobOptions.push({ label: key.level_desc, value: key.id });
+    }
+    this.updateState({
+      jobOptions,
+      isLoading: false,
+      groupData: staffPlusAuthorization,
+    });
+  };
+
+  onJobChanged = (e) => {
+    this.state.jobOptions_selected = e.target.value;
+    this.updateState({});
+    this.updateStaffList();
+  };
+
+  updateStaffList = async () => {
+    this.updateState({ isLoading: true });
+    let { staffList, staffList_selected, individualData } = this.state;
+    staffList_selected = "";
+    staffList = [];
+    individualData = [];
+    if (this.state.jobOptions_selected != "") {
+      await this.props.getStaffPlus(
+        `?limit=100&EMP_TYPEid=${this.state.jobOptions_selected}`
+      );
+
+      let { staffPlusDetail } = this.props;
+
+      staffPlusDetail.dataList.forEach((key) => {
+        staffList.push({
+          label: key.emp_name,
+          value: key.id,
+          sites: key.site_list.map((e) => e.site_code),
+        });
+      });
+    }
+    this.updateState({
+      staffList,
+      individualData,
+      staffList_selected,
+      isLoading: false,
+    });
+  };
+
+  onStaffChanged = async (e) => {
+    this.updateState({ isLoading: true });
+    let { staffList_selected, individualData } = this.state;
+    staffList_selected = e.target.value;
+    if (staffList_selected != "") {
+      await this.props.getIndividualAuthorizationSettings(staffList_selected);
+      let { staffPlusIndividualAuthorization } = this.props;
+      individualData = staffPlusIndividualAuthorization?.settings_list;
+    }
+    this.updateState({ staffList_selected, individualData, isLoading: false });
   };
 
   onSumbit = async () => {
     this.updateState({ isLoading: true });
-    let { currentMenu, groupData } = this.state;
+    let { currentMenu, groupData, individualData, staffList_selected } =
+      this.state;
     try {
       if (currentMenu == "/group") {
         let level_list = groupData.reduce((a, e) => a.concat(e.levels), []);
         await this.props.updateAuthorizationSettings({ level_list });
+      } else {
+        await this.props.updateIndividualAuthorizationSettings(
+          staffList_selected,
+          { level_list: individualData }
+        );
       }
     } catch (error) {
       console.log(error);
@@ -127,8 +136,16 @@ export class SecurityAuthorizationClass extends Component {
   };
 
   render() {
-    let { isLoading, currentMenu, groupData, groupColumns, individualData } =
-      this.state;
+    let {
+      isLoading,
+      currentMenu,
+      groupData,
+      jobOptions,
+      jobOptions_selected,
+      staffList,
+      staffList_selected,
+      individualData,
+    } = this.state;
     let { t } = this.props;
     return (
       <div className="container-fluid">
@@ -190,10 +207,14 @@ export class SecurityAuthorizationClass extends Component {
                 <div className="row">
                   <div className="col-12">
                     <label className="text-left text-black common-label-text fs-17 pb-3">
-                      {t("Employee")}
+                      {t("Employee Type")}
                     </label>
                     <div className="input-group">
-                      <NormalSelect />
+                      <NormalSelect
+                        options={jobOptions}
+                        value={jobOptions_selected}
+                        onChange={this.onJobChanged}
+                      />
                     </div>
                   </div>
                 </div>
@@ -202,10 +223,14 @@ export class SecurityAuthorizationClass extends Component {
                 <div className="row">
                   <div className="col-12">
                     <label className="text-left text-black common-label-text fs-17 pb-3">
-                      {t("Security Group")}
+                      {t("Employee")}
                     </label>
                     <div className="input-group">
-                      <NormalSelect />
+                      <NormalSelect
+                        options={staffList}
+                        value={staffList_selected}
+                        onChange={this.onStaffChanged}
+                      />
                     </div>
                   </div>
                 </div>
@@ -214,17 +239,9 @@ export class SecurityAuthorizationClass extends Component {
                 <div className="py-4">
                   <div className="table-container">
                     <IndividualAuthorizationTable
-                      FEData={individualData.FEData}
-                      BEData={individualData.BEData}
-                      onFEChange={(data) =>
-                        this.updateState(
-                          () => (this.state.individualData.FEData = data)
-                        )
-                      }
-                      onBEChange={(data) =>
-                        this.updateState(
-                          () => (this.state.individualData.BEData = data)
-                        )
+                      data={individualData}
+                      onChange={(individualData) =>
+                        this.updateState({ individualData })
                       }
                     />
                   </div>
@@ -262,6 +279,10 @@ export class SecurityAuthorizationClass extends Component {
 
 const mapStateToProps = (state) => ({
   staffPlusAuthorization: state.staffPlus.staffPlusAuthorization,
+  staffPlusIndividualAuthorization:
+    state.staffPlus.staffPlusIndividualAuthorization,
+  jobtitleList: state.common.jobtitleList,
+  staffPlusDetail: state.staffPlus.staffPlusDetail,
 });
 
 const mapDispatchToProps = (dispatch) => {
@@ -269,7 +290,10 @@ const mapDispatchToProps = (dispatch) => {
     {
       getAuthorizationSettings,
       updateAuthorizationSettings,
-      getCommonApi,
+      getJobtitle,
+      getStaffPlus,
+      getIndividualAuthorizationSettings,
+      updateIndividualAuthorizationSettings,
     },
     dispatch
   );

@@ -407,7 +407,7 @@ export const updateIndividualAuthorizationSettings =
   (id, body) =>
   (dispatch, getState, { api, Toast }) => {
     return new Promise((resolve, reject) => {
-      staffPlus.getIndividualAuthorizationSettings.addQuery = {
+      staffPlus.updateIndividualAuthorizationSettings.addQuery = {
         key: "id",
         payload: id,
       };
