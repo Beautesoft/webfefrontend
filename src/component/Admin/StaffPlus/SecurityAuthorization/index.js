@@ -116,8 +116,10 @@ export class SecurityAuthorizationClass extends Component {
     this.updateState({ isLoading: true });
     let { currentMenu, groupData } = this.state;
     try {
-      if (currentMenu == "/group")
-        await this.props.updateAuthorizationSettings({ level_list: groupData });
+      if (currentMenu == "/group") {
+        let level_list = groupData.reduce((a, e) => a.concat(e.levels), []);
+        await this.props.updateAuthorizationSettings({ level_list });
+      }
     } catch (error) {
       console.log(error);
     }
