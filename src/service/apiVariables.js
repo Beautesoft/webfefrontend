@@ -522,6 +522,30 @@ export const staffPlus = {
     },
     baseURL: "token",
   },
+  getIndividualAuthorizationSettings: {
+    url: "IndividualEmpSettings/",
+    id: null,
+    method: "get",
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
+  updateIndividualAuthorizationSettings: {
+    url: "IndividualEmpSettings/",
+    id: null,
+    method: "post",
+    get api() {
+      return this.url + this.id;
+    },
+    set addQuery({ key, payload }) {
+      this[key] = payload;
+    },
+    baseURL: "token",
+  },
 };
 
 export const customer = {

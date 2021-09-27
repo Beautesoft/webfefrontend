@@ -372,3 +372,61 @@ export const updateAuthorizationSettings =
         });
     });
   };
+
+// get staffplus authorization  action
+export const getIndividualAuthorizationSettings =
+  (id) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      staffPlus.getIndividualAuthorizationSettings.addQuery = {
+        key: "id",
+        payload: id,
+      };
+      api({ ...staffPlus.getIndividualAuthorizationSettings })
+        .then((response) => {
+          resolve(response);
+          let { message, status, data } = response;
+          if (status === 200) {
+            dispatch({
+              type: StaffPlusActionType.getIndividualAuthorizationSettings,
+              payload: data,
+            });
+            // Toast({ type: 'success', message })
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };
+
+//update staffplus authorization settings action
+export const updateIndividualAuthorizationSettings =
+  (id, body) =>
+  (dispatch, getState, { api, Toast }) => {
+    return new Promise((resolve, reject) => {
+      staffPlus.getIndividualAuthorizationSettings.addQuery = {
+        key: "id",
+        payload: id,
+      };
+      api({
+        ...staffPlus.updateIndividualAuthorizationSettings,
+        body,
+        header: { type: "Content-Type", value: "application/json" },
+      })
+        .then((response) => {
+          resolve(response);
+          let { message, status } = response;
+          if (status === 200) {
+            Toast({ type: "success", message });
+          } else {
+            reject(Toast({ type: "error", message }));
+          }
+        })
+        .catch(({ message }) => {
+          reject(Toast({ type: "error", message }));
+        });
+    });
+  };

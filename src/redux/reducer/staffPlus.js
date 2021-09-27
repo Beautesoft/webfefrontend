@@ -8,6 +8,7 @@ const initialState = {
   staffPlusSkillList: {},
   staffPlustEmpSkillList: {},
   staffPlusAuthorization: {},
+  staffPlusIndividualAuthorization: {},
 };
 
 export default (state = Object.assign({}, initialState), { type, payload }) => {
@@ -46,6 +47,11 @@ export default (state = Object.assign({}, initialState), { type, payload }) => {
       return {
         ...state,
         staffPlusAuthorization: payload,
+      };
+    case StaffPlusActionType.getIndividualAuthorizationSettings:
+      return {
+        ...state,
+        staffPlusIndividualAuthorization: payload,
       };
     default:
       return state;

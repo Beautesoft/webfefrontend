@@ -6,14 +6,17 @@ import {
   getAuthorizationSettings,
   updateAuthorizationSettings,
 } from "redux/actions/staffPlus";
+import { getCommonApi } from "redux/actions/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { GroupAuthorizationTable } from "./GroupAuthorizationTable";
 import { IndividualAuthorizationTable } from "./IndividualAuthorizationTable";
 import { withTranslation } from "react-i18next";
+import { Navigation } from "react-minimal-side-navigation/lib";
 
 export class SecurityAuthorizationClass extends Component {
   state = {
+    currentMenu: "/group",
     emp_data: [],
     selected_emp: "",
     security_groups: [],
@@ -86,10 +89,11 @@ export class SecurityAuthorizationClass extends Component {
       "Therapist",
     ],
     isMounted: true,
+    isLoading: true,
   };
 
   componentDidMount() {
-    this.updateGroupData();
+    this.loadData();
   }
 
   componentWillUnmount() {
@@ -100,103 +104,154 @@ export class SecurityAuthorizationClass extends Component {
     if (this.state.isMounted) this.setState(data);
   };
 
-  updateGroupData = async () => {
-    console.log("getAuthorizationSettings");
+  loadData = async () => {
+    this.updateState({ isLoading: true });
     await this.props.getAuthorizationSettings();
-    console.log("getAuthorizationSettings - done");
+    await this.props.getCommonApi("EmployeeLevels").then((e) => console.log(e));
     let { staffPlusAuthorization } = this.props;
-    this.updateState({ groupData: staffPlusAuthorization });
+    this.updateState({ isLoading: false, groupData: staffPlusAuthorization });
+  };
+
+  onSumbit = async () => {
+    this.updateState({ isLoading: true });
+    let { currentMenu, groupData } = this.state;
+    try {
+      if (currentMenu == "/group")
+        await this.props.updateAuthorizationSettings({ level_list: groupData });
+    } catch (error) {
+      console.log(error);
+    }
+    this.updateState({ isLoading: false });
   };
 
   render() {
-    let { groupData, groupColumns, individualData } = this.state;
+    let { isLoading, currentMenu, groupData, groupColumns, individualData } =
+      this.state;
     let { t } = this.props;
     return (
-      <div className="px-5 container-fluid">
-        <div className="row align-items-center">
-          <div className="col-md-12 mt-4">
-            <h3>{t("Group Authorization")}</h3>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-md-12 col-lg-2 mb-4">
+            <Navigation
+              activeItemId={currentMenu}
+              onSelect={({ itemId }) => {
+                this.updateState({ currentMenu: itemId });
+              }}
+              items={[
+                {
+                  title: t("Group Authorization"),
+                  itemId: "/group",
+                },
+                {
+                  title: t("Individual Authorization"),
+                  itemId: "/indi",
+                },
+              ]}
+            />
           </div>
-        </div>
-        <div className="tab-table-content">
-          <div className="py-4">
-            <div className="table-container">
-              <GroupAuthorizationTable
-                data={groupData}
-                onChange={(data) =>
-                  this.updateState(() => (this.state.groupData = data))
-                }
-              />
-            </div>
-          </div>
-        </div>
-        <div className="row align-items-center">
-          <div className="col-md-12 mt-4 mb-4 ">
-            <h3>{t("Individual Authorization")}</h3>
-          </div>
-        </div>
-        <div className="form-group mb-4 pb-2">
-          <div className="row">
-            <div className="col-12">
-              <label className="text-left text-black common-label-text fs-17 pb-3">
-                {t("Employee")}
-              </label>
-              <div className="input-group">
-                <NormalSelect />
+          {isLoading ? (
+            <div className="col">
+              <div class="d-flex mt-5 align-items-center justify-content-center">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="form-group mb-4 pb-2">
-          <div className="row">
-            <div className="col-12">
-              <label className="text-left text-black common-label-text fs-17 pb-3">
-                {t("Security Group")}
-              </label>
-              <div className="input-group">
-                <NormalSelect />
+          ) : currentMenu == "/group" ? (
+            <div className="col-lg-10 col-md-12">
+              <div className="row align-items-center">
+                <div className="col-md-12 mt-4">
+                  <h3>{t("Group Authorization")}</h3>
+                </div>
+              </div>
+              <div className="tab-table-content">
+                <div className="py-4">
+                  <div className="table-container">
+                    <GroupAuthorizationTable
+                      data={groupData}
+                      onChange={(data) =>
+                        this.updateState(() => (this.state.groupData = data))
+                      }
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="tab-table-content">
-          <div className="py-4">
-            <div className="table-container">
-              <IndividualAuthorizationTable
-                FEData={individualData.FEData}
-                BEData={individualData.BEData}
-                onFEChange={(data) =>
-                  this.updateState(
-                    () => (this.state.individualData.FEData = data)
-                  )
-                }
-                onBEChange={(data) =>
-                  this.updateState(
-                    () => (this.state.individualData.BEData = data)
-                  )
-                }
-              />
+          ) : (
+            <div className="col-lg-10 col-md-12">
+              <div className="row align-items-center">
+                <div className="col-md-12 mt-4 mb-4 ">
+                  <h3>{t("Individual Authorization")}</h3>
+                </div>
+              </div>
+              <div className="form-group mb-4 pb-2">
+                <div className="row">
+                  <div className="col-12">
+                    <label className="text-left text-black common-label-text fs-17 pb-3">
+                      {t("Employee")}
+                    </label>
+                    <div className="input-group">
+                      <NormalSelect />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="form-group mb-4 pb-2">
+                <div className="row">
+                  <div className="col-12">
+                    <label className="text-left text-black common-label-text fs-17 pb-3">
+                      {t("Security Group")}
+                    </label>
+                    <div className="input-group">
+                      <NormalSelect />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="tab-table-content">
+                <div className="py-4">
+                  <div className="table-container">
+                    <IndividualAuthorizationTable
+                      FEData={individualData.FEData}
+                      BEData={individualData.BEData}
+                      onFEChange={(data) =>
+                        this.updateState(
+                          () => (this.state.individualData.FEData = data)
+                        )
+                      }
+                      onBEChange={(data) =>
+                        this.updateState(
+                          () => (this.state.individualData.BEData = data)
+                        )
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="form-group mb-4 pb-2">
-          <div className="pt-5 d-flex justify-content-center">
-            <div className="col-2">
-              <Link to="/admin/staffplus">
-                <NormalButton
-                  label="Cancel"
-                  className="mr-2 bg-danger text-light col-12"
-                />
-              </Link>
+          )}
+          {!isLoading && (
+            <div className="col-12 form-group mb-4 pb-2">
+              <div className="pt-5 d-flex justify-content-center">
+                <div className="col-2">
+                  <Link to="/admin/staffplus">
+                    <NormalButton
+                      label="Cancel"
+                      className="mr-2 bg-danger text-light col-12"
+                    />
+                  </Link>
+                </div>
+                <div className="col-2">
+                  <NormalButton
+                    label="Save"
+                    success={true}
+                    className="mr-2 col-12"
+                    onClick={this.onSumbit}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="col-2">
-              <NormalButton
-                label="Save"
-                success={true}
-                className="mr-2 col-12"
-              />
-            </div>
-          </div>
+          )}
         </div>
       </div>
     );
@@ -212,6 +267,7 @@ const mapDispatchToProps = (dispatch) => {
     {
       getAuthorizationSettings,
       updateAuthorizationSettings,
+      getCommonApi,
     },
     dispatch
   );

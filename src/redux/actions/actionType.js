@@ -36,6 +36,7 @@ export const StaffPlusActionType = {
   getStaffPlusSkillList: "GET_STAFF_PLUS_SKILL_LIST",
   getEmpEmpSkillList: "GET_EMP_SKILL_LIST",
   getAuthorizationSettings: "GET_AUTHORIZATION_SETTINGS",
+  getIndividualAuthorizationSettings: "GET_INDIVIDUAL_AUTHORIZATION_SETTINGS",
 };
 
 export const SaloonActionType = {
