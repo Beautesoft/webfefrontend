@@ -6,10 +6,10 @@ class IndividualAuthorizationTableClass extends Component {
   render() {
     let { onChange, data = [] } = this.props;
 
-    const handleOnChange = (index1) => {
-      data[index1].controlstatus = !data[index1].controlstatus;
-      if (onChange) onChange(data);
-    };
+    // const handleOnChange = (index1) => {
+    //   data[index1].controlstatus = !data[index1].controlstatus;
+    //   if (onChange) onChange(data);
+    // };
 
     let { t } = this.props;
 
@@ -49,7 +49,6 @@ class IndividualAuthorizationTableClass extends Component {
                         type="radio"
                         name={e.controldesc}
                         checked={e.controlstatus}
-                        onChange={() => handleOnChange(index)}
                       />
                     </div>
                   </td>
@@ -60,7 +59,6 @@ class IndividualAuthorizationTableClass extends Component {
                         type="radio"
                         name={e.controldesc}
                         checked={!e.controlstatus}
-                        onChange={() => handleOnChange(index)}
                       />
                     </div>
                   </td>

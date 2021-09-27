@@ -8,7 +8,7 @@ import {
   getAuthorizationSettings,
   updateAuthorizationSettings,
 } from "redux/actions/staffPlus";
-import { getJobtitle } from "redux/actions/common";
+import { getJobtitle, getCommonApi } from "redux/actions/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { GroupAuthorizationTable } from "./GroupAuthorizationTable";
@@ -20,6 +20,8 @@ import { getStaffPlus } from "redux/actions/staffPlus";
 export class SecurityAuthorizationClass extends Component {
   state = {
     currentMenu: "/group",
+    empLvlOptions: [],
+    selected_empLVl: "",
     staffList: [],
     staffList_selected: "",
     jobOptions: [],
@@ -56,13 +58,21 @@ export class SecurityAuthorizationClass extends Component {
     this.updateState({ isLoading: true });
     await this.props.getJobtitle();
     await this.props.getAuthorizationSettings();
+    let emp_lvls = await this.props.getCommonApi("EmployeeLevels");
     let { staffPlusAuthorization, jobtitleList } = this.props;
-    let { jobOptions } = this.state;
+    let { jobOptions, empLvlOptions } = this.state;
     for (let key of jobtitleList) {
       jobOptions.push({ label: key.level_desc, value: key.id });
     }
+    for (let key of emp_lvls.language) {
+      empLvlOptions.push({
+        label: key.level_description,
+        value: key.level_code,
+      });
+    }
     this.updateState({
       jobOptions,
+      empLvlOptions,
       isLoading: false,
       groupData: staffPlusAuthorization,
     });
@@ -105,20 +115,31 @@ export class SecurityAuthorizationClass extends Component {
 
   onStaffChanged = async (e) => {
     this.updateState({ isLoading: true });
-    let { staffList_selected, individualData } = this.state;
+    let { staffList_selected, individualData, selected_empLVl } = this.state;
     staffList_selected = e.target.value;
     if (staffList_selected != "") {
       await this.props.getIndividualAuthorizationSettings(staffList_selected);
       let { staffPlusIndividualAuthorization } = this.props;
+      selected_empLVl = staffPlusIndividualAuthorization?.LEVEL_ItmIDid;
       individualData = staffPlusIndividualAuthorization?.settings_list;
     }
-    this.updateState({ staffList_selected, individualData, isLoading: false });
+    this.updateState({
+      selected_empLVl,
+      staffList_selected,
+      individualData,
+      isLoading: false,
+    });
   };
 
   onSumbit = async () => {
     this.updateState({ isLoading: true });
-    let { currentMenu, groupData, individualData, staffList_selected } =
-      this.state;
+    let {
+      currentMenu,
+      groupData,
+      individualData,
+      selected_empLVl,
+      staffList_selected,
+    } = this.state;
     try {
       if (currentMenu == "/group") {
         let level_list = groupData.reduce((a, e) => a.concat(e.levels), []);
@@ -126,8 +147,13 @@ export class SecurityAuthorizationClass extends Component {
       } else {
         await this.props.updateIndividualAuthorizationSettings(
           staffList_selected,
-          { level_list: individualData }
+          { level_code: selected_empLVl }
         );
+        await this.props.getIndividualAuthorizationSettings(staffList_selected);
+        let { staffPlusIndividualAuthorization } = this.props;
+        selected_empLVl = staffPlusIndividualAuthorization?.LEVEL_ItmIDid;
+        individualData = staffPlusIndividualAuthorization?.settings_list;
+        this.updateState({ selected_empLVl, individualData });
       }
     } catch (error) {
       console.log(error);
@@ -145,6 +171,8 @@ export class SecurityAuthorizationClass extends Component {
       staffList,
       staffList_selected,
       individualData,
+      empLvlOptions,
+      selected_empLVl,
     } = this.state;
     let { t } = this.props;
     return (
@@ -235,6 +263,24 @@ export class SecurityAuthorizationClass extends Component {
                   </div>
                 </div>
               </div>
+              <div className="form-group mb-4 pb-2">
+                <div className="row">
+                  <div className="col-12">
+                    <label className="text-left text-black common-label-text fs-17 pb-3">
+                      {t("Employee Level")}
+                    </label>
+                    <div className="input-group">
+                      <NormalSelect
+                        options={empLvlOptions}
+                        value={selected_empLVl}
+                        onChange={(e) =>
+                          this.updateState({ selected_empLVl: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div className="tab-table-content">
                 <div className="py-4">
                   <div className="table-container">
@@ -252,7 +298,7 @@ export class SecurityAuthorizationClass extends Component {
           {!isLoading && (
             <div className="col-12 form-group mb-4 pb-2">
               <div className="pt-5 d-flex justify-content-center">
-                <div className="col-2">
+                <div className="col-6 col-md-4 col-lg-2">
                   <Link to="/admin/staffplus">
                     <NormalButton
                       label="Cancel"
@@ -260,7 +306,7 @@ export class SecurityAuthorizationClass extends Component {
                     />
                   </Link>
                 </div>
-                <div className="col-2">
+                <div className="col-6 col-md-4 col-lg-2">
                   <NormalButton
                     label="Save"
                     success={true}
@@ -294,6 +340,7 @@ const mapDispatchToProps = (dispatch) => {
       getStaffPlus,
       getIndividualAuthorizationSettings,
       updateIndividualAuthorizationSettings,
+      getCommonApi,
     },
     dispatch
   );
