@@ -68,7 +68,7 @@ export class RewardPolicyTableClass extends React.Component {
         <div className="customer-list container-fluid">
           <div className="row align-items-center">
             <div className="col-md-4">
-              <h3 className="head-label">{t("Redward Policy")}</h3>
+              <h3 className="head-label">{t("Reward Policy")}</h3>
             </div>
             <div className="col-md-8">
               <InputSearch
