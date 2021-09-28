@@ -99,7 +99,7 @@ export class CustomerPointsTableClass extends React.Component {
                 mainbg={true}
                 onClick={() =>
                   this.props.history.push(
-                    `/admin/customerplus/${this.props.match.params.id}/lpmanagement/reward`
+                    `/admin/customerplus/${this.props.id}/lpmanagement/reward`
                   )
                 }
               />
@@ -110,7 +110,7 @@ export class CustomerPointsTableClass extends React.Component {
                 mainbg={true}
                 onClick={() =>
                   this.props.history.push(
-                    `/admin/customerplus/${this.props.match.params.id}/lpmanagement/redeem`
+                    `/admin/customerplus/${this.props.id}/lpmanagement/redeem`
                   )
                 }
               />
