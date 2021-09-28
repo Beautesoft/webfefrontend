@@ -238,7 +238,7 @@ export class CustomerPointsTableClass extends React.Component {
                           postransactionno,
                           remarks,
                           total_point,
-                          type,
+                          lp_type,
                           date,
                         } = item;
                         return (
@@ -267,7 +267,7 @@ export class CustomerPointsTableClass extends React.Component {
                               }
                             >
                               <div className="d-flex align-items-center justify-content-center">
-                                {date}
+                                {new Date(date).toLocaleDateString()}
                               </div>
                             </td>
                             <td
@@ -285,7 +285,7 @@ export class CustomerPointsTableClass extends React.Component {
                               }
                             >
                               <div className="d-flex align-items-center justify-content-center">
-                                {type}
+                                {lp_type}
                               </div>
                             </td>
                             <td

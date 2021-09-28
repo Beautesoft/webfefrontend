@@ -39,7 +39,9 @@ class AddManualPointsClass extends React.Component {
     let data = {};
     data.total_point = points;
     data.remarks = description;
-    data.date = new Date().toISOString();
+    data.date =
+      new Date().toISOString().split("Z")[0] +
+      new Date().toTimeString().split("GMT")[1].split(" ")[0];
     await this.props.AddManualLoyaltyPoints(
       this.props.match.params.id,
       `?type=${this.props.match.params.type}`,

@@ -742,7 +742,7 @@ export const lpManagement = {
     id: null,
     params: "",
     get api() {
-      return this.url + this.id + "/Rewards/" + this.params;
+      return this.url + this.id + "/CustomerPoints/" + this.params;
     },
     set addQuery({ key, payload }) {
       this[key] = payload;
