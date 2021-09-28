@@ -53,11 +53,11 @@ class LoyaltyPointsManagementClass extends React.Component {
                 onSelect={({ itemId }) => this.handleMenuChange(itemId)}
                 items={[
                   {
-                    title: "Reward Poilicy",
+                    title: "Reward Policy",
                     itemId: "/",
                   },
                   {
-                    title: "Redeem Poilicy",
+                    title: "Redeem Policy",
                     itemId: "/redeem",
                   },
                 ]}
