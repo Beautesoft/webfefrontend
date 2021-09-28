@@ -2,15 +2,12 @@ import React from "react";
 import { NormalButton, NormalInput } from "component/common";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Navigation } from "react-minimal-side-navigation";
-import { RedeemPolicyTable } from "./RedeemPolicyTable";
-import { RewardPolicyTable } from "./RewardPolicyTable";
+import { CustomerPointsTable } from "./CustomerPointsTable";
 import { getCommonApi } from "redux/actions/common";
 import { withTranslation } from "react-i18next";
 
 class LoyaltyPointsManagementClass extends React.Component {
   state = {
-    currentMenu: "/",
     isMounted: true,
     cust_name: "",
     cust_bal_point: "",
@@ -33,37 +30,14 @@ class LoyaltyPointsManagementClass extends React.Component {
     if (this.state.isMounted) this.setState(data);
   };
 
-  handleMenuChange = (itemId) => {
-    this.updateState({
-      currentMenu: itemId,
-    });
-  };
-
   render() {
-    let { currentMenu } = this.state;
     let { t } = this.props;
     return (
       <>
         <div className="customer-list container-fluid">
           <h3 className="head-label mb-5">{t("Loyalty Program")}</h3>
           <div className="row">
-            <div className="col-md-2 mb-5">
-              <Navigation
-                activeItemId={this.state.currentMenu}
-                onSelect={({ itemId }) => this.handleMenuChange(itemId)}
-                items={[
-                  {
-                    title: "Reward Policy",
-                    itemId: "/",
-                  },
-                  {
-                    title: "Redeem Policy",
-                    itemId: "/redeem",
-                  },
-                ]}
-              />
-            </div>
-            <div className="col-md-10">
+            <div className="col">
               <div className="container-fluid">
                 <div className="row align-items-center">
                   <div className="col-md-4">
@@ -86,44 +60,12 @@ class LoyaltyPointsManagementClass extends React.Component {
                   </div>
                 </div>
               </div>
-
-              {currentMenu == "/" ? (
-                <div>
-                  <div className="d-flex flex-row-reverse p-3">
-                    <NormalButton
-                      label="Add Manual Reward"
-                      mainbg={true}
-                      onClick={() =>
-                        this.props.history.push(
-                          `/admin/customerplus/${this.props.match.params.id}/lpmanagement/reward`
-                        )
-                      }
-                    />
-                  </div>
-                  <RewardPolicyTable
-                    history={this.props.history}
-                    id={this.props.match.params.id}
-                  />
-                </div>
-              ) : (
-                <div>
-                  <div className="d-flex flex-row-reverse p-3">
-                    <NormalButton
-                      label="Add Manual Redeem"
-                      mainbg={true}
-                      onClick={() =>
-                        this.props.history.push(
-                          `/admin/customerplus/${this.props.match.params.id}/lpmanagement/redeem`
-                        )
-                      }
-                    />
-                  </div>
-                  <RedeemPolicyTable
-                    history={this.props.history}
-                    id={this.props.match.params.id}
-                  />
-                </div>
-              )}
+              <div>
+                <CustomerPointsTable
+                  history={this.props.history}
+                  id={this.props.match.params.id}
+                />
+              </div>
             </div>
           </div>
         </div>
