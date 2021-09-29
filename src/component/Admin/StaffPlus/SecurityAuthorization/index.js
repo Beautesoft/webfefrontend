@@ -80,6 +80,8 @@ export class SecurityAuthorizationClass extends Component {
 
   onJobChanged = (e) => {
     this.state.jobOptions_selected = e.target.value;
+    this.state.selected_empLVl = "";
+    this.state.staffList_selected = "";
     this.updateState({});
     this.updateStaffList();
   };
@@ -129,6 +131,17 @@ export class SecurityAuthorizationClass extends Component {
       individualData,
       isLoading: false,
     });
+  };
+
+  onEmpLvlChange = async (e) => {
+    this.updateState({ isLoading: true });
+    let { selected_empLVl, individualData } = this.state;
+    selected_empLVl = e.target.value;
+    let individualSettings = await this.props.getCommonApi(
+      `EmployeeLevelsSettings?code=${selected_empLVl}`
+    );
+    individualData = individualSettings.settings;
+    this.updateState({ isLoading: false, selected_empLVl, individualData });
   };
 
   onSumbit = async () => {
@@ -273,9 +286,8 @@ export class SecurityAuthorizationClass extends Component {
                       <NormalSelect
                         options={empLvlOptions}
                         value={selected_empLVl}
-                        onChange={(e) =>
-                          this.updateState({ selected_empLVl: e.target.value })
-                        }
+                        disabled={staffList_selected == ""}
+                        onChange={this.onEmpLvlChange}
                       />
                     </div>
                   </div>

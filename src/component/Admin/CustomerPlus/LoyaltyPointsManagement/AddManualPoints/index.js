@@ -39,9 +39,11 @@ class AddManualPointsClass extends React.Component {
     let data = {};
     data.total_point = points;
     data.remarks = description;
-    data.date =
-      new Date().toISOString().split("Z")[0] +
-      new Date().toTimeString().split("GMT")[1].split(" ")[0];
+    var tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+    var localISOTime = new Date(Date.now() - tzoffset)
+      .toISOString()
+      .slice(0, -1);
+    data.date = localISOTime;
     await this.props.AddManualLoyaltyPoints(
       this.props.match.params.id,
       `?type=${this.props.match.params.type}`,

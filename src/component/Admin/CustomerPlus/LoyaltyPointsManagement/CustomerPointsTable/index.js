@@ -14,16 +14,13 @@ import { dateFormat } from "service/helperFunctions";
 export class CustomerPointsTableClass extends React.Component {
   state = {
     headerDetails: [
-      { label: "Transcation No", sortKey: "transacno" },
-      {
-        label: "Post Transcation No",
-        sortKey: "postransactionno",
-        enabled: true,
-      },
       { label: "Date", sortKey: "remarks", enabled: true },
-      { label: "Remarks", sortKey: "remarks", enabled: true },
+      { label: "Transcation No", sortKey: "transacno" },
       { label: "Type", sortKey: "type", enabled: true },
-      { label: "Point Value", sortKey: "total_point", enabled: true },
+      { label: "Remarks", sortKey: "remarks", enabled: true },
+      { label: "Earn pts (+)", sortKey: "earned", enabled: true },
+      { label: "Used pts (-)", sortKey: "used", enabled: true },
+      { label: "Balance Pts", sortKey: "now_point", enabled: true },
     ],
     type: "all",
     dataList: [],
@@ -37,6 +34,10 @@ export class CustomerPointsTableClass extends React.Component {
   };
 
   componentDidMount() {
+    this.state.searchEndDate = new Date();
+    let date = new Date();
+    date.setMonth(date.getMonth() - 3);
+    this.state.searchStartDate = date;
     this.handlePagination({});
   }
 
@@ -66,6 +67,15 @@ export class CustomerPointsTableClass extends React.Component {
       `?limit=10&page=${page}` + searchParams
     );
     let { PointList, pagination } = this.props.dataList;
+    PointList.forEach((e) => {
+      if (e.lp_type == "Reward") {
+        e.earned = e.total_point;
+        e.used = "";
+      } else {
+        e.earned = "";
+        e.used = e.total_point;
+      }
+    });
     this.updateState({
       meta: pagination,
       dataList: PointList,
@@ -235,9 +245,10 @@ export class CustomerPointsTableClass extends React.Component {
                       dataList.map((item, index) => {
                         let {
                           transacno,
-                          postransactionno,
                           remarks,
-                          total_point,
+                          earned,
+                          used,
+                          now_point,
                           lp_type,
                           date,
                         } = item;
@@ -245,38 +256,22 @@ export class CustomerPointsTableClass extends React.Component {
                           <tr key={index}>
                             <td
                               className={
+                                headerDetails[2].enabled ?? true ? "" : "d-none"
+                              }
+                            >
+                              <div className="d-flex align-items-center justify-content-center">
+                                {new Date(date).toLocaleDateString() +
+                                  " " +
+                                  new Date(date).toLocaleTimeString()}
+                              </div>
+                            </td>
+                            <td
+                              className={
                                 headerDetails[0].enabled ?? true ? "" : "d-none"
                               }
                             >
                               <div className="d-flex align-items-center justify-content-center">
                                 {transacno}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[1].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {postransactionno}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[2].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {new Date(date).toLocaleDateString()}
-                              </div>
-                            </td>
-                            <td
-                              className={
-                                headerDetails[2].enabled ?? true ? "" : "d-none"
-                              }
-                            >
-                              <div className="d-flex align-items-center justify-content-center">
-                                {remarks}
                               </div>
                             </td>
                             <td
@@ -290,11 +285,38 @@ export class CustomerPointsTableClass extends React.Component {
                             </td>
                             <td
                               className={
+                                headerDetails[2].enabled ?? true ? "" : "d-none"
+                              }
+                            >
+                              <div className="d-flex align-items-center justify-content-center">
+                                {remarks}
+                              </div>
+                            </td>
+                            <td
+                              className={
+                                headerDetails[1].enabled ?? true ? "" : "d-none"
+                              }
+                            >
+                              <div className="d-flex align-items-center justify-content-center">
+                                {earned}
+                              </div>
+                            </td>
+                            <td
+                              className={
                                 headerDetails[3].enabled ?? true ? "" : "d-none"
                               }
                             >
                               <div className="d-flex align-items-center justify-content-center">
-                                {total_point}
+                                {used}
+                              </div>
+                            </td>
+                            <td
+                              className={
+                                headerDetails[3].enabled ?? true ? "" : "d-none"
+                              }
+                            >
+                              <div className="d-flex align-items-center justify-content-center">
+                                {now_point}
                               </div>
                             </td>
                           </tr>
