@@ -250,47 +250,6 @@ export class ListCustomerPlusClass extends React.Component {
                                       </span>
                                       {t("Loyalty Points Management")}
                                     </div>
-                                    <div className="d-flex align-items-center fs-16">
-                                      <span className="icon-schedule px-3"></span>
-                                      {t("Reschedule Appointment")}
-                                    </div>
-                                    <div
-                                      className="d-flex align-items-center fs-16"
-                                      onClick={() => this.bookAppointment(item)}
-                                    >
-                                      <span className="px-2">
-                                        <svg
-                                          width="31"
-                                          height="30"
-                                          viewBox="0 0 31 30"
-                                          fill="none"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                          <rect
-                                            width="31"
-                                            height="30"
-                                            fill="#F9F9F9"
-                                          />
-                                          <path
-                                            d="M15 8V22"
-                                            stroke="#848484"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                          />
-                                          <path
-                                            d="M8 15H22"
-                                            stroke="#848484"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                          />
-                                        </svg>
-                                      </span>
-                                      {t("Book Appointment")}
-                                    </div>
-                                    <div className="d-flex align-items-center fs-16 pb-3">
-                                      <span className="icon-cancel-schedule px-3"></span>
-                                      {t("Cancel Appointment")}
-                                    </div>
                                   </div>
                                 </>
                               ) : (
